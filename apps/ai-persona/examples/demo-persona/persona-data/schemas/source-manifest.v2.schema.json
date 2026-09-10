@@ -1,0 +1,201 @@
+{
+  "$defs": {
+    "SourceExtraction": {
+      "additionalProperties": false,
+      "properties": {
+        "tool": {
+          "minLength": 1,
+          "title": "Tool",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool",
+        "version"
+      ],
+      "title": "SourceExtraction",
+      "type": "object"
+    },
+    "SourceFile": {
+      "additionalProperties": false,
+      "properties": {
+        "media_type": {
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "original",
+            "extracted_text",
+            "attachment"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "role",
+        "media_type",
+        "sha256"
+      ],
+      "title": "SourceFile",
+      "type": "object"
+    },
+    "SourceOrigin": {
+      "additionalProperties": false,
+      "properties": {
+        "identifier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identifier"
+        },
+        "provider": {
+          "minLength": 1,
+          "title": "Provider",
+          "type": "string"
+        },
+        "retrieved_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Retrieved At"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        }
+      },
+      "required": [
+        "provider"
+      ],
+      "title": "SourceOrigin",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "canonical_file": {
+      "title": "Canonical File",
+      "type": "string"
+    },
+    "content_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "extraction": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/SourceExtraction"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "files": {
+      "items": {
+        "$ref": "#/$defs/SourceFile"
+      },
+      "minItems": 1,
+      "title": "Files",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "imported_at": {
+      "format": "date-time",
+      "title": "Imported At",
+      "type": "string"
+    },
+    "origin": {
+      "$ref": "#/$defs/SourceOrigin"
+    },
+    "schema": {
+      "const": "ai-persona.source-manifest/v2",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_type": {
+      "enum": [
+        "article",
+        "note",
+        "paper",
+        "book",
+        "course_material",
+        "conversation",
+        "resume",
+        "manual_declaration",
+        "task_attachment",
+        "other"
+      ],
+      "title": "Source Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "source_type",
+    "imported_at",
+    "origin",
+    "canonical_file",
+    "content_hash",
+    "files"
+  ],
+  "title": "SourceManifest",
+  "type": "object"
+}

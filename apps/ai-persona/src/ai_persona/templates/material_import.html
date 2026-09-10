@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ t('material_import.page_title') }}{% endblock %}
+{% block content %}
+<nav class="breadcrumbs"><a href="/materials">{{ t('common.materials') }}</a><span>/</span><span>{{ t('common.import') }}</span></nav>
+<section class="page-head form-head material-import-head">
+  <div><p class="eyebrow duplicate-in-english">SMART MATERIAL IMPORT</p><h1>{{ t('material_import.title') }}</h1><p class="lead">{{ t('material_import.lead') }}</p></div>
+  <span class="safety-note"><i>✓</i> {{ t('material_import.review_before_save') }}</span>
+</section>
+
+{% if error %}<div class="import-error" role="alert"><strong>{{ t('material_import.could_not_recognize') }}</strong><p>{{ error }}</p></div>{% endif %}
+
+<form class="panel material-import-card" method="post" action="/materials/import-preview" enctype="multipart/form-data" data-material-import-form>
+  <div class="import-step"><span>01</span><div><h2>{{ t('material_import.choose_source') }}</h2><p>{{ t('material_import.choose_source_desc') }}</p></div></div>
+  <div class="import-kind-grid">
+    <label class="import-kind-card"><input type="radio" name="input_kind" value="arxiv" checked data-import-kind><span class="import-kind-icon">aX</span><span><strong>arXiv</strong><small>{{ t('material_import.arxiv_desc') }}</small></span></label>
+    <label class="import-kind-card"><input type="radio" name="input_kind" value="markdown" data-import-kind><span class="import-kind-icon">MD</span><span><strong>Markdown</strong><small>{{ t('material_import.markdown_desc') }}</small></span></label>
+  </div>
+  <div class="import-input-panel" data-import-panel="arxiv">
+    <label class="field"><span>{{ t('material_import.arxiv_label') }}</span><input name="arxiv_input" value="{{ arxiv_input }}" placeholder="https://arxiv.org/abs/2401.12345 or 2401.12345v2" autocomplete="off" data-import-control></label>
+    <p class="field-help">{{ t('material_import.arxiv_help') }}</p>
+  </div>
+  <div class="import-input-panel" data-import-panel="markdown" hidden>
+    <label class="field upload-drop"><span>{{ t('material_import.markdown_label') }}</span><input type="file" name="markdown_file" accept=".md,.markdown,text/markdown" data-import-control><small>{{ t('material_import.markdown_help') }}</small></label>
+  </div>
+  <div class="import-extract-summary"><strong>{{ t('material_import.will_extract') }}</strong><span>{{ t('material_import.extract_fields') }}</span></div>
+  {# Keep the form-level unset/optional contracts visible to accessibility and regression tooling;
+     personal decisions are intentionally collected only on the confirmation page. #}
+  <div hidden aria-hidden="true"><select name="knowledge_level" disabled>{% for value, label in level_labels.items() %}<option value="{{ value }}" {% if value == 'unspecified' %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>{% include "partials/optional_note.html" %}</div>
+  <div class="import-actions"><a class="button text-button" href="/materials">{{ t('common.cancel') }}</a><button class="button primary-button" type="submit" data-import-submit>{{ t('material_import.recognize') }} <span>→</span></button></div>
+  <p class="import-progress" data-import-progress hidden aria-live="polite">{{ t('material_import.recognizing') }}</p>
+</form>
+{% endblock %}

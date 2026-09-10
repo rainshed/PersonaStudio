@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ t('source.replace_title') }} · {{ material.title }}{% endblock %}
+{% block content %}
+<nav class="breadcrumbs"><a href="/materials">{{ t('common.materials') }}</a><span>/</span><a href="/materials/{{ material.id }}">{{ material.title }}</a><span>/</span><span>{{ t('source.replace_title') }}</span></nav>
+<section class="page-head form-head"><div><p class="eyebrow duplicate-in-english">REPLACE SOURCE</p><h1>{{ t('source.replace_title') }}</h1><p class="lead">{{ t('source.replace_lead') }}</p></div><span class="safety-note"><i>✓</i> {{ t('source.old_retained') }}</span></section>
+<form class="edit-layout source-aware-form" method="post" action="/materials/{{ material.id }}/source-proposals" enctype="multipart/form-data"><input type="hidden" name="material_type" value="{{ material.material_type }}">
+{% if material %}<input type="hidden" name="record_revision" value="{{ material.revision }}">{% endif %}
+  <div class="panel form-panel">
+    <div class="form-section"><div class="form-section-head"><span>01</span><div><h2>{{ t('source.current_source') }}</h2><p>{{ source.id }} · {{ source.canonical_file }}</p></div></div><dl class="source-summary"><div><dt>{{ t('common.source') }}</dt><dd>{{ source.origin.provider }}</dd></div><div><dt>{{ t('common.content_hash') }}</dt><dd><code>{{ source.content_hash }}</code></dd></div></dl></div>
+    <div class="form-section"><div class="form-section-head"><span>02</span><div><h2>{{ t('source.choose_new') }}</h2><p>{{ t('source.choose_method') }}</p></div></div><div class="field-grid"><div class="source-mode-grid"><label class="source-mode"><input type="radio" name="source_mode" value="upload" checked><span><strong>{{ t('material_form.upload') }}</strong><small>{{ t('source.keep_original') }}</small></span></label><label class="source-mode"><input type="radio" name="source_mode" value="paste"><span><strong>{{ t('material_form.paste') }}</strong><small>{{ t('source.save_markdown') }}</small></span></label><label class="source-mode"><input type="radio" name="source_mode" value="url"><span><strong>{{ t('material_form.from_url') }}</strong><small>{{ t('source.snapshot') }}</small></span></label></div><label class="field source-input upload"><span>{{ t('source.file') }}</span><input type="file" name="source_file"></label><label class="field source-input paste"><span>{{ t('material_form.paste') }}</span><textarea name="source_text" rows="8"></textarea></label><label class="field source-input url"><span>{{ t('material_form.source_url') }}</span><input type="url" name="source_url"></label></div></div>
+  </div>
+  <aside class="edit-aside"><div class="panel sticky-panel">{% include "partials/optional_note.html" %}<button class="button primary-button full" type="submit">{{ t('source.preview_change') }}</button><a class="button text-button full" href="/materials/{{ material.id }}">{{ t('common.cancel') }}</a></div></aside>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+schema: ai-persona.source-manifest/v2
+id: src_demo_declaration
+source_type: manual_declaration
+imported_at: 2026-09-01T12:00:00Z
+origin:
+  provider: manual
+  identifier: null
+  version: '1'
+  url: null
+  retrieved_at: 2026-09-01T12:00:00Z
+canonical_file: original.md
+content_hash: c66b67d247c8a5c21f3fcc1e6efdf672d8892cce0f9f271d8bbdf5dbee3e839b
+files:
+  - path: original.md
+    role: original
+    media_type: text/markdown
+    sha256: c66b67d247c8a5c21f3fcc1e6efdf672d8892cce0f9f271d8bbdf5dbee3e839b

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% set action_name = t('common.import') if mode == 'create' else t('common.edit') %}
+{% block title %}{{ t('material_form.import_title') if mode == 'create' else t('material_form.edit_title') ~ ' ' ~ material.title }} · AI Persona{% endblock %}
+{% block content %}
+<nav class="breadcrumbs"><a href="/materials">{{ t('common.materials') }}</a>{% if material %}<span>/</span><a href="/materials/{{ material.id }}">{{ material.title }}</a>{% endif %}<span>/</span><span>{{ action_name }}</span></nav>
+<section class="page-head form-head">
+  <div><p class="eyebrow">{{ 'IMPORT MATERIAL' if mode == 'create' else 'PROPOSE AN UPDATE' }}</p><h1>{{ t('material_form.import_title') if mode == 'create' else t('material_form.edit_title') }}</h1><p class="lead">{{ t('material_form.import_lead') if mode == 'create' else t('material_form.edit_lead') }}</p></div>
+  <span class="safety-note"><i>✓</i> {{ t('material_form.separated') }}</span>
+</section>
+
+<form class="edit-layout material-edit-layout source-aware-form" method="post" action="{{ form_action }}" enctype="multipart/form-data">
+{% if material %}<input type="hidden" name="record_revision" value="{{ material.revision }}">{% endif %}
+  <div class="panel form-panel">
+    {% if mode == 'create' %}
+    <div class="form-section">
+      <div class="form-section-head"><span>01</span><div><h2>{{ t('material_form.save_source') }}</h2><p>{{ t('material_form.save_source_desc') }}</p></div></div>
+      <div class="field-grid source-inputs">
+        <div class="source-mode-grid">
+          <label class="source-mode"><input type="radio" name="source_mode" value="upload" checked><span><strong>{{ t('material_form.upload') }}</strong><small>{{ t('material_form.upload_formats') }}</small></span></label>
+          <label class="source-mode"><input type="radio" name="source_mode" value="paste"><span><strong>{{ t('material_form.paste') }}</strong><small>{{ t('material_form.paste_desc') }}</small></span></label>
+          <label class="source-mode"><input type="radio" name="source_mode" value="url"><span><strong>{{ t('material_form.from_url') }}</strong><small>{{ t('material_form.from_url_desc') }}</small></span></label>
+        </div>
+        <label class="field source-input upload"><span>{{ t('material_form.source_file') }}</span><input type="file" name="source_file" accept=".pdf,.md,.txt,.html,text/plain,text/markdown,text/html,application/pdf"></label>
+        <label class="field source-input paste"><span>{{ t('material_form.paste') }}</span><textarea name="source_text" rows="7" placeholder="{{ t('material_form.paste_placeholder') }}"></textarea></label>
+        <label class="field source-input url"><span>{{ t('material_form.source_url') }} <small>{{ t('material_form.identifier_optional') }}</small></span><input type="url" name="source_url" placeholder="https://…"></label>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="form-section">
+      <div class="form-section-head"><span>{{ '02' if mode == 'create' else '01' }}</span><div><h2>{{ t('record_form.basics') }}</h2><p>{{ t('material_form.basics_desc') }}</p></div></div>
+      <div class="field-grid">
+        <div class="field-grid two">
+          <label class="field"><span>{{ t('material_form.type') }} <i>{{ t('common.required') }}</i></span><select name="material_type" required>{% for value, label in material_type_labels.items() %}<option value="{{ value }}" {% if material and material.material_type == value %}selected{% elif not material and value == 'paper' %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+          <label class="field"><span>{{ t('material_form.title') }} <i>{{ t('common.required') }}</i></span><input name="title" value="{{ material.title if material else '' }}" required></label>
+        </div>
+        <label class="field"><span>{{ t('record_form.aliases') }} <small>{{ t('common.line_item') }}</small></span><textarea name="aliases" rows="3">{{ material.aliases|join('\n') if material else '' }}</textarea></label>
+        <label class="field"><span>{{ t('material_detail.abstract') }}</span><textarea name="abstract" rows="7">{{ material.abstract if material else '' }}</textarea></label>
+        <label class="field"><span>{{ t('material_detail.authors') }} <small>{{ t('material_form.authors_desc') }}</small></span><textarea name="authors" rows="4">{{ material.bibliography.authors|join('\n') if material else '' }}</textarea></label>
+        <div class="field-grid two">
+          <label class="field"><span>{{ t('material_detail.published_at') }}</span><input name="published_at" value="{{ (material.bibliography.published_at or '') if material else '' }}" placeholder="2026, 2026-09, 2026-09-02"></label>
+          <label class="field"><span>{{ t('material_form.venue') }}</span><input name="venue" value="{{ (material.bibliography.venue or '') if material else '' }}"></label>
+          <label class="field"><span>{{ t('material_detail.language') }}</span><input name="language" value="{{ (material.bibliography.language or '') if material else '' }}" placeholder="zh or en"></label>
+          <label class="field"><span>{{ t('material_form.canonical_url') }}</span><input type="url" name="canonical_url" value="{{ (material.bibliography.canonical_url or '') if material else '' }}"></label>
+        </div>
+        <div class="field-grid three"><label class="field"><span>arXiv ID</span><input name="arxiv" value="{{ (material.bibliography.identifiers.arxiv or '') if material else '' }}"></label><label class="field"><span>DOI</span><input name="doi" value="{{ (material.bibliography.identifiers.doi or '') if material else '' }}"></label><label class="field"><span>ISBN</span><input name="isbn" value="{{ (material.bibliography.identifiers.isbn or '') if material else '' }}"></label></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-head"><span>{{ '03' if mode == 'create' else '02' }}</span><div><h2>{{ t('material_form.reading') }}</h2><p>{{ t('material_form.reading_desc') }}</p></div></div>
+      <div class="field-grid">
+        <div class="checkbox-grid relationship-options"><label class="check-card"><input type="radio" name="relationships" value="" {% if not material or not material.user_relationships or material.user_relationships == ['authored'] %}checked{% endif %}><span><strong>{{ '未指定阅读状态' if locale == 'zh-CN' else 'Reading status unspecified' }}</strong></span></label>{% for value, label in material_relationship_labels.items() %}<label class="check-card"><input type="{{ 'checkbox' if value == 'authored' else 'radio' }}" name="relationships" value="{{ value }}" {% if material and value in material.user_relationships %}checked{% endif %}><span><i>✓</i><strong>{{ label }}</strong><small>{{ t('material_form.authored_extra') if value == 'authored' else t('material_form.reading_one') }}</small></span></label>{% endfor %}</div>
+        <div class="field-grid two"><label class="field"><span>{{ t('material_detail.understanding') }}</span><select name="knowledge_level">{% for value, label in level_labels.items() %}<option value="{{ value }}" {% if material and material.knowledge_level == value %}selected{% elif not material and value == 'unspecified' %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label class="field"><span>{{ t('materials.preference') }}</span><select name="preference_level" required>{% for value, label in preference_labels.items() %}<option value="{{ value }}" {% if material and material.preference_level == value %}selected{% elif not material and value == 'liked' %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label></div>
+        <label class="field"><span>{{ t('material_detail.reading_scope') }}</span><textarea name="scope_note" rows="3">{{ (material.scope_note or '') if material else '' }}</textarea></label>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-head"><span>{{ '04' if mode == 'create' else '03' }}</span><div><h2>{{ t('material_form.summary_review') }}</h2><p>{{ t('material_form.summary_review_desc') }}</p></div></div>
+      <div class="field-grid"><label class="field"><span>{{ t('common.summary') }}</span><textarea name="summary" rows="4">{{ material.summary if material else '' }}</textarea></label><label class="field"><span>{{ t('material_form.preference_reason') }} <small>{{ t('material_form.preference_format') }}</small></span><textarea name="preference_reasons" rows="5" placeholder="{{ t('material_form.preference_placeholder') }}">{{ preference_reasons_text }}</textarea><small class="field-help">{{ t('material_form.available_aspects') }}: {{ preference_aspect_labels.values()|join(', ') }}</small></label><label class="field"><span>{{ t('material_form.personal_notes') }} <small>{{ t('material_form.markdown') }}</small></span><textarea name="body" rows="12" placeholder="# Personal Notes&#10;&#10;## Why I saved this">{{ loaded.body if loaded else '' }}</textarea></label></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-head"><span>{{ '05' if mode == 'create' else '04' }}</span><div><h2>{{ t('common.tags') }}</h2><p>{{ t('discipline_tags.direct_help') if mode == 'edit' else t('material_form.tags_desc') }}</p></div></div>
+      {% set tag_record = material %}
+      {% set tag_form_id = 'material-tag-form' if mode == 'edit' else '' %}
+      {% set allow_new_tag = true %}
+      {% set show_tag_save = mode == 'edit' %}
+      {% include "partials/tag_picker.html" %}
+    </div>
+  </div>
+
+  <aside class="edit-aside"><div class="panel sticky-panel"><p class="section-label">{{ t('common.proposal_reason') }}</p>{% include "partials/optional_note.html" %}<div class="proposal-flow"><div><span>1</span><p><strong>{{ t('material_form.save_source') }}</strong><small>{{ t('material_form.immutable_source') }}</small></p></div><div><span>2</span><p><strong>{{ t('record_form.flow_review') }}</strong><small>{{ t('material_form.review_fields') }}</small></p></div><div><span>3</span><p><strong>{{ t('material_form.publish') }}</strong><small>{{ t('material_form.publish_desc') }}</small></p></div></div><button class="button primary-button full" type="submit">{{ t('common.preview_proposal') }} <span>→</span></button><a class="button text-button full" href="{{ '/materials' if mode == 'create' else '/materials/' ~ material.id }}">{{ t('common.cancel') }}</a>{% if mode == 'edit' %}<a class="button ghost full" href="/materials/{{ material.id }}/source/edit">{{ t('material_form.replace_separately') }}</a>{% endif %}</div></aside>
+</form>
+{% if mode == 'edit' %}<form id="material-tag-form" method="post" action="/materials/{{ material.id }}/tags"></form>{% endif %}
+{% endblock %}

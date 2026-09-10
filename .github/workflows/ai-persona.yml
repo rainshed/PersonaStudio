@@ -1,0 +1,54 @@
+name: AI Persona
+
+on:
+  push:
+    paths: ['apps/ai-persona/**', 'scripts/**', 'tests/**', 'package*.json', '.github/workflows/**']
+  pull_request:
+    paths: ['apps/ai-persona/**', 'scripts/**', 'tests/**', 'package*.json', '.github/workflows/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          version: '0.11.7'
+          python-version: '3.12'
+          enable-cache: true
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Isolated application and runtime tests
+        run: uv run --no-project --python 3.12 python scripts/check.py
+      - name: Verify distributable packages in a clean environment
+        run: uv run --no-project --python 3.12 python scripts/verify-release.py
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          version: '0.11.7'
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:errors
+      - run: npm run test:browser
+      - run: npm run test:first-use
+      - run: npm run test:extraction

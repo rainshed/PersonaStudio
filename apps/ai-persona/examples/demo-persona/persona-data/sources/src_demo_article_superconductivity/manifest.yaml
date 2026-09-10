@@ -1,0 +1,15 @@
+schema: ai-persona.source-manifest/v2
+id: src_demo_article_superconductivity
+source_type: article
+imported_at: '2026-09-01T00:00:00Z'
+origin:
+  provider: ai-persona-synthetic-demo
+  identifier: src_demo_article_superconductivity
+  retrieved_at: '2026-09-01T00:00:00Z'
+canonical_file: original.md
+content_hash: 9758e02f2535cf4c8a580a2f915134a9f252db6a336a608ae65b2e1bd663dda9
+files:
+- path: original.md
+  role: original
+  media_type: text/markdown
+  sha256: 9758e02f2535cf4c8a580a2f915134a9f252db6a336a608ae65b2e1bd663dda9

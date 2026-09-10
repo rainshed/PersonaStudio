@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ t('knowledge.page_title') }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/knowledge-map.css?v=20260910.4">{% endblock %}
+{% block content %}
+<section class="page-head simple-head knowledge-head">
+  <div><p class="eyebrow duplicate-in-english">KNOWLEDGE LIBRARY</p><h1>{{ t('knowledge.title') }}</h1><p class="lead">{{ t('knowledge.lead') }}</p></div>
+  <div class="page-actions"><nav class="knowledge-view-switch" aria-label="{{ t('knowledge.view_mode') }}" data-view-tabs><a id="map-view-tab" href="#graph" data-knowledge-view="graph">{{ t('knowledge.map_view') }}</a><a id="list-view-tab" href="#knowledge-list" data-knowledge-view="knowledge-list">{{ t('knowledge.list_view') }}</a></nav><a class="button primary-button" href="/knowledge/new"><span aria-hidden="true">＋</span>{{ t('knowledge.add') }}</a></div>
+</section>
+
+{% include "partials/knowledge_graph.html" %}
+
+<section class="panel knowledge-panel" id="knowledge-list">
+  <div class="knowledge-list-heading"><h2>{{ t('knowledge.list_title') }}</h2><span>{{ t('knowledge.list_note') }}</span></div>
+  <form class="filter-bar compact-filters" action="/knowledge#knowledge-list" method="get" hx-get="/knowledge/table" hx-target="#knowledge-results" hx-trigger="input changed delay:250ms, change">
+    <label class="search-box"><span aria-hidden="true">⌕</span><input type="search" name="q" aria-label="{{ t('common.search_name_alias_summary') }}" value="{{ query }}" placeholder="{{ t('common.search_name_alias_summary') }}" autocomplete="off"></label>
+    <label><span class="sr-only">{{ t('common.knowledge_level') }}</span><select name="knowledge_level"><option value="">{{ t('common.all_levels') }}</option>{% for value, label in level_labels.items() %}<option value="{{ value }}" {% if selected_level == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('discipline_tags.filter_label') }}</span><select name="tag_id"><option value="">{{ t('discipline_tags.all') }}</option>{% for tag in filter_tags %}<option value="{{ tag.id }}" {% if selected_tag_id == tag.id %}selected{% endif %}>{{ tag.label }}</option>{% endfor %}</select></label>
+    <noscript><button class="button small" type="submit">{{ t('common.filter') }}</button></noscript>
+  </form>
+  <div id="knowledge-results" aria-live="polite">{% include "partials/knowledge_table.html" %}</div>
+</section>
+<script type="application/json" data-graph-data>{{ graph|tojson }}</script>
+{% set graph_labels = {'levels': level_labels, 'relation_labels': relation_labels, 'no_matches': t('knowledge.graph_no_matches'), 'counts': t('knowledge_map.counts', count='{count}', total='{total}', edges='{edges}'), 'expand_branch': t('knowledge_map.expand_branch', title='{title}'), 'collapse_branch': t('knowledge_map.collapse_branch', title='{title}')} %}
+{% for key in ['auto', 'right', 'down', 'bilateral', 'help', 'fullscreen', 'fullscreen_exit', 'error'] %}{% set _ = graph_labels.update({key: t('knowledge_map.' + key)}) %}{% endfor %}
+<script type="application/json" data-graph-labels>{{ graph_labels|tojson }}</script>
+<script src="/static/knowledge-map/vendor/d3.min.js?v=7.9.0" defer></script>
+<script type="module" src="/static/knowledge-graph.js?v=20260911.review2"></script>
+{% endblock %}

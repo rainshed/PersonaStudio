@@ -1,0 +1,13 @@
+{% set folder_selected = sample_values.get('upload_kind') == 'folder' %}
+<div class="field wide sample-upload" data-sample-upload data-limit-message="{{ t('sample_upload.limit_error') }}" data-count-label="{{ t('sample_upload.count', count='{count}') }}" data-context-error="{{ t('preference_form.choose_contexts') }}">
+  <fieldset class="sample-upload-options"><legend>{{ t('sample_upload.content') }}</legend>
+    <label><input type="radio" name="upload_kind" value="file" {% if not folder_selected %}checked{% endif %}> {{ t('sample_upload.file') }}</label>
+    <label><input type="radio" name="upload_kind" value="folder" {% if folder_selected %}checked{% endif %}> {{ t('sample_upload.folder') }}</label>
+  </fieldset>
+  <label class="sample-upload-picker" data-file-picker {% if folder_selected %}hidden{% endif %}><span>{{ t('preference_form.sample_file') }}</span><input type="file" name="sample_file" {% if folder_selected %}disabled{% else %}required{% endif %}><small>{{ t('preference_form.sample_file_help') }}</small></label>
+  <label class="sample-upload-picker" data-folder-picker {% if not folder_selected %}hidden{% endif %}><span>{{ t('sample_upload.choose_folder') }}</span><input type="file" name="folder_files" webkitdirectory multiple {% if folder_selected %}required{% else %}disabled{% endif %}><small>{{ t('sample_upload.folder_help') }}</small></label>
+  <input type="hidden" name="folder_paths" value="[]">
+  <p class="sample-upload-hint" data-folder-unsupported hidden>{{ t('sample_upload.unsupported') }}</p>
+  <div class="sample-upload-preview" data-upload-preview hidden><strong data-upload-name></strong><p data-upload-count aria-live="polite"></p><details><summary>{{ t('sample_upload.selected_files') }}</summary><ul data-upload-list></ul></details></div>
+  <p class="sample-upload-error" data-upload-error role="alert" hidden></p>
+</div>

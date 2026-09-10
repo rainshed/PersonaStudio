@@ -1,0 +1,124 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "applicable_when": {
+      "additionalProperties": true,
+      "title": "Applicable When",
+      "type": "object"
+    },
+    "content_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Content Hash"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "demonstrates_rules": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Demonstrates Rules",
+      "type": "array"
+    },
+    "entity_type": {
+      "const": "preference_example",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "example_type": {
+      "enum": [
+        "positive",
+        "negative"
+      ],
+      "title": "Example Type",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "pack_id": {
+      "title": "Pack Id",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.preference-example/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Ref"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "why_avoid": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Why Avoid",
+      "type": "array"
+    },
+    "why_good": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Why Good",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "pack_id",
+    "example_type",
+    "title"
+  ],
+  "title": "PreferenceExample",
+  "type": "object"
+}

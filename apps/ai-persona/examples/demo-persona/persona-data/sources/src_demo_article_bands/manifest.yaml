@@ -1,0 +1,15 @@
+schema: ai-persona.source-manifest/v2
+id: src_demo_article_bands
+source_type: article
+imported_at: '2026-09-01T00:00:00Z'
+origin:
+  provider: ai-persona-synthetic-demo
+  identifier: src_demo_article_bands
+  retrieved_at: '2026-09-01T00:00:00Z'
+canonical_file: original.md
+content_hash: 373d19ef13c9656d3e8e004abe411f1ae4879b9981a16b4371f1781d81f5eb1c
+files:
+- path: original.md
+  role: original
+  media_type: text/markdown
+  sha256: 373d19ef13c9656d3e8e004abe411f1ae4879b9981a16b4371f1781d81f5eb1c

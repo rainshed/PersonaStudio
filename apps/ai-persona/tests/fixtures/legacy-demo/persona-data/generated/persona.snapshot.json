@@ -1,0 +1,645 @@
+{
+  "content_hash": "sha256:6e611c38c5f7cfb43a8a12a46f042bec03252765f9d12fa74ba4dbad81aba6fa",
+  "courses": [
+    {
+      "aliases": [
+        "Advanced Quantum Mechanics"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "description": "",
+      "entity_type": "course",
+      "id": "crs_demo_advanced_qm",
+      "interest_level": "high",
+      "knowledge_level": "proficient",
+      "revision": 1,
+      "schema": "ai-persona.course/v1",
+      "status": "active",
+      "syllabus": "",
+      "tags": [
+        "tag_physics"
+      ],
+      "title": "高等量子力学",
+      "updated_at": "2026-09-01T12:00:00Z"
+    }
+  ],
+  "evidence_index": [
+    {
+      "confidence": 1.0,
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "evidence",
+      "evidence_kind": "explicit_user_statement",
+      "extraction_method": "human_demo_fixture",
+      "human_notes": "- I am proficient in quantum physics and quantum many-body physics.\n- I am familiar with non-equilibrium quantum dynamics.\n- I am proficient in tensor-network methods, matrix product states, and TEBD.\n- I have completed an advanced quantum mechanics course.\n- I care strongly about tensor-network methods and non-equilibrium dynamics.",
+      "id": "ev_demo_declaration",
+      "locator": {
+        "file": "original.md",
+        "heading": "Demo user declarations",
+        "line_end": 7,
+        "line_start": 3
+      },
+      "revision": 1,
+      "schema": "ai-persona.evidence/v1",
+      "source_hash": "sha256:c66b67d247c8a5c21f3fcc1e6efdf672d8892cce0f9f271d8bbdf5dbee3e839b",
+      "source_id": "src_demo_declaration",
+      "status": "active",
+      "supports": [
+        "kn_demo_quantum_physics",
+        "kn_demo_quantum_many_body",
+        "kn_demo_nonequilibrium",
+        "kn_demo_tensor_network",
+        "kn_demo_mps",
+        "kn_demo_tebd",
+        "crs_demo_advanced_qm",
+        "rel_demo_qp_qmb",
+        "rel_demo_qmb_noneq",
+        "rel_demo_tn_mps",
+        "rel_demo_tn_tebd",
+        "rel_demo_tebd_requires_mps",
+        "rel_demo_tebd_applied_noneq",
+        "rel_demo_tn_applied_qmb",
+        "rel_demo_course_covers_qp",
+        "rel_demo_course_covers_qmb"
+      ],
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "confidence": 1.0,
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "evidence",
+      "evidence_kind": "authored_material",
+      "extraction_method": "human_demo_fixture",
+      "human_notes": "# 用 TEBD 理解一维量子系统的实时演化\n\n## 问题\n\n我们希望计算一维局域哈密顿量下的量子态实时演化，同时控制矩阵乘积态的键维数。\n\n## 方法\n\nTEBD 使用 Suzuki–Trotter 分解把时间演化算符拆成局域门。每次作用局域门后，通过奇异值分解恢复 MPS 形式，并根据截断误差控制键维数。",
+      "id": "ev_demo_note",
+      "locator": {
+        "file": "original.md",
+        "heading": "用 TEBD 理解一维量子系统的实时演化",
+        "line_end": 9,
+        "line_start": 1
+      },
+      "revision": 1,
+      "schema": "ai-persona.evidence/v1",
+      "source_hash": "sha256:aead652fe04a2fe64050ddb8dd3fb9034322b232756eb9fa39fac0e6ff741244",
+      "source_id": "src_demo_note",
+      "status": "active",
+      "supports": [
+        "mat_demo_tebd_note",
+        "rel_demo_material_covers_tebd",
+        "rel_demo_material_covers_noneq"
+      ],
+      "updated_at": "2026-09-01T12:00:00Z"
+    }
+  ],
+  "generated_at": "2026-09-05T12:00:00Z",
+  "knowledge_nodes": [
+    {
+      "aliases": [
+        "Matrix Product State",
+        "MPS"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "knowledge_node",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 矩阵乘积态",
+      "id": "kn_demo_mps",
+      "interest_level": "high",
+      "knowledge_level": "proficient",
+      "revision": 1,
+      "schema": "ai-persona.knowledge-node/v1",
+      "scope_note": "主要针对一维有限系统和实时演化应用。",
+      "semantic_role": "model",
+      "status": "active",
+      "summary": "用户能够理解 MPS 的规范形式、纠缠结构和基本数值操作。",
+      "tags": [
+        "tag_physics",
+        "tag_tensor_network"
+      ],
+      "title": "矩阵乘积态",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "non-equilibrium quantum dynamics"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "knowledge_node",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 非平衡量子动力学",
+      "id": "kn_demo_nonequilibrium",
+      "interest_level": "high",
+      "knowledge_level": "familiar",
+      "revision": 1,
+      "schema": "ai-persona.knowledge-node/v1",
+      "scope_note": "对具体长时间数值算法仍可能需要引用资料。",
+      "semantic_role": "topic",
+      "status": "active",
+      "summary": "用户熟悉非平衡量子动力学的核心问题和常用描述。",
+      "tags": [
+        "tag_physics",
+        "tag_quantum_many_body",
+        "tag_quantum_dynamics"
+      ],
+      "title": "非平衡量子动力学",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "quantum many-body physics"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "knowledge_node",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 量子多体物理",
+      "id": "kn_demo_quantum_many_body",
+      "interest_level": "high",
+      "knowledge_level": "proficient",
+      "revision": 1,
+      "schema": "ai-persona.knowledge-node/v1",
+      "scope_note": "重点关注一维系统、动力学和张量网络方法。",
+      "semantic_role": "area",
+      "status": "active",
+      "summary": "用户能够理解量子多体系统的主要问题、模型和计算方法。",
+      "tags": [
+        "tag_physics",
+        "tag_quantum_many_body"
+      ],
+      "title": "量子多体物理",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "quantum physics"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "knowledge_node",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 量子物理\n\n这是 Demo 知识图中的顶层领域节点。",
+      "id": "kn_demo_quantum_physics",
+      "interest_level": "high",
+      "knowledge_level": "proficient",
+      "revision": 1,
+      "schema": "ai-persona.knowledge-node/v1",
+      "scope_note": "重点覆盖量子多体、非平衡动力学及相关计算方法。",
+      "semantic_role": "domain",
+      "status": "active",
+      "summary": "用户能够独立理解和应用量子物理的主要理论框架。",
+      "tags": [
+        "tag_physics"
+      ],
+      "title": "量子物理",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "Time-Evolving Block Decimation",
+        "时间演化块消减"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "knowledge_node",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# TEBD\n\nAI 可以直接从结构化字段判断解释深度，同时用 `scope_note` 避免把精通范围无限放大。",
+      "id": "kn_demo_tebd",
+      "interest_level": "high",
+      "knowledge_level": "proficient",
+      "revision": 2,
+      "schema": "ai-persona.knowledge-node/v1",
+      "scope_note": "掌握范围主要是实时演化、Trotter 误差和 MPS 截断控制。",
+      "semantic_role": "technique",
+      "status": "active",
+      "summary": "用户能够理解并使用 TEBD 处理一维量子多体动力学问题。",
+      "tags": [
+        "tag_physics",
+        "tag_quantum_dynamics",
+        "tag_quantum_many_body",
+        "tag_tensor_network"
+      ],
+      "title": "TEBD",
+      "updated_at": "2026-09-02T08:46:04Z"
+    },
+    {
+      "aliases": [
+        "tensor-network methods",
+        "tensor networks"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "knowledge_node",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 张量网络方法",
+      "id": "kn_demo_tensor_network",
+      "interest_level": "high",
+      "knowledge_level": "proficient",
+      "revision": 1,
+      "schema": "ai-persona.knowledge-node/v1",
+      "scope_note": "重点是一维量子多体系统中的 MPS、TEBD 和相关方法。",
+      "semantic_role": "method",
+      "status": "active",
+      "summary": "用户能够理解和使用主要张量网络表示与算法。",
+      "tags": [
+        "tag_physics",
+        "tag_quantum_many_body",
+        "tag_tensor_network"
+      ],
+      "title": "张量网络方法",
+      "updated_at": "2026-09-01T12:00:00Z"
+    }
+  ],
+  "materials": [
+    {
+      "abstract": "",
+      "aliases": [],
+      "bibliography": {
+        "authors": [
+          "PersonaStudio Demo Authors"
+        ],
+        "identifiers": {}
+      },
+      "created_at": "2026-09-02T15:05:52Z",
+      "entity_type": "material",
+      "evidence_refs": [],
+      "human_notes": "# Fixture note\n\nAll content and personal-state fields describe a fictional test persona.",
+      "id": "mat_a2be3b0ec4a04be39baaf93584e94e0d",
+      "knowledge_level": "aware",
+      "material_type": "paper",
+      "preference_level": "liked",
+      "preference_reasons": [],
+      "revision": 1,
+      "schema": "ai-persona.material/v2",
+      "source_ref": "src_ff89b349649a40769478e69db92d82b6",
+      "status": "active",
+      "summary": "An original fictional PDF for source reading, hashing, and material review tests.",
+      "tags": [],
+      "title": "Synthetic Transport Study",
+      "updated_at": "2026-09-02T15:05:52Z",
+      "user_relationships": [
+        "read"
+      ]
+    },
+    {
+      "abstract": "",
+      "aliases": [
+        "TEBD real-time evolution note"
+      ],
+      "bibliography": {
+        "authors": [],
+        "identifiers": {},
+        "language": "zh",
+        "published_at": "2026-09-01",
+        "venue": "Personal Research Note"
+      },
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "material",
+      "evidence_refs": [
+        "ev_demo_note"
+      ],
+      "human_notes": "# Personal Notes\n\n## Why I saved this\n\n这是我整理的一份研究 Note，能代表我理解和记录量子动力学问题的方式。\n\n## Key takeaways\n\n- TEBD 适合处理一维量子系统的实时演化。\n- 使用截断时需要持续关注纠缠增长和数值误差。\n\n## Connections to my work\n\n它连接了张量网络数值方法和非平衡量子动力学。\n\n## Open questions\n\n- 在长时间演化中，如何更可靠地评估截断误差？\n\n## Possible directions\n\n- 比较 TEBD 与其他张量网络实时演化方法的适用范围。",
+      "id": "mat_demo_tebd_note",
+      "knowledge_level": "familiar",
+      "material_type": "note",
+      "preference_level": "favorite",
+      "preference_reasons": [
+        {
+          "aspect": "research-direction",
+          "note": "这份 Note 记录了我关心的一维量子系统实时演化问题。"
+        },
+        {
+          "aspect": "writing-style",
+          "note": "它保留了公式解释、个人理解和后续开放问题。"
+        }
+      ],
+      "revision": 1,
+      "schema": "ai-persona.material/v2",
+      "scope_note": "该水平只描述用户对这篇材料的熟悉程度，不替代 TEBD 知识节点水平。",
+      "source_ref": "src_demo_note",
+      "status": "active",
+      "summary": "一篇展示用户偏好结构、公式解释和开放问题记录方式的研究 Note。",
+      "tags": [
+        "tag_physics",
+        "tag_quantum_dynamics",
+        "tag_tensor_network",
+        "tag_research_note"
+      ],
+      "title": "用 TEBD 理解一维量子系统的实时演化",
+      "updated_at": "2026-09-01T12:00:00Z",
+      "user_relationships": [
+        "authored",
+        "studied"
+      ]
+    }
+  ],
+  "persona_id": "demo-persona",
+  "persona_revision": 5,
+  "preference_contexts": [],
+  "preference_examples": [],
+  "preferences": [],
+  "relations": [
+    {
+      "created_at": "2026-09-02T15:07:28Z",
+      "entity_type": "relation",
+      "evidence_refs": [],
+      "id": "rel_892ada019fa946cfbb41514f27c51f29",
+      "knowledge_role": "method",
+      "relation_type": "covers",
+      "revision": 1,
+      "salience": "secondary",
+      "schema": "ai-persona.relation/v2",
+      "source_id": "mat_a2be3b0ec4a04be39baaf93584e94e0d",
+      "statement": "数值方法",
+      "status": "active",
+      "target_id": "kn_demo_mps",
+      "updated_at": "2026-09-02T15:07:28Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 高等量子力学课程覆盖量子多体物理",
+      "id": "rel_demo_course_covers_qmb",
+      "relation_type": "covers",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "crs_demo_advanced_qm",
+      "status": "active",
+      "target_id": "kn_demo_quantum_many_body",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 高等量子力学课程覆盖量子物理",
+      "id": "rel_demo_course_covers_qp",
+      "relation_type": "covers",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "crs_demo_advanced_qm",
+      "status": "active",
+      "target_id": "kn_demo_quantum_physics",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_note"
+      ],
+      "human_notes": "# TEBD Note 讨论非平衡量子动力学",
+      "id": "rel_demo_material_covers_noneq",
+      "knowledge_role": "topic",
+      "relation_type": "covers",
+      "revision": 1,
+      "salience": "primary",
+      "schema": "ai-persona.relation/v2",
+      "source_id": "mat_demo_tebd_note",
+      "statement": "这份 Note 以一维量子系统的非平衡实时演化为主要研究主题。",
+      "status": "active",
+      "target_id": "kn_demo_nonequilibrium",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_note"
+      ],
+      "human_notes": "# TEBD Note 讨论 TEBD",
+      "id": "rel_demo_material_covers_tebd",
+      "knowledge_role": "method",
+      "relation_type": "covers",
+      "revision": 1,
+      "salience": "primary",
+      "schema": "ai-persona.relation/v2",
+      "source_id": "mat_demo_tebd_note",
+      "statement": "这份 Note 使用 TEBD 理解并计算一维量子系统的实时演化。",
+      "status": "active",
+      "target_id": "kn_demo_tebd",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 量子多体物理包含非平衡量子动力学",
+      "id": "rel_demo_qmb_noneq",
+      "relation_type": "broader_than",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "kn_demo_quantum_many_body",
+      "status": "active",
+      "target_id": "kn_demo_nonequilibrium",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 量子物理包含量子多体物理",
+      "id": "rel_demo_qp_qmb",
+      "relation_type": "broader_than",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "kn_demo_quantum_physics",
+      "status": "active",
+      "target_id": "kn_demo_quantum_many_body",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# TEBD 应用于非平衡量子动力学",
+      "id": "rel_demo_tebd_applied_noneq",
+      "relation_type": "applied_in",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "kn_demo_tebd",
+      "status": "active",
+      "target_id": "kn_demo_nonequilibrium",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# TEBD 依赖 MPS",
+      "id": "rel_demo_tebd_requires_mps",
+      "relation_type": "requires",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "kn_demo_tebd",
+      "status": "active",
+      "target_id": "kn_demo_mps",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 张量网络方法应用于量子多体物理",
+      "id": "rel_demo_tn_applied_qmb",
+      "relation_type": "applied_in",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "kn_demo_tensor_network",
+      "status": "active",
+      "target_id": "kn_demo_quantum_many_body",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 张量网络方法包含 MPS",
+      "id": "rel_demo_tn_mps",
+      "relation_type": "broader_than",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "kn_demo_tensor_network",
+      "status": "active",
+      "target_id": "kn_demo_mps",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "relation",
+      "evidence_refs": [
+        "ev_demo_declaration"
+      ],
+      "human_notes": "# 张量网络方法包含 TEBD",
+      "id": "rel_demo_tn_tebd",
+      "relation_type": "broader_than",
+      "revision": 1,
+      "schema": "ai-persona.relation/v2",
+      "source_id": "kn_demo_tensor_network",
+      "status": "active",
+      "target_id": "kn_demo_tebd",
+      "updated_at": "2026-09-01T12:00:00Z"
+    }
+  ],
+  "schema_version": "ai-persona.snapshot/v1",
+  "tags": [
+    {
+      "aliases": [
+        "artificial intelligence",
+        "人工智能"
+      ],
+      "created_at": "2026-09-05T12:00:00Z",
+      "entity_type": "tag",
+      "human_notes": "# AI",
+      "id": "tag_ai",
+      "label": "AI",
+      "namespace": "domain",
+      "revision": 1,
+      "schema": "ai-persona.tag/v1",
+      "slug": "ai",
+      "status": "active",
+      "updated_at": "2026-09-05T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "physics"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "tag",
+      "human_notes": "# 物理学",
+      "id": "tag_physics",
+      "label": "物理学",
+      "namespace": "domain",
+      "revision": 1,
+      "schema": "ai-persona.tag/v1",
+      "slug": "physics",
+      "status": "active",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "quantum dynamics"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "tag",
+      "human_notes": "# 量子动力学",
+      "id": "tag_quantum_dynamics",
+      "label": "量子动力学",
+      "namespace": "topic",
+      "revision": 1,
+      "schema": "ai-persona.tag/v1",
+      "slug": "quantum-dynamics",
+      "status": "active",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "quantum many-body"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "tag",
+      "human_notes": "# 量子多体",
+      "id": "tag_quantum_many_body",
+      "label": "量子多体",
+      "namespace": "topic",
+      "revision": 1,
+      "schema": "ai-persona.tag/v1",
+      "slug": "quantum-many-body",
+      "status": "active",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "research note"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "tag",
+      "human_notes": "# 研究 Note",
+      "id": "tag_research_note",
+      "label": "研究 Note",
+      "namespace": "format",
+      "revision": 1,
+      "schema": "ai-persona.tag/v1",
+      "slug": "research-note",
+      "status": "active",
+      "updated_at": "2026-09-01T12:00:00Z"
+    },
+    {
+      "aliases": [
+        "tensor network"
+      ],
+      "created_at": "2026-09-01T12:00:00Z",
+      "entity_type": "tag",
+      "human_notes": "# 张量网络",
+      "id": "tag_tensor_network",
+      "label": "张量网络",
+      "namespace": "method",
+      "revision": 1,
+      "schema": "ai-persona.tag/v1",
+      "slug": "tensor-network",
+      "status": "active",
+      "updated_at": "2026-09-01T12:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "condition": {
+      "default": "",
+      "title": "Condition",
+      "type": "string"
+    },
+    "content_hash": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "context_refs": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Context Refs",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "preference_example",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "example_type": {
+      "enum": [
+        "positive",
+        "negative"
+      ],
+      "title": "Example Type",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.preference-example/v3",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_ref": {
+      "title": "Source Ref",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "paused",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "context_refs",
+    "example_type",
+    "title",
+    "source_ref",
+    "content_hash"
+  ],
+  "title": "PreferenceExample",
+  "type": "object"
+}

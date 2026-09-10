@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}{{ t('dashboard.page_title') }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/studio-overview.css?v=20260909.1">{% endblock %}
+{% macro icon(kind) -%}
+<svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {% if kind == 'knowledge_node' %}<path d="M12 5v15M3 4h5a4 4 0 0 1 4 3 4 4 0 0 1 4-3h5v15h-5a5 5 0 0 0-4 2 5 5 0 0 0-4-2H3Z"/>
+  {% elif kind in ['preference', 'preference_context', 'preference_example'] %}<path d="M4 6h16M4 12h16M4 18h16M8 3v6m8 0v6M10 15v6"/>
+  {% elif kind == 'material' %}<path d="M8 3h8l4 4v13H8ZM16 3v5h4M4 7v16h12"/>
+  {% elif kind == 'course' %}<path d="M4 4v16M9 4v16M14 4v16M18 4l4 16M3 7h12M3 17h12"/>
+  {% elif kind == 'relation' %}<circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M6 7v10m12-10c0 7-12 3-12 10"/>
+  {% elif kind == 'check' %}<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>
+  {% elif kind == 'inbox' %}<path d="m5 4-3 10v6h20v-6L19 4ZM2 14h6l2 3h4l2-3h6"/>
+  {% else %}<path d="M12 3v18M3 12h18m-14-5 10 10m0-10L7 17"/>{% endif %}
+</svg>
+{%- endmacro %}
+{% macro change_row(change) -%}
+<a class="home-change" href="{{ change.url }}">
+  <span class="home-change-icon">{{ icon(change.entity_type) }}</span>
+  <span class="home-change-copy">
+    <span class="home-change-meta">{{ change.action }} <span aria-hidden="true">·</span> <time datetime="{{ change.published_at }}">{{ change.published_at[:10] }}</time></span>
+    <strong>{{ change.title }}</strong>
+    <span class="home-change-summary">{{ change.summary }}</span>
+  </span>
+  <span class="home-arrow" aria-hidden="true">›</span>
+</a>
+{%- endmacro %}
+{% block content %}
+{% set zh = locale == 'zh-CN' %}
+<div class="persona-home" id="persona-home">
+  <header class="home-heading">
+    <div><h1>{{ '概览' if zh else 'Overview' }}</h1><p>{{ '你确认的知识与偏好，都在这里。' if zh else 'The knowledge and preferences you have confirmed, in one place.' }}</p></div>
+    <a class="button primary-button" href="/ai">{{ icon('sparkles') }}{{ '让 AI 帮我维护' if zh else 'Maintain with AI' }}</a>
+  </header>
+
+  {% if pending_count %}
+  <section class="home-review-notice" aria-label="{{ '待审核提醒' if zh else 'Awaiting review' }}">
+    {{ icon('inbox') }}<div><strong>{{ pending_count }} {{ '条候选，等你确认' if zh else 'candidates awaiting your review' }}</strong><p>{{ pending_breakdown }}</p></div>
+    <a class="home-link" href="/inbox">{{ '去审核' if zh else 'Review' }} <span aria-hidden="true">→</span></a>
+  </section>
+  {% else %}
+  <p class="home-clear">{{ icon('check') }}{{ '暂无待审核内容' if zh else 'Nothing awaiting review' }}</p>
+  {% endif %}
+
+  <section class="home-issue" id="home-runtime-issue" hidden aria-label="{{ '运行提醒' if zh else 'Runtime attention' }}">
+    <p id="home-runtime-message"></p><a class="home-link" href="/settings?tab=capabilities">{{ '查看运行状态' if zh else 'View runtime settings' }} →</a>
+  </section>
+
+  <section class="home-assets" aria-labelledby="home-assets-title">
+    <div class="home-section-heading"><h2 id="home-assets-title">{{ '我的 Persona' if zh else 'My Persona' }}</h2><span>{{ '已确认的内容' if zh else 'Confirmed content' }}</span></div>
+    <div class="home-asset-grid">
+      {% for entity, path, label, unit in [('knowledge_node', 'knowledge', '知识', '个知识点'), ('preference', 'preferences', '偏好', '条偏好'), ('material', 'materials', '材料', '份材料'), ('course', 'courses', '课程', '门课程')] %}
+      <a class="home-asset" href="/{{ path }}" data-asset="{{ entity }}">
+        <span class="home-asset-label">{{ icon(entity) }}{{ label if zh else t('common.' + path) }}</span>
+        <span class="home-asset-value"><strong>{{ active_counts.get(entity, 0) }}</strong><span>{{ unit if zh else t('common.' + path)|lower }}</span></span><span class="home-asset-arrow" aria-hidden="true">↗</span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  {% if persona_empty %}
+  <section class="home-onboarding">
+    <h2>{{ '从一条知识或偏好开始' if zh else 'Start with one piece of knowledge or a preference' }}</h2>
+    <p>{{ '记录你已经了解的内容，或告诉 AI 你希望它如何回应。' if zh else 'Record something you know, or tell AI how you want it to respond.' }}</p>
+    <div><a class="home-link" href="/knowledge/new">{{ '添加知识' if zh else 'Add knowledge' }} →</a><a class="home-link" href="/preferences/new">{{ '添加偏好' if zh else 'Add a preference' }} →</a></div>
+  </section>
+  {% endif %}
+
+  <section class="home-changes" aria-labelledby="home-changes-title">
+    <div class="home-section-heading"><h2 id="home-changes-title">{{ '最近的变化' if zh else 'Recent changes' }}</h2>
+      {% if recent_changes|length > 3 %}<button type="button" class="home-link" id="home-expand-changes" aria-controls="home-extra-changes" aria-expanded="false" data-expand-label="{{ '展开全部 ' ~ recent_changes|length ~ ' 条' if zh else 'Show all ' ~ recent_changes|length ~ ' changes' }}" data-collapse-label="{{ '收起变化' if zh else 'Show fewer' }}" hidden>{{ '展开全部 ' ~ recent_changes|length ~ ' 条' if zh else 'Show all ' ~ recent_changes|length ~ ' changes' }} <span aria-hidden="true">⌄</span></button>{% endif %}
+    </div>
+    {% if recent_changes %}
+    <div class="home-change-list">
+      {% for change in recent_changes[:3] %}{{ change_row(change) }}{% endfor %}
+      {% if recent_changes|length > 3 %}<div id="home-extra-changes">{% for change in recent_changes[3:] %}{{ change_row(change) }}{% endfor %}</div>{% endif %}
+    </div>
+    {% else %}<p class="home-no-changes">{{ '还没有保存记录。确认或主动保存内容后，变化会出现在这里。' if zh else 'No saved changes yet. Content you confirm or save will appear here.' }}</p>{% endif %}
+  </section>
+
+  <footer class="home-footer">
+    <span class="home-runtime" id="home-runtime" data-state="unknown" role="status"><span class="home-runtime-dot" aria-hidden="true"></span><span id="home-runtime-label">{{ '正在读取运行状态…' if zh else 'Checking runtime status…' }}</span></span>
+    <a class="home-link" href="/inbox?view=all">{{ '运行记录' if zh else 'Activity records' }} <span aria-hidden="true">›</span></a>
+  </footer>
+</div>
+<script src="/static/studio-overview.js?v=20260909.1" defer></script>
+{% endblock %}

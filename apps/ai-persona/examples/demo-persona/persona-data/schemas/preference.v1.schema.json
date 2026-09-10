@@ -1,0 +1,96 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "behavior": {
+      "enum": [
+        "required",
+        "preferred",
+        "avoid"
+      ],
+      "title": "Behavior",
+      "type": "string"
+    },
+    "condition": {
+      "default": "",
+      "title": "Condition",
+      "type": "string"
+    },
+    "context_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Context Refs",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "preference",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "instruction": {
+      "minLength": 1,
+      "title": "Instruction",
+      "type": "string"
+    },
+    "rationale": {
+      "default": "",
+      "title": "Rationale",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.preference/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "scope": {
+      "default": "global",
+      "enum": [
+        "global",
+        "contexts"
+      ],
+      "title": "Scope",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "paused",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "behavior",
+    "instruction"
+  ],
+  "title": "Preference",
+  "type": "object"
+}

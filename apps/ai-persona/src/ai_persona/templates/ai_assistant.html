@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}{{ t('ai.assistant') }} · AI Persona{% endblock %}
+{% block content %}
+<section class="page-head ai-page-head"><div><p class="eyebrow">PERSONA · AI ASSISTANT</p><h1>{{ t('ai.assistant') }}</h1><p class="lead">{{ '提供资料，让 AI 帮你整理知识、材料与课程。' if locale == 'zh-CN' else 'Turn your sources into knowledge, materials and courses.' }}</p></div><a class="button ghost" href="/settings/models">{{ t('ai.models') }}</a></section>
+<div id="ai-root" class="ai-layout ai-workspace" data-record-id="{{ record_id }}" data-material-id="{{ material_id }}">
+  <aside class="ai-task-bar"><a class="button ghost" href="/ai">＋ {{ '新建维护' if locale == 'zh-CN' else 'New task' }}</a><details><summary>{{ '最近任务' if locale == 'zh-CN' else 'Recent tasks' }}</summary><div id="ai-history" class="ai-history"></div></details></aside>
+  <div class="ai-stack">
+    <section class="ai-scenarios" id="ai-scenarios" aria-label="{{ '常用场景' if locale == 'zh-CN' else 'Common tasks' }}">
+      <div class="ai-section-heading"><h2>{{ '从一个常用场景开始' if locale == 'zh-CN' else 'Start with a common task' }}</h2><span class="ai-muted">{{ '填入需求示例，按需修改' if locale == 'zh-CN' else 'Start with an editable request' }}</span></div>
+      <div class="ai-scenario-grid">
+        <div class="ai-paper-scenario">
+        <button type="button" class="ai-scenario" data-scenario="paper" aria-pressed="false"><span class="ai-scenario-icon" aria-hidden="true">↗</span><strong>{{ '读论文，整理知识' if locale == 'zh-CN' else 'Read a paper' }}</strong><span>{{ 'arXiv 链接或论文文件' if locale == 'zh-CN' else 'An arXiv link or paper file' }}</span><small>{{ '材料 · 知识 · 关系' if locale == 'zh-CN' else 'Materials · Knowledge · Relations' }}</small></button>
+          <a class="ai-batch-entry" href="/extract">{{ '同时从多篇材料中提取知识' if locale == 'zh-CN' else 'Extract knowledge from multiple sources' }} <span aria-hidden="true">→</span></a>
+        </div>
+        <button type="button" class="ai-scenario" data-scenario="notes" aria-pressed="false"><span class="ai-scenario-icon" aria-hidden="true">≡</span><strong>{{ '从笔记中提取知识' if locale == 'zh-CN' else 'Learn from notes' }}</strong><span>{{ '自己的 notes 或一段文字' if locale == 'zh-CN' else 'Your notes or pasted text' }}</span><small>{{ '知识 · 关系' if locale == 'zh-CN' else 'Knowledge · Relations' }}</small></button>
+        <button type="button" class="ai-scenario" data-scenario="course" aria-pressed="false"><span class="ai-scenario-icon" aria-hidden="true">▤</span><strong>{{ '整理一门课程' if locale == 'zh-CN' else 'Organize a course' }}</strong><span>{{ '课程主页截图或大纲文件' if locale == 'zh-CN' else 'A course screenshot or syllabus file' }}</span><small>{{ '课程 · 大纲 · 知识' if locale == 'zh-CN' else 'Courses · Syllabus · Knowledge' }}</small></button>
+      </div>
+    </section>
+    <section class="panel ai-panel ai-stack ai-compose-panel">
+      <div id="ai-scope" class="ai-scope"></div>
+      <div id="ai-inputs" class="ai-stack">
+        <fieldset class="ai-input-group"><legend>{{ '1. 提供资料' if locale == 'zh-CN' else '1. Add sources' }}</legend>
+          <div class="ai-source-tabs" aria-label="{{ '资料输入方式' if locale == 'zh-CN' else 'Source input method' }}">
+            {% for value, zh, en in [('link','链接','Link'),('file','文件','File'),('text','文本','Text'),('existing','已有材料','Existing materials')] %}<button type="button" class="ai-source-tab" data-source-mode="{{ value }}" aria-pressed="{{ 'true' if value == 'link' else 'false' }}" aria-controls="ai-source-{{ value }}">{{ zh if locale == 'zh-CN' else en }}</button>{% endfor %}
+          </div>
+          <div id="ai-source-link" class="ai-stack">
+            <div class="ai-url-row"><label class="field"><span>{{ 'arXiv 论文链接' if locale == 'zh-CN' else 'arXiv paper link' }}</span><input id="ai-arxiv-url" type="url" maxlength="2000" aria-describedby="ai-url-help" placeholder="https://arxiv.org/abs/…"></label><button id="ai-add-arxiv" class="button ghost" type="button">{{ '添加论文' if locale == 'zh-CN' else 'Add paper' }}</button></div>
+            <p id="ai-url-help" class="ai-muted">{{ '目前只支持 arXiv 链接（abs / pdf）。使用已有材料导入流程识别论文信息、获取原文。' if locale == 'zh-CN' else 'Only arXiv links (abs / pdf) are supported. Uses the existing material importer to retrieve paper metadata and source files.' }}</p>
+          </div>
+          <div id="ai-source-file" class="ai-stack" hidden>
+            <p id="ai-file-selection" class="ai-muted" role="status"></p>
+            <div id="ai-drop-zone" class="ai-file-drop"><label class="field"><span>{{ '选择或拖入论文、笔记、课程截图' if locale == 'zh-CN' else 'Choose or drop a paper, notes, or course screenshot' }}</span><input id="ai-files" type="file" accept=".txt,.md,.markdown,.pdf,.png,.jpg,.jpeg,.webp" multiple></label><button id="ai-upload-files" class="button ghost" type="button">{{ '上传并读取' if locale == 'zh-CN' else 'Upload and read' }}</button></div>
+            <p class="ai-muted">{{ '支持 PDF、TXT、Markdown、PNG、JPEG、WebP，每份最多 20 MB；文本最多 750 KB。图片会发送给已配置的模型识别文字，请核对识别结果。' if locale == 'zh-CN' else 'PDF, TXT, Markdown, PNG, JPEG and WebP, up to 20 MB per file; text up to 750 KB. Images are sent to your configured model for transcription; check the extracted text.' }}</p>
+          </div>
+          <div id="ai-source-text" class="ai-stack" hidden>
+            <label class="field"><span>{{ '参考文本标题（可选）' if locale == 'zh-CN' else 'Source title (optional)' }}</span><input id="ai-paste-title" maxlength="180" placeholder="{{ '例如：张量网络学习笔记' if locale == 'zh-CN' else 'For example: tensor network notes' }}"></label>
+            <label class="field"><span>{{ '粘贴笔记、摘录或课程信息' if locale == 'zh-CN' else 'Paste notes, excerpts or course information' }}</span><textarea id="ai-paste" rows="5" maxlength="250000"></textarea></label>
+            <div class="ai-actions"><button id="ai-add-text" class="button ghost" type="button">{{ '添加文本依据' if locale == 'zh-CN' else 'Add text source' }}</button></div>
+          </div>
+          <div id="ai-source-existing" class="ai-stack" hidden>
+            <label class="field"><span>{{ '查找已有材料' if locale == 'zh-CN' else 'Find materials' }}</span><input id="ai-material-search" type="search" placeholder="{{ '按标题筛选' if locale == 'zh-CN' else 'Filter by title' }}"></label>
+            <div id="ai-material-options" class="ai-option-list"></div><button id="ai-refresh-materials" class="button text-button" type="button">{{ '刷新材料列表' if locale == 'zh-CN' else 'Refresh materials' }}</button>
+          </div>
+          <div id="ai-source-notice" class="ai-notice" role="status" hidden></div>
+          <div id="ai-selected-materials" class="ai-selected-materials"></div>
+          <div id="ai-attachments" class="ai-stack"></div>
+          <p class="ai-muted">{{ '没有外部资料时，也可以直接在第 3 项描述你的偏好或修改要求。' if locale == 'zh-CN' else 'Without an external source, describe your preferences or changes directly in step 3.' }}</p>
+        </fieldset>
+        <fieldset class="ai-input-group"><legend>{{ '2. 希望整理什么' if locale == 'zh-CN' else '2. What to maintain' }}</legend>
+          <div id="ai-target-types" class="ai-actions">
+            {% for value, zh, en in [('knowledge_node','知识与关系','Knowledge and relations'),('material','材料','Materials'),('course','课程','Courses'),('preference','偏好与场景','Preferences and contexts')] %}<label class="ai-check ai-target-choice"><input type="checkbox" value="{{ value }}">{{ zh if locale == 'zh-CN' else en }}</label>{% endfor %}
+          </div>
+          <details><summary>{{ '更多设置：限定记录、知识分支与读取方式' if locale == 'zh-CN' else 'More settings: records, knowledge branch and reading' }}</summary><div class="ai-stack">
+            <label class="field"><span>{{ '查找维护对象' if locale == 'zh-CN' else 'Find records' }}</span><input id="ai-record-search" type="search"></label><div id="ai-record-options" class="ai-option-list"></div>
+            <label class="field"><span>{{ '知识分支' if locale == 'zh-CN' else 'Knowledge branch' }}</span><select id="ai-root-choice"><option value="">{{ '不限定分支' if locale == 'zh-CN' else 'All branches' }}</option></select></label>
+            <label class="field"><span>{{ '读取方式' if locale == 'zh-CN' else 'Reading' }}</span><select id="ai-reading"><option value="targeted">{{ '材料分段理解后，按需补读依据' if locale == 'zh-CN' else 'Analyze sources, then read supporting passages as needed' }}</option><option value="full">{{ '完整理解所选材料' if locale == 'zh-CN' else 'Analyze all selected sources' }}</option></select></label>
+          </div></details>
+        </fieldset>
+      </div>
+      <form id="ai-message-form" class="ai-stack ai-request-section"><label class="field"><span>{{ '3. 具体要求' if locale == 'zh-CN' else '3. Describe your request' }}</span><textarea id="ai-message" rows="4" maxlength="20000" required placeholder="{{ '例如：提取主要概念、方法及其关系，优先关联已有知识，并给出原文依据。' if locale == 'zh-CN' else 'Extract key concepts, methods and relationships, reuse existing knowledge, and cite source evidence.' }}"></textarea></label><div class="ai-request-footer"><span class="ai-muted">{{ '候选进入待审核区，批准后才会更新数据。' if locale == 'zh-CN' else 'Candidates go to review. Only approval updates your data.' }}</span><div class="ai-actions"><button id="ai-send" class="button primary-button" type="submit">{{ '分析并生成候选' if locale == 'zh-CN' else 'Analyze and propose' }}</button><button id="ai-cancel" class="button ghost" type="button" hidden>{{ '取消分析' if locale == 'zh-CN' else 'Cancel analysis' }}</button></div></div></form>
+      <p class="ai-muted">{{ '发送需求后，当前对话、相关 Persona 记录及所选资料会交给你配置的模型。' if locale == 'zh-CN' else 'Sending shares this conversation, relevant Persona records and selected sources with your configured model.' }}</p>
+    </section>
+    <section class="ai-stack ai-result-area">
+      <div id="ai-notice" class="ai-notice" role="status" hidden></div>
+      <div id="ai-progress" class="ai-progress" role="status" hidden></div><div id="ai-messages" class="ai-messages" aria-live="polite"></div><div id="ai-questions" class="ai-notice" hidden></div><div id="ai-review-state" class="ai-notice" hidden></div>
+      <div class="ai-actions"><a id="ai-review" class="button primary-button" href="/review" hidden>{{ '审核候选' if locale == 'zh-CN' else 'Review candidates' }}</a><button id="ai-resume" class="button ghost" type="button" hidden>{{ '继续分析' if locale == 'zh-CN' else 'Continue analysis' }}</button><button id="ai-submit" class="button ghost" type="button" hidden>{{ '重试送入待审核区' if locale == 'zh-CN' else 'Retry submission to review' }}</button></div>
+      <p id="ai-resume-hint" class="ai-muted" hidden></p><div id="ai-coverage" class="ai-evidence" hidden></div>
+      <details id="ai-draft-panel" class="panel ai-panel" hidden open><summary>{{ '整理结果与依据' if locale == 'zh-CN' else 'Proposed changes and evidence' }} <span id="ai-result-summary"></span></summary><div class="ai-stack"><span id="ai-draft-status" class="ai-muted"></span><div id="ai-changes" class="ai-stack"></div><div class="ai-actions"><button id="ai-save" class="button ghost" type="button">{{ '保存并更新待审核候选' if locale == 'zh-CN' else 'Save and update review candidates' }}</button></div><p class="ai-muted">{{ '可编辑或取消选择候选，保存后更新同一组待审核内容。关联候选须保留所依赖的条目。' if locale == 'zh-CN' else 'Edit or deselect candidates, then save to update the same review group. Keep records required by selected relations.' }}</p></div></details>
+      <details id="ai-runs" hidden><summary>{{ '模型阶段记录' if locale == 'zh-CN' else 'Model stage history' }}</summary><div id="ai-run-list"></div></details>
+    </section>
+  </div>
+</div>
+<script id="ai-labels" type="application/json">{{ {
+  'fields': field_labels, 'entities': entity_labels,
+  'choices': {'behavior': behavior_labels, 'scope': preference_scope_labels,
+              'status': preference_status_labels, 'knowledge_level': level_labels,
+              'interest_level': interest_labels, 'preference_level': preference_labels,
+              'semantic_role': role_labels, 'relation_type': relation_labels,
+              'knowledge_role': material_knowledge_role_labels, 'salience': salience_labels,
+              'example_type': example_labels if example_labels is defined else example_type_labels,
+              'material_type': material_type_labels}
+} | tojson }}</script>
+<script src="{{ url_for('static', path='/ai-common.js').path }}" defer></script>
+<script src="{{ url_for('static', path='/ai-assistant.js').path }}?v=20260909.intake2" defer></script>
+{% endblock %}

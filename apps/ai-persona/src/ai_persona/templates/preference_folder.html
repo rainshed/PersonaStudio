@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ sample.title }} · {{ t('sample_upload.folder_label') }} · AI Persona{% endblock %}
+{% macro copy_location(id, path, folder=false) %}
+<details class="pw-file-location"><summary>{{ t('sample_upload.folder_location') if folder else t('preferences.file_location') }}</summary><input id="folder-path-{{ id }}" value="{{ path }}" readonly aria-label="{{ t('sample_upload.folder_path') if folder else t('preferences.local_path') }}"><button class="pw-copy" type="button" data-copy-path="folder-path-{{ id }}" data-copied-label="{{ t('preferences.path_copied') }}" data-copy-fallback="{{ t('preferences.copy_manually') }}">{{ t('preferences.copy_path') }}</button><span class="pw-copy-status" aria-live="polite"></span></details>
+{% endmacro %}
+{% macro directory(nodes) %}
+<ul class="sample-folder-tree">
+{% for node in nodes %}<li>{% if 'children' in node %}<details class="sample-subfolder"><summary><span aria-hidden="true">▱</span> {{ node.name }}</summary>{{ directory(node.children) }}</details>{% else %}<div class="sample-member"><div class="sample-member-heading"><span>{{ node.name }}</span><a href="{{ node.url }}" target="_blank" rel="noopener">{{ t('preferences.open_file') }} ↗</a></div>{{ copy_location(node.id, node.local_path) }}</div>{% endif %}</li>{% endfor %}
+</ul>
+{% endmacro %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', path='/preference-workspace.css').path }}?v=20260908.1">
+<link rel="stylesheet" href="{{ url_for('static', path='/preference-samples.css').path }}?v=20260908.1">
+<div class="preference-workspace sample-folder-workspace" data-preference-workspace>
+  <a class="pw-link" href="{{ return_to }}">← {{ t('sample_upload.back') }}</a>
+  <header class="pw-page-head"><div><h1>{{ sample.title }}</h1><p>{{ example_type_labels[sample.example_type] }} · {{ t('sample_upload.count', count=file_count) }}</p></div><a class="pw-link" href="/preferences/examples/{{ sample.id }}/file">{{ t('sample_upload.download') }}</a></header>
+  {% if sample.condition %}<p class="sample-folder-condition">{{ t('preferences.reference_when') }}：{{ sample.condition }}</p>{% endif %}
+  <section class="sample-folder-panel"><h2><span aria-hidden="true">▱</span> {{ source.origin.identifier }}</h2>{{ copy_location('root', folder_path, true) }}{{ directory(tree.children) }}</section>
+</div>
+<script src="{{ url_for('static', path='/preference-workspace.js').path }}?v=20260908.1" defer></script>
+{% endblock %}

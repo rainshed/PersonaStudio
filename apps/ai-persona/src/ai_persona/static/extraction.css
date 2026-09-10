@@ -1,0 +1,62 @@
+/* Material extraction is a flow within the shared AI maintenance workspace. */
+#extraction-root{--ex-line:var(--line,#dcdfe5)}
+.ex-task-bar{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.ex-history-field{min-width:0;flex:1;max-width:420px}
+.ex-connection{display:grid;gap:12px}
+.ex-connection-heading{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.ex-connection-heading strong{font-size:14px}
+#extraction-root summary{cursor:pointer;font-size:13px}
+.ex-settings{margin-top:16px}
+.ex-panel h2,.ex-panel p{margin:0}
+.ex-panel p{line-height:1.7}
+#extraction-root .field{min-width:0}
+#extraction-root .field>span{font-size:13px}
+#extraction-root textarea{width:100%;box-sizing:border-box}
+#extraction-root .ai-check{align-items:flex-start;line-height:1.6}
+.ex-feedback:empty,#ex-summary:empty,#ex-review:empty,#ex-deferred:empty,#ex-detail:empty{display:none}
+.ex-feedback{margin:0;padding:12px 15px;border-radius:8px;background:#fff0e9;color:#843520;line-height:1.6;overflow-wrap:anywhere;scroll-margin:24px}
+.ex-feedback.success{background:var(--green-soft,#e9f5ef);color:#22674e}
+.ex-feedback a{color:inherit;text-decoration:underline}
+.ex-member{border:1px solid var(--ex-line);border-radius:10px;background:#fafbfdf0;padding:16px;margin-top:12px;overflow-wrap:anywhere}
+.ex-member h3{font-size:15px;margin:0 0 8px}
+.ex-member small{display:block;color:var(--muted);margin:6px 0;line-height:1.6}
+.ex-member .button{font-size:12px;padding:6px 9px;margin:6px 5px 0 0}
+.ex-member select{display:block;max-width:100%;margin-top:10px;padding:8px;border:1px solid var(--ex-line);border-radius:8px;background:var(--paper,#fff);color:inherit}
+.ex-member a,#ex-detail a,#ex-review a{color:var(--accent)}
+#ex-events{max-height:260px;overflow:auto;font-size:13px;line-height:1.8;padding-left:22px}
+.ex-graph-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.ex-graph-heading h2{margin-bottom:8px}
+.ex-graph-heading .field{flex-shrink:0}
+#ex-graph{overflow:auto;min-height:160px;max-height:640px;border:1px solid var(--ex-line);border-radius:10px;background:#fbfcff}
+#ex-graph .ex-empty{padding:36px 24px}
+#ex-graph svg{display:block;width:100%;min-width:420px;min-height:360px}
+#ex-graph svg text{font:12px system-ui;fill:var(--ink)}
+#ex-graph svg .ex-node,#ex-graph svg .ex-edge{cursor:pointer}
+#ex-graph svg .ex-node:focus circle{stroke-width:4}
+#ex-detail:not(:empty){border-top:1px solid var(--ex-line);padding-top:16px;scroll-margin:24px}
+#ex-detail p,#ex-detail blockquote{white-space:pre-wrap;overflow-wrap:anywhere}
+#ex-detail blockquote{font-size:13px;border-left:3px solid var(--accent);padding-left:12px;margin:12px 0}
+#ex-detail a{display:block;margin:10px 0}
+.ex-change{display:block;text-align:left;width:100%;padding:14px 0;background:transparent;border:0;border-bottom:1px solid var(--ex-line);cursor:pointer;color:inherit;font:inherit}
+.ex-change:hover,.ex-change:focus-visible{background:var(--accent-soft)}
+#ex-review a{display:inline-block;margin:8px 12px 8px 0}
+#ex-deferred{line-height:1.7;padding-left:22px}
+#ex-zoom{max-width:220px}
+#extraction-root button:disabled{opacity:.5;cursor:default}
+@media(max-width:680px){.ex-task-bar{align-items:stretch;flex-direction:column}.ex-history-field{max-width:none}.ex-task-bar>.button{align-self:flex-start}.ex-graph-heading{flex-direction:column}.ex-connection-heading{gap:8px}.ex-graph-heading .field{width:100%}#extraction-root .ai-actions{flex-wrap:wrap}#extraction-root .button{white-space:normal;text-align:center}}
+
+.ex-panel:has(#ex-changes:empty):has(#ex-deferred:empty){display:none}
+
+.ex-member-more{margin-top:12px}
+.ex-member-more summary{color:var(--muted)}
+.ex-member-more label{display:block;margin-top:12px;font-size:13px}
+.ex-member-more select{margin-top:8px;width:100%}
+
+.ex-budget-bar{display:flex;align-items:center;gap:24px;padding:18px;border:1px solid var(--accent);border-radius:10px;background:var(--accent-soft)}
+.ex-budget-bar>.field{flex:0 0 190px}.ex-budget-bar input{max-width:110px;font-size:20px!important;font-weight:650;background:white}
+.ex-budget-bar strong,.ex-run-budget{color:var(--accent);font-size:14px}.ex-budget-bar p{margin:8px 0 0}
+#ex-budget-results[hidden]{display:none}#ex-budget-omissions{padding-left:22px;line-height:1.7;margin:0}
+#ex-budget-omissions li{margin-bottom:12px}#ex-budget-omissions p{margin:4px 0}#ex-budget-omissions a{color:var(--accent);display:inline-block;margin-right:12px}
+@media(max-width:680px){.ex-budget-bar{flex-direction:column;align-items:stretch;gap:12px}.ex-budget-bar>.field{flex-basis:auto}}
+
+#ex-deferred li{white-space:pre-line;overflow-wrap:anywhere}

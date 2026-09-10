@@ -1,0 +1,26 @@
+<div class="result-summary"><strong>{{ records|length }}</strong> {{ t('materials.count') }}</div>
+{% if records %}
+<div class="material-list">
+  {% for loaded in records %}
+    {% set material = loaded.record %}
+    {% set grouped = material_relations.get(material.id, {}) %}
+    <a class="material-row" href="/materials/{{ material.id }}">
+      <span class="entity-glyph material">M</span>
+      <span class="material-main">
+        <span class="material-title"><strong>{{ material.title }}</strong><small>{{ material_type_labels[material.material_type] }}{% if material.bibliography.authors %} · {{ material.bibliography.authors[:2]|join('、') }}{% endif %}{% if material.bibliography.published_at %} · {{ material.bibliography.published_at[:4] }}{% endif %}</small></span>
+        <span class="material-summary">{{ material.summary or material.abstract or t('common.no_summary') }}</span>
+        <span class="material-connections">
+          {% for role in ['topic', 'problem', 'method'] %}{% for relation, node in grouped.get(role, [])[:2] %}<i class="connection-chip {{ role }}">{{ material_knowledge_role_labels[role] }} · {{ node.title }}</i>{% endfor %}{% endfor %}
+          {% set relation_count = grouped.values()|map('length')|sum %}{% if relation_count > 6 %}<i>{{ t('materials.other_connections', count=relation_count - 6) }}</i>{% endif %}
+        </span>
+        <span class="material-tags">{% for tag_id in material.tags[:3] %}<i>{{ tag_map[tag_id].label }}</i>{% endfor %}<i class="source-saved">✓ {{ t('materials.source_saved') }}</i></span>
+      </span>
+      <span class="material-state"><i class="level-pill {{ material.knowledge_level }}">{{ level_labels[material.knowledge_level] }}</i><i class="preference-pill {{ material.preference_level }}">{{ preference_labels[material.preference_level] }}</i></span>
+      <span class="relationship-stack">{% for value in material.user_relationships %}<i>{{ material_relationship_labels[value] }}</i>{% endfor %}</span>
+      <span class="row-arrow">→</span>
+    </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><span>⌕</span><strong>{{ t('materials.empty_title') }}</strong><p>{{ t('materials.empty_desc') }}</p></div>
+{% endif %}

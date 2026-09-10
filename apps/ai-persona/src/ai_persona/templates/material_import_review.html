@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% macro field_badge(name) -%}
+  {% set state = draft.field_state(name) %}
+  <small class="field-origin {{ state.status }}" title="{{ state.source_locator or '' }}">{{ t('material_import.status.' ~ state.status) }} · {{ t('material_import.source.' ~ state.source) }}</small>
+{%- endmacro %}
+{% block title %}{{ t('material_import.confirm_title') }} · AI Persona{% endblock %}
+{% block content %}
+<nav class="breadcrumbs"><a href="/materials">{{ t('common.materials') }}</a><span>/</span><a href="/materials/new">{{ t('common.import') }}</a><span>/</span><span>{{ t('material_import.confirm') }}</span></nav>
+<section class="page-head form-head material-import-head">
+  <div><p class="eyebrow duplicate-in-english">RECOGNITION RESULT</p><h1>{{ t('material_import.confirm_title') }}</h1><p class="lead">{{ t('material_import.confirm_lead') }}</p></div>
+  <div class="recognition-stats"><span><strong>{{ autofilled_count }}</strong>{{ t('material_import.autofilled_fields') }}</span><span><strong>{{ review_count }}</strong>{{ t('material_import.review_fields') }}</span></div>
+</section>
+
+{% if error %}<div class="import-error" role="alert"><strong>{{ t('material_import.could_not_create') }}</strong><p>{{ error }}</p></div>{% endif %}
+{% if draft.warnings %}<div class="import-warning"><strong>{{ t('material_import.recognition_warnings') }}</strong>{% for warning in draft.warnings %}<p>{{ warning }}</p>{% endfor %}</div>{% endif %}
+
+{% if blocked_matches or version_match or possible_matches %}
+<section class="panel duplicate-review {% if blocked_matches %}blocking{% endif %}">
+  <div><p class="eyebrow">DUPLICATE CHECK</p><h2>{{ t('material_import.duplicate_title') }}</h2></div>
+  {% for match in draft.duplicate_matches %}
+    <article><span class="duplicate-kind {{ match.kind }}">{{ t('material_import.duplicate.' ~ match.kind) }}</span><div><strong>{{ match.title }}</strong><p>{{ match.reason }}{% if match.current_version %} · {{ match.current_version }}{% endif %}</p></div><a class="button text-button small" href="/materials/{{ match.material_id }}">{{ t('material_import.open_existing') }}</a></article>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% set form_action = '/materials/imports/' ~ draft.id ~ ('/version-proposals' if version_match else '/proposals') %}
+<form class="edit-layout material-edit-layout import-review-layout" method="post" action="{{ form_action }}">
+  <div class="panel form-panel">
+    <div class="source-preview-strip"><div><span class="entity-glyph material">{{ 'aX' if draft.input_kind == 'arxiv' else 'MD' }}</span><span><strong>{{ draft.display_name }}</strong><small>{{ draft.source_provider }}{% if draft.source_version %} · {{ draft.source_version }}{% endif %} · SHA-256 {{ draft.source_hash[:12] }}…</small></span></div><a class="button ghost small" href="/materials/imports/{{ draft.id }}/source" target="_blank">{{ t('material_import.open_original') }}</a></div>
+
+    <div class="form-section">
+      <div class="form-section-head"><span>01</span><div><h2>{{ t('material_import.source_facts') }}</h2><p>{{ t('material_import.source_facts_desc') }}</p></div></div>
+      <div class="field-grid">
+        <div class="field-grid two">
+          <label class="field"><span>{{ t('material_form.type') }} {{ field_badge('material_type') }}</span><select name="material_type" required>{% for value, label in material_type_labels.items() %}<option value="{{ value }}" {% if values.material_type == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+          <label class="field"><span>{{ t('material_form.title') }} {{ field_badge('title') }}</span><input name="title" value="{{ values.title }}" required></label>
+        </div>
+        <label class="field"><span>{{ t('record_form.aliases') }} {{ field_badge('aliases') }}</span><textarea name="aliases" rows="3">{{ values.aliases }}</textarea></label>
+        <label class="field"><span>{{ t('material_detail.abstract') }} {{ field_badge('abstract') }}</span><textarea name="abstract" rows="7">{{ values.abstract }}</textarea></label>
+        <label class="field"><span>{{ t('material_detail.authors') }} {{ field_badge('bibliography.authors') }}</span><textarea name="authors" rows="4">{{ values.authors }}</textarea></label>
+        <div class="field-grid two">
+          <label class="field"><span>{{ t('material_detail.published_at') }} {{ field_badge('bibliography.published_at') }}</span><input name="published_at" value="{{ values.published_at }}" placeholder="2026-09-04"></label>
+          <label class="field"><span>{{ t('material_form.venue') }} {{ field_badge('bibliography.venue') }}</span><input name="venue" value="{{ values.venue }}"></label>
+          <label class="field"><span>{{ t('material_detail.language') }} {{ field_badge('bibliography.language') }}</span><input name="language" value="{{ values.language }}" placeholder="zh or en"></label>
+          <label class="field"><span>{{ t('material_form.canonical_url') }} {{ field_badge('bibliography.canonical_url') }}</span><input type="url" name="canonical_url" value="{{ values.canonical_url }}"></label>
+        </div>
+        <div class="field-grid three"><label class="field"><span>arXiv {{ field_badge('bibliography.identifiers.arxiv') }}</span><input name="arxiv" value="{{ values.arxiv }}"></label><label class="field"><span>DOI {{ field_badge('bibliography.identifiers.doi') }}</span><input name="doi" value="{{ values.doi }}"></label><label class="field"><span>ISBN {{ field_badge('bibliography.identifiers.isbn') }}</span><input name="isbn" value="{{ values.isbn }}"></label></div>
+      </div>
+    </div>
+
+    {% if not version_match and not blocked_matches %}
+    <div class="form-section personal-decision-section">
+      <div class="form-section-head"><span>02</span><div><h2>{{ t('material_import.personal_judgments') }}</h2><p>{{ t('material_import.personal_judgments_desc') }}</p></div></div>
+      <div class="field-grid">
+        <fieldset class="field"><legend>{{ t('material_form.reading') }} <i>{{ t('common.required') }}</i></legend><div class="checkbox-grid relationship-options">{% for value, label in material_relationship_labels.items() %}<label class="check-card"><input type="{{ 'checkbox' if value == 'authored' else 'radio' }}" name="relationships" value="{{ value }}" {% if value in values.relationships %}checked{% endif %}><span><i>✓</i><strong>{{ label }}</strong><small>{{ t('material_form.authored_extra') if value == 'authored' else t('material_form.reading_one') }}</small></span></label>{% endfor %}</div></fieldset>
+        <div class="field-grid two"><label class="field"><span>{{ t('material_detail.understanding') }}</span><select name="knowledge_level">{% for value, label in level_labels.items() %}<option value="{{ value }}" {% if values.knowledge_level == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label class="field"><span>{{ t('materials.preference') }}</span><select name="preference_level" required>{% for value, label in preference_labels.items() %}<option value="{{ value }}" {% if values.preference_level == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label></div>
+      </div>
+    </div>
+
+    <details class="form-section advanced-section" {% if values.summary or values.body or values.preference_reasons or values.scope_note %}open{% endif %}>
+      <summary class="form-section-head"><span>03</span><div><h2>{{ t('common.optional_details') }}</h2><p>{{ t('material_import.optional_desc') }}</p></div></summary>
+      <div class="field-grid"><label class="field"><span>{{ t('common.summary') }}</span><textarea name="summary" rows="4">{{ values.summary }}</textarea></label><label class="field"><span>{{ t('material_detail.reading_scope') }}</span><textarea name="scope_note" rows="3">{{ values.scope_note }}</textarea></label><label class="field"><span>{{ t('material_form.preference_reason') }} <small>{{ t('material_form.preference_format') }}</small></span><textarea name="preference_reasons" rows="5">{{ values.preference_reasons }}</textarea></label><label class="field"><span>{{ t('material_form.personal_notes') }}</span><textarea name="body" rows="10">{{ values.body }}</textarea></label>{% set tag_record = values %}{% set tag_form_id = '' %}{% set allow_new_tag = true %}{% set show_tag_save = false %}{% set new_tag_value = values.new_tag %}{% include "partials/tag_picker.html" %}</div>
+    </details>
+    {% endif %}
+  </div>
+
+  <aside class="edit-aside"><div class="panel sticky-panel">
+    {% if version_match %}<p class="section-label">{{ t('material_import.version_update') }}</p><p class="aside-copy">{{ t('material_import.version_update_desc', version=draft.source_version or '') }}</p>
+    {% elif blocked_matches %}<p class="section-label">{{ t('material_import.already_saved') }}</p><p class="aside-copy">{{ t('material_import.already_saved_desc') }}</p>
+    {% else %}<p class="section-label">{{ t('material_import.ready_to_propose') }}</p><p class="aside-copy">{{ t('material_import.ready_desc') }}</p>{% endif %}
+    {% if possible_matches and not version_match and not blocked_matches %}<label class="duplicate-confirm"><input type="checkbox" name="duplicate_confirmed" value="yes" {% if values.duplicate_confirmed %}checked{% endif %}><span>{{ t('material_import.duplicate_confirm') }}</span></label>{% endif %}
+    {% if not blocked_matches %}<label class="field"><span>{{ t('common.note') }}</span><textarea name="reason" rows="4" placeholder="{{ t('common.note_placeholder') }}">{{ values.reason }}</textarea></label><button class="button primary-button full" type="submit">{{ t('material_import.create_version_proposal') if version_match else t('common.preview_proposal') }} <span>→</span></button>{% endif %}
+    {% if blocked_matches %}{% set match = blocked_matches[0] %}<a class="button primary-button full" href="/materials/{{ match.material_id }}">{{ t('material_import.open_existing') }}</a>{% endif %}
+    <button class="button text-button full" type="submit" formaction="/materials/imports/{{ draft.id }}/cancel" formmethod="post">{{ t('material_import.cancel_import') }}</button>
+    <p class="draft-expiry">{{ t('material_import.expires_at') }} {{ draft.expires_at.strftime('%Y-%m-%d %H:%M UTC') }}</p>
+  </div></aside>
+</form>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% macro material_relation_row() -%}
+<div class="relation-batch-row material-relation-row" data-relation-row>
+  <span class="relation-row-number" data-relation-row-number>1</span>
+  <label class="field knowledge-target-field">
+    <span>{{ t('material_detail.knowledge_concept') }}</span>
+    <div class="knowledge-combobox" data-knowledge-combobox data-source-id="{{ material.id }}" data-fixed-relation-type="covers" data-knowledge-role-source="knowledge_role" data-select-error="{{ t('detail.select_knowledge_error') }}" data-no-results="{{ t('detail.no_knowledge_matches') }}" data-search-error="{{ t('detail.knowledge_search_error') }}" data-existing="{{ t('detail.relation_exists') }}" data-selected="{{ t('detail.relation_selected') }}">
+      <input type="search" data-knowledge-search autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" placeholder="{{ t('detail.search_knowledge_placeholder') }}" required>
+      <input type="hidden" name="target_id" data-knowledge-id>
+      <div class="knowledge-suggestions" data-knowledge-suggestions role="listbox" hidden></div>
+      <small class="knowledge-selection" data-knowledge-selection></small>
+    </div>
+  </label>
+  <label class="field"><span>{{ t('material_detail.role_in_material') }}</span><select name="knowledge_role" required>{% for value, label in material_knowledge_role_labels.items() %}<option value="{{ value }}">{{ label }}</option>{% endfor %}</select></label>
+  <label class="field"><span>{{ t('materials.importance') }}</span><select name="salience" required>{% for value, label in salience_labels.items() %}<option value="{{ value }}">{{ label }}</option>{% endfor %}</select></label>
+  <label class="field relation-statement"><span>{{ t('labels.field.statement') }}</span><textarea name="statement" rows="3" required placeholder="{{ t('material_detail.statement_placeholder') }}"></textarea></label>
+  <button class="relation-row-remove" type="button" data-remove-relation-row hidden aria-label="{{ t('detail.remove_relation_row') }}" title="{{ t('detail.remove_relation_row') }}">×</button>
+</div>
+{%- endmacro %}
+{% block title %}{{ material.title }} · AI Persona{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="{{ t('common.breadcrumb') }}"><a href="/materials">{{ t('common.materials') }}</a><span>/</span><span>{{ material.title }}</span></nav>
+<section class="detail-hero material-hero">
+  <div class="detail-title"><span class="entity-glyph large material">M</span><div><div class="badge-line"><span class="type-badge">{{ material_type_labels[material.material_type] }}</span>{% for value in material.user_relationships %}<span class="type-badge subtle">{{ material_relationship_labels[value] }}</span>{% endfor %}</div><h1>{{ material.title }}</h1>{% if material.aliases %}<p class="aliases">{{ material.aliases|join(' · ') }}</p>{% endif %}</div></div>
+  <div class="page-actions">
+    <a class="button ghost" href="/ai?material_id={{ material.id }}">{{ t('ai.assistant') }}</a>
+    <a class="button ghost" href="/inbox?view=all&amp;material={{ material.id }}">{{ '查看整理结果' if locale == 'zh-CN' else 'Organization results' }}</a>
+    {% if material.status == 'active' %}
+      <a class="button primary-button" href="/materials/{{ material.id }}/edit">{{ t('material_detail.edit') }}</a>
+      <a class="button ghost" href="/materials/{{ material.id }}/source/edit">{{ t('material_detail.replace_source') }}</a>
+      <form method="post" action="/materials/{{ material.id }}/archive-proposals"><button class="button reject-button" type="submit">{{ t('common.archive') }}</button></form>
+    {% else %}
+      <form method="post" action="/materials/{{ material.id }}/restore-proposals"><button class="button primary-button" type="submit">{{ t('material_detail.propose_restore') }}</button></form>
+    {% endif %}
+  </div>
+</section>
+
+<div class="detail-layout material-detail-layout">
+  <div class="detail-main">
+    <section class="panel prose-panel">
+      <div class="fact-strip material-facts"><div><span>{{ t('material_detail.understanding') }}</span><strong class="level-text {{ material.knowledge_level }}">{{ level_labels[material.knowledge_level] }}</strong></div><div><span>{{ t('materials.preference') }}</span><strong>{{ preference_labels[material.preference_level] }}</strong></div><div><span>{{ t('common.revision') }}</span><strong>Revision {{ material.revision }}</strong></div></div>
+      {% if material.abstract %}<div class="content-block"><p class="section-label">{{ t('material_detail.abstract') }}</p><p class="large-copy">{{ material.abstract }}</p></div>{% endif %}
+      <div class="content-block"><p class="section-label">{{ t('common.summary') }}</p><p class="large-copy">{{ material.summary or t('common.no_summary') }}</p></div>
+      {% if material.scope_note %}<div class="content-block boundary"><p class="section-label">{{ t('material_detail.reading_scope') }}</p><p>{{ material.scope_note }}</p></div>{% endif %}
+      <div class="content-block"><p class="section-label">{{ t('material_detail.my_review') }}</p>{% if material.preference_reasons %}<div class="preference-reason-list">{% for item in material.preference_reasons %}<div><span>{{ preference_aspect_labels[item.aspect] }}</span><p>{{ item.note }}</p></div>{% endfor %}</div>{% else %}<p>{{ t('material_detail.no_review') }}</p>{% endif %}</div>
+    </section>
+
+    <section class="panel relation-panel material-relations-panel">
+      <div class="panel-head"><div><p class="eyebrow duplicate-in-english">KNOWLEDGE CONNECTIONS</p><h2>{{ t('material_detail.knowledge_connections') }}</h2></div><span class="muted-label">{{ t('detail.connection_count', count=relation_count) }}</span></div>
+      {% for role, label in material_knowledge_role_labels.items() %}
+        {% set items = relation_groups.get(role, []) %}
+        {% if items %}
+        <div class="material-relation-group">
+          <h3>{{ label }}</h3>
+          {% for relation, node in items %}
+          <article class="material-relation-card">
+            <div class="relation-card-head"><a href="/knowledge/{{ node.id }}"><strong>{{ node.title }}</strong></a><span class="salience {{ relation.salience }}">{{ salience_labels[relation.salience] }}</span></div>
+            <p>{{ relation.statement }}</p>
+            <div class="knowledge-path">{% for path_node in relation_paths[relation.id] %}<span>{{ path_node.title }}</span>{% if not loop.last %}<i>/</i>{% endif %}{% endfor %}</div>
+            {% if relation_evidence[relation.id] %}<details class="relation-evidence"><summary>{{ t('material_detail.source_evidence', count=relation_evidence[relation.id]|length) }}</summary>{% for evidence in relation_evidence[relation.id] %}<div><strong>{{ evidence.evidence_kind|replace('_', ' ') }}</strong><span>{{ display_value(evidence.locator) }}</span><code>{{ evidence.source_hash[7:19] }}…</code>{% if evidence.source_id == source.id and evidence.locator.get('line_start') %}<a href="/materials/{{ material.id }}/source-text#L{{ evidence.locator.get('line_start') }}">{{ t('material_detail.view_in_source') }}</a>{% else %}<em>{{ t('material_detail.historical_source', source_id=evidence.source_id) }}</em>{% endif %}</div>{% endfor %}</details>{% endif %}
+            <div class="relation-card-actions"><span>{% if relation_evidence[relation.id] %}{{ t('material_detail.evidence_located') }}{% else %}{{ t('material_detail.evidence_not_located') }}{% endif %}</span>{% if material.status == 'active' %}<a href="/materials/{{ material.id }}/relations/{{ relation.id }}/edit">{{ t('common.edit') }}</a><form method="post" action="/relations/{{ relation.id }}/remove-proposals"><button type="submit">{{ t('material_detail.propose_remove') }}</button></form>{% endif %}</div>
+          </article>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endfor %}
+      {% if relation_count == 0 %}<div class="empty-inline">{{ t('material_detail.no_connections') }}</div>{% endif %}
+
+      {% if pending_relations %}<div class="pending-relation-box"><p class="section-label">{{ t('material_detail.pending_connections') }}</p>{% for proposal in pending_relations %}<a href="/review/{{ proposal.id }}"><span>{{ proposal_cards[proposal.id].summary }}</span><i>{{ t('material_detail.view_proposal') }} →</i></a>{% endfor %}</div>{% endif %}
+
+      {% if material.status == 'active' %}
+      <form class="inline-relation-form material-relation-form" method="post" action="/materials/{{ material.id }}/relation-proposals" data-relation-batch-form>
+        <p class="section-label">{{ t('material_detail.add_connection') }}</p>
+        <p class="relation-batch-help">{{ t('material_detail.batch_connection_help') }}</p>
+        <div class="relation-batch-list" data-relation-batch-list>
+          {{ material_relation_row() }}
+        </div>
+        <template data-relation-row-template>{{ material_relation_row() }}</template>
+        <button class="button ghost small relation-row-add" type="button" data-add-relation-row><span aria-hidden="true">＋</span>{{ t('detail.add_another_relation') }}</button>
+        <div class="relation-shared-fields">
+          {% if available_evidence %}<fieldset class="field wide evidence-choice"><legend>{{ t('material_detail.evidence_optional') }} <small>{{ t('common.optional') }}</small></legend><p class="field-help">{{ t('material_detail.shared_evidence_help') }}</p><div class="checkbox-grid">{% for item in available_evidence %}<label class="check-card"><input type="checkbox" name="evidence_refs" value="{{ item.id }}"><span><i>✓</i><strong>{{ item.evidence_kind|replace('_', ' ') }}</strong><small>{{ display_value(item.locator) }}</small></span></label>{% endfor %}</div></fieldset>{% endif %}
+          {% include "partials/optional_note.html" %}
+        </div>
+        <button class="button ghost" type="submit">{{ t('detail.preview_relations') }}</button>
+      </form>
+      {% endif %}
+    </section>
+    {% if loaded.body %}<section class="panel material-notes-panel"><div class="panel-head"><div><p class="eyebrow duplicate-in-english">PERSONAL NOTES</p><h2>{{ t('material_detail.personal_notes') }}</h2></div></div><div class="note-body material-note">{{ loaded.body }}</div></section>{% endif %}
+  </div>
+
+  <aside class="detail-aside material-aside">
+    <section class="panel meta-panel">
+      <p class="section-label">{{ t('material_detail.bibliography') }}</p><dl class="material-meta"><div><dt>{{ t('material_detail.authors') }}</dt><dd>{{ material.bibliography.authors|join(', ') or t('common.unknown') }}</dd></div><div><dt>{{ t('material_detail.published_at') }}</dt><dd>{{ material.bibliography.published_at or t('common.unknown') }}</dd></div><div><dt>{{ t('material_detail.venue') }}</dt><dd>{{ material.bibliography.venue or t('common.unknown') }}</dd></div><div><dt>{{ t('material_detail.language') }}</dt><dd>{{ material.bibliography.language or t('common.unknown') }}</dd></div>{% if material.bibliography.identifiers.arxiv %}<div><dt>arXiv</dt><dd>{{ material.bibliography.identifiers.arxiv }}</dd></div>{% endif %}{% if material.bibliography.identifiers.doi %}<div><dt>DOI</dt><dd>{{ material.bibliography.identifiers.doi }}</dd></div>{% endif %}{% if material.bibliography.identifiers.isbn %}<div><dt>ISBN</dt><dd>{{ material.bibliography.identifiers.isbn }}</dd></div>{% endif %}</dl>
+      <p class="section-label meta-section-label">{{ t('common.tags') }}</p>
+      {% if material.status == 'active' %}
+      <form id="tag-settings" class="tag-editor" method="post" action="/materials/{{ material.id }}/tags">
+        <p class="tag-editor-help">{{ t('discipline_tags.direct_help') }}</p>
+        {% set tag_record = material %}{% set tag_form_id = '' %}{% set allow_new_tag = true %}{% set show_tag_save = true %}{% include "partials/tag_picker.html" %}
+      </form>
+      {% else %}<div class="tag-cloud">{% for tag in tags %}<span>{{ tag.label }}</span>{% else %}<small>{{ t('common.no_tags') }}</small>{% endfor %}</div>{% endif %}
+    </section>
+    <section class="panel source-panel">
+      <div class="panel-head"><div><p class="eyebrow duplicate-in-english">SOURCE</p><h2>{{ t('common.original') }}</h2></div><span class="status-chip accepted">{{ t('material_detail.saved') }}</span></div>
+      <p>{{ source.origin.provider }}{% if source.origin.version %} · {{ source.origin.version }}{% endif %}{% if source.origin.url %} · <a href="{{ source.origin.url }}">{{ t('material_detail.source_link') }}</a>{% endif %}</p>
+      <dl><div><dt>Source ID</dt><dd><code>{{ source.id }}</code></dd></div><div><dt>{{ t('material_detail.original_file') }}</dt><dd>{{ source.canonical_file }}</dd></div><div><dt>{{ t('material_detail.imported_at') }}</dt><dd>{{ source.imported_at.strftime('%Y-%m-%d') }}</dd></div><div><dt>{{ t('common.content_hash') }}</dt><dd title="{{ source.content_hash }}"><code>{{ source.content_hash[:12] }}…</code></dd></div></dl>
+      <div class="source-actions"><a class="button ghost full" href="/materials/{{ material.id }}/source">{{ t('material_detail.open_source') }}</a>{% if has_source_text %}<a class="button text-button full" href="/materials/{{ material.id }}/source-text">{{ t('material_detail.read_extracted') }}</a>{% endif %}<a class="button text-button full" href="/materials/{{ material.id }}/source-manifest">{{ t('material_detail.view_manifest') }}</a></div>
+    </section>
+    <section class="panel meta-panel"><p class="section-label">{{ t('common.record') }}</p><dl><div><dt>ID</dt><dd><code>{{ material.id }}</code></dd></div><div><dt>{{ t('common.status') }}</dt><dd><span class="status-dot"></span>{{ record_status_labels[material.status] }}</dd></div><div><dt>{{ t('common.updated_at') }}</dt><dd>{{ material.updated_at.strftime('%Y-%m-%d') }}</dd></div><div><dt>{{ t('common.content_hash') }}</dt><dd title="{{ content_hash }}"><code>{{ content_hash[7:19] }}…</code></dd></div></dl>{% if record_revisions %}<p class="section-label meta-section-label">{{ t('material_detail.release_history') }}</p><div class="mini-history">{% for item in record_revisions %}<div><span>Revision {{ item.change.new_revision }}</span><time>{{ item.revision.published_at[:10] }}</time></div>{% endfor %}</div>{% endif %}</section>
+  </aside>
+</div>
+{% endblock %}

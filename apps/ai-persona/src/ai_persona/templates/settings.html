@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ ui('设置 · AI Persona') }}{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="/static/conversation-learning.css?v=20260908.settings2">
+<link rel="stylesheet" href="/static/preference-applications.css?v=20260908.settings2">
+<link rel="stylesheet" href="/static/settings.css?v=20260909.setup1">
+{% endblock %}
+{% block content %}
+{% if is_demo %}
+<section class="panel"><h1>{{ 'Demo 设置' if locale == 'zh-CN' else 'Demo settings' }}</h1>
+<p>{{ '这里可以独立配置模型，体验材料整理、偏好场景判断和人工审核。Demo 不接入真实 Codex 会话，也不安装 Hook。' if locale == 'zh-CN' else 'Configure a separate model connection to try material analysis, preference matching and review. Demo does not connect to real Codex conversations or install Hooks.' }}</p>
+<a class="button primary-button" href="/settings/models">{{ '配置 Demo 模型' if locale == 'zh-CN' else 'Configure Demo models' }}</a>
+<a class="button ghost" href="/preferences/try">{{ '试用偏好场景' if locale == 'zh-CN' else 'Try preference matching' }}</a>
+</section>
+{% else %}
+<div id="studio-settings" class="studio-settings settings-shell">
+<header class="page-head settings-head"><div><p class="eyebrow">{{ ui('设置') }}</p><h1 id="settings-page-title">{{ ui('应用接入') }}</h1><p class="lead" id="settings-page-description">{{ ui('连接你的应用，选择 Persona 可以接收的信息范围。') }}</p></div></header>
+{% include 'partials/settings_nav.html' %}
+<p id="learning-message" role="status" hidden></p><p id="learning-settings-message" role="status" hidden></p>
+{% set settings_only = true %}
+<section data-settings-panel="sources" hidden>
+{% include 'partials/source_settings.html' %}
+</section>
+<section data-settings-panel="capabilities" class="settings-stack" hidden>
+{% include 'partials/learning_status.html' %}
+<section class="panel studio-settings-panel">{% include 'partials/learning_settings.html' %}</section>
+<section class="panel studio-settings-panel pa-workspace" id="preference-applications" data-settings-only="true">
+{% include 'partials/application_settings.html' %}
+<p id="pa-message" role="status"></p>
+<a class="settings-record-link" href="/inbox?view=all&amp;type=activation">{{ ui('查看偏好应用记录') }} →</a></section>
+</section>
+<section data-settings-panel="retention" class="settings-stack" hidden>
+<section class="panel studio-settings-panel"><h2>{{ ui('临时内容保留') }}</h2><p class="settings-note">{{ ui('到期自动清理；查看、搜索和反馈不会延长保留时间。') }}</p>
+<form id="learning-retention" class="learning-form">
+<div class="settings-fields">
+<label>{{ ui('临时对话内容') }}<span class="settings-number"><input name="event_retention_days" type="number" min="1" max="365" required><span>{{ ui('天') }}</span></span><small>{{ ui('尚未发现可学习信息的临时正文。') }}</small></label>
+<label>{{ ui('学习过程记录') }}<span class="settings-number"><input name="observation_retention_days" type="number" min="1" max="3650" required><span>{{ ui('天') }}</span></span><small>{{ ui('已发现的学习信息，以及继续处理所需的上下文。') }}</small></label>
+</div>
+<div class="settings-actions"><button type="button" class="button ghost" data-settings-revert="learning-retention">{{ ui('撤销修改') }}</button><button type="submit" class="button primary-button">{{ ui('保存保留策略') }}</button></div>
+</form></section>
+<section class="panel studio-settings-panel"><h2>{{ ui('其他已保存的数据') }}</h2><dl class="studio-data-policy">
+<dt>{{ ui('偏好应用记录与维护会话') }}</dt><dd>{{ ui('保存在本机，不受上面的临时学习内容保留天数控制。') }}</dd>
+<dt>{{ ui('个人测试样例与审核答案') }}</dt><dd>{{ ui('用于回测改进。撤回标签会退出有效回测，删除样例需在样例管理中操作。') }}</dd>
+<dt>{{ ui('审核历史与正式 Persona') }}</dt><dd>{{ ui('独立保存；清理临时内容不会删除已审核的知识、偏好和关系。') }}</dd>
+</dl><a class="settings-record-link" href="/evaluations?view=cases">{{ ui('管理测试样例') }} →</a></section>
+</section></div>
+<script type="module" src="/static/conversation-learning.js?v=20260909.setup1"></script>
+<script src="/static/preference-applications.js?v=20260909.setup1" defer></script>
+{% endif %}
+{% endblock %}

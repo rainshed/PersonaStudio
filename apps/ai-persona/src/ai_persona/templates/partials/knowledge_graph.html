@@ -1,0 +1,42 @@
+<section class="panel knowledge-map-panel" id="graph" data-knowledge-graph data-workspace="{{ persona.persona_id }}">
+  <div class="toolbar">
+    <div class="identity"><div class="map-title-row"><h2>{{ t('knowledge.graph_title') }}</h2>{% if graph.nodes or graph_interactive %}<button type="button" id="fullscreen-entry" aria-label="{{ t('knowledge_map.fullscreen') }}" title="{{ t('knowledge_map.fullscreen') }}" hidden>⤢</button>{% endif %}</div><span id="counts" role="status"></span></div>
+    {% if graph.nodes or graph_interactive %}
+    <div class="tools" data-map-controls hidden>
+      <label class="layout-label">{{ t('knowledge_map.layout') }} <select id="layout">{% for value in ['auto', 'right', 'down', 'bilateral'] %}<option value="{{ value }}">{{ t('knowledge_map.' + value) }}</option>{% endfor %}</select></label>
+      <button id="expand-all" type="button">{{ t('knowledge.expand_all') }}</button><button id="collapse-all" type="button">{{ t('knowledge_map.collapse') }}</button>
+      <div class="search-wrap"><label class="sr-only" for="search">{{ t('knowledge.graph_search') }}</label><input type="search" id="search" placeholder="{{ t('knowledge.graph_search') }}" autocomplete="off" aria-controls="search-results"><div id="search-results" hidden></div></div>
+    </div>
+    {% endif %}
+  </div>
+  {% if graph.nodes or graph_interactive %}
+  <div id="map" class="map" tabindex="0" role="region" aria-label="{{ t('knowledge_map.aria') }}" hidden>
+    <div id="world"><svg id="edges" aria-hidden="true"><defs>
+      <marker id="map-arrow-broader_than" class="relation-broader_than" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path class="arrow-filled" d="M1 1 L9 5 L1 9 Z"/></marker>
+      <marker id="map-arrow-requires" class="relation-requires" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto"><path class="arrow-open" d="M1 1 L9 5 L1 9"/></marker>
+      <marker id="map-arrow-applied_in" class="relation-applied_in" data-size="7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto"><path class="arrow-open" d="M2 1 L9 5 L2 9"/></marker>
+    </defs><g id="edge-layer"></g></svg><div id="nodes"></div></div>
+    <div class="relation-legend" role="group" aria-label="{{ t('knowledge_map.relation_legend') }}">
+      {% for value in ['broader_than', 'requires', 'applied_in', 'related_to'] %}
+      <span class="relation-key relation-{{ value }}" data-relation-key="{{ value }}" title="{{ t('knowledge_map.direction_' + value) }}" tabindex="0">
+        <svg viewBox="0 0 44 14" aria-hidden="true"><path class="legend-line" d="{% if value == 'applied_in' %}M1 11 C18 11 23 3 40 3{% else %}M1 7 H{{ 43 if value == 'related_to' else 34 }}{% endif %}"/>
+          {% if value == 'broader_than' %}<path class="arrow-filled" d="M34 3 L42 7 L34 11 Z"/>
+          {% elif value == 'requires' %}<path class="arrow-open" d="M34 3 L42 7 L34 11"/>
+          {% elif value == 'applied_in' %}<path class="arrow-open" d="M35 0 L40 3 L35 6"/>{% endif %}
+        </svg><span>{{ relation_labels[value] }}</span><span data-relation-count>0</span>
+        <span class="sr-only">{{ t('knowledge_map.direction_' + value) }}</span>
+      </span>
+      {% endfor %}
+    </div>
+    <div id="loading" role="status">{{ t('knowledge_map.loading') }}</div>
+    <div id="error" role="alert" hidden><span>{{ t('knowledge_map.error') }}</span><button type="button" id="retry-layout">{{ t('knowledge_map.retry') }}</button></div>
+    <div class="map-caption"><span id="layout-name"></span><span id="selection-caption">{{ t('knowledge_map.help') }}</span></div>
+    <div class="zoom-tools" role="group" aria-label="{{ t('knowledge.zoom_controls') }}"><button type="button" id="zoom-out" aria-label="{{ t('knowledge.zoom_out') }}">−</button><button type="button" id="zoom-reset" aria-label="{{ t('knowledge.actual_size') }}">100%</button><button type="button" id="zoom-in" aria-label="{{ t('knowledge.zoom_in') }}">＋</button><span></span><button type="button" id="fit">{{ t('knowledge_map.fit') }}</button><button type="button" id="fullscreen">{{ t('knowledge_map.fullscreen') }}</button></div>
+    <div class="mini-wrap"><div>{{ t('knowledge_map.minimap') }}</div><svg id="minimap" aria-label="{{ t('knowledge_map.minimap_aria') }}" role="img"><g class="mini-nodes"></g><rect class="mini-view"/></svg></div>
+    <div class="legend" aria-label="{{ t('common.knowledge_level') }}">{% for value,label in level_labels.items() %}<span><i class="{{ value }}"></i>{{ label }}</span>{% endfor %}</div>
+  </div>
+  <div class="map-fallback" id="graph-fallback"><p>{{ t('knowledge_map.fallback') }}</p><ul>{% for node in graph.nodes %}<li><a class="knowledge-fallback-link" href="{{ node.href }}">{{ node.title }}</a></li>{% endfor %}</ul></div>
+  {% else %}
+  <div class="graph-empty"><span class="graph-empty-symbol" aria-hidden="true">◇</span><h3>{{ t('knowledge.graph_empty_title') }}</h3><p>{{ t('knowledge.graph_empty_desc') }}</p><a class="button primary-button" href="/knowledge/new">{{ t('knowledge.add') }}</a></div>
+  {% endif %}
+</section>

@@ -1,0 +1,110 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "avoid": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Avoid"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "preference_rule",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "instruction": {
+      "minLength": 1,
+      "title": "Instruction",
+      "type": "string"
+    },
+    "pack_id": {
+      "title": "Pack Id",
+      "type": "string"
+    },
+    "rationale": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rationale"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.preference-rule/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "strength": {
+      "enum": [
+        "required",
+        "preferred",
+        "avoid"
+      ],
+      "title": "Strength",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "when": {
+      "title": "When",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "pack_id",
+    "strength",
+    "when",
+    "instruction"
+  ],
+  "title": "PreferenceRule",
+  "type": "object"
+}

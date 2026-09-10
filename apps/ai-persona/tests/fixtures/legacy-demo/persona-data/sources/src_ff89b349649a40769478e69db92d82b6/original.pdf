@@ -1,0 +1,145 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document (opensource)
+1 0 obj
+<<
+/F1 2 0 R /F2 3 0 R
+>>
+endobj
+2 0 obj
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
+endobj
+3 0 obj
+<<
+/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
+endobj
+4 0 obj
+<<
+/Contents 8 0 R /MediaBox [ 0 0 612 792 ] /Parent 7 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
+>>
+endobj
+5 0 obj
+<<
+/PageMode /UseNone /Pages 7 0 R /Type /Catalog
+>>
+endobj
+6 0 obj
+<<
+/Author (PersonaStudio fixture generator) /CreationDate (D:20000101000000+00'00') /Creator (anonymous) /Keywords () /ModDate (D:20000101000000+00'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+  /Subject (Original fictional test material distributed under the MIT license) /Title (Synthetic Transport Study) /Trapped /False
+>>
+endobj
+7 0 obj
+<<
+/Count 1 /Kids [ 4 0 R ] /Type /Pages
+>>
+endobj
+8 0 obj
+<<
+/Length 2853
+>>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+.090196 .243137 .219608 rg
+n 0 632 612 160 re f*
+.717647 .870588 .815686 rg
+BT /F2 9 Tf 10.8 TL ET
+BT 1 0 0 1 48 740 Tm (PERSONASTUDIO  /  PUBLIC TEST FIXTURE) Tj T* ET
+1 1 1 rg
+BT /F2 25 Tf 30 TL ET
+BT 1 0 0 1 48 701 Tm (Synthetic Transport Study) Tj T* ET
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 48 674 Tm (Original sample material. No real authors, subjects, or research results.) Tj T* ET
+.090196 .243137 .219608 rg
+BT /F2 13 Tf 15.6 TL ET
+BT 1 0 0 1 48 594 Tm (1. Purpose) Tj T* ET
+.156863 .211765 .196078 rg
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 48 570 Tm (This fictional note provides a small PDF for testing material imports, source integrity, text extraction, and) Tj T* ET
+BT 1 0 0 1 48 554 Tm (human review. It is not a scientific publication.) Tj T* ET
+.090196 .243137 .219608 rg
+BT /F2 13 Tf 15.6 TL ET
+BT 1 0 0 1 48 512 Tm (2. Toy model) Tj T* ET
+.156863 .211765 .196078 rg
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 48 488 Tm (Consider a synthetic chain with twelve sites. A matrix product state \(MPS\) is used only as a sample) Tj T* ET
+BT 1 0 0 1 48 472 Tm (method label. All values below are invented and make no claim about a physical system or a person's) Tj T* ET
+BT 1 0 0 1 48 456 Tm (knowledge.) Tj T* ET
+.090196 .243137 .219608 rg
+BT /F2 13 Tf 15.6 TL ET
+BT 1 0 0 1 48 414 Tm (3. Example observations) Tj T* ET
+.917647 .952941 .937255 rg
+n 48 375 516 29 re f*
+.156863 .211765 .196078 rg
+BT /F2 10 Tf 12 TL ET
+BT 1 0 0 1 60 384 Tm (Step) Tj T* ET
+BT 1 0 0 1 160 384 Tm (Sample value) Tj T* ET
+BT 1 0 0 1 300 384 Tm (Purpose) Tj T* ET
+.960784 .972549 .964706 rg
+n 48 344 516 29 re f*
+.156863 .211765 .196078 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 60 353 Tm (0) Tj T* ET
+BT 1 0 0 1 160 353 Tm (0.00) Tj T* ET
+BT 1 0 0 1 300 353 Tm (Initial placeholder) Tj T* ET
+.960784 .972549 .964706 rg
+n 48 313 516 29 re f*
+.156863 .211765 .196078 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 60 322 Tm (1) Tj T* ET
+BT 1 0 0 1 160 322 Tm (0.25) Tj T* ET
+BT 1 0 0 1 300 322 Tm (Intermediate placeholder) Tj T* ET
+.960784 .972549 .964706 rg
+n 48 282 516 29 re f*
+.156863 .211765 .196078 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 60 291 Tm (2) Tj T* ET
+BT 1 0 0 1 160 291 Tm (0.50) Tj T* ET
+BT 1 0 0 1 300 291 Tm (Final placeholder) Tj T* ET
+.090196 .243137 .219608 rg
+BT /F2 13 Tf 15.6 TL ET
+BT 1 0 0 1 48 234 Tm (4. Reading check) Tj T* ET
+.156863 .211765 .196078 rg
+BT /F1 11 Tf 13.2 TL ET
+BT 1 0 0 1 48 210 Tm (The sample can be linked to the fixture's MPS knowledge node. The relationship tests application) Tj T* ET
+BT 1 0 0 1 48 194 Tm (behavior; it does not represent real reading history.) Tj T* ET
+.819608 .866667 .839216 RG
+n 48 66 m 564 66 l S
+.32549 .4 .360784 rg
+BT /F1 9 Tf 10.8 TL ET
+BT 1 0 0 1 48 46 Tm (Created for PersonaStudio tests. MIT license. Entirely fictional.) Tj T* ET
+BT 1 0 0 1 546.486 46 Tm (1 / 1) Tj T* ET
+ 
+endstream
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000061 00000 n 
+0000000102 00000 n 
+0000000209 00000 n 
+0000000321 00000 n 
+0000000514 00000 n 
+0000000582 00000 n 
+0000000937 00000 n 
+0000000996 00000 n 
+trailer
+<<
+/ID 
+[<6f32d2dc0593572146f51c3db590334d><6f32d2dc0593572146f51c3db590334d>]
+% ReportLab generated PDF document -- digest (opensource)
+
+/Info 6 0 R
+/Root 5 0 R
+/Size 9
+>>
+startxref
+3900
+%%EOF

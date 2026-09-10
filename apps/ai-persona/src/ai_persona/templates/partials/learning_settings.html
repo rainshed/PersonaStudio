@@ -1,0 +1,14 @@
+<section class="learning-settings-group"><div class="settings-section-head"><h2>{{ ui('对话自动学习') }}</h2><span id="learning-mode-status"></span></div>
+<p class="settings-note">{{ ui('从日常对话中发现长期信息，生成待审核的知识、偏好与关系候选。') }}</p>
+<form id="learning-settings" class="learning-form">
+<label>{{ ui('运行方式') }}<select name="learning_mode"><option value="off">{{ ui('关闭') }}</option><option value="capture">{{ ui('仅接收') }}</option><option value="learn">{{ ui('自动学习') }}</option></select></label>
+<p id="learning-mode-help" class="settings-note"></p>
+<label hidden><input type="checkbox" name="enabled"></label><label hidden><input type="checkbox" name="allow_model_calls"></label>
+<fieldset class="settings-choice-group"><legend>{{ ui('学习哪些内容') }}</legend><div class="learning-actions">
+<label class="learning-check"><input type="checkbox" name="knowledge_node">{{ ui('知识') }}</label><label class="learning-check"><input type="checkbox" name="preference">{{ ui('偏好') }}</label><label class="learning-check"><input type="checkbox" name="relation">{{ ui('关系') }}</label></div></fieldset>
+<label>{{ ui('每日调用上限') }}<input name="daily_calls" type="number" min="1" max="10000" required></label>
+<details class="settings-advanced"><summary>{{ ui('高级设置') }}</summary><label>{{ ui('每日 token 预算') }}<input name="daily_tokens" type="number" min="1000" max="10000000" required></label><p class="settings-note">{{ ui('分析上下文用于短期处理与恢复，不作为聊天原始证据附在候选中。') }}</p></details>
+<div class="settings-dependency"><div data-model-task="conversation_signal" data-model-label="对话学习判定"></div><div data-model-task="conversation_learning" data-model-label="对话学习生成"></div></div>
+<p class="settings-note" id="learning-source-summary"></p><a href="/settings?tab=sources">{{ ui('管理应用接入') }} →</a>
+<div class="settings-actions"><button type="button" class="button ghost" data-settings-revert="learning-settings">{{ ui('撤销修改') }}</button><button class="button primary-button" type="submit">{{ ui('保存学习设置') }}</button></div>
+</form></section>

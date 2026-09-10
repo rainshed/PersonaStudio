@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}{{ t('preferences.page_title') }}{% endblock %}
+{% macro record_actions(record, collection, edit_url) %}
+<div class="pw-record-actions">
+  <a href="{{ edit_url }}">{{ t('common.edit') }}</a>
+  <details class="pw-menu" data-record-menu>
+    <summary aria-label="{{ t('preferences.more_actions') }}"><span aria-hidden="true">···</span></summary>
+    <div class="pw-menu-content">
+      {% if record.status != 'archived' %}
+      <form method="post" action="/preferences/{{ collection }}/{{ record.id }}/state-proposals"><input type="hidden" name="return_to" value="{{ current_view_url }}"><input type="hidden" name="status" value="{{ 'active' if record.status == 'paused' else 'paused' }}"><button type="submit">{{ t('preferences.resume') if record.status == 'paused' else t('preferences.pause') }}</button></form>
+      <form method="post" action="/preferences/{{ collection }}/{{ record.id }}/archive-proposals"><input type="hidden" name="return_to" value="{{ current_view_url }}"><button type="submit">{{ t('common.archive') }}</button></form>
+      {% else %}
+      <form method="post" action="/preferences/{{ collection }}/{{ record.id }}/state-proposals"><input type="hidden" name="return_to" value="{{ current_view_url }}"><input type="hidden" name="status" value="active"><button type="submit">{{ t('common.restore') }}</button></form>
+      {% endif %}
+    </div>
+  </details>
+</div>
+{% endmacro %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', path='/preference-workspace.css').path }}?v=20260908.1">
+<div class="preference-workspace" data-preference-workspace data-selected-context="{{ selected_context }}">
+  <header class="pw-page-head"><div><h1>{{ t('preferences.title') }}</h1><p>{{ t('preferences.workspace_lead') }}</p></div><a class="pw-link" href="/inbox?view=all&amp;type=activation">{{ '应用记录与反馈' if locale == 'zh-CN' else 'Application history & feedback' }}</a><a class="pw-link" href="/settings?tab=capabilities">{{ '应用设置' if locale == 'zh-CN' else 'Application settings' }}</a><a class="pw-link" href="/preferences/contexts/new">＋ {{ t('preferences.add_context') }}</a><a class="pw-link" href="/preferences/try">{{ '试判场景（调用模型）' if locale == 'zh-CN' else 'Try scenes (calls model)' }}</a></header>
+  <nav class="pw-context-nav" aria-label="{{ t('preferences.choose_scene') }}">
+    {% if scene_choices|length > 6 %}
+    <details class="pw-scene-picker" data-scene-picker><summary>{{ workspace_title }} <span aria-hidden="true">⌄</span></summary><div class="pw-scene-options"><input type="search" data-scene-search aria-label="{{ t('preferences.search_scenes') }}" placeholder="{{ t('preferences.search_scenes') }}">{% for choice in scene_choices %}<a href="{{ choice.url }}" data-scene-choice {% if choice.selected %}aria-current="page"{% endif %}>{{ choice.name }}{% if choice.status == 'archived' %}<small>{{ preference_status_labels['archived'] }}</small>{% endif %}</a>{% endfor %}<p data-no-scenes hidden>{{ t('preferences.no_matching_scenes') }}</p></div></details>
+    {% else %}
+      {% for choice in scene_choices %}<a class="pw-context-tab {% if choice.selected %}is-selected{% endif %}" href="{{ choice.url }}" {% if choice.selected %}aria-current="page"{% endif %}>{{ choice.name }}{% if choice.status == 'archived' %}<small>{{ preference_status_labels['archived'] }}</small>{% endif %}</a>{% endfor %}
+    {% endif %}
+    <a class="pw-all-link {% if selected_context == 'all' %}is-selected{% endif %}" href="{{ all_preferences_url }}" {% if selected_context == 'all' %}aria-current="page"{% endif %}>{{ t('preferences.all_preferences') }}</a>
+  </nav>
+  <header class="pw-scene-head"><div><h2>{{ workspace_title }}{% if selected_scene and selected_scene.status == 'archived' %}<span class="pw-status">{{ preference_status_labels['archived'] }}</span>{% endif %}</h2>{% if workspace_description %}<p>{{ workspace_description }}</p>{% endif %}</div>{% if selected_scene %}<a class="pw-link" href="{{ edit_context_url }}">{{ t('preference_form.edit_context') }}</a>{% endif %}</header>
+  <div class="pw-columns {% if not show_samples %}pw-single-column{% endif %}">
+    {% if selected_scene %}<div class="studio-scene-actions"><a href="/inbox?view=all&amp;type=activation&amp;context={{ selected_scene.key }}">{{ '此场景的判断与反馈' if locale == 'zh-CN' else 'Decisions for this scene' }}</a><a href="/preferences/try?context={{ selected_scene.id }}">{{ '试判此场景（仍使用完整目录）' if locale == 'zh-CN' else 'Try this scene with the full catalog' }}</a></div>{% endif %}
+    <section class="pw-rules-column" aria-labelledby="pw-rule-heading">
+      <div class="pw-section-head">
+        <h3 id="pw-rule-heading">{{ t('preferences.shared_preferences') if selected_context == 'global' else t('preferences.applicable_preferences') }} <span>{{ rule_count }}</span></h3>
+        <div class="pw-section-actions">
+          <details class="pw-filters"><summary>{{ t('preferences.filter') }}{% if has_filters %}<span class="pw-filter-dot" aria-hidden="true"></span>{% endif %}</summary>
+            <form method="get" action="/preferences" class="pw-filter-content"><input type="hidden" name="context" value="{{ selected_context }}"><label>{{ t('preferences.search_preferences') }}<input type="search" name="q" value="{{ filters.q }}" placeholder="{{ t('preferences.search_placeholder') }}"></label><label>{{ t('preference_form.behavior') }}<select name="behavior"><option value="">{{ t('preferences.all_behaviors') }}</option>{% for value,label in behavior_labels.items() %}<option value="{{ value }}" {% if filters.behavior == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label>{{ t('preferences.content_status') }}<select name="status">{% for value,label in preference_status_labels.items() %}<option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}<option value="current" {% if filters.status == 'current' %}selected{% endif %}>{{ t('preferences.unarchived') }}</option></select></label><div class="pw-filter-buttons"><button class="pw-primary" type="submit">{{ t('preferences.apply_filters') }}</button><a class="pw-link" href="{{ clear_filters_url }}">{{ t('preferences.clear_filters') }}</a></div></form>
+          </details>
+          {% if can_add %}<a class="pw-primary" href="{{ create_preference_url }}">＋ {{ t('preferences.add_preference') }}</a>{% endif %}
+        </div>
+      </div>
+      {% if has_filters %}<div class="pw-applied-filters">{% if filters.q %}<span>“{{ filters.q }}”</span>{% endif %}{% if filters.behavior %}<span>{{ behavior_labels[filters.behavior] }}</span>{% endif %}{% if filters.status != 'active' %}<span>{{ t('preferences.unarchived') if filters.status == 'current' else preference_status_labels[filters.status] }}</span>{% endif %}<a href="{{ clear_filters_url }}">{{ t('preferences.clear_filters') }}</a></div>{% endif %}
+      {% for group in rule_groups %}
+      <section class="pw-rule-group {% if group.shared %}pw-shared-group{% endif %}" data-rule-group="{{ 'global' if group.shared else 'contexts' }}">
+        {% if group.show_title %}<h4>{{ group.title }}{% if group.shared %}<small>{{ t('preferences.shared_help') }}</small>{% endif %}</h4>{% endif %}
+        <div class="pw-rule-list">
+          {% for item in group['items'] %}{% set preference = item.preference %}
+          <article class="pw-rule" data-preference-id="{{ preference.id }}">
+            <div class="pw-rule-top"><div class="pw-badges"><span class="pw-behavior {{ preference.behavior }}">{{ behavior_labels[preference.behavior] }}</span>{% if preference.status != 'active' %}<span class="pw-status">{{ preference_status_labels[preference.status] }}</span>{% endif %}{% if selected_context == 'all' and not group.shared %}<span class="pw-scope">{{ item.context_names|join(' · ') }}</span>{% endif %}</div>{{ record_actions(preference, 'preferences', item.edit_url) }}</div>
+            <p class="pw-instruction">{{ preference.instruction }}</p>
+            {% if preference.condition %}<div class="pw-condition"><span>{{ t('preferences.condition') }}</span><p>{{ preference.condition }}</p></div>{% endif %}
+            {% if preference.rationale or item.loaded.body %}<details class="pw-rule-details"><summary>{{ t('preferences.more_details') }}</summary>{% if preference.rationale %}<div><span>{{ t('preferences.rationale') }}</span><p>{{ preference.rationale }}</p></div>{% endif %}{% if item.loaded.body %}<div><span>{{ t('preferences.additional_notes') }}</span><p>{{ item.loaded.body }}</p></div>{% endif %}</details>{% endif %}
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+      {% else %}
+        <div class="pw-empty"><p>{{ t('preferences.no_matching_preferences') if has_filters or filters.status != 'active' else t('preferences.no_scene_preferences') }}</p>{% if has_filters %}<a class="pw-link" href="{{ clear_filters_url }}">{{ t('preferences.clear_filters') }}</a>{% elif can_add %}<a class="pw-link" href="{{ create_preference_url }}">{{ t('preferences.add_preference') }}</a>{% endif %}</div>
+      {% endfor %}
+    </section>
+    {% if show_samples %}
+    <aside class="pw-samples-column" aria-labelledby="pw-samples-heading">
+      <div class="pw-section-head"><h3 id="pw-samples-heading">{{ t('preferences.reference') }} <span>{{ sample_items|length }}</span></h3>{% if can_add %}<a class="pw-link" href="{{ create_example_url }}">＋ {{ t('preferences.add_sample_short') }}</a>{% endif %}</div>
+      {% for item in sample_items %}{% set sample = item.example %}
+      <article class="pw-sample" data-sample-id="{{ sample.id }}">
+        {% if item.is_image %}<a class="pw-image-preview" href="/preferences/examples/{{ sample.id }}/file" target="_blank" rel="noopener"><img src="/preferences/examples/{{ sample.id }}/file" alt="{{ sample.title }}" loading="lazy"></a>{% endif %}
+        <div class="pw-file-heading"><span class="pw-file-icon">{{ t('sample_upload.folder_label') if item.is_folder else item.file_type }}</span><div><h4>{{ sample.title }}</h4><span class="pw-sample-type {{ sample.example_type }}">{{ example_type_labels[sample.example_type] }}</span>{% if sample.status != 'active' %}<span class="pw-status">{{ preference_status_labels[sample.status] }}</span>{% endif %}</div></div>
+        <p class="pw-file-name">{{ item.file_name }}{% if item.is_folder %} · {{ t('sample_upload.count', count=item.file_count) }}{% endif %}</p>
+        {% if selected_context == 'all' %}<p class="pw-file-scope">{{ item.context_names|join(' · ') }}</p>{% endif %}
+        {% if sample.condition %}<p class="pw-sample-condition"><span>{{ t('preferences.reference_when') }}</span>{{ sample.condition }}</p>{% endif %}
+        {% if item.is_folder %}<a class="pw-file-open" href="{{ item.browse_url }}">{{ t('sample_upload.browse') }} <span aria-hidden="true">→</span></a>{% else %}<a class="pw-file-open" href="/preferences/examples/{{ sample.id }}/file" target="_blank" rel="noopener">{{ t('preferences.open_file') }} <span aria-hidden="true">↗</span></a>{% endif %}
+        <details class="pw-file-location"><summary>{{ t('sample_upload.folder_location') if item.is_folder else t('preferences.file_location') }}</summary><input id="pw-path-{{ sample.id }}" value="{{ item.file_path }}" readonly aria-label="{{ t('sample_upload.folder_path') if item.is_folder else t('preferences.local_path') }}"><button type="button" class="pw-copy" data-copy-path="pw-path-{{ sample.id }}" data-copied-label="{{ t('preferences.path_copied') }}" data-copy-fallback="{{ t('preferences.copy_manually') }}">{{ t('preferences.copy_path') }}</button><span class="pw-copy-status" aria-live="polite"></span></details>
+        {% if sample.reasons %}<details class="pw-sample-reasons"><summary>{{ t('preferences.sample_reasons') }}</summary><ul>{% for reason in sample.reasons %}<li>{{ reason }}</li>{% endfor %}</ul></details>{% endif %}
+        <div class="pw-sample-actions">{{ record_actions(sample, 'examples', item.edit_url) }}</div>
+      </article>
+      {% else %}<p class="pw-samples-empty">{{ t('preferences.no_matching_samples') if filters.status != 'active' else t('preferences.no_examples') }}</p>{% endfor %}
+    </aside>
+    {% endif %}
+  </div>
+</div>
+<script src="{{ url_for('static', path='/preference-workspace.js').path }}?v=20260908.1" defer></script>
+{% endblock %}

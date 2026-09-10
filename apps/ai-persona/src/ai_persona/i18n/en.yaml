@@ -1,0 +1,977 @@
+meta:
+  locale_name: English
+  other_locale_name: 中文
+common:
+  app_home: AI Persona Studio home
+  main_navigation: Main navigation
+  dashboard: Overview
+  knowledge: Knowledge
+  courses: Courses
+  materials: Materials
+  preferences: Preferences
+  review: Review
+  data_connected: Data connected
+  language: Language
+  switch_language: 切换到中文
+  filter: Filter
+  search: Search
+  search_name_alias: Search names or aliases…
+  search_name_alias_summary: "Search names, aliases, or content…"
+  knowledge_level: "Mastery level"
+  all_levels: All levels
+  readonly: Read only
+  required: Required
+  optional: Optional
+  optional_details: Optional details
+  edit: Edit
+  archive: "Archive"
+  restore: "Restore"
+  cancel: Cancel
+  tags: Tags
+  no_tags: No tags
+  no_summary: "No content summary yet."
+  unknown: Not provided
+  status: Status
+  record: Record
+  id: ID
+  revision: Record revision
+  updated_at: Last updated
+  content_hash: Content hash
+  current_value: Current value
+  suggested_value: Suggested value
+  user: User
+  you: You
+  ai: AI
+  items: "{count} items"
+  files: "{count} files"
+  relationships: Relationships
+  source: Source
+  original: Source
+  open: Open
+  back: Back
+  breadcrumb: Breadcrumb
+  add: Add
+  create: Create
+  import: Import
+  save: Save
+  reason: "Note (optional)"
+  proposal_reason: "Save changes"
+  preview_proposal: "Save"
+  protected: "Saved changes take effect immediately · History retained"
+  line_item: One per line
+  choose: Select…
+  notes: Notes
+  summary: "Content summary"
+  no_evidence: No linked evidence.
+  evidence: Evidence
+  add_note: "Add a note (optional)"
+  note: "Note"
+  note_placeholder: "Add context if helpful, or leave this blank."
+  note_help: "Changes are recorded automatically. No explanation is required."
+dashboard:
+  page_title: Overview · AI Persona
+  heading_before: Good morning. Here is your
+  heading_emphasis: knowledge map
+  lead: "This is what AI currently knows about you. Your saves take effect immediately; AI suggestions require review. All changes are traceable."
+  current_revision: "Current persona revision {revision}"
+  empty_title: This persona is empty
+  empty_lead: "Start with a knowledge item or material. You can add your knowledge level later. Your saves take effect immediately."
+  add_first_knowledge: Add first knowledge item
+  add_course: Add course
+  import_material: Import material
+  knowledge_assets: Knowledge assets
+  asset_count: knowledge items, courses, and materials
+  view_all: View all
+  proficient: Proficient
+  high_interest: High interest
+  interest_count: topics of sustained interest
+  pending_review: Pending review
+  pending_message: changes need your decision
+  all_processed: All changes processed
+  enter_review: Open review
+  depth_title: Knowledge depth
+  browse_knowledge: Browse knowledge
+  proficient_desc: Can understand and apply independently
+  familiar_desc: Understands the main ideas
+  aware_desc: Knows the basic outline
+  unspecified_desc: Not yet set; can be added later
+  level_note: Proficiency does not propagate through the knowledge hierarchy; every assessment has its own evidence.
+  inbox: Review inbox
+  changes: "{count} changes"
+  process_all: Process all pending items
+  inbox_clear: Inbox is clear
+  inbox_clear_desc: New manual edits or AI suggestions will appear here first.
+  composition: Persona composition
+  knowledge_nodes: Knowledge concepts
+  relations: Relations
+  sources: Sources
+  preferences: Preferences
+  recent_releases: Recent releases
+  release_fallback: Published a set of persona changes
+knowledge:
+  page_title: Knowledge · AI Persona
+  title: Knowledge Library
+  lead: Browse and maintain the structured concepts and hierarchy AI understands about you.
+  view_graph: View knowledge graph
+  add: Add knowledge
+  graph_title: Concept hierarchy
+  graph_note: "Expand branches to explore concepts together with their related methods."
+  graph_aria: Knowledge concept map browsable by interest and relation
+  interest_legend: "Interest"
+  relation_filters: Show relations
+  graph_help: "Select to preview · Use child counts to expand · Drag to explore"
+  view_record: "View {title}"
+  matches: matching items
+  empty_title: No matching items
+  empty_desc: Try changing the search text or filters.
+  description: "Knowledge explanation"
+  description_help: "Explain what this concept is, which problem it solves, and where it applies."
+  description_placeholder: "For example: Krylov subspace methods build a smaller subspace to approximate solutions of large linear systems or matrix functions."
+  no_description: "No knowledge explanation yet."
+  personal_notes: "Personal notes"
+  browse_list: "Browse list"
+  concept_count: "concepts"
+  connection_count: "relations"
+  graph_search: "Find a concept or alias…"
+  graph_group: "Knowledge group"
+  all_groups: "All groups"
+  expand_graph: "Expand / collapse canvas"
+  search_matches: "matches · Enter to find next"
+  graph_no_matches: "No matching concepts. Try another keyword."
+  zoom_controls: "Canvas zoom"
+  zoom_in: "Zoom in"
+  zoom_out: "Zoom out"
+  actual_size: "Reset to 100%"
+  fit_graph: "Fit view"
+  node_preview: "Concept preview"
+  close_preview: "Close preview"
+  open_details: "Open full details"
+  direct_connections: "Direct connections"
+  no_connections: "This concept has no direct connections yet."
+  graph_empty_title: "Start connecting your knowledge"
+  graph_empty_desc: "Add your first concept and grow your personal knowledge map."
+  graph_no_script: "Enable JavaScript for search, zoom and previews. You can still scroll and open any concept."
+  list_title: "All knowledge"
+  list_note: "Find by name, content or proficiency"
+  view_mode: "Knowledge views"
+  map_view: "Map"
+  list_view: "List"
+  current_group: "In group"
+  total_concepts: "Total"
+  shown_count: "Visible"
+  folded_count: "Collapsed"
+  expand_all: "Expand all"
+  collapse_to_roots: "Show two levels"
+  children_count: "{count} children"
+  expand_branch: "Expand {count} children of {title}"
+  collapse_branch: "Collapse {count} children of {title}"
+  parents: "Broader concepts"
+  children: "Narrower concepts"
+  prerequisites: "Prerequisites"
+  dependents: "Depends on this"
+  applications: "Application contexts"
+  appliedConcepts: "Concepts applied here"
+  related: "Related concepts"
+  path_highlighted: "Ancestor paths highlighted"
+  relation_settings: "Relations"
+  scope_note: "All concepts in this group, including collapsed branches"
+  children_count_one: "{count} child"
+  expand_branch_one: "Expand {count} child of {title}"
+  collapse_branch_one: "Collapse {count} child of {title}"
+  hierarchy_note: "This tree follows broader/narrower relationships. Applications, dependencies and related concepts can span groups."
+  all_groups_note: "Each hierarchy has its own space. Select a concept to see connections across groups."
+  cross_group: "Connected groups"
+  jump_group: "Go to group"
+  back_group: "Back to"
+  selection_relations_note: "Selecting a concept temporarily shows its direct connections on the canvas."
+  contextual_concepts: "Related methods & concepts"
+  related_group_note: "Organized by existing application, dependency and related-concept relationships."
+discipline_tags:
+  all: All disciplines
+  filter_label: Filter by discipline tag
+  direct_help: Tag changes take effect immediately without review.
+  add_inline: Add a new tag
+  new_placeholder: For example, Mathematics
+  new_help: Enter one new name. Saving creates and selects it automatically.
+  save: Save tags
+  saved: Tags saved immediately
+  preserved_help: These historical tags will be preserved but cannot be added to other records.
+courses:
+  page_title: Course Library
+  lead: Browse your courses by proficiency, interest, and tags.
+  add: Add course
+  description: Course description
+  description_help: Briefly describe the course topic, goals, or main content.
+  description_placeholder: "For example: An introduction to the core concepts and methods of statistical physics."
+  no_description: No course description yet.
+  syllabus: Course syllabus
+  syllabus_help: Organize the course by chapter, module, or week.
+  syllabus_placeholder: "For example:\nChapter 1 Thermodynamic foundations\nChapter 2 Ensemble theory\nChapter 3 Phase transitions"
+  no_syllabus: No course syllabus yet.
+materials:
+  page_title: Materials · AI Persona
+  title: Material Library
+  lead: Materials you have read or authored, with separate understanding, preference, and knowledge connections.
+  import: Import material
+  search_placeholder: Search titles, authors, summaries, or knowledge connections…
+  all_types: All types
+  understanding: Understanding
+  preference: Preference
+  all_preferences: All preferences
+  relationship_to_me: My relationship
+  all_relationships: All relationships
+  related_knowledge: Related knowledge
+  all_knowledge: All knowledge
+  knowledge_role: Knowledge role
+  all_roles: All roles
+  importance: Importance
+  all_importance: All importance levels
+  all_tags: All tags
+  active: Active
+  archived: Archived
+  count: materials
+  other_connections: "{count} more connections"
+  source_saved: Source saved
+  empty_title: No matching materials
+  empty_desc: Try changing the search text or filters.
+  title_short: Materials
+  all_understanding: All understanding levels
+  all_user_relationships: All relationships
+  knowledge_domain: Knowledge area
+  all_domains: All knowledge areas
+  relation_importance: Relationship importance
+  current: Current materials
+detail:
+  edit_record: Edit this item
+  interest_level: Interest level
+  scope: "Scope of mastery"
+  connections: Knowledge relationships
+  connection_count: "{count} relationships"
+  this_record: This item
+  remove: Remove
+  propose_remove: "Remove this relationship"
+  no_connections: No knowledge relationships yet.
+  add_connection: Add relationship
+  batch_connection_help: Each row is a separate relationship and can use a different relationship type.
+  add_another_relation: Add another relationship
+  remove_relation_row: Remove this relationship
+  target_knowledge: Target knowledge
+  search_knowledge_placeholder: Search by name, alias, or keyword
+  select_knowledge_error: Select a knowledge concept from the suggestions.
+  no_knowledge_matches: No matching knowledge concepts
+  knowledge_search_error: Knowledge concepts could not be loaded. Try again.
+  relation_exists: Relationship exists
+  relation_selected: Already selected
+  reason_placeholder: "For example: add the dependency between these concepts."
+  preview_relation: "Save relationship"
+  preview_relations: "Save relationships"
+record_form:
+  create_title: "Create {object}"
+  edit_title: "Edit {object}"
+  lead: "Save to confirm your changes. They take effect immediately and remain in the change history."
+  basics: Basic information
+  basics_desc: "Names and aliases help the system recognize the same {object}."
+  name: Name
+  aliases: Aliases
+  semantic_role: Semantic role
+  cognition: Knowledge state
+  cognition_desc: Proficiency and interest are independent and do not propagate through knowledge relationships.
+  semantic_content: "Knowledge explanation and personal notes"
+  semantic_desc: "Explain the concept itself, then record your understanding and experience separately."
+  course_content: Course content
+  course_content_desc: The description and syllabus are optional and can be added later.
+  markdown_note: Markdown source supported
+  tags_desc: Select existing tags for structured filtering.
+  why_change: "Why {action}?"
+  reason_placeholder: Record why this change is needed for future review.
+  flow_create: "Edit content"
+  flow_create_desc: "Enter the information you want to save"
+  flow_review: "Save to confirm"
+  flow_review_desc: "Saving confirms your changes"
+  flow_publish: "Publish changes"
+  flow_publish_desc: "Update your knowledge base"
+material_detail:
+  edit: Edit material
+  replace_source: Replace source
+  propose_restore: "Restore material"
+  understanding: Understanding
+  reading_scope: Reading and understanding boundary
+  my_review: My assessment
+  no_review: No detailed assessment yet.
+  knowledge_connections: Knowledge connections
+  source_evidence: "{count} source references"
+  view_in_source: View in source
+  historical_source: "Historical source: {source_id}"
+  evidence_located: Source evidence located
+  evidence_not_located: No source evidence located
+  propose_remove: "Remove relationship"
+  no_connections: No knowledge connections yet.
+  pending_connections: Suggested connections pending review
+  view_proposal: View proposal
+  add_connection: Add knowledge connection
+  batch_connection_help: Each row is a separate connection with its own role, importance, and explanation.
+  knowledge_concept: Knowledge concept
+  role_in_material: Role in material
+  statement_placeholder: Explain how this knowledge appears in the material.
+  evidence_optional: Source evidence
+  shared_evidence_help: Selected evidence applies to every knowledge connection added in this batch.
+  connection_reason_placeholder: "For example: add the paper's core method."
+  personal_notes: Personal notes
+  bibliography: Bibliography
+  authors: Authors
+  abstract: Source abstract
+  published_at: Published
+  venue: Venue
+  language: Language
+  saved: Saved
+  source_link: Source link
+  original_file: Original file
+  imported_at: Imported
+  open_source: Open source
+  read_extracted: Read extracted text
+  view_manifest: View source manifest
+  release_history: Release history
+material_form:
+  import_title: Import new material
+  edit_title: Edit material
+  import_lead: Save the source and describe your relationship with this material.
+  edit_lead: "Save to update the record immediately and retain its change history."
+  separated: Source and official record are separate
+  save_source: Save source
+  save_source_desc: "Choose an import method. Saving publishes the source together with the material record."
+  upload: Upload file
+  upload_formats: PDF, Markdown, TXT, or HTML
+  paste: Paste source
+  paste_desc: Preserve as Markdown
+  from_url: Import from URL
+  from_url_desc: Use a URL, arXiv ID, or DOI
+  source_file: Source file
+  paste_placeholder: Complete this when Paste source is selected.
+  source_url: Source URL
+  identifier_optional: Optional when an arXiv ID or DOI is provided
+  basics_desc: Normalized information supports reading, filtering, and deduplication.
+  type: Material type
+  title: Title
+  authors_desc: One per line, in display order
+  venue: Journal or venue
+  canonical_url: Canonical URL
+  reading: My reading
+  reading_desc: Co-authored may be combined with one reading state; understanding and preference are independent.
+  authored_extra: Can coexist with a reading state
+  reading_one: Choose one reading state
+  summary_review: Summary and assessment
+  summary_review_desc: Record what this material is and why you like or dislike it.
+  preference_reason: Preference reasons
+  preference_format: One “aspect | specific reason” per line
+  preference_placeholder: Method | I like the numerical approach it uses
+  available_aspects: Available aspects
+  personal_notes: Personal notes
+  markdown: Markdown supported
+  tags_desc: Tags support flexible filtering; knowledge connections are maintained after publication.
+  why_change: "Why {action}?"
+  reason_placeholder: Record why this change is needed.
+  immutable_source: Preserve immutable source and hash
+  review_fields: Check all structured fields
+  publish: Publish
+  publish_desc: Update persona revision and projections
+  replace_separately: Replace source separately
+material_import:
+  page_title: Import material · AI Persona
+  title: Import a material
+  lead: Provide an arXiv link or Markdown file. The system will first recognize bibliography, source abstract, and an editable Content summary field.
+  review_before_save: Review recognition before saving
+  could_not_recognize: Could not recognize this material
+  choose_source: Choose a material source
+  choose_source_desc: Two input types are currently supported, one material at a time.
+  arxiv_desc: Enter a paper link or ID
+  markdown_desc: Upload a .md or .markdown file
+  arxiv_label: arXiv link or ID
+  arxiv_help: Supports abs and pdf links as well as versioned IDs.
+  markdown_label: Markdown file
+  markdown_help: The original bytes are preserved; structured frontmatter takes precedence.
+  will_extract: Automatically recognizes
+  extract_fields: Title, authors, source abstract, date, venue, language, arXiv / DOI, and canonical URL
+  recognize: Recognize material
+  recognizing: Reading the source and metadata…
+  confirm: Confirm recognition
+  confirm_title: Confirm material information
+  confirm_lead: Source facts are prefilled. Decisions about you remain yours to select.
+  autofilled_fields: fields autofilled
+  review_fields: fields to review
+  could_not_create: "Could not save material"
+  recognition_warnings: Recognition notes
+  duplicate_title: Existing or similar material found
+  open_existing: Open existing material
+  open_original: Open original
+  source_facts: Check source facts
+  source_facts_desc: These fields come from the source or metadata, including bibliography and the source abstract. Add your own Content summary below if useful.
+  personal_judgments: Add decisions about me
+  personal_judgments_desc: Reading status has no default; understanding and preference default to Unspecified.
+  optional_desc: Content summary, reading scope, assessment, notes, and tags can all be added later.
+  version_update: Update existing material
+  version_update_desc: "This is version {version} of an existing paper. Saving updates source facts and text while preserving your reading, understanding, and preferences."
+  already_saved: Material already saved
+  already_saved_desc: Open the existing material to continue maintaining it without creating a duplicate.
+  ready_to_propose: "Confirm and save"
+  ready_desc: "Check the content above. Saving applies it immediately and retains the change history."
+  duplicate_confirm: I confirmed this is not the same material shown above
+  create_version_proposal: "Save version update"
+  cancel_import: Cancel this import
+  cancelled: Import cancelled and temporary files removed
+  expires_at: Temporary draft expires at
+  status:
+    autofilled: Autofilled
+    review_required: Review
+    missing: Not found
+    user_confirmed: Confirmed
+  source:
+    arxiv_metadata: arXiv metadata
+    markdown_frontmatter: Frontmatter
+    markdown_h1: Markdown H1
+    markdown_section: Markdown section
+    markdown_structure: Document structure
+    markdown_pattern: Body match
+    filename: Filename
+    language_detection: Language detection
+    derived_from_arxiv: Derived from arXiv ID
+    none: No source
+  duplicate:
+    exact: Same material
+    possible: Possible duplicate
+    newer_version: New version found
+    older_version: A newer version is saved
+relation_form:
+  title: Edit knowledge connection
+  lead: Change this knowledge item's role, importance, and description in the material.
+  independent_review: "Changes take effect on save"
+  endpoint_note: Endpoints cannot be changed directly. Remove this relationship and create a new one to use another concept.
+  evidence_desc: Link existing evidence. Source passage selection can be expanded later.
+  no_evidence: No evidence is currently available.
+  edit_reason: Reason for change
+  preview: "Save relationship changes"
+source:
+  extracted_title: Extracted source text
+  extracted_lead: This text comes from the official source, not the material's personal notes.
+  open_original: Open original file
+  create_evidence: Save a source passage as evidence
+  line_count: "{count} lines"
+  evidence_desc: "Select source lines using the numbers on the left. Saving makes the excerpt available as source evidence immediately."
+  start_line: Start line
+  end_line: End line
+  heading: Section heading
+  save_reason: Save reason
+  evidence_reason_placeholder: "For example: this passage directly describes the method used."
+  preview_evidence: "Save source evidence"
+  replace_title: Replace source
+  replace_lead: "The existing source is preserved. Saving points the material to the new source version."
+  old_retained: Previous version retained
+  current_source: Current source
+  choose_new: Choose new source
+  choose_method: Choose an import method.
+  keep_original: Preserve original file
+  save_markdown: Save as Markdown
+  snapshot: Download current snapshot
+  file: File
+  replace_reason: Reason for replacement
+  replace_reason_placeholder: "For example: replace it with the latest paper version."
+  preview_change: "Save source update"
+sample_upload:
+  content: "Upload content"
+  file: "Upload a file"
+  folder: "Upload a folder"
+  folder_label: "Folder"
+  choose_folder: "Choose a sample folder"
+  folder_help: "Preserves files and subfolders as a snapshot. Up to 500 files and 50 MB total; empty directories are not uploaded."
+  current_folder: "Current sample folder"
+  browse: "Browse files"
+  folder_location: "View folder location"
+  folder_path: "Local folder path"
+  count: "{count} files"
+  selected_files: "View selected files"
+  limit_error: "Upload up to 500 files, totaling no more than 50 MB."
+  reselect: "Your entries have been kept. Please select the file or folder again."
+  unsupported: "This browser cannot select folders. Use a browser that supports folder uploads."
+  back: "Back to my preferences"
+  download: "Download folder"
+preferences:
+  workspace_lead: Browse preferences and reference samples by context
+  choose_scene: Choose context
+  search_scenes: Search contexts
+  no_matching_scenes: No matching contexts
+  all_preferences: All preferences
+  global_description: Shared preferences that apply across all task contexts.
+  all_description: Browse and manage preferences and reference samples across contexts.
+  scene_preferences: Context preferences
+  shared_preferences: Shared preferences
+  applicable_preferences: Applicable preferences
+  shared_help: Apply to all tasks
+  more_actions: More actions
+  more_details: View rationale and additional notes
+  additional_notes: Additional notes
+  sample_reasons: Reference notes
+  content_status: Status of preferences and samples
+  unarchived: Not archived
+  apply_filters: Apply filters
+  search_preferences: Search preferences
+  no_matching_preferences: No preferences match these filters.
+  no_scene_preferences: No applicable preferences yet.
+  no_matching_samples: No reference samples match this status.
+  add_sample_short: Add
+  reference_when: When to reference
+  file_location: Show file location
+  local_path: Local file path
+  copy_path: Copy path
+  path_copied: Path copied
+  copy_manually: Path selected. Use your copy shortcut to copy it.
+  page_title: Preferences · AI Persona
+  title: My Preferences
+  lead: Manually record what AI must do, should try to do, or should avoid across your tasks.
+  add_preference: Add preference
+  add_context: Add context
+  add_example: Add reference sample
+  search_placeholder: Search preferences, conditions, or reasons
+  all_contexts: All scopes
+  all_behaviors: All types
+  current_status: Current
+  filter: Filter
+  clear_filters: Clear filters
+  global: All tasks
+  contexts_title: Preference contexts
+  contexts_lead: A context names a group of tasks and can own one or more reference sample files.
+  no_contexts: No custom contexts yet. You can create a global preference directly.
+  applies: Scope
+  condition: Condition
+  rationale: Rationale
+  always: Always
+  reference: Reference examples
+  no_examples: This context has no reference sample files yet.
+  open_file: Open file
+  pause: Pause
+  resume: Resume
+  empty_title: No preferences yet
+  empty_desc: Start with one important global preference, then add contexts and examples over time.
+preference_form:
+  context: Preference context
+  new_context: New preference context
+  edit_context: Edit preference context
+  context_editor_help: Define when this group of preferences applies.
+  required_group: Required
+  required_group_help: Name the context and describe when to use it.
+  optional_group: Optional
+  optional_group_help: Add examples and boundaries to help AI recognize the context.
+  name_placeholder: "For example: Academic note writing"
+  required_name: Enter a context name.
+  required_description: Describe when this context should be used.
+  example_number: "Typical request example {number}"
+  remove_example: "Remove example {number}"
+  add_example: Add example
+  single_example_placeholder: "For example: Turn this discussion into an academic note."
+  excludes_help: When should this context not apply? One situation per line. Optional.
+  excludes_placeholder: "For example: Only translating an abstract, without writing notes"
+  artifact_types_help: What does this context usually produce? One type per line. Optional.
+  artifact_types_placeholder: "For example: Academic notes"
+  save_hint: Saving applies changes and retains their history
+  save_context: Save context
+  preference: Preference
+  example: Reference sample
+  lead: "Saving applies your preferences immediately and retains the change history."
+  context_desc: Define a task context
+  context_desc_help: Use a clear name and description to define this group of tasks.
+  description: Description
+  description_help: Describe when this context should be used, including the applicable tasks and scope.
+  description_placeholder: "For example: write or substantially revise academic notes for me, including concept explanations, derivations, or analysis of research results."
+  key: Context key (optional)
+  key_help: A stable English identifier used by the API and agents. Leave blank to generate one.
+  activation: Activation conditions
+  activation_help: Optionally add artifact types and tasks that should not activate this context. Enter one item per line.
+  request_examples: Typical request examples
+  request_examples_help: How would you ask AI for this? Add one request per entry to illustrate your meaning. The wording does not need to match exactly.
+  request_examples_placeholder: "For example: turn this discussion into an academic note.\nPlease expand the derivations in these research notes."
+  artifact_types: Artifact types
+  excludes: When not to use
+  preference_content: Preference
+  preference_help: Start by stating what AI should do. You can add the condition and rationale later.
+  behavior: Behavior type
+  instruction: Instruction
+  instruction_placeholder: "For example: list the key evidence before giving a conclusion"
+  scope: Scope
+  global_scope: All tasks
+  contexts_scope: Selected contexts
+  choose_contexts: Select one or more contexts
+  no_contexts: No contexts yet. Create one first or use All tasks.
+  condition: Condition (optional)
+  condition_placeholder: "For example: when the user asks for a technical proposal"
+  rationale: Rationale (optional)
+  notes: Additional notes (optional)
+  sample_info: Example information
+  sample_help: Upload a file or folder worth following or avoiding, then link it to the task contexts where it applies.
+  sample_type: Example type
+  sample_file: Sample file
+  sample_file_help: Saves a snapshot, up to 50 MB. Create a new sample when its contents change.
+  current_file: Current sample file
+  reasons: Why it is useful (optional)
+  one_point_line: One point per line
+  related_contexts: Applicable contexts
+  related_contexts_help: A sample can belong to multiple task contexts.
+  why_action: "Why {action}?"
+  reason_placeholder: Record why this preference is changing.
+  flow_save: Save structured changes
+  flow_confirm: Confirm the content to save
+  flow_compile: "Take effect immediately"
+  flow_compile_desc: "Update saved preferences"
+review:
+  defer_note: Add a deferral note (optional)
+  page_title: Review · AI Persona
+  title: Change Control
+  lead: "AI suggestions take effect after your approval. Your manual saves apply immediately and appear in the history."
+  pending: Pending
+  awaiting: Awaiting decision
+  sorted: Sorted by last update
+  grouped: Grouped by ChangeSet
+  dependency_order: Dependency order
+  open_change_set: Review group
+  all_proposals: All review items
+  independent_proposals: Independent proposals
+  change_set: ChangeSet
+  change_set_history: ChangeSet review history
+  change_set_progress: "{pending} pending of {total} total"
+  field_changes: Field changes
+  confidence: Confidence
+  empty_title: No changes pending review
+  empty_desc: Start a maintenance action from Knowledge, Courses, Materials, or Preferences.
+  recent: Recently processed
+  ai_suggestion: AI suggestion
+  human_edit: Human edit
+  stale_title: This proposal is stale
+  stale_desc: The target changed after this proposal was created, so it cannot safely overwrite the record. Create a new proposal.
+  dependency_blocked_title: Review dependencies first
+  dependency_blocked_desc: "This change depends on {count} proposals that have not been accepted, so it cannot be published yet."
+  new_object: New object
+  staged_source: Staged source
+  staged: Staged
+  file_count: "{count} files"
+  no_preview: The original file is saved, but this format has no extracted text to preview here.
+  checks: Review notes
+  duplicates: "Possible duplicate items: {titles}"
+  decision: Review decision
+  accept: Accept and publish
+  edit_title: Confirm what to save
+  edit_help: "Edit the information below, then choose “Save and approve”. Only this item is approved; the original proposal and your edits are retained."
+  knowledge_level: "Mastery level"
+  edit_accept: "Save and approve"
+  edit_note: Review note (optional)
+  edit_note_placeholder: "For example: I have used this method, but only for one-dimensional systems."
+  no_tags: No tags are available yet.
+  choose_value: Select a value
+  original_proposal: View the original proposal and evidence
+  corrections: Human corrections during review
+  corrections_help: These changes compare the proposal's suggested values with the final confirmed values.
+  confirmed_value: Human-confirmed value
+  optional_note: Note (optional)
+  defer_placeholder: Why defer this?
+  defer: Defer decision
+  reject: Reject proposal
+  reject_with_dependents: "Reject this and {count} dependent proposals"
+  dependency_rejected_history: "Automatically rejected because dependency {proposal_id} was rejected."
+  waiting_for_dependencies: "Waiting for these dependencies:"
+  dependent_proposals: "{count} pending proposals depend on this item."
+  completed: This proposal has already been processed.
+  proposal_info: Proposal information
+  proposal_id: Proposal ID
+  operation: Operation
+  submitter: Submitted by
+  target: Target
+  created_at: Created
+  warnings: Warnings
+  linked_evidence: Linked evidence
+  pending_evidence: Source evidence published with this proposal
+  source_evidence_lines: "Source evidence · lines {line_start}–{line_end}"
+  object_type: "Object type"
+  rationale: "AI rationale"
+  record_action: "{action} · {title}"
+  changed_field: "Change {field}"
+  change_separator: "; "
+  more_changes: "; {count} more changes"
+  no_final_changes: "Original content retained after review"
+  change_summary: "Changes"
+  actions:
+    create: "Add {entity}"
+    update: "Update {entity}"
+    archive: "Archive {entity}"
+    restore: "Restore {entity}"
+    relate: "Add {entity}"
+    unrelate: "Remove {entity}"
+  effects:
+    create: "Once confirmed, this {entity} will be added to your knowledge base."
+    update: "Once confirmed, the changes you review below will be saved."
+    archive: "Once confirmed, this {entity} will be archived. Its history will be kept."
+    restore: "Once confirmed, this {entity} will become active again."
+    relate: "Once confirmed, this relation will be saved."
+    unrelate: "Once confirmed, this relation will be removed. Its history will be kept."
+messages:
+  user_archive: "User archived {entity}: {title}"
+  user_restore: "User restored {entity}: {title}"
+  remove_knowledge_relation: "Remove the knowledge relationship between {source} and {target}"
+  remove_material_relation: "Remove the connection between material {material} and knowledge {knowledge}"
+  remove_relation_default: Remove knowledge relationship
+  reject_default: Not adopting this change
+  knowledge_created: "Knowledge saved and applied"
+  course_created: "Course saved and applied"
+  material_created: "Material saved and applied"
+  material_updated: "Material changes saved and applied"
+  material_restored: "Material restored"
+  no_source_text: This source has no readable extracted text
+  no_locatable_text: This source has no text that can be located by line
+  valid_lines: Enter valid start and end line numbers
+  line_range: "Line numbers must be between 1 and {count}, with at most 50 lines at a time"
+  empty_selection: The selected range cannot contain only blank lines
+  evidence_created: "Source evidence saved and applied"
+  source_updated: "Source update saved and applied"
+  knowledge_relation_created: "Knowledge connection saved and applied"
+  knowledge_relations_created: "Saved and applied {count} knowledge connections"
+  relation_updated: "Relationship changes saved and applied"
+  record_updated: "Changes saved and applied"
+  archive_created: "Record archived"
+  relation_removed: "Relationship removed"
+  rule_created: "Rule saved and applied"
+  example_updated: "Preference example saved and applied"
+  preference_updated: "Preference changes saved and applied"
+  invalid_preference_state: This preference cannot be changed to the selected state
+  accepted: "Proposal accepted; persona revision is now {revision}"
+  edited_and_accepted: "Edited proposal accepted; persona revision is now {revision}"
+  rejected: Proposal rejected
+  rejected_with_dependents: "Proposal rejected together with {count} dependent proposals"
+  deferred: Proposal deferred
+labels:
+  level:
+    proficient: Proficient
+    familiar: Familiar
+    aware: Aware
+    unspecified: Unspecified
+  interest:
+    high: High interest
+    medium: Medium interest
+    low: Low interest
+    unspecified: Not set
+  preference:
+    favorite: Favorite
+    liked: Liked
+    neutral: Neutral
+    disliked: Disliked
+    unspecified: Not specified
+  material_relationship:
+    authored: Co-authored
+    studied: Studied
+    read: Read
+    skimmed: Skimmed
+  material_type:
+    paper: Paper
+    article: Article
+    note: Note
+    book: Book
+    course_material: Course material
+    conversation: Conversation
+    resume: Résumé
+    other: Other
+  material_knowledge_role:
+    topic: Research topic
+    problem: Research problem
+    method: Method used
+    theory: Theoretical basis
+    model: Model or system
+    application: Application
+    result: Main result
+    background: Background knowledge
+    mentioned: Mentioned
+  salience:
+    primary: Primary
+    secondary: Secondary
+    mentioned: Mentioned
+  preference_aspect:
+    topic: Topic
+    method: Method
+    result: Result
+    research-direction: Research direction
+    writing-style: Writing style
+    visualization: Visualization
+    practicality: Practicality
+    other: Other
+  entity:
+    knowledge_node: Knowledge point
+    course: Course
+    material: Material
+    relation: Relation
+    tag: Tag
+    evidence: Evidence
+    preference_context: Preference context
+    preference: Preference
+    preference_example: Context reference sample
+  role:
+    domain: Domain
+    area: Area
+    topic: Topic
+    concept: Concept
+    theory: Theory
+    model: Model
+    method: Method
+    technique: Technique
+    tool: Tool
+  relation:
+    broader_than: Contains
+    part_of: Part of
+    applied_in: Applied in
+    requires: Requires
+    related_to: Related to
+    covers: Covers
+  proposal_status:
+    draft: Draft
+    pending_review: Pending review
+    accepted: Accepted
+    edited_and_accepted: Edited and accepted
+    rejected: Rejected
+    deferred: Deferred
+    stale: Stale
+  operation:
+    create: Create
+    update: Update
+    archive: Archive
+    restore: Restore
+    relate: Add relation
+    unrelate: Remove relation
+  behavior:
+    required: Required
+    preferred: Preferred
+    avoid: Avoid
+  preference_scope:
+    global: All tasks
+    contexts: Selected contexts
+  preference_status:
+    active: Active
+    paused: Paused
+    archived: Archived
+  example_type:
+    positive: Positive example
+    negative: Negative example
+  record_status:
+    active: Active
+    archived: Archived
+  field:
+    activation: Activation
+    abstract: Source abstract
+    behavior: Behavior type
+    aliases: Aliases
+    body: Body
+    content_hash: Content hash
+    condition: Condition
+    context_refs: Contexts
+    description: Description
+    bibliography: Bibliography
+    evidence_refs: Evidence
+    evidence_kind: Evidence type
+    example_type: Example type
+    instruction: Instruction
+    interest_level: Interest level
+    knowledge_level: Knowledge level
+    knowledge_role: Knowledge role
+    label: Label
+    locator: Source location
+    material_type: Material type
+    key: Context key
+    name: Name
+    namespace: Namespace
+    preference_level: Preference
+    preference_reasons: Preference reasons
+    rationale: Rationale
+    reasons: Reference reasons
+    relation_type: Relation type
+    salience: Importance
+    semantic_role: Semantic role
+    source_id: Source concept
+    source_hash: Source hash
+    source_ref: Source
+    status: Status
+    scope: Scope
+    statement: Relation statement
+    summary: Summary
+    syllabus: Course syllabus
+    supports: Supports
+    scope_note: Scope boundary
+    slug: Slug
+    tags: Tags
+    target_id: Target concept
+    extraction_method: Extraction method
+    confidence: Confidence
+    title: Name
+    user_relationships: My relationship
+error_replacements:
+  记录已更新，请刷新页面后重新编辑。: This record has changed. Refresh the page before editing again.
+  审核页面已过期，请刷新后重新确认。: This review page is outdated. Refresh it before confirming.
+  此类提案不支持修改字段后通过。: This proposal does not support editing before acceptance.
+  修改后与当前记录一致，无需发布；可以拒绝此提案。: The edited values match the current record. No publication is needed; you can reject this proposal.
+  请选择要导入的原文文件: Select a source file to import
+  请选择参考样本文件: Select a reference sample file
+  请选择包含文件的样本文件夹: "Select a sample folder containing files"
+  文件夹最多支持 500 个文件: "A folder can contain up to 500 files"
+  文件夹路径无效，请重新选择文件夹: "Invalid folder paths. Please select the folder again"
+  文件夹中存在重名或冲突的文件路径: "The folder contains duplicate or conflicting file paths"
+  请一次选择一个完整的文件夹: "Select one complete folder at a time"
+  文件夹总大小不能超过 50 MB: "The folder must total no more than 50 MB"
+  请选择文件或文件夹上传方式: "Choose file or folder upload"
+  文件夹打包后超过 50 MB，请减少文件: "The folder archive exceeds 50 MB. Please reduce its contents"
+  未知的原文导入方式: Unknown source import method
+  "书目信息无效：": "Invalid bibliography: "
+  "必须是有效的 JSON 对象：": " must be a valid JSON object: "
+  必须是 JSON 对象: " must be a JSON object"
+  偏好原因第: Preference reason line
+  "行应使用‘方面 | 具体原因’格式": " must use the format 'aspect | specific reason'"
+  "行的方面无效，可选：": " has an invalid aspect; choose from: "
+  原文: source
+  材料: material
+  知识: knowledge
+  关系: relation
+  提案: proposal
+  不存在: does not exist
+  无效: invalid
+  必须: must
+  不能为空: cannot be empty
+  已存在: already exists
+  未找到: was not found
+  无法下载: could not download
+  超过: exceeds
+  当前: current
+  请选择: please select
+  未知: unknown
+ai:
+  assistant: AI assistant
+  models: Model settings
+  analyze: Analyze material
+  maintain: Maintain with AI
+
+knowledge_map:
+  layout: Layout
+  auto: Automatic
+  right: Horizontal
+  down: Vertical
+  bilateral: Two-sided tree
+  collapse: Collapse branches
+  relations: Show related links
+  help: Drag to pan · Scroll / pinch to zoom · Click a concept for details
+  aria: Zoomable knowledge graph. Drag to pan, scroll or pinch to zoom, and click
+    a concept for details.
+  loading: Arranging the knowledge graph…
+  error: The graph could not load. Retry or use the list to open a concept.
+  retry: Retry
+  counts: '{count} / {total} concepts · {edges} visible relations'
+  fit: Fit all
+  fullscreen: Fullscreen
+  fullscreen_exit: Exit fullscreen
+  minimap: Overview
+  minimap_aria: Click the minimap to navigate
+  fallback: Open a concept below, or switch to the list.
+  expand_branch: Expand children of {title}
+  collapse_branch: Collapse children of {title}
+  relation_legend: Relation line legend
+  direction_broader_than: 'Contains: solid blue line, filled arrow from parent to child.'
+  direction_requires: 'Requires: dashed orange line, open arrow toward the prerequisite.'
+  direction_applied_in: 'Applied in: blue-gray dashed line with soft curves and a small single arrow toward the application target.'
+  direction_related_to: 'Related: dotted purple line, no arrow, no direction.'

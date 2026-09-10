@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ ui('反馈与审核 · AI Persona') }}{% endblock %}
+{% block content %}
+{% include "partials/review_graph_assets.html" %}
+<link rel="stylesheet" href="/static/conversation-learning.css?v=20260908.inbox1">
+<link rel="stylesheet" href="/static/inbox.css?v=20260908.studio3.1">
+<div class="inbox-shell" id="inbox-root">
+  <header class="inbox-head"><div><h1>{{ ui('反馈与审核') }}</h1><p>{{ ui('评价 AI 的判断，决定保存什么。反馈可选，审核独立。') }}</p></div>
+    <div class="inbox-head-links"><a href="/ai">{{ ui('＋ 让 AI 帮我维护') }}</a><a href="/settings?tab=capabilities">{{ ui('来源与运行设置') }}</a></div>
+  </header>
+  <p id="inbox-notice" class="inbox-notice" role="status" hidden></p>
+  <p id="inbox-warning" class="inbox-warning" role="status" hidden></p>
+  <nav id="inbox-tabs" class="inbox-tabs" aria-label="{{ ui('处理视图') }}">
+    <button type="button" data-view="review" aria-pressed="true">{{ ui('待审核') }}</button>
+    <button type="button" data-view="feedback" aria-pressed="false">{{ ui('可反馈') }}</button>
+    <button type="button" data-view="all" aria-pressed="false">{{ ui('全部记录') }}</button>
+  </nav>
+  <form id="inbox-filters" class="inbox-filters" role="search">
+    <label class="inbox-search"><span class="sr-only">{{ ui('搜索记录') }}</span><input name="q" type="search" maxlength="300" placeholder="{{ ui('搜索用户输入、材料或候选') }}"></label>
+    <label><span class="sr-only">{{ ui('业务类型') }}</span><select name="type"><option value="">{{ ui('全部类型') }}</option><option value="learning">{{ ui('对话学习') }}</option><option value="activation">{{ ui('偏好场景判断') }}</option><option value="material">{{ ui('材料整理') }}</option><option value="maintenance">{{ ui('自然语言维护') }}</option><option value="proposal">{{ ui('其他候选') }}</option></select></label>
+    <details><summary>{{ ui('更多筛选') }}</summary><div class="inbox-more-filters">
+      <label>{{ ui('反馈状态') }}<select name="feedback"><option value="">{{ ui('全部') }}</option><option value="unrated">{{ ui('未反馈') }}</option><option value="rated">{{ ui('已反馈（含部分）') }}</option><option value="satisfied">{{ ui('全部满意') }}</option><option value="unsatisfied">{{ ui('包含不满意') }}</option></select></label>
+      <label>{{ ui('处理状态') }}<select name="status"><option value="">{{ ui('全部') }}</option><option value="reviewed">{{ ui('审核完成') }}</option><option value="running">{{ ui('处理中') }}</option><option value="failed">{{ ui('运行异常') }}</option></select></label>
+      <label>{{ ui('来源') }}<select name="source"><option value="">{{ ui('全部来源') }}</option></select></label>
+      <label>{{ ui('开始日期（本机时间）') }}<input type="date" name="from"></label>
+      <label>{{ ui('结束日期（含当天）') }}<input type="date" name="to"></label>
+      <label>{{ ui('排列顺序') }}<select name="order"><option value="newest">{{ ui('最近优先') }}</option><option value="oldest">{{ ui('最早优先') }}</option></select></label>
+      <label>{{ ui('相关材料') }}<select name="material"><option value="">{{ ui('全部材料') }}</option></select></label>
+      <label>{{ ui('判定场景') }}<select name="context"><option value="">{{ ui('全部场景') }}</option></select></label>
+    </div></details>
+    <button type="submit" class="button ghost">{{ ui('筛选') }}</button><button type="button" class="button ghost" id="inbox-refresh">{{ ui('刷新列表') }}</button>
+  </form>
+  <div class="inbox-list-info"><p id="inbox-count" role="status">{{ ui('正在读取记录…') }}</p><button id="inbox-new" class="button ghost" type="button" hidden></button></div>
+  <p id="inbox-view-help" class="inbox-view-help">{{ ui('候选只有经过你审核后才会保存。你不需要先评价触发判断。') }}</p>
+  <section class="panel inbox-workspace" aria-label="{{ ui('记录工作台') }}">
+    <aside class="inbox-list-pane"><div id="inbox-list" aria-label="{{ ui('结果记录') }}"></div>
+      <nav class="inbox-pagination" aria-label="{{ ui('记录分页') }}"><button id="inbox-prev" class="button ghost" type="button" disabled>{{ ui('上一页') }}</button><span id="inbox-page">{{ ui('第 1 页') }}</span><button id="inbox-next" class="button ghost" type="button" disabled>{{ ui('下一页') }}</button></nav>
+    </aside>
+    <section class="inbox-detail-pane" aria-labelledby="inbox-title">
+      <header class="inbox-detail-head"><div><h2 id="inbox-title" tabindex="-1">{{ ui('选择一条记录') }}</h2><p id="inbox-meta"></p></div><button id="inbox-back" class="button ghost" type="button">{{ ui('返回列表') }}</button></header>
+      <div id="inbox-detail" class="inbox-detail-body"><p class="inbox-empty">{{ ui('从列表选择一条记录，查看适用的反馈和审核操作。') }}</p></div>
+      <footer class="inbox-pagination"><button id="inbox-detail-prev" class="button ghost" type="button" disabled>{{ ui('上一条') }}</button><button id="inbox-detail-next" class="button ghost" type="button" disabled>{{ ui('下一条') }}</button></footer>
+    </section>
+  </section>
+</div>
+<script type="module" src="/static/inbox.mjs?v=20260911.review2"></script>
+{% endblock %}

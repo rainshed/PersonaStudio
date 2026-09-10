@@ -1,0 +1,48 @@
+{
+  "base_hash": null,
+  "base_revision": null,
+  "confidence": 1.0,
+  "conflicts": [],
+  "created_at": "2026-09-02T10:40:00Z",
+  "decided_at": "2026-09-02T10:40:14Z",
+  "decision_reason": null,
+  "duplicate_candidates": [],
+  "evidence_refs": [],
+  "id": "prop_006246395aa04bb6b70c642faf153541",
+  "operation": "create",
+  "patch": [
+    {
+      "after": "",
+      "before": null,
+      "field": "body"
+    },
+    {
+      "after": "生成的md格式note不要有不必要的换行",
+      "before": null,
+      "field": "instruction"
+    },
+    {
+      "after": "pref_demo_note_write",
+      "before": null,
+      "field": "pack_id"
+    },
+    {
+      "after": "avoid",
+      "before": null,
+      "field": "strength"
+    },
+    {
+      "after": "",
+      "before": null,
+      "field": "when"
+    }
+  ],
+  "proposal_revision": 2,
+  "reason": "codex生成的md格式note总是有很多不必要的换行",
+  "schema": "ai-persona.change-proposal/v1",
+  "status": "accepted",
+  "submitted_by": "human",
+  "target_entity_type": "preference_rule",
+  "target_id": "rule_93f9f41d8d644f92afdf74a42156a2ae",
+  "updated_at": "2026-09-02T10:40:14Z"
+}

@@ -1,0 +1,312 @@
+{
+  "$defs": {
+    "BibliographicIdentifiers": {
+      "additionalProperties": false,
+      "properties": {
+        "arxiv": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Arxiv"
+        },
+        "doi": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Doi"
+        },
+        "isbn": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Isbn"
+        }
+      },
+      "title": "BibliographicIdentifiers",
+      "type": "object"
+    },
+    "Bibliography": {
+      "additionalProperties": false,
+      "properties": {
+        "authors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authors",
+          "type": "array"
+        },
+        "canonical_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canonical Url"
+        },
+        "identifiers": {
+          "$ref": "#/$defs/BibliographicIdentifiers"
+        },
+        "language": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Language"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}(?:-\\d{2}(?:-\\d{2})?)?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published At"
+        },
+        "venue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Venue"
+        }
+      },
+      "title": "Bibliography",
+      "type": "object"
+    },
+    "MaterialPreferenceReason": {
+      "additionalProperties": false,
+      "properties": {
+        "aspect": {
+          "enum": [
+            "topic",
+            "method",
+            "result",
+            "research-direction",
+            "writing-style",
+            "visualization",
+            "practicality",
+            "other"
+          ],
+          "title": "Aspect",
+          "type": "string"
+        },
+        "note": {
+          "minLength": 1,
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "aspect",
+        "note"
+      ],
+      "title": "MaterialPreferenceReason",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "abstract": {
+      "default": "",
+      "title": "Abstract",
+      "type": "string"
+    },
+    "aliases": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Aliases",
+      "type": "array"
+    },
+    "bibliography": {
+      "$ref": "#/$defs/Bibliography"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "material",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "knowledge_level": {
+      "default": "unspecified",
+      "enum": [
+        "proficient",
+        "familiar",
+        "aware",
+        "unspecified"
+      ],
+      "title": "Knowledge Level",
+      "type": "string"
+    },
+    "material_type": {
+      "enum": [
+        "article",
+        "note",
+        "paper",
+        "book",
+        "course_material",
+        "conversation",
+        "resume",
+        "other"
+      ],
+      "title": "Material Type",
+      "type": "string"
+    },
+    "preference_level": {
+      "enum": [
+        "favorite",
+        "liked",
+        "neutral",
+        "disliked",
+        "unspecified"
+      ],
+      "title": "Preference Level",
+      "type": "string"
+    },
+    "preference_reasons": {
+      "items": {
+        "$ref": "#/$defs/MaterialPreferenceReason"
+      },
+      "title": "Preference Reasons",
+      "type": "array"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.material/v2",
+      "title": "Schema",
+      "type": "string"
+    },
+    "scope_note": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scope Note"
+    },
+    "source_ref": {
+      "title": "Source Ref",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "summary": {
+      "default": "",
+      "title": "Summary",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "user_relationships": {
+      "items": {
+        "enum": [
+          "authored",
+          "studied",
+          "read",
+          "skimmed"
+        ],
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "User Relationships",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "material_type",
+    "title",
+    "bibliography",
+    "user_relationships",
+    "preference_level",
+    "source_ref"
+  ],
+  "title": "Material",
+  "type": "object"
+}

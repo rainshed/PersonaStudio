@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="{{ language }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Persona · PersonaStudio</title>
+  <link rel="stylesheet" href="/static/onboarding.css">
+  <link rel="stylesheet" href="/static/error-feedback.css">
+  <script src="/static/error-feedback.js" defer></script>
+  <script src="/static/onboarding.js" defer></script>
+</head>
+<body>
+<main class="setup-shell">
+  <header class="setup-header"><a class="brand" href="/">Persona<span>Studio</span></a><nav aria-label="Language"><a href="/?lang=en" lang="en" {% if language == 'en' %}aria-current="page"{% endif %}>English</a><a href="/?lang=zh-CN" lang="zh-CN" {% if language == 'zh-CN' %}aria-current="page"{% endif %}>简体中文</a></nav></header>
+  <section class="intro"><span class="eyebrow">{{ text.eyebrow }}</span><h1>{{ text.title }}</h1><p>{{ text.intro }}</p></section>
+  <form id="setup-form" data-token="{{ token }}" data-language="{{ language }}" data-busy="{{ text.busy }}" data-ready="{{ text.ready }}" data-failed="{{ text.failed }}" data-retry="{{ text.retry }}">
+    <fieldset class="choices"><legend class="sr-only">{{ text.title }}</legend>
+      {% for mode in ['demo', 'create', 'open'] %}
+      <label class="choice"><input type="radio" name="mode" value="{{ mode }}" {% if mode == 'demo' %}checked{% endif %}><span class="choice-content"><strong>{{ text[mode] }}</strong><span>{{ text[mode + '_text'] }}</span></span></label>
+      {% endfor %}
+    </fieldset>
+    <section id="workspace-fields" class="workspace-fields" hidden>
+      <label for="workspace-path">{{ text.path }}</label><input id="workspace-path" name="path" value="{{ default_workspace }}" maxlength="4096" autocomplete="off" spellcheck="false" aria-describedby="path-hint"><p id="path-hint" class="hint">{{ text.path_hint }}</p>
+      <div id="persona-id-field" hidden><label for="persona-id">{{ text.id }}</label><input id="persona-id" name="persona_id" value="my-persona" minlength="2" maxlength="64" pattern="[a-z0-9][a-z0-9_-]{1,63}" autocomplete="off" spellcheck="false" aria-describedby="id-hint"><p id="id-hint" class="hint">{{ text.id_hint }}</p></div>
+    </section>
+    <p class="default-note">{{ text.default_note }}</p>
+    <label class="default-note setup-ai-next"><input id="setup-ai-next" type="checkbox" checked> {{ '打开后引导我设置 AI（也可以稍后设置）' if language == 'zh-CN' else 'Guide me through AI setup next (I can also do this later)' }}</label>
+    <div class="setup-actions"><button id="setup-submit" type="submit">{{ text.continue }} <span aria-hidden="true">→</span></button><a id="setup-open-running" hidden>{{ text.open_running }} →</a><p id="setup-status" role="status" aria-live="polite"></p></div>
+    <details id="setup-details" hidden><summary>{{ text.details }}</summary><pre id="setup-error-details"></pre></details>
+  </form>
+  <footer><span class="local-dot" aria-hidden="true"></span><p>{{ text.local }}</p></footer>
+</main>
+</body>
+</html>

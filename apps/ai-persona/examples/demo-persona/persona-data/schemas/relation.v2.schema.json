@@ -1,0 +1,136 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "relation",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "knowledge_role": {
+      "anyOf": [
+        {
+          "enum": [
+            "topic",
+            "problem",
+            "method",
+            "theory",
+            "model",
+            "application",
+            "result",
+            "background",
+            "mentioned"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Knowledge Role"
+    },
+    "relation_type": {
+      "enum": [
+        "broader_than",
+        "part_of",
+        "applied_in",
+        "requires",
+        "related_to",
+        "covers"
+      ],
+      "title": "Relation Type",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "salience": {
+      "anyOf": [
+        {
+          "enum": [
+            "primary",
+            "secondary",
+            "mentioned"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Salience"
+    },
+    "schema": {
+      "const": "ai-persona.relation/v2",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_id": {
+      "title": "Source Id",
+      "type": "string"
+    },
+    "statement": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Statement"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "target_id": {
+      "title": "Target Id",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "source_id",
+    "relation_type",
+    "target_id"
+  ],
+  "title": "Relation",
+  "type": "object"
+}

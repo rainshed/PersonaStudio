@@ -1,0 +1,57 @@
+<section class="settings-source-group">
+<div class="settings-section-head"><div><h2>{{ ui('Codex 接入') }}</h2><p class="settings-note">{{ ui('管理本机与已配置的远端 Codex。对话学习与偏好应用共用一次接入。') }}</p></div><button id="learning-source-new" class="button primary-button" type="button">＋ {{ ui('接入 Codex') }}</button></div>
+<div id="learning-connections" class="settings-stack"></div>
+<section id="codex-setup" class="codex-setup" aria-labelledby="setup-heading" hidden>
+<div class="settings-section-head"><div><p class="eyebrow">CODEX</p><h2 id="setup-heading">{{ ui('连接你的 Codex') }}</h2></div><button id="setup-close" class="button ghost" type="button">{{ ui('收起引导') }}</button></div>
+<ol class="setup-steps" aria-label="{{ ui('接入步骤') }}">
+{% for n, name in [(1,'接收范围'),(2,'会话前文'),(3,'安装接入'),(4,'验证接入'),(5,'启用功能')] %}<li><button type="button" data-setup-step="{{ n }}"><span>{{ n }}</span>{{ ui(name) }}</button></li>{% endfor %}
+</ol>
+<p id="setup-notice" class="settings-note" role="status" hidden></p>
+<form id="learning-connection" class="learning-form">
+<input type="hidden" name="id"><input type="hidden" name="adapter" value="codex">
+<div data-setup-panel="1" class="settings-stack">
+<div><h3>{{ ui('选择接收哪些对话') }}</h3><p class="settings-note">{{ ui('只接收安装完成后的新消息，不回扫历史会话。') }}</p></div>
+<label class="field">{{ ui('连接名称') }}<input name="name" maxlength="100" value="{{ ui('我的 Codex') }}" required></label>
+<label class="learning-check"><input type="checkbox" name="enabled" checked>{{ ui('允许接收此连接的信息') }}</label>
+<label class="field">{{ ui('接收范围') }}<select name="scope_mode"><option value="restricted">{{ ui('仅指定项目／会话') }}</option><option value="all">{{ ui('此来源的所有 Codex 会话') }}</option></select></label>
+<div id="setup-projects"><label class="field">{{ ui('项目路径，每行一个') }}<textarea name="projects" rows="2" placeholder="/Users/your-name/projects/project"></textarea></label><p class="settings-note">{{ ui('填写 Codex 所在主机上的项目完整路径。其他 worktree 或无项目任务可选择此来源的所有会话。') }}</p></div>
+<p id="learning-global-warning" class="settings-inline-warning" hidden>{{ ui('将接收此来源对应主机上所有项目的新消息。其他主机或云端任务需要单独接入。') }}</p>
+<label class="learning-check"><input type="checkbox" name="trust_user_messages">{{ ui('信任此连接的用户消息，跳过逐条来源确认') }}</label>
+<p class="settings-note">{{ ui('仅为自己管理的接入开启。关闭时，无法确认来源的学习输入会等待你确认；候选始终需要审核。') }}</p>
+<details class="settings-advanced"><summary>{{ ui('高级范围设置') }}</summary><label class="field">{{ ui('限定会话 ID，可选，每行一个') }}<textarea name="conversations" rows="2"></textarea></label></details>
+</div>
+<div data-setup-panel="2" class="settings-stack" hidden>
+<div><h3>{{ ui('让 Persona 理解当前会话的前文') }}</h3><p class="settings-note">{{ ui('前文用于理解“刚才那种方式”等指代。只读取当前会话的有限内容，不扫描其他会话。') }}</p></div>
+<label class="setup-option"><input type="radio" name="context_mode" value="history" checked><span><strong>{{ ui('读取当前会话前文（推荐）') }}</strong><small>{{ ui('使用下方列出的会话目录。保存后才授予读取权限。') }}</small></span></label>
+<label class="setup-option"><input type="radio" name="context_mode" value="prompt"><span><strong>{{ ui('仅使用本次输入') }}</strong><small>{{ ui('不读取会话前文；依赖前文的信息可能无法判断。') }}</small></span></label>
+<div id="setup-context-options" class="settings-stack"><p id="setup-detected" class="settings-note"></p><button id="setup-use-detected" type="button" class="button ghost">{{ ui('使用检测到的目录') }}</button><p id="setup-allowed-roots" class="settings-note"></p><details class="settings-advanced"><summary>{{ ui('手动设置会话目录') }}</summary><label class="field">{{ ui('允许读取的会话目录，每行一个') }}<textarea name="roots" rows="2"></textarea></label></details></div>
+<details class="settings-advanced"><summary>{{ ui('自定义 Codex 配置目录') }}</summary><p class="settings-note">{{ ui('通常无需修改。使用自定义 CODEX_HOME 时，填写同一个目录。安装目标为该目录下的 hooks.json。') }}</p><label class="field">{{ ui('Codex 配置目录') }}<input name="codex_home"></label><button id="setup-detect" class="button ghost" type="button">{{ ui('重新检测目录') }}</button></details>
+</div>
+<div class="settings-actions"><span id="setup-form-state" role="status"></span><button id="setup-form-back" class="button ghost" type="button">{{ ui('上一步') }}</button><button class="button ghost" type="button" data-settings-revert="learning-connection">{{ ui('撤销修改') }}</button><button id="setup-form-next" class="button primary-button" type="submit">{{ ui('下一步') }}</button></div>
+</form>
+<div data-setup-panel="3" class="settings-stack" hidden>
+<div><h3>{{ ui('安装 Codex 接入配置') }}</h3><p class="settings-note">{{ ui('将 AI Persona 的接入命令合并到以下文件，保留其他 Hook，并在修改前备份原文件。不会代替你信任 Hook，也不会启用自动学习。') }}</p></div>
+<dl class="setup-file"><dt>{{ ui('安装位置') }}</dt><dd id="setup-hook-path"></dd><dt>{{ ui('文件状态') }}</dt><dd id="setup-install-state"></dd></dl>
+<p id="setup-install-warning" class="settings-inline-warning" hidden></p>
+<div class="setup-inline-actions"><button id="setup-install" class="button primary-button" type="button">{{ ui('安装接入配置') }}</button><button id="setup-check-install" class="button ghost" type="button">{{ ui('重新检查') }}</button></div><p id="setup-install-result" role="status" class="settings-note" hidden></p>
+<details class="settings-advanced"><summary>{{ ui('查看配置或手动安装') }}</summary><p class="settings-note">{{ ui('这是本连接的配置片段。手动安装时请合并 hooks.UserPromptSubmit，保留已有条目；同一连接只安装一次。') }}</p><pre id="learning-hook-json"></pre><button id="setup-copy-hook" class="button ghost" type="button">{{ ui('复制配置片段') }}</button></details>
+<div class="setup-instruction"><h3>{{ ui('在 Codex 中审查并信任') }}</h3><p>{{ ui('回到 Codex 打开 Hook 审查入口。CLI 用户可输入 /hooks，找到此文件中的 AI Persona 命令并审查、信任。新增或修改后的 Hook 在获信任前不会运行。') }}</p><p>{{ ui('如果当前会话未显示新配置，请重新打开 Codex 会话后检查。') }}</p><a href="https://learn.chatgpt.com/zh-Hans/docs/hooks#审查并信任钩子" target="_blank" rel="noopener">{{ ui('查看 Codex 官方说明') }} ↗</a></div>
+<div class="settings-actions"><button class="button ghost" type="button" data-setup-go="2">{{ ui('上一步') }}</button><button class="button primary-button" type="button" data-setup-go="4">{{ ui('下一步：验证接入') }}</button></div>
+</div>
+<div data-setup-panel="4" class="settings-stack" hidden>
+<div><h3>{{ ui('从 Codex 发送一条测试消息') }}</h3><p class="settings-note">{{ ui('点击生成测试消息，复制到下方指定的 Codex 会话并发送，然后回到这里查看结果。') }}</p><p class="settings-note">{{ ui('AI Persona 只验证接入，不调用学习或偏好模型，也不保存测试消息正文。Codex 本身仍会正常回复。') }}</p></div>
+<p id="setup-test-scope" class="settings-note"></p><button id="setup-start-probe" class="button primary-button" type="button">{{ ui('生成测试消息') }}</button>
+<div id="setup-probe-message" hidden><label class="field">{{ ui('请发送以下完整消息，15 分钟内有效') }}<textarea id="setup-test-text" rows="3" readonly></textarea></label><button id="setup-copy-probe" class="button ghost" type="button">{{ ui('复制测试消息') }}</button></div>
+<div id="setup-probe-result" role="status" class="setup-probe-result"></div><button id="setup-check-probe" class="button ghost" type="button">{{ ui('检查接收结果') }}</button>
+<details class="settings-advanced"><summary>{{ ui('没有收到测试消息？') }}</summary><ol><li>{{ ui('确认消息发在此来源对应主机上的 Codex，且项目位于选择的接收范围内。') }}</li><li>{{ ui('确认 Codex 已加载配置，并审查、信任了 AI Persona Hook。') }}</li><li>{{ ui('检查 Codex 是否显示 Hook 被禁用、命令失败或管理策略限制；修改后重新生成测试消息。') }}</li><li>{{ ui('接收测试不需要开启自动学习或启动后台处理。') }}</li></ol></details>
+<div class="settings-actions"><button class="button ghost" type="button" data-setup-go="3">{{ ui('上一步') }}</button><button id="setup-finish-probe" class="button primary-button" type="button" data-setup-go="5" disabled>{{ ui('下一步：启用功能') }}</button></div>
+</div>
+<div data-setup-panel="5" class="settings-stack" hidden>
+<div><h3>{{ ui('接入已验证，选择要启用的功能') }}</h3><p id="setup-complete-summary" class="settings-note"></p></div>
+<div class="setup-instruction"><h3>{{ ui('1. 确认模型已配置') }}</h3><p>{{ ui('对话学习判定与学习生成可分别选模；偏好场景判定独立配置。') }}</p><a href="/settings/models">{{ ui('前往模型设置') }} →</a></div>
+<div class="setup-instruction"><h3>{{ ui('2. 开启自动功能') }}</h3><p>{{ ui('对话学习：选择“自动学习”、保存设置并启动后台处理。偏好应用：开启功能并选择此连接。两项功能可独立使用。') }}</p><a href="/settings?tab=capabilities">{{ ui('前往自动功能') }} →</a></div>
+<p class="settings-note">{{ ui('接入验证不会改变已有功能开关。启用后，可在“反馈与审核”查看实际处理记录。') }}</p>
+<div class="settings-actions"><button class="button ghost" type="button" data-setup-go="4">{{ ui('重新查看验证') }}</button><button id="setup-done" class="button primary-button" type="button">{{ ui('完成接入引导') }}</button></div>
+</div>
+</section>
+</section>

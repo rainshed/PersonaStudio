@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% set action_name = t('common.create') if mode == 'create' else t('common.edit') %}
+{% set kind_name = {'context': t('preference_form.context'), 'preference': t('preference_form.preference'), 'example': t('preference_form.example')}[item_kind] %}
+{% block title %}{{ action_name }} {{ kind_name }} · AI Persona{% endblock %}
+{% block content %}
+{% if item_kind == 'example' %}<link rel="stylesheet" href="{{ url_for('static', path='/preference-samples.css').path }}?v=20260908.1">{% endif %}
+<nav class="breadcrumbs"><a href="/preferences">{{ t('common.preferences') }}</a><span>/</span><span>{{ action_name }} {{ kind_name }}</span></nav>
+<section class="page-head form-head">
+  <div><p class="eyebrow">PREFERENCE</p><h1>{{ action_name }} {{ kind_name }}</h1><p class="lead">{{ t('preference_form.lead') }}</p></div>
+  <span class="safety-note"><i>✓</i> {{ t('common.protected') }}</span>
+  {% if record %}<a class="button ghost" href="/ai?record_id={{ record.id }}">{{ t('ai.assistant') }}</a>{% endif %}
+</section>
+
+<form class="edit-layout preference-edit-layout" method="post" action="{{ form_action }}" {% if item_kind == 'preference' %}data-preference-scope-form{% endif %} {% if item_kind == 'example' and mode == 'create' %}enctype="multipart/form-data" data-sample-upload-form{% endif %}>
+<input type="hidden" name="return_to" value="{{ return_to }}">
+{% if record %}<input type="hidden" name="record_revision" value="{{ record.revision }}">{% endif %}
+  <div class="panel form-panel">
+    {% if form_errors.get('form') %}<div class="sample-upload-error" role="alert">{{ form_errors.form }}{% if item_kind == 'example' %}<p>{{ t('sample_upload.reselect') }}</p>{% endif %}</div>{% endif %}
+    {% if item_kind == 'preference' %}
+    <div class="form-section">
+      <div class="form-section-head"><span>01</span><div><h2>{{ t('preference_form.preference_content') }}</h2><p>{{ t('preference_form.preference_help') }}</p></div></div>
+      <div class="field-grid">
+        <fieldset class="field wide"><legend>{{ t('preference_form.behavior') }}</legend><div class="preference-choice-row">
+          {% for value, label in behavior_labels.items() %}
+          <label class="preference-choice {{ value }}"><input type="radio" name="behavior" value="{{ value }}" {% if (record and record.behavior == value) or (not record and value == 'preferred') %}checked{% endif %}><span><i></i><strong>{{ label }}</strong></span></label>
+          {% endfor %}
+        </div></fieldset>
+        <label class="field wide"><span>{{ t('preference_form.instruction') }}</span><textarea name="instruction" rows="4" placeholder="{{ t('preference_form.instruction_placeholder') }}" required autofocus>{{ record.instruction if record else '' }}</textarea></label>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-head"><span>02</span><div><h2>{{ t('preference_form.scope') }}</h2></div></div>
+      <div class="scope-choice-row">
+        <label class="scope-choice"><input type="radio" name="scope" value="global" {% if (record and record.scope == 'global') or (not record and not selected_context_id) %}checked{% endif %}><span><strong>{{ t('preference_form.global_scope') }}</strong><small>{{ t('preferences.global') }}</small></span></label>
+        <label class="scope-choice"><input type="radio" name="scope" value="contexts" {% if (record and record.scope == 'contexts') or (not record and selected_context_id) %}checked{% endif %}><span><strong>{{ t('preference_form.contexts_scope') }}</strong><small>{{ t('preference_form.choose_contexts') }}</small></span></label>
+      </div>
+      <div class="checkbox-grid preference-context-options" {% if (record and record.scope == 'global') or (not record and not selected_context_id) %}hidden{% endif %}>
+        {% for context in contexts %}<label class="check-card"><input type="checkbox" name="context_refs" value="{{ context.id }}" {% if (record and context.id in record.context_refs) or (not record and context.id == selected_context_id) %}checked{% endif %} {% if (record and record.scope == 'global') or (not record and not selected_context_id) %}disabled{% endif %}><span><i>✓</i><strong>{{ context.name }}</strong><small>{{ context.description }}</small></span></label>
+        {% else %}<div class="empty-inline">{{ t('preference_form.no_contexts') }} <a href="/preferences/contexts/new">{{ t('preferences.add_context') }}</a></div>{% endfor %}
+      </div>
+      <p data-preference-context-error role="alert" hidden>{{ t('preference_form.choose_contexts') }}</p>
+    </div>
+    <details class="form-section advanced-section" {% if record and (record.condition or record.rationale or loaded.body) %}open{% endif %}>
+      <summary><div class="form-section-head"><span>03</span><div><h2>{{ t('common.optional_details') }}</h2></div></div></summary>
+      <div class="field-grid">
+        <label class="field wide"><span>{{ t('preference_form.condition') }}</span><input name="condition" value="{{ record.condition if record else '' }}" placeholder="{{ t('preference_form.condition_placeholder') }}"></label>
+        <label class="field wide"><span>{{ t('preference_form.rationale') }}</span><textarea name="rationale" rows="3">{{ record.rationale if record else '' }}</textarea></label>
+        <label class="field wide"><span>{{ t('preference_form.notes') }}</span><textarea name="body" rows="4">{{ loaded.body if loaded else '' }}</textarea></label>
+      </div>
+    </details>
+
+    {% else %}
+    <div class="form-section">
+      <div class="form-section-head"><span>01</span><div><h2>{{ t('preference_form.sample_info') }}</h2><p>{{ t('preference_form.sample_help') }}</p></div></div>
+      <div class="field-grid">
+        <label class="field"><span>{{ t('preference_form.sample_type') }}</span><select name="example_type" required>{% for value, label in example_type_labels.items() %}<option value="{{ value }}" {% if sample_values.example_type == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+        <label class="field wide"><span>{{ t('material_form.title') }}</span><input name="title" value="{{ sample_values.title }}" required autofocus></label>
+        {% if mode == 'create' %}
+        {% include 'partials/preference_sample_upload.html' %}
+        {% else %}
+        <div class="field wide current-sample-file"><span>{{ t('sample_upload.current_folder') if is_folder else t('preference_form.current_file') }}</span><strong>{{ source.origin.identifier or source.canonical_file }}</strong><a class="text-link" href="/preferences/examples/{{ record.id }}/{{ 'files' if is_folder else 'file' }}" target="_blank" rel="noopener">{{ t('sample_upload.browse') if is_folder else t('preferences.open_file') }}</a></div>
+        {% endif %}
+        <label class="field wide"><span>{{ t('preference_form.condition') }}</span><input name="condition" value="{{ sample_values.condition }}" placeholder="{{ t('preference_form.condition_placeholder') }}"></label>
+        <label class="field wide"><span>{{ t('preference_form.reasons') }} <small>{{ t('preference_form.one_point_line') }}</small></span><textarea name="reasons" rows="4">{{ sample_values.reasons|join('\n') }}</textarea></label>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-head"><span>02</span><div><h2>{{ t('preference_form.related_contexts') }}</h2><p>{{ t('preference_form.related_contexts_help') }}</p></div></div>
+      <div class="checkbox-grid">
+        {% for context in contexts %}<label class="check-card"><input type="checkbox" name="context_refs" value="{{ context.id }}" {% if context.id in sample_values.context_refs %}checked{% endif %}><span><i>✓</i><strong>{{ context.name }}</strong><small>{{ context.description }}</small></span></label>
+        {% else %}<div class="empty-inline">{{ t('preference_form.no_contexts') }} <a href="/preferences/contexts/new">{{ t('preferences.add_context') }}</a></div>{% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <aside class="edit-aside"><div class="panel sticky-panel">
+    <p class="section-label">{{ t('common.proposal_reason') }}</p>
+    {% if item_kind == 'example' %}{% set note_value = sample_values.get('reason', '') %}{% endif %}
+    {% include "partials/optional_note.html" %}
+    <div class="proposal-flow"><div><span>1</span><p><strong>{{ t('record_form.flow_create') }}</strong><small>{{ t('preference_form.flow_save') }}</small></p></div><div><span>2</span><p><strong>{{ t('record_form.flow_review') }}</strong><small>{{ t('preference_form.flow_confirm') }}</small></p></div><div><span>3</span><p><strong>{{ t('preference_form.flow_compile') }}</strong><small>{{ t('preference_form.flow_compile_desc') }}</small></p></div></div>
+    <button class="button primary-button full" type="submit">{{ t('common.preview_proposal') }} <span>→</span></button>
+    {% if mode == 'edit' %}
+      {% if record.status == 'archived' %}
+      <button class="button ghost full" type="submit" formaction="/preferences/{{ item_kind + 's' if item_kind != 'preference' else 'preferences' }}/{{ record.id }}/state-proposals" name="status" value="active">{{ t('common.restore') }}</button>
+      {% else %}
+      <button class="button text-button full danger-text" type="submit" formaction="/preferences/{{ item_kind + 's' if item_kind != 'preference' else 'preferences' }}/{{ record.id }}/archive-proposals">{{ t('common.archive') }}</button>
+      {% endif %}
+    {% endif %}
+    <a class="button text-button full" href="{{ return_to }}">{{ t('common.cancel') }}</a>
+  </div></aside>
+</form>
+{% if item_kind == 'preference' %}<script src="{{ url_for('static', path='/preference-form.js').path }}?v=20260908.1" defer></script>{% endif %}
+{% if item_kind == 'example' and mode == 'create' %}<script src="{{ url_for('static', path='/preference-sample-upload.js').path }}?v=20260908.1" defer></script>{% endif %}
+{% endblock %}

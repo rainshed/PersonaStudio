@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}多篇材料提取 · AI 维护助手 · AI Persona{% endblock %}
+{% block content %}
+{% include "partials/review_graph_assets.html" %}
+<link rel="stylesheet" href="/static/extraction.css?v=20260910.budget2">
+<section class="page-head ai-page-head"><div><p class="eyebrow">PERSONA · AI ASSISTANT</p><h1>读论文，整理知识</h1><p class="lead">同时从多篇材料中提取知识与关系，整理到同一张知识图。</p></div><a class="button ghost" href="/ai">返回 AI 维护助手</a></section>
+<div id="extraction-root" class="ai-workspace">
+  <div class="ai-stack">
+    <div class="ex-task-bar">
+      <button class="button ghost" id="ex-new">＋ 新建整理</button>
+      <label class="field ex-history-field"><span>最近的材料集合</span><select id="ex-history" aria-label="选择材料集合"><option value="">新建集合</option></select></label>
+    </div>
+    <section class="panel ai-panel ex-connection" aria-label="Codex 连接">
+      <div class="ex-connection-heading"><strong>由 Codex 整理</strong><span id="ex-runtime" class="ai-muted" role="status">正在检查 Codex…</span></div>
+      <details><summary>登录与连接设置</summary><div class="ai-stack ex-settings">
+        <p class="ai-muted">沿用本机 Codex 登录，也可以在这里连接 ChatGPT 或 OpenAI API key。</p>
+        <div class="ai-actions"><button class="button ghost" id="ex-login">登录 Codex / ChatGPT</button><button class="button ghost" id="ex-refresh-auth">刷新登录状态</button></div>
+        <details><summary>使用 OpenAI API key</summary><div class="ai-stack ex-settings"><label class="field"><span>API key</span><input id="ex-key" type="password" autocomplete="off"></label><div class="ai-actions"><button class="button ghost" id="ex-key-login">连接</button></div><p class="ai-muted">密钥仅交给本机 Codex 凭据存储，不会保存到材料任务。</p></div></details>
+      </div></details>
+      <div class="ex-feedback" id="ex-auth-feedback" role="alert" tabindex="-1"></div>
+    </section>
+    <section class="panel ai-panel ai-stack ai-compose-panel ex-compose">
+      <fieldset class="ai-input-group" id="ex-input-panel"><legend>1. 添加材料</legend>
+        <p class="ai-muted">可以混合添加多篇 arXiv 论文和本地文件；一份材料也可以开始。</p>
+        <div class="ai-url-row"><label class="field"><span>arXiv 链接或 ID，一行一篇</span><textarea id="ex-links" rows="3" placeholder="https://arxiv.org/abs/…"></textarea></label><button class="button ghost" id="ex-add-links">添加链接</button></div>
+        <div class="ai-file-drop"><label class="field"><span>选择多个 Markdown、TXT 或 PDF 文件</span><input id="ex-files" disabled type="file" multiple accept=".md,.markdown,.txt,.pdf"></label></div>
+        <p class="ai-muted">每个集合最多 20 份材料，每个文件最大 20 MB。同一论文的不同格式，可在清单中标记为同一材料。</p>
+        <div id="ex-input-feedback" class="ex-feedback" role="alert" tabindex="-1"></div><div id="ex-members"></div>
+      </fieldset>
+      <fieldset class="ai-input-group"><legend>2. 希望整理什么</legend>
+        <label class="field"><span>这次的整理目标</span><textarea id="ex-goal" rows="2"></textarea></label>
+        <label class="field"><span>关注领域（可选）</span><input id="ex-focus" placeholder="例如：凝聚态物理、机器学习"></label>
+        <label class="field"><span>提取结果语言</span><select id="ex-language" aria-describedby="ex-language-help"><option value="zh">中文</option><option value="en">English（英文）</option></select></label>
+        <p class="ai-muted" id="ex-language-help">用于新知识点名称、说明和关系说明；论文原名与原文引用保持不变。可保存为下次默认设置，已有结果不会自动翻译。</p>
+        <label class="ai-check"><input id="ex-collect" type="checkbox" checked>同时生成材料收录提案（阅读状态未指定）</label>
+        <details id="ex-rules"><summary>调整知识点定义与关系要求</summary><div class="ai-stack ex-settings">
+          <label class="field"><span>什么算知识点</span><textarea id="ex-knowledge" rows="3"></textarea></label>
+          <label class="field"><span>如何提取关系</span><textarea id="ex-relations" rows="3"></textarea></label>
+          <input id="ex-reading" type="hidden" value="targeted">
+          <div class="field-grid two"><label class="field"><span>每轮整理最多分钟</span><input id="ex-time" type="number" min="1" max="60" value="15"></label></div>
+          <p class="ai-muted">Codex 自主安排阅读与整理。达到时间预算时保留已读取的依据和已保存草稿，可以继续。</p>
+          <div class="ai-actions"><button class="button ghost" id="ex-defaults">保存为下次默认规则</button></div>
+        </div></details>
+        <div id="ex-policy-feedback" class="ex-feedback" role="alert" tabindex="-1"></div>
+      </fieldset>
+      <div class="ai-request-section ai-stack">
+        <div class="ex-budget-bar">
+          <label class="field"><span>整个集合最多新增知识点</span><input id="ex-max" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="3" autocomplete="off" value="20" aria-describedby="ex-budget-help"></label>
+          <div><strong id="ex-budget-summary" role="status">最多新增 20 个知识点</strong><p id="ex-budget-help" class="ai-muted">建议保留 20。上限适用于所有材料合计，不是每篇；实际数量由材料决定。</p></div>
+        </div>
+        <div class="ai-request-footer"><span class="ai-muted">结果先进入待审核区，批准后才会更新知识库。</span><div class="ai-actions"><button class="button primary-button" id="ex-start" disabled>开始 / 继续整理</button><button class="button ghost" id="ex-cancel" disabled>停止</button></div></div>
+        <div id="ex-run-feedback" class="ex-feedback" role="alert" tabindex="-1"></div>
+      </div>
+    </section>
+    <section class="panel ai-panel ai-stack ex-panel" aria-label="整理进度与审核">
+      <h2>3. 整理与审核</h2><p id="ex-run-budget" class="ex-run-budget" hidden></p><p id="ex-status" class="ai-muted" role="status">添加材料后即可开始。</p><p id="ex-summary"></p><div id="ex-review"></div>
+      <details id="ex-progress"><summary>读取进度与检查点</summary><ol id="ex-events"></ol></details>
+      <div class="ai-actions"><button class="button ghost" id="ex-partial">只整理成功部分</button><span class="ai-muted">部分材料未完成时，可以先审核已完成的结果。</span></div>
+    </section>
+    <section id="ex-budget-results" class="panel ai-panel ai-stack ex-panel" hidden>
+      <h2>因数量上限暂缓的概念</h2><p id="ex-budget-result-summary" class="ai-muted"></p><ul id="ex-budget-omissions"></ul>
+    </section>
+    <section class="panel ai-panel ai-stack ex-panel"><h2>审核整理结果</h2><p class="ai-muted">选择知识点或关系即可审核。个人状态可直接选择，通过后保存。</p><div id="ex-candidates"></div></section>
+    <section class="panel ai-panel ai-stack ex-panel" id="ex-limitations"><h2>需要留意</h2><ul id="ex-deferred"></ul></section>
+  </div>
+</div>
+<link rel="stylesheet" href="/static/conversation-learning.css?v=20260911.review2">
+<script type="module" src="/static/extraction.js?v=20260911.review2"></script>
+{% endblock %}

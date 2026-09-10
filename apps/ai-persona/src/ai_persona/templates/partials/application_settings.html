@@ -1,0 +1,9 @@
+<div class="settings-section-head"><h2>{{ ui('自动应用偏好') }}</h2><span id="pa-setting-status">{{ ui('正在读取…') }}</span></div>
+<p class="settings-note">{{ ui('在对话开始时匹配已有偏好，让应用及时获得适合当前场景的指导。') }}</p>
+<form id="pa-settings-form" class="learning-form">
+<label class="pa-check"><input type="checkbox" id="pa-enabled">{{ ui('启用自动应用偏好') }}</label>
+<fieldset class="settings-choice-group"><legend>{{ ui('应用到哪些连接') }}</legend><div id="pa-connections"></div></fieldset>
+<label>{{ ui('每轮最多等待') }}<span class="settings-number"><input id="pa-timeout" type="number" min="1" max="60" step="0.5" required><span>{{ ui('秒') }}</span></span><small>{{ ui('超时则跳过本轮偏好匹配，对话正常继续。') }}</small></label>
+<div class="settings-dependency" data-model-task="activation"></div>
+<div class="settings-actions"><span id="pa-settings-message" role="status"></span><button type="button" class="button ghost" id="pa-revert">{{ ui('撤销修改') }}</button><button class="button primary-button" type="submit">{{ ui('保存偏好应用设置') }}</button></div>
+</form>

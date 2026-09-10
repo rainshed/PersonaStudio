@@ -1,0 +1,7 @@
+<nav class="studio-tabs settings-tabs" aria-label="{{ ui('设置分类') }}">
+  <a href="/settings/models" data-settings-location="models" {% if section == 'models' %}aria-current="page"{% endif %}>{{ ui('模型设置') }}</a>
+  <a href="/settings?tab=sources" data-settings-tab="sources" data-settings-location="sources">{{ ui('应用接入') }}</a>
+  <a href="/settings?tab=capabilities" data-settings-tab="capabilities" data-settings-location="capabilities">{{ ui('自动功能') }}</a>
+  <a href="/settings?tab=retention" data-settings-tab="retention" data-settings-location="retention">{{ ui('数据管理') }}</a>
+</nav>
+<script src="/static/settings-navigation.js?v=20260909.settings3" defer></script>

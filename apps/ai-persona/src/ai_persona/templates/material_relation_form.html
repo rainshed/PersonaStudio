@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ t('relation_form.title') }} · AI Persona{% endblock %}
+{% block content %}
+<nav class="breadcrumbs"><a href="/materials">{{ t('common.materials') }}</a><span>/</span><a href="/materials/{{ material.id }}">{{ material.title }}</a><span>/</span><span>{{ t('relation_form.title') }}</span></nav>
+<section class="page-head form-head"><div><p class="eyebrow">EDIT KNOWLEDGE CONNECTION</p><h1>{{ knowledge.title }}</h1><p class="lead">{{ t('relation_form.lead') }}</p></div><span class="safety-note"><i>✓</i> {{ t('relation_form.independent_review') }}</span></section>
+<form class="edit-layout" method="post" action="/materials/{{ material.id }}/relations/{{ relation.id }}/proposals">
+{% if relation %}<input type="hidden" name="record_revision" value="{{ relation.revision }}">{% endif %}
+  <div class="panel form-panel">
+    <div class="form-section"><div class="form-section-head"><span>01</span><div><h2>{{ t('material_detail.knowledge_connections') }}</h2><p>{{ t('relation_form.endpoint_note') }}</p></div></div><div class="field-grid">
+      <label class="field"><span>{{ t('material_detail.knowledge_concept') }}</span><input value="{{ knowledge.title }}" disabled></label>
+      <div class="field-grid two"><label class="field"><span>{{ t('material_detail.role_in_material') }}</span><select name="knowledge_role" required>{% for value, label in material_knowledge_role_labels.items() %}<option value="{{ value }}" {% if relation.knowledge_role == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label><label class="field"><span>{{ t('materials.importance') }}</span><select name="salience" required>{% for value, label in salience_labels.items() %}<option value="{{ value }}" {% if relation.salience == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label></div>
+      <label class="field"><span>{{ field_labels.statement }}</span><textarea name="statement" rows="5" required>{{ relation.statement }}</textarea></label>
+    </div></div>
+    <div class="form-section"><div class="form-section-head"><span>02</span><div><h2>{{ t('common.evidence') }}</h2><p>{{ t('relation_form.evidence_desc') }}</p></div></div><div class="checkbox-grid">{% for item in evidence %}<label class="check-card"><input type="checkbox" name="evidence_refs" value="{{ item.id }}" {% if item.id in relation.evidence_refs %}checked{% endif %}><span><i>✓</i><strong>{{ item.evidence_kind|replace('_', ' ') }}</strong><small>{{ item.source_id }}</small></span></label>{% else %}<p class="empty-inline">{{ t('relation_form.no_evidence') }}</p>{% endfor %}</div></div>
+  </div>
+  <aside class="edit-aside"><div class="panel sticky-panel">{% include "partials/optional_note.html" %}<button class="button primary-button full" type="submit">{{ t('relation_form.preview') }}</button><a class="button text-button full" href="/materials/{{ material.id }}">{{ t('common.cancel') }}</a></div></aside>
+</form>
+{% endblock %}

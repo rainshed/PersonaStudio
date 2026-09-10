@@ -1,0 +1,58 @@
+{
+  "base_hash": null,
+  "base_revision": null,
+  "confidence": 1.0,
+  "conflicts": [],
+  "created_at": "2026-09-02T15:07:14Z",
+  "decided_at": "2026-09-02T15:07:28Z",
+  "decision_reason": null,
+  "duplicate_candidates": [],
+  "evidence_refs": [],
+  "id": "prop_c78e31edc9ef49dc84b70807735aa8a5",
+  "operation": "relate",
+  "patch": [
+    {
+      "after": [],
+      "before": null,
+      "field": "evidence_refs"
+    },
+    {
+      "after": "method",
+      "before": null,
+      "field": "knowledge_role"
+    },
+    {
+      "after": "covers",
+      "before": null,
+      "field": "relation_type"
+    },
+    {
+      "after": "secondary",
+      "before": null,
+      "field": "salience"
+    },
+    {
+      "after": "mat_a2be3b0ec4a04be39baaf93584e94e0d",
+      "before": null,
+      "field": "source_id"
+    },
+    {
+      "after": "数值方法",
+      "before": null,
+      "field": "statement"
+    },
+    {
+      "after": "kn_demo_mps",
+      "before": null,
+      "field": "target_id"
+    }
+  ],
+  "proposal_revision": 2,
+  "reason": "补充数值方法",
+  "schema": "ai-persona.change-proposal/v1",
+  "status": "accepted",
+  "submitted_by": "human",
+  "target_entity_type": "relation",
+  "target_id": "rel_892ada019fa946cfbb41514f27c51f29",
+  "updated_at": "2026-09-02T15:07:28Z"
+}

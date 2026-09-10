@@ -1,0 +1,36 @@
+{
+  "base_hash": "sha256:8c037da01017bb259a04b692adc10554297b0e3e5ea52c5855c9848b1d402c83",
+  "base_revision": 1,
+  "confidence": 1.0,
+  "conflicts": [],
+  "created_at": "2026-09-02T08:45:31Z",
+  "decided_at": "2026-09-02T08:46:04Z",
+  "decision_reason": null,
+  "duplicate_candidates": [],
+  "evidence_refs": [],
+  "id": "prop_fa85ad1b80024058baa237eac3adb173",
+  "operation": "update",
+  "patch": [
+    {
+      "after": [
+        "tag_physics",
+        "tag_quantum_dynamics",
+        "tag_quantum_many_body",
+        "tag_tensor_network"
+      ],
+      "before": [
+        "tag_physics",
+        "tag_quantum_dynamics",
+        "tag_tensor_network"
+      ],
+      "field": "tags"
+    }
+  ],
+  "proposal_revision": 2,
+  "reason": "TEBD也和量子多体有关",
+  "schema": "ai-persona.change-proposal/v1",
+  "status": "accepted",
+  "submitted_by": "human",
+  "target_id": "kn_demo_tebd",
+  "updated_at": "2026-09-02T08:46:04Z"
+}

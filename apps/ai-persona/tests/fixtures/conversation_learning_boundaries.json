@@ -1,0 +1,14 @@
+{
+  "description": "Developer-authored boundary checks, not personal benchmark labels. Only explicitly rated production results belong in the personal benchmark.",
+  "cases": [
+    {"id": "note_format", "prompt": "这份 note 中不要有不必要的换行。", "context": [], "expected_decision": "observe", "expected_types": ["preference"], "max_signals": 1},
+    {"id": "symbol_definition", "prompt": "每个符号在第一次出现的时候要给出定义。", "context": [], "expected_decision": "observe", "expected_types": ["preference"], "max_signals": 1},
+    {"id": "diagram_quality", "prompt": "这张图里的元素不要重叠。", "context": [], "expected_decision": "observe", "expected_types": ["preference"], "max_signals": 1},
+    {"id": "knowledge_and_preference", "prompt": "给我解释贝叶斯更新，并整理成 note。每个符号第一次出现时请给出定义。", "context": [], "expected_decision": "observe", "expected_types": ["knowledge_node", "preference"], "max_signals": 2},
+    {"id": "project_collaboration", "prompt": "在这个仓库里，今后替我提交代码之前都先运行测试。", "context": [], "expected_decision": "observe", "expected_types": ["preference"], "max_signals": 1},
+    {"id": "product_spec", "prompt": "设置页的两个开关应该互斥，选择全部后就禁用下面的选项。帮我修改这个功能。", "context": [], "expected_decision": "ignore", "expected_types": [], "max_signals": 0},
+    {"id": "execution_not_learning", "prompt": "好的，完成剩余修改并提交。", "context": [{"id": "earlier", "role": "user", "text": "请解释傅里叶变换，并且符号要定义。"}], "expected_decision": "ignore", "expected_types": [], "max_signals": 0},
+    {"id": "one_off", "prompt": "这次为了放进一页，先省略推导。", "context": [], "expected_decision": "ignore", "expected_types": [], "max_signals": 0},
+    {"id": "resolved_topic", "prompt": "把刚才这个方法整理成一份知识 note。", "context": [{"id": "topic", "role": "assistant", "text": "刚才讨论的方法是变分蒙特卡洛。还可以另行学习重要性采样和马尔可夫链。"}], "expected_decision": "observe", "expected_types": ["knowledge_node"], "max_signals": 1}
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confidence"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "evidence",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "evidence_kind": {
+      "enum": [
+        "explicit_user_statement",
+        "authored_material",
+        "read_signal",
+        "user_feedback",
+        "human_edit",
+        "inferred_pattern"
+      ],
+      "title": "Evidence Kind",
+      "type": "string"
+    },
+    "extraction_method": {
+      "title": "Extraction Method",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "locator": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Locator",
+      "type": "object"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.evidence/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "source_hash": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Hash",
+      "type": "string"
+    },
+    "source_id": {
+      "title": "Source Id",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "supports": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Supports",
+      "type": "array"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "source_id",
+    "source_hash",
+    "locator",
+    "supports",
+    "evidence_kind",
+    "extraction_method"
+  ],
+  "title": "Evidence",
+  "type": "object"
+}

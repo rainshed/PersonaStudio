@@ -1,0 +1,106 @@
+{
+  "$defs": {
+    "Activation": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_types": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Artifact Types",
+          "type": "array"
+        },
+        "excludes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Excludes",
+          "type": "array"
+        },
+        "intents": {
+          "description": "Typical user requests that should activate this context. These are positive semantic examples, not trigger keywords or an exhaustive list of allowed requests.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Intents",
+          "type": "array"
+        }
+      },
+      "title": "Activation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "activation": {
+      "$ref": "#/$defs/Activation"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "description": "When this context should be used, including its scope and boundaries.",
+      "title": "Description",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "preference_context",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "key": {
+      "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$",
+      "title": "Key",
+      "type": "string"
+    },
+    "name": {
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.preference-context/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "paused",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "key",
+    "name"
+  ],
+  "title": "PreferenceContext",
+  "type": "object"
+}

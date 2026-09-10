@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}{{ ui('模型设置') }} · AI Persona{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/settings.css?v=20260910.setup2">{% endblock %}
+{% block content %}
+<div class="settings-shell" id="model-settings">
+<header class="page-head settings-head"><div><p class="eyebrow">{{ ui('设置') }}</p><h1>{{ ui('模型设置') }}</h1><p class="lead">{{ ui('先接入账号，再选择默认模型与各功能使用的模型。') }}</p></div></header>
+{% include 'partials/settings_nav.html' %}
+<div id="model-notice" role="status" class="ai-notice" hidden></div>
+<section id="model-setup" class="model-setup" aria-labelledby="model-setup-title">
+  <h2 id="model-setup-title">{{ '完成 AI 设置' if locale == 'zh-CN' else 'Set up AI' }}</h2>
+  <ol class="model-setup-steps">
+    <li id="model-step-runtime">{{ '1. 准备环境' if locale == 'zh-CN' else '1. Prepare' }}</li>
+    <li id="model-step-account">{{ '2. 添加账号' if locale == 'zh-CN' else '2. Add account' }}</li>
+    <li id="model-step-auth">{{ '3. 保存凭据' if locale == 'zh-CN' else '3. Authenticate' }}</li>
+    <li id="model-step-test">{{ '4. 测试并保存' if locale == 'zh-CN' else '4. Test & save' }}</li>
+  </ol>
+  <p id="model-setup-message" role="status" aria-live="polite">{{ '正在检查本机模型环境…' if locale == 'zh-CN' else 'Checking the local model environment…' }}</p>
+  <ul id="model-runtime-checks" class="settings-note"></ul>
+  <div class="ai-actions">
+    <button id="model-runtime-install" type="button" class="button primary-button" hidden>{{ '安装模型组件' if locale == 'zh-CN' else 'Install model components' }}</button>
+    <a id="model-node-download" class="button ghost" href="https://nodejs.org/en/download" target="_blank" rel="noopener noreferrer" hidden>{{ '下载 Node.js LTS' if locale == 'zh-CN' else 'Download Node.js LTS' }}</a>
+    <button id="model-runtime-check" type="button" class="button ghost">{{ '重新检查' if locale == 'zh-CN' else 'Check again' }}</button>
+    <a class="button ghost" href="/">{{ '先浏览，稍后设置' if locale == 'zh-CN' else 'Explore first, set up later' }}</a>
+  </div>
+  <p class="settings-note">{{ '安装只下载本机运行组件。认证由你在提供方页面完成，或填写自己的 API Key。测试连接会发送一条简短请求，可能消耗账号额度；不会发送工作区材料。' if locale == 'zh-CN' else 'Installation downloads local components only. Sign in on the provider page or enter your own API key. A connection test sends a short request and may use account credits; it does not send workspace materials.' }}</p>
+</section>
+<fieldset id="model-controls" class="model-controls" disabled hidden>
+
+<section class="settings-accounts" aria-labelledby="accounts-heading">
+  <div class="settings-section-head"><div><h2 id="accounts-heading">{{ ui('账号与连接') }}</h2><p id="model-account-summary" class="settings-note">{{ ui('先添加账号连接，再选择使用的模型。') }}</p></div><button id="model-new" class="button ghost" type="button">＋ {{ ui('添加账号连接') }}</button></div>
+  <details class="settings-disclosure" id="model-accounts"><summary>{{ ui('管理账号连接') }}</summary>
+    <p class="ai-muted">{{ '密钥仅保存在本机加密存储中，不写入 Persona、浏览器存储或调用日志。不会读取其他应用的账号。' if locale == 'zh-CN' else 'Credentials are encrypted locally, never stored in Persona, browser storage or run logs. Other apps’ accounts are not read.' }}</p>
+    <section id="model-auth" class="ai-stack ai-auth" aria-live="polite" hidden>
+      <h3 id="auth-title">{{ '账号授权' if locale == 'zh-CN' else 'Account authorization' }}</h3>
+      <p id="auth-status" class="ai-muted"></p><div id="auth-events"></div>
+      <form id="auth-form" class="ai-stack" hidden><label class="field"><span id="auth-prompt"></span><span id="auth-input"></span></label><button id="auth-submit" class="button primary-button" type="submit">{{ '继续授权' if locale == 'zh-CN' else 'Continue' }}</button></form>
+      <button id="auth-cancel" class="button ghost" type="button">{{ '取消授权' if locale == 'zh-CN' else 'Cancel authorization' }}</button>
+    </section>
+    <p class="ai-muted">{{ '同一账号认证一次，可为多个功能选择不同模型。' if locale == 'zh-CN' else 'Connect an account once and reuse it across features.' }}</p>
+    <div id="model-connections"></div>
+    <form id="model-form" class="ai-stack" hidden>
+      <h3 id="model-form-title"></h3>
+      <label class="field"><span>{{ '账号连接名称' if locale == 'zh-CN' else 'Account connection name' }}</span><input name="name" maxlength="60" required autocomplete="off" placeholder="{{ '例如：我的 ChatGPT 账号' if locale == 'zh-CN' else 'e.g. My ChatGPT account' }}"></label>
+      <label class="field"><span>{{ '平台' if locale == 'zh-CN' else 'Provider' }}</span><select name="providerId"></select></label>
+      <p id="provider-note" class="ai-muted"></p>
+      <label class="field"><span>{{ '认证方式' if locale == 'zh-CN' else 'Authentication' }}</span><select name="authType"></select></label>
+      <label class="field" id="key-field"><span>API Key</span><input name="apiKey" type="password" autocomplete="new-password"><small>{{ '编辑时留空保留已有密钥。授权在保存后进行。' if locale == 'zh-CN' else 'Leave blank to keep an existing key. Account authorization is available after saving.' }}</small></label>
+      <div id="custom-fields" class="ai-stack" hidden>
+        <label class="field"><span>{{ '默认模型 ID' if locale == 'zh-CN' else 'Default model ID' }}</span><input name="customModel"></label>
+        <label class="field"><span>Base URL</span><input name="baseUrl" type="url" placeholder="http://127.0.0.1:11434/v1"></label>
+        <label class="field"><span>{{ '兼容协议' if locale == 'zh-CN' else 'Protocol' }}</span><select name="api"><option value="openai-completions">OpenAI Chat Completions</option><option value="openai-responses">OpenAI Responses</option><option value="anthropic-messages">Anthropic Messages</option></select></label>
+        <label class="field"><span>{{ ui('支持图片输入的模型 ID') }}</span><textarea name="imageModelIds" rows="2" placeholder="vision-model"></textarea><small>{{ ui('每行一个；由服务能力声明，连接测试不会验证图片识别。') }}</small></label>
+        <label class="field"><span>{{ '上下文长度' if locale == 'zh-CN' else 'Context window' }}</span><input name="contextWindow" type="number" min="1024" max="10000000" value="32768"></label>
+        <label class="field"><span>{{ '最大输出' if locale == 'zh-CN' else 'Max output tokens' }}</span><input name="maxTokens" type="number" min="128" value="8192"></label>
+      </div>
+      <div class="ai-actions"><button class="button primary-button" type="submit">{{ '保存连接' if locale == 'zh-CN' else 'Save connection' }}</button><button id="model-close" class="button ghost" type="button">{{ '取消' if locale == 'zh-CN' else 'Cancel' }}</button></div>
+    </form>
+  </details>
+</section>
+<div id="model-migration" class="settings-migration" hidden></div>
+<form id="routing-form" class="settings-stack">
+  <p class="settings-note">{{ '思考强度会作为参数随请求发送；模型默认表示不指定档位。保存后用于各功能的新调用。' if locale == 'zh-CN' else 'Reasoning effort is sent with each request; model default leaves it unspecified. Saved settings apply to new feature calls.' }}</p>
+  <div id="model-default"></div>
+  <div id="model-routing" class="settings-stack">
+    <section aria-labelledby="generation-model-heading"><div class="settings-section-head"><h2 id="generation-model-heading">{{ ui('理解与生成') }}</h2><span>{{ ui('优先理解与推理能力') }}</span></div><div id="model-generation" class="settings-model-list"></div><p class="settings-note">{{ ui('维护与学习生成的候选，仍需审核后生效。') }}</p></section>
+    <section aria-labelledby="judgment-model-heading"><div class="settings-section-head"><h2 id="judgment-model-heading">{{ ui('快速判定') }}</h2><span>{{ ui('兼顾速度、成本与判断准确性') }}</span></div><div id="model-judgment" class="settings-model-list"></div></section>
+  </div>
+  <details class="settings-disclosure"><summary>{{ ui('备用模型') }}</summary><label class="ai-check"><input type="checkbox" name="fallbackEnabled">{{ ui('允许失败时使用备用模型') }}</label><div id="model-fallback"></div><p class="settings-note">{{ ui('备用调用可能将同一输入发送到另一家服务，并产生额外费用；默认关闭。') }}</p></details>
+  <div class="settings-actions"><span id="model-save-state" role="status"></span><button type="button" class="button ghost" id="model-revert">{{ ui('撤销修改') }}</button><button class="button primary-button" type="submit">{{ ui('保存模型设置') }}</button></div>
+</form>
+
+
+<details class="settings-disclosure"><summary>{{ ui('最近调用') }}</summary><p class="settings-note">{{ ui('仅记录功能、模型、耗时和用量，不保存输入正文。') }}</p><div id="model-runs"></div></details>
+</fieldset>
+</div>
+<script src="/static/ai-common.js?v=20260906.2" defer></script>
+<script src="/static/model-setup.js?v=20260910.setup1" defer></script>
+<script src="/static/model-settings.js?v=20260910.setup2" defer></script>
+{% endblock %}

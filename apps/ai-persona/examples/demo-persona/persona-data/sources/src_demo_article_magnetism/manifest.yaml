@@ -1,0 +1,15 @@
+schema: ai-persona.source-manifest/v2
+id: src_demo_article_magnetism
+source_type: article
+imported_at: '2026-09-01T00:00:00Z'
+origin:
+  provider: ai-persona-synthetic-demo
+  identifier: src_demo_article_magnetism
+  retrieved_at: '2026-09-01T00:00:00Z'
+canonical_file: original.md
+content_hash: 8f1cb20b125f55181626717b1c5b9e1400794c402fde4611eeb7f91cc82992e5
+files:
+- path: original.md
+  role: original
+  media_type: text/markdown
+  sha256: 8f1cb20b125f55181626717b1c5b9e1400794c402fde4611eeb7f91cc82992e5

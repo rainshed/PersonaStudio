@@ -1,0 +1,516 @@
+{
+  "$defs": {
+    "ProposalContext": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "default": "general",
+          "enum": [
+            "general",
+            "material",
+            "conversation",
+            "maintenance"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "learning_batch_id": {
+          "anyOf": [
+            {
+              "pattern": "^learn_[a-f0-9]{32}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Learning Batch Id"
+        },
+        "material_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Material Id"
+        },
+        "source_hash": {
+          "anyOf": [
+            {
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Hash"
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Id"
+        },
+        "source_versions": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Source Versions",
+          "type": "object"
+        }
+      },
+      "title": "ProposalContext",
+      "type": "object"
+    },
+    "ProposalEvidenceCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "body": {
+          "maxLength": 20000,
+          "minLength": 1,
+          "title": "Body",
+          "type": "string"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "evidence_kind": {
+          "enum": [
+            "explicit_user_statement",
+            "authored_material",
+            "read_signal",
+            "user_feedback",
+            "human_edit",
+            "inferred_pattern"
+          ],
+          "title": "Evidence Kind",
+          "type": "string"
+        },
+        "extraction_method": {
+          "minLength": 1,
+          "title": "Extraction Method",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "locator": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Locator",
+          "type": "object"
+        },
+        "source_hash": {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "title": "Source Hash",
+          "type": "string"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "source_id",
+        "source_hash",
+        "locator",
+        "evidence_kind",
+        "extraction_method",
+        "body"
+      ],
+      "title": "ProposalEvidenceCandidate",
+      "type": "object"
+    },
+    "ProposalPatch": {
+      "additionalProperties": false,
+      "properties": {
+        "after": {
+          "title": "After"
+        },
+        "before": {
+          "title": "Before"
+        },
+        "field": {
+          "enum": [
+            "activation",
+            "abstract",
+            "behavior",
+            "title",
+            "aliases",
+            "avoid",
+            "content_hash",
+            "confidence",
+            "condition",
+            "context_refs",
+            "description",
+            "bibliography",
+            "evidence_refs",
+            "evidence_kind",
+            "example_type",
+            "instruction",
+            "knowledge_level",
+            "knowledge_role",
+            "label",
+            "interest_level",
+            "material_type",
+            "locator",
+            "name",
+            "namespace",
+            "key",
+            "preference_level",
+            "preference_reasons",
+            "rationale",
+            "reasons",
+            "relation_type",
+            "salience",
+            "semantic_role",
+            "statement",
+            "summary",
+            "syllabus",
+            "scope_note",
+            "slug",
+            "supports",
+            "source_id",
+            "source_hash",
+            "source_ref",
+            "status",
+            "scope",
+            "tags",
+            "target_id",
+            "extraction_method",
+            "user_relationships",
+            "body"
+          ],
+          "title": "Field",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "before",
+        "after"
+      ],
+      "title": "ProposalPatch",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "if": {
+    "properties": {
+      "submitted_by": {
+        "const": "ai"
+      }
+    },
+    "required": [
+      "submitted_by"
+    ]
+  },
+  "properties": {
+    "approved_content": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approved Content"
+    },
+    "base_hash": {
+      "anyOf": [
+        {
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Base Hash"
+    },
+    "base_revision": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Base Revision"
+    },
+    "confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Confidence"
+    },
+    "conflicts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Conflicts",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "decided_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decided At"
+    },
+    "decision_parent_id": {
+      "anyOf": [
+        {
+          "pattern": "^prop_[A-Za-z0-9_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Parent Id"
+    },
+    "decision_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Reason"
+    },
+    "decision_source": {
+      "anyOf": [
+        {
+          "enum": [
+            "human_review",
+            "human_edit",
+            "dependency_cascade",
+            "system"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Source"
+    },
+    "duplicate_candidates": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Duplicate Candidates",
+      "type": "array"
+    },
+    "evidence_candidates": {
+      "items": {
+        "$ref": "#/$defs/ProposalEvidenceCandidate"
+      },
+      "maxItems": 20,
+      "title": "Evidence Candidates",
+      "type": "array"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "operation": {
+      "enum": [
+        "create",
+        "update",
+        "archive",
+        "restore",
+        "relate",
+        "unrelate"
+      ],
+      "title": "Operation",
+      "type": "string"
+    },
+    "patch": {
+      "items": {
+        "$ref": "#/$defs/ProposalPatch"
+      },
+      "minItems": 1,
+      "title": "Patch",
+      "type": "array"
+    },
+    "proposal_context": {
+      "$ref": "#/$defs/ProposalContext"
+    },
+    "proposal_revision": {
+      "minimum": 1,
+      "title": "Proposal Revision",
+      "type": "integer"
+    },
+    "reason": {
+      "default": "",
+      "title": "Reason",
+      "type": "string"
+    },
+    "review_patch": {
+      "items": {
+        "$ref": "#/$defs/ProposalPatch"
+      },
+      "title": "Review Patch",
+      "type": "array"
+    },
+    "schema": {
+      "const": "ai-persona.change-proposal/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "pending_review",
+        "accepted",
+        "edited_and_accepted",
+        "rejected",
+        "deferred",
+        "stale"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "submitted_by": {
+      "enum": [
+        "human",
+        "ai"
+      ],
+      "title": "Submitted By",
+      "type": "string"
+    },
+    "target_entity_type": {
+      "anyOf": [
+        {
+          "enum": [
+            "knowledge_node",
+            "course",
+            "material",
+            "evidence",
+            "relation",
+            "preference_context",
+            "preference",
+            "preference_example",
+            "tag"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Entity Type"
+    },
+    "target_id": {
+      "title": "Target Id",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "proposal_revision",
+    "operation",
+    "status",
+    "target_id",
+    "patch",
+    "confidence",
+    "submitted_by",
+    "created_at",
+    "updated_at"
+  ],
+  "then": {
+    "properties": {
+      "reason": {
+        "pattern": "\\S"
+      }
+    },
+    "required": [
+      "reason"
+    ]
+  },
+  "title": "ChangeProposal",
+  "type": "object"
+}

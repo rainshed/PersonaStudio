@@ -1,0 +1,104 @@
+{
+  "$defs": {
+    "Activation": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_types": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Artifact Types",
+          "type": "array"
+        },
+        "excludes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Excludes",
+          "type": "array"
+        },
+        "intents": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Intents",
+          "type": "array"
+        }
+      },
+      "title": "Activation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "activation": {
+      "$ref": "#/$defs/Activation"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "preference_pack",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "name": {
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.preference-pack/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "task_type": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*(?:\\.[a-z0-9]+(?:-[a-z0-9]+)*)+$",
+      "title": "Task Type",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "task_type",
+    "name",
+    "description",
+    "activation"
+  ],
+  "title": "PreferencePack",
+  "type": "object"
+}

@@ -1,0 +1,135 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "aliases": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Aliases",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "knowledge_node",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "interest_level": {
+      "enum": [
+        "high",
+        "medium",
+        "low",
+        "unspecified"
+      ],
+      "title": "Interest Level",
+      "type": "string"
+    },
+    "knowledge_level": {
+      "default": "unspecified",
+      "enum": [
+        "proficient",
+        "familiar",
+        "aware",
+        "unspecified"
+      ],
+      "title": "Knowledge Level",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.knowledge-node/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "scope_note": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scope Note"
+    },
+    "semantic_role": {
+      "enum": [
+        "domain",
+        "area",
+        "topic",
+        "concept",
+        "theory",
+        "model",
+        "method",
+        "technique",
+        "tool"
+      ],
+      "title": "Semantic Role",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "summary": {
+      "default": "",
+      "title": "Summary",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "title",
+    "interest_level",
+    "semantic_role"
+  ],
+  "title": "KnowledgeNode",
+  "type": "object"
+}

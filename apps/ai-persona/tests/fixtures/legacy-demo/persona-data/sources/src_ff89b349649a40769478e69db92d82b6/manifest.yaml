@@ -1,0 +1,14 @@
+schema: ai-persona.source-manifest/v2
+id: src_ff89b349649a40769478e69db92d82b6
+source_type: paper
+imported_at: '2026-09-02T15:05:24Z'
+origin:
+  provider: synthetic-fixture
+  retrieved_at: '2026-09-02T15:05:24Z'
+canonical_file: original.pdf
+content_hash: 0e534cb2268be31bd1ff9a61febb1134303c4bd65b1b3f3cc1d34ffa859f26ec
+files:
+- path: original.pdf
+  role: original
+  media_type: application/pdf
+  sha256: 0e534cb2268be31bd1ff9a61febb1134303c4bd65b1b3f3cc1d34ffa859f26ec

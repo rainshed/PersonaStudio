@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="{{ locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{% block title %}AI Persona Studio{% endblock %}</title>
+  <script>window.STUDIO_MESSAGES={{ studio_messages|tojson }};</script>
+  <script src="/static/studio-i18n.js?v=20260908.studio3.1"></script>
+  <link rel="icon" href="{{ url_for('static', path='/favicon.svg').path }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', path='/app.css').path }}?v=20260905.7">
+  <link rel="stylesheet" href="/static/studio.css?v=20260908.studio3.1">
+  <script src="/static/studio-navigation.js?v=20260908.studio3.1" defer></script>
+  <link rel="stylesheet" href="/static/error-feedback.css">
+  <script src="/static/error-feedback.js" defer></script>
+  <link rel="stylesheet" href="{{ url_for('static', path='/ai.css').path }}?v=20260910.assistant">
+  <link rel="stylesheet" href="{{ url_for('static', path='/evaluations.css').path }}?v=20260909.improvement2">
+  <script src="{{ url_for('static', path='/evaluation-feedback.js').path }}?v=20260908.studio3.1" defer></script>
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  <script src="{{ url_for('static', path='/relation-batch.js').path }}?v=20260904.3" defer></script>
+  <script src="{{ url_for('static', path='/material-import.js').path }}?v=20260904.1" defer></script>
+  {% block styles %}{% endblock %}
+</head>
+<body{% if evaluation_embedded %} class="evaluation-embedded"{% elif section == 'dashboard' %} class="studio-home-page"{% endif %}>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="{{ t('common.app_home') }}">
+        <span class="brand-mark" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </span>
+        <span>
+          <strong>Persona</strong>
+          <small>knowledge studio</small>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="{{ t('common.main_navigation') }}">
+        <a href="/" class="{% if section == 'dashboard' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
+          {{ '概览' if locale == 'zh-CN' else 'Overview' }}
+        </a>
+        <details class="persona-nav" open data-assets-active="{{ 'true' if section in ['knowledge', 'courses', 'materials', 'preferences'] else 'false' }}">
+          <summary>{{ '我的 Persona' if locale == 'zh-CN' else 'My Persona' }}</summary>
+          <div class="persona-nav-items">
+        <a href="/knowledge" class="{% if section == 'knowledge' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 2.5 8 12 13l7.8-4.1V15H22V8L12 3Zm-6 9v4.7c0 1.4 2.7 3.3 6 3.3s6-1.9 6-3.3V12l-6 3-6-3Z"/></svg>
+          {{ t('common.knowledge') }}
+        </a>
+        <a href="/courses" class="{% if section == 'courses' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4h7a3 3 0 0 1 3 3v13a4 4 0 0 0-3-2H4V4Zm16 0h-4a5 5 0 0 0-2 .4A5 5 0 0 1 16 7v11h4V4Z"/></svg>
+          {{ t('common.courses') }}
+        </a>
+        <a href="/materials" class="{% if section == 'materials' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 2h8l5 5v15H6V2Zm8 2.5V8h3.5L14 4.5ZM9 12h7v-2H9v2Zm0 4h7v-2H9v2Zm0 4h5v-2H9v2Z"/></svg>
+          {{ t('common.materials') }}
+        </a>
+        <a href="/preferences" class="{% if section == 'preferences' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19.4 13a7.8 7.8 0 0 0 .1-1 7.8 7.8 0 0 0-.1-1l2.1-1.6-2-3.4-2.5 1a8 8 0 0 0-1.7-1L15 3.3h-4L10.6 6a8 8 0 0 0-1.7 1L6.5 6l-2 3.4L6.6 11a7.8 7.8 0 0 0-.1 1 7.8 7.8 0 0 0 .1 1l-2.1 1.6 2 3.4 2.4-1a8 8 0 0 0 1.7 1l.4 2.7h4l.4-2.7a8 8 0 0 0 1.7-1l2.4 1 2-3.4-2.1-1.6ZM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/></svg>
+          {{ t('common.preferences') }}
+        </a>
+          </div>
+        </details>
+        <a href="/inbox" class="{% if section in ['review', 'inbox'] %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 3h-4.2A3 3 0 0 0 12 1a3 3 0 0 0-2.8 2H5a2 2 0 0 0-2 2v16h18V5a2 2 0 0 0-2-2Zm-7 0.2a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6ZM8 17l-3-3 1.4-1.4L8 14.2l4.6-4.6L14 11l-6 6Z"/></svg>
+          <span class="studio-nav-long">{{ '反馈与审核' if locale == 'zh-CN' else 'Feedback & review' }}</span><span class="studio-nav-short">{{ '反馈审核' if locale == 'zh-CN' else 'Review' }}</span>
+          <span class="nav-count" data-inbox-pending title="{{ '待审核候选数' if locale == 'zh-CN' else 'Candidates awaiting review' }}" {% if not pending_count %}hidden{% endif %}>{{ pending_count }}</span>
+        </a>
+        <a href="/evaluations" class="{% if section == 'evaluations' %}active{% endif %}"><span class="studio-nav-long">{{ '评测与改进' if locale == 'zh-CN' else 'Evaluation & improvement' }}</span><span class="studio-nav-short">{{ '评测改进' if locale == 'zh-CN' else 'Evaluate' }}</span></a>
+        <a href="/settings" class="{% if section in ['settings', 'models'] %}active{% endif %}">{{ '设置' if locale == 'zh-CN' else 'Settings' }}</a>
+      </nav>
+      {% if section != 'dashboard' %}<a href="/ai" class="studio-maintenance {% if section == 'ai' %}active{% endif %}">✦ {{ t('ai.assistant') }}</a>{% endif %}
+
+      <div class="sidebar-footer">
+        <form class="language-switcher" method="post" action="/language">
+          <input type="hidden" name="return_to" value="{{ request.url.path }}{% if request.url.query %}?{{ request.url.query }}{% endif %}">
+          <span>{{ t('common.language') }}</span>
+          <button type="submit" name="locale" value="{{ 'en' if locale == 'zh-CN' else 'zh-CN' }}" aria-label="{{ t('common.switch_language') }}">{{ t('meta.other_locale_name') }}</button>
+        </form>
+        <div class="persona-pulse"><span></span> {{ t('common.data_connected') }}</div>
+        <div class="persona-id">{{ persona.persona_id }}</div>
+        <div class="revision">Revision {{ persona.revision }}</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      {% if is_demo %}
+      <div class="demo-banner" role="note"><strong>DEMO</strong>
+        {{ '独立示例工作区 · 修改仅保存在 Demo · 模型连接单独配置 · 不采集真实会话' if locale == 'zh-CN' else 'Isolated sample workspace · Demo edits only · Separate model connections · No real conversation capture' }}
+      </div>
+      {% endif %}
+      <header class="mobile-header">
+        <a class="brand compact" href="/"><span class="brand-mark"><span></span><span></span><span></span><span></span></span><strong>Persona</strong></a>
+        <div class="mobile-header-tools">
+          {% if section != 'dashboard' %}<a class="studio-mobile-maintenance" href="/ai">✦ {{ t('ai.assistant') }}</a>{% endif %}
+          <form class="mobile-language-switcher" method="post" action="/language">
+            <input type="hidden" name="return_to" value="{{ request.url.path }}{% if request.url.query %}?{{ request.url.query }}{% endif %}">
+            <button type="submit" name="locale" value="{{ 'en' if locale == 'zh-CN' else 'zh-CN' }}" aria-label="{{ t('common.switch_language') }}">{{ t('meta.other_locale_name') }}</button>
+          </form>
+          <span class="revision">r{{ persona.revision }}</span>
+        </div>
+      </header>
+      {% if message %}
+        <div class="toast {{ message_kind }}" role="status">
+          <span class="toast-icon">{% if message_kind == 'error' %}!{% else %}✓{% endif %}</span>
+          {{ message }}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+</body>
+</html>

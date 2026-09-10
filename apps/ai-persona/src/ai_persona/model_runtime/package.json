@@ -1,0 +1,13 @@
+{
+  "name": "ai-persona-model-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.19.0" },
+  "scripts": {
+    "start": "node --experimental-strip-types daemon.mjs",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+  },
+  "dependencies": { "@earendil-works/pi-ai": "0.85.1" },
+  "overrides": { "ws": "8.21.3" }
+}

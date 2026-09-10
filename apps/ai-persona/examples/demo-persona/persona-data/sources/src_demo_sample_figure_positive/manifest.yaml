@@ -1,0 +1,15 @@
+schema: ai-persona.source-manifest/v2
+id: src_demo_sample_figure_positive
+source_type: other
+imported_at: '2026-09-01T00:00:00Z'
+origin:
+  provider: ai-persona-synthetic-demo
+  identifier: src_demo_sample_figure_positive
+  retrieved_at: '2026-09-01T00:00:00Z'
+canonical_file: original.md
+content_hash: 1591784a4fdf49c5a11c4e6be4ef203f6d119fd6d2b878a683e32344353b030f
+files:
+- path: original.md
+  role: original
+  media_type: text/markdown
+  sha256: 1591784a4fdf49c5a11c4e6be4ef203f6d119fd6d2b878a683e32344353b030f

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% macro knowledge_relation_row() -%}
+<div class="relation-batch-row knowledge-relation-row" data-relation-row>
+  <span class="relation-row-number" data-relation-row-number>1</span>
+  <label class="field"><span>{{ t('common.relationships') }}</span><select name="relation_type" required>{% for value in ['broader_than', 'requires', 'related_to', 'applied_in'] %}<option value="{{ value }}">{{ relation_labels[value] }}</option>{% endfor %}</select></label>
+  <label class="field knowledge-target-field">
+    <span>{{ t('detail.target_knowledge') }}</span>
+    <div class="knowledge-combobox" data-knowledge-combobox data-source-id="{{ record.id }}" data-relation-type-source="relation_type" data-select-error="{{ t('detail.select_knowledge_error') }}" data-no-results="{{ t('detail.no_knowledge_matches') }}" data-search-error="{{ t('detail.knowledge_search_error') }}" data-existing="{{ t('detail.relation_exists') }}" data-selected="{{ t('detail.relation_selected') }}">
+      <input type="search" data-knowledge-search autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" placeholder="{{ t('detail.search_knowledge_placeholder') }}" required>
+      <input type="hidden" name="target_id" data-knowledge-id>
+      <div class="knowledge-suggestions" data-knowledge-suggestions role="listbox" hidden></div>
+      <small class="knowledge-selection" data-knowledge-selection></small>
+    </div>
+  </label>
+  <button class="relation-row-remove" type="button" data-remove-relation-row hidden aria-label="{{ t('detail.remove_relation_row') }}" title="{{ t('detail.remove_relation_row') }}">×</button>
+</div>
+{%- endmacro %}
+{% block title %}{{ record.title }} · AI Persona{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="{{ t('common.breadcrumb') }}"><a href="{{ page_root }}">{{ page_label }}</a><span>/</span><span>{{ record.title }}</span></nav>
+<section class="detail-hero">
+  <a class="button ghost" href="/ai?record_id={{ record.id }}">{{ t('ai.assistant') }}</a>
+  <div class="detail-title">
+    <span class="entity-glyph large {{ record.entity_type }}">{{ record.title[:1] }}</span>
+    <div>
+      <div class="badge-line"><span class="type-badge">{{ entity_labels[record.entity_type] }}</span>{% if record.semantic_role is defined %}<span class="type-badge subtle">{{ role_labels[record.semantic_role] }}</span>{% endif %}</div>
+      <h1>{{ record.title }}</h1>
+      {% if record.aliases %}<p class="aliases">{{ record.aliases|join(' · ') }}</p>{% endif %}
+    </div>
+  </div>
+  {% if editable and record.status == 'active' %}<div class="page-actions"><a class="button primary-button" href="{{ page_root }}/{{ record.id }}/edit">{{ t('detail.edit_record') }}</a><form method="post" action="{{ page_root }}/{{ record.id }}/archive-proposals"><button class="button reject-button" type="submit">{{ t('common.archive') }}</button></form></div>{% endif %}
+</section>
+
+<div class="detail-layout">
+  <div class="detail-main">
+    <section class="panel prose-panel">
+      <div class="fact-strip">
+        <div><span>{{ t('common.knowledge_level') }}</span><strong class="level-text {{ record.knowledge_level }}">{{ level_labels[record.knowledge_level] }}</strong></div>
+        <div><span>{{ t('detail.interest_level') }}</span><strong>{{ interest_labels[record.interest_level] }}</strong></div>
+        <div><span>{{ t('common.revision') }}</span><strong>Revision {{ record.revision }}</strong></div>
+      </div>
+      {% if record.summary is defined %}<div class="content-block"><p class="section-label">{{ t('knowledge.description') }}</p><p class="large-copy">{{ record.summary or t('knowledge.no_description') }}</p></div>{% endif %}
+      {% if record.description is defined %}<div class="content-block"><p class="section-label">{{ t('courses.description') }}</p><p class="large-copy">{{ record.description or t('courses.no_description') }}</p></div>{% endif %}
+      {% if record.syllabus is defined %}<div class="content-block"><p class="section-label">{{ t('courses.syllabus') }}</p>{% if record.syllabus %}<div class="note-body">{{ record.syllabus }}</div>{% else %}<p>{{ t('courses.no_syllabus') }}</p>{% endif %}</div>{% endif %}
+      {% if record.scope_note is defined and record.scope_note %}<div class="content-block boundary"><p class="section-label">{{ t('detail.scope') }}</p><p>{{ record.scope_note }}</p></div>{% endif %}
+      {% if loaded.body %}<div class="content-block"><p class="section-label">{{ t('knowledge.personal_notes') }}</p><div class="note-body">{{ loaded.body }}</div></div>{% endif %}
+    </section>
+
+    {% if show_relations %}
+    <section class="panel relation-panel">
+      <div class="panel-head"><div><p class="eyebrow">CONNECTIONS</p><h2>{{ t('detail.connections') }}</h2></div><span class="muted-label">{{ t('detail.connection_count', count=outgoing|length + incoming|length) }}</span></div>
+      {% if outgoing or incoming %}
+      <div class="relation-list">
+        {% for relation, other in outgoing %}
+          <div class="relation-item"><a href="{{ record_url(other) }}"><span class="relation-direction">{{ t('detail.this_record') }}</span><b>{{ relation_labels[relation.relation_type] }}</b><span>{{ other.title }}</span><i>→</i></a>{% if record.entity_type == 'knowledge_node' %}<form method="post" action="/relations/{{ relation.id }}/remove-proposals"><button type="submit" title="{{ t('detail.propose_remove') }}">{{ t('detail.remove') }}</button></form>{% endif %}</div>
+        {% endfor %}
+        {% for relation, other in incoming %}
+          <div class="relation-item"><a href="{{ record_url(other) }}"><span title="{{ relation.statement or '' }}">{{ other.title }}</span><b>{% if other.entity_type == 'material' and relation.knowledge_role %}{{ material_knowledge_role_labels[relation.knowledge_role] }}{% else %}{{ relation_labels[relation.relation_type] }}{% endif %}</b><span class="relation-direction">{{ t('detail.this_record') }}</span><i>←</i></a>{% if record.entity_type == 'knowledge_node' %}<form method="post" action="/relations/{{ relation.id }}/remove-proposals"><button type="submit" title="{{ t('detail.propose_remove') }}">{{ t('detail.remove') }}</button></form>{% endif %}</div>
+        {% endfor %}
+      </div>
+      {% else %}<div class="empty-inline">{{ t('detail.no_connections') }}</div>{% endif %}
+      {% if record.entity_type == 'knowledge_node' and record.status == 'active' %}
+      <form class="inline-relation-form" method="post" action="/knowledge/{{ record.id }}/relation-proposals" data-relation-batch-form>
+        <p class="section-label">{{ t('detail.add_connection') }}</p>
+        <p class="relation-batch-help">{{ t('detail.batch_connection_help') }}</p>
+        <div class="relation-batch-list" data-relation-batch-list>
+          {{ knowledge_relation_row() }}
+        </div>
+        <template data-relation-row-template>{{ knowledge_relation_row() }}</template>
+        <button class="button ghost small relation-row-add" type="button" data-add-relation-row><span aria-hidden="true">＋</span>{{ t('detail.add_another_relation') }}</button>
+        <div class="relation-shared-fields">
+          {% include "partials/optional_note.html" %}
+        </div>
+        <button class="button ghost" type="submit">{{ t('detail.preview_relations') }}</button>
+      </form>
+      {% endif %}
+    </section>
+    {% endif %}
+  </div>
+
+  <aside class="detail-aside">
+    <section class="panel meta-panel">
+      <p class="section-label">{{ t('common.tags') }}</p>
+      {% if record.entity_type == 'knowledge_node' and record.status == 'active' %}
+      <form id="tag-settings" class="tag-editor" method="post" action="/knowledge/{{ record.id }}/tags">
+        <p class="tag-editor-help">{{ t('discipline_tags.direct_help') }}</p>
+        {% set tag_record = record %}{% set tag_form_id = '' %}{% set allow_new_tag = true %}{% set show_tag_save = true %}{% include "partials/tag_picker.html" %}
+      </form>
+      {% else %}<div class="tag-cloud">{% for tag in tags %}<span>{{ tag.label }}</span>{% else %}<small>{{ t('common.no_tags') }}</small>{% endfor %}</div>{% endif %}
+      <dl>
+        <div><dt>ID</dt><dd><code>{{ record.id }}</code></dd></div>
+        <div><dt>{{ t('common.status') }}</dt><dd><span class="status-dot"></span>{{ record_status_labels[record.status] }}</dd></div>
+        <div><dt>{{ t('common.updated_at') }}</dt><dd>{{ record.updated_at.strftime('%Y-%m-%d') }}</dd></div>
+        <div><dt>{{ t('common.content_hash') }}</dt><dd title="{{ content_hash }}"><code>{{ content_hash[7:19] }}…</code></dd></div>
+      </dl>
+    </section>
+    {% if record.evidence_refs is defined %}<section class="panel evidence-panel">
+      <div class="panel-head"><div><p class="eyebrow duplicate-in-english">EVIDENCE</p><h2>{{ t('common.evidence') }}</h2></div></div>
+      {% for item in evidence %}
+        <div class="evidence-card">{% if item.confidence is not none %}<span>{{ (item.confidence * 100)|int }}%</span>{% endif %}<strong>{{ item.evidence_kind|replace('_', ' ') }}</strong><small>{{ item.source_id }}</small><p>{{ display_value(item.locator) }}</p></div>
+      {% else %}<div class="empty-inline">{{ t('common.no_evidence') }}</div>{% endfor %}
+    </section>{% endif %}
+  </aside>
+</div>
+{% endblock %}

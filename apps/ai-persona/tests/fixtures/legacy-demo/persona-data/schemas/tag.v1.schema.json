@@ -1,0 +1,78 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "aliases": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Aliases",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "tag",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "label": {
+      "minLength": 1,
+      "title": "Label",
+      "type": "string"
+    },
+    "namespace": {
+      "minLength": 1,
+      "title": "Namespace",
+      "type": "string"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema": {
+      "const": "ai-persona.tag/v1",
+      "title": "Schema",
+      "type": "string"
+    },
+    "slug": {
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "title": "Slug",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "id",
+    "entity_type",
+    "status",
+    "revision",
+    "created_at",
+    "updated_at",
+    "namespace",
+    "slug",
+    "label"
+  ],
+  "title": "Tag",
+  "type": "object"
+}

@@ -1,0 +1,4 @@
+[persona]
+id = "demo-persona"
+revision = 5
+include_human_notes_in_snapshot = true

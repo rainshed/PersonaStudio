@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ ui('试判偏好场景 · AI Persona') }}{% endblock %}
+{% block content %}
+<section class="page-head"><div><h1>{{ ui('试判偏好场景') }}</h1><p class="lead">{{ ui('看看这段任务输入会触发哪些场景。只判断，不修改偏好。') }}</p>{% if trial_context %}<p>{{ '当前场景：' if locale == 'zh-CN' else 'Current scene: ' }}{{ trial_context.name }}</p>{% endif %}</div><a class="button ghost" href="/preferences{% if trial_context %}?context={{ trial_context.id }}{% endif %}">{{ ui('返回偏好配置') }}</a></section>
+<section class="panel ai-panel">
+<form id="activation-form" class="ai-stack">
+<p>{{ ui('点击后会把本次输入和完整的有效场景目录发送给已配置的场景判定模型，可能消耗额度。不因从某个场景进入而缩小判断目录。') }}</p>
+<label class="field"><span>{{ ui('任务输入') }}</span><textarea id="activation-input" rows="5" maxlength="24000" required></textarea></label>
+<button class="button primary-button" type="submit">{{ ui('判定场景（调用模型）') }}</button>
+<p id="activation-status" role="status"></p><div id="activation-result"></div>
+</form></section>
+<p><a href="/settings/models">{{ ui('查看场景判定模型') }}</a> · <a href="/inbox?view=all&amp;type=activation">{{ ui('查看判断记录与反馈') }}</a></p>
+<script src="/static/activation-trial.js?v=20260908.studio3.1" defer></script>
+{% endblock %}

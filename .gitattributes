@@ -1,0 +1,9 @@
+* text=auto
+*.sh text eol=lf
+*.py text eol=lf
+*.mjs text eol=lf
+*.png binary
+*.pdf binary
+
+# Preserve upstream formatting in vendored libraries.
+apps/ai-persona/src/ai_persona/static/knowledge-map/vendor/** -whitespace

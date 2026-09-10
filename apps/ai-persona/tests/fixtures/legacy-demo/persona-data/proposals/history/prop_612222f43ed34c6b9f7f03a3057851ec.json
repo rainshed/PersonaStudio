@@ -1,0 +1,98 @@
+{
+  "base_hash": null,
+  "base_revision": null,
+  "confidence": 1.0,
+  "conflicts": [],
+  "created_at": "2026-09-02T15:05:24Z",
+  "decided_at": "2026-09-02T15:05:52Z",
+  "decision_reason": null,
+  "duplicate_candidates": [],
+  "evidence_refs": [],
+  "id": "prop_612222f43ed34c6b9f7f03a3057851ec",
+  "operation": "create",
+  "patch": [
+    {
+      "after": [],
+      "before": null,
+      "field": "aliases"
+    },
+    {
+      "after": {
+        "authors": [
+          "PersonaStudio Demo Authors"
+        ],
+        "canonical_url": null,
+        "identifiers": {
+          "arxiv": null,
+          "doi": null,
+          "isbn": null
+        },
+        "language": null,
+        "published_at": null,
+        "venue": null
+      },
+      "before": null,
+      "field": "bibliography"
+    },
+    {
+      "after": "# Fixture note\n\nAll content and personal-state fields describe a fictional test persona.\n",
+      "before": null,
+      "field": "body"
+    },
+    {
+      "after": "aware",
+      "before": null,
+      "field": "knowledge_level"
+    },
+    {
+      "after": "paper",
+      "before": null,
+      "field": "material_type"
+    },
+    {
+      "after": "liked",
+      "before": null,
+      "field": "preference_level"
+    },
+    {
+      "after": [],
+      "before": null,
+      "field": "preference_reasons"
+    },
+    {
+      "after": "src_ff89b349649a40769478e69db92d82b6",
+      "before": null,
+      "field": "source_ref"
+    },
+    {
+      "after": "An original fictional PDF for source reading, hashing, and material review tests.",
+      "before": null,
+      "field": "summary"
+    },
+    {
+      "after": [],
+      "before": null,
+      "field": "tags"
+    },
+    {
+      "after": "Synthetic Transport Study",
+      "before": null,
+      "field": "title"
+    },
+    {
+      "after": [
+        "read"
+      ],
+      "before": null,
+      "field": "user_relationships"
+    }
+  ],
+  "proposal_revision": 2,
+  "reason": "Add an original synthetic PDF for regression testing.",
+  "schema": "ai-persona.change-proposal/v1",
+  "status": "accepted",
+  "submitted_by": "human",
+  "target_entity_type": "material",
+  "target_id": "mat_a2be3b0ec4a04be39baaf93584e94e0d",
+  "updated_at": "2026-09-02T15:05:52Z"
+}

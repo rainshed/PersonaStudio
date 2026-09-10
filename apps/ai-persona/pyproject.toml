@@ -1,0 +1,82 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-persona"
+version = "0.1.0"
+description = "Local-first knowledge and preferences with human-reviewed AI updates; part of PersonaStudio"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "src/ai_persona/static/**/vendor/*LICENSE*", "src/ai_persona/static/vendor/*LICENSE*"]
+requires-python = ">=3.12"
+dependencies = [
+  "beautifulsoup4>=4.13,<5",
+  "openai-codex==0.147.0",
+  "fastapi>=0.115,<1",
+  "fastembed>=0.7,<1",
+  "jinja2>=3.1,<4",
+  "mcp>=2.1,<2.2",
+  "pydantic>=2.10,<3",
+  "pillow>=11,<13",
+  "pypdfium2>=4.30,<6",
+  "python-multipart>=0.0.20,<1",
+  "PyYAML>=6.0,<7",
+  "uvicorn>=0.34,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx2>=2.12,<3",
+  "pytest>=8,<10",
+  "ruff>=0.11,<1",
+]
+
+[project.scripts]
+ai-persona = "ai_persona.cli:main"
+ai-persona-mcp = "ai_persona.mcp_server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ai_persona"]
+exclude = ["**/node_modules/**", "**/__pycache__/**", "**/model_runtime/tests/**"]
+
+[tool.hatch.build]
+ignore-vcs = true
+
+[tool.hatch.build.targets.wheel.force-include]
+"examples/demo-persona/persona-data" = "ai_persona/demo_data"
+
+[tool.hatch.build.targets.sdist]
+include = ["/src/**", "/tests/**", "/examples/**", "/scripts/**", "/docs/**", "/README*.md", "/pyproject.toml", "/uv.lock", "/LICENSE", "/.python-version"]
+exclude = ["**/node_modules/**", "**/__pycache__/**", "**/persona-state/**", "**/.lock", "**/.DS_Store", "**/*.sqlite3*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+pythonpath = ["src"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.uv]
+# Non-editable installs must refresh when application code or bundled assets change.
+cache-keys = [
+  { file = "pyproject.toml" },
+  { file = "README*.md" },
+  { file = "LICENSE" },
+  { file = "src/**/*.py" },
+  { file = "src/**/*.html" },
+  { file = "src/**/*.css" },
+  { file = "src/**/*.js" },
+  { file = "src/**/*.mjs" },
+  { file = "src/**/*.ts" },
+  { file = "src/**/*.json" },
+  { file = "src/**/*.yaml" },
+  { file = "src/**/*.svg" },
+  { file = "src/**/*.txt" },
+  { file = "examples/demo-persona/persona-data/**/*" },
+]

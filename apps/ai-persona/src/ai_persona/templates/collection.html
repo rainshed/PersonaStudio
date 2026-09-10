@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · AI Persona{% endblock %}
+{% block content %}
+<section class="page-head simple-head">
+  <div><p class="eyebrow duplicate-in-english">{{ eyebrow }}</p><h1>{{ title }}</h1><p class="lead">{{ lead }}</p></div>
+  {% if can_create %}<a class="button primary-button" href="{{ page_root }}/new">{{ t('courses.add') }}</a>{% endif %}
+</section>
+
+{% if readonly_note %}<div class="info-banner"><strong>{{ t('common.readonly') }}</strong><span>{{ readonly_note }}</span></div>{% endif %}
+
+<section class="panel knowledge-panel">
+  <form class="filter-bar compact-filters" action="{{ page_root }}" method="get" hx-get="{{ page_root }}/table" hx-target="#knowledge-results" hx-trigger="input changed delay:250ms, change">
+    <label class="search-box"><span aria-hidden="true">⌕</span><input type="search" name="q" value="{{ query }}" placeholder="{{ t('common.search_name_alias') }}" autocomplete="off"></label>
+    <label><span class="sr-only">{{ t('common.knowledge_level') }}</span><select name="knowledge_level">
+      <option value="">{{ t('common.all_levels') }}</option>
+      {% for value, label in level_labels.items() %}<option value="{{ value }}" {% if selected_level == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select></label>
+    <noscript><button class="button small" type="submit">{{ t('common.filter') }}</button></noscript>
+  </form>
+  <div id="knowledge-results" aria-live="polite">
+    {% include "partials/knowledge_table.html" %}
+  </div>
+</section>
+{% endblock %}

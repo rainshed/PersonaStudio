@@ -1,0 +1,23 @@
+<div class="checkbox-grid tag-option-grid">
+  {% for tag in all_tags %}
+  <label class="check-card">
+    <input type="checkbox" name="tags" value="{{ tag.id }}" {% if tag_record and tag.id in tag_record.tags %}checked{% endif %}{% if tag_form_id %} form="{{ tag_form_id }}"{% endif %}>
+    <span><i>✓</i><strong>{{ tag.label }}</strong><small>{{ tag.slug }}</small></span>
+  </label>
+  {% endfor %}
+</div>
+{% if allow_new_tag %}
+<div class="inline-tag-create">
+  <label class="field"><span>{{ t('discipline_tags.add_inline') }}</span><input name="new_tag" value="{{ new_tag_value or '' }}" placeholder="{{ t('discipline_tags.new_placeholder') }}"{% if tag_form_id %} form="{{ tag_form_id }}"{% endif %}></label>
+  <small>{{ t('discipline_tags.new_help') }}</small>
+</div>
+{% endif %}
+{% if preserved_tags %}
+<div class="preserved-tags">
+  <small>{{ t('discipline_tags.preserved_help') }}</small>
+  <div class="tag-cloud">
+    {% for tag in preserved_tags %}<span>{{ tag.label }}</span><input type="hidden" name="tags" value="{{ tag.id }}"{% if tag_form_id %} form="{{ tag_form_id }}"{% endif %}>{% endfor %}
+  </div>
+</div>
+{% endif %}
+{% if show_tag_save %}<button class="button primary-button full tag-save-button" type="submit"{% if tag_form_id %} form="{{ tag_form_id }}"{% endif %}>{{ t('discipline_tags.save') }}</button>{% endif %}

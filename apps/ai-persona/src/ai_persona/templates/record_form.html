@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% set is_knowledge = entity_type == 'knowledge_node' %}
+{% set is_course = entity_type == 'course' %}
+{% set direct_tag_edit = is_knowledge and mode == 'edit' %}
+{% set object_name = t('common.knowledge') if is_knowledge else t('common.courses') %}
+{% set action_name = t('common.create') if mode == 'create' else t('common.edit') %}
+{% block title %}{{ t('record_form.create_title', object=object_name) if mode == 'create' else t('record_form.edit_title', object=object_name) }} · AI Persona{% endblock %}
+{% block content %}
+<nav class="breadcrumbs"><a href="{{ page_root }}">{{ page_label }}</a>{% if record %}<span>/</span><a href="{{ page_root }}/{{ record.id }}">{{ record.title }}</a>{% endif %}<span>/</span><span>{{ action_name }}</span></nav>
+<section class="page-head form-head">
+  <div><p class="eyebrow">{{ 'CREATE A RECORD' if mode == 'create' else 'EDIT A RECORD' }}</p><h1>{{ t('record_form.create_title', object=object_name) if mode == 'create' else t('record_form.edit_title', object=object_name) }}</h1><p class="lead">{{ t('record_form.lead') }}</p></div>
+  <span class="safety-note"><i>✓</i> {{ t('common.protected') }}</span>
+</section>
+
+<form class="edit-layout" method="post" action="{{ form_action }}">
+{% if record %}<input type="hidden" name="record_revision" value="{{ record.revision }}">{% endif %}
+  <div class="panel form-panel">
+    <div class="form-section">
+      <div class="form-section-head"><span>01</span><div><h2>{{ t('record_form.basics') }}</h2><p>{{ t('record_form.basics_desc', object=object_name) }}</p></div></div>
+      <div class="field-grid">
+        <label class="field wide"><span>{{ t('record_form.name') }} <i>{{ t('common.required') }}</i></span><input name="title" value="{{ record.title if record else '' }}" required></label>
+        <label class="field wide"><span>{{ t('record_form.aliases') }} <small>{{ t('common.line_item') }}</small></span><textarea name="aliases" rows="3">{{ record.aliases|join('\n') if record else '' }}</textarea></label>
+        {% if is_knowledge %}<label class="field"><span>{{ t('record_form.semantic_role') }}</span><select name="semantic_role" required>{% for value, label in role_labels.items() %}<option value="{{ value }}" {% if record and record.semantic_role == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>{% endif %}
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-head"><span>02</span><div><h2>{{ t('record_form.cognition') }}</h2><p>{{ t('record_form.cognition_desc') }}</p></div></div>
+      <div class="field-grid two">
+        <label class="field"><span>{{ t('common.knowledge_level') }}</span><select name="knowledge_level">{% for value, label in level_labels.items() %}<option value="{{ value }}" {% if record and record.knowledge_level == value %}selected{% elif not record and value == 'unspecified' %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+        <label class="field"><span>{{ t('detail.interest_level') }}</span><select name="interest_level" required>{% for value, label in interest_labels.items() %}<option value="{{ value }}" {% if record and record.interest_level == value %}selected{% elif not record and value == 'unspecified' %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+      </div>
+    </div>
+    {% if is_knowledge %}
+    <div class="form-section">
+      <div class="form-section-head"><span>03</span><div><h2>{{ t('record_form.semantic_content') }}</h2><p>{{ t('record_form.semantic_desc') }}</p></div></div>
+      <div class="field-grid">
+        <label class="field wide"><span>{{ t('knowledge.description') }}</span><small class="field-help">{{ t('knowledge.description_help') }}</small><textarea name="summary" rows="4" placeholder="{{ t('knowledge.description_placeholder') }}">{{ record.summary if record else '' }}</textarea></label>
+        <label class="field wide"><span>{{ t('detail.scope') }}</span><textarea name="scope_note" rows="3">{{ (record.scope_note or '') if record else '' }}</textarea></label>
+        <label class="field wide"><span>{{ t('knowledge.personal_notes') }} <small>{{ t('record_form.markdown_note') }}</small></span><textarea name="body" rows="6">{{ loaded.body if loaded else '' }}</textarea></label>
+      </div>
+    </div>
+    {% endif %}
+    {% if is_course %}
+    <div class="form-section">
+      <div class="form-section-head"><span>03</span><div><h2>{{ t('record_form.course_content') }}</h2><p>{{ t('record_form.course_content_desc') }}</p></div></div>
+      <div class="field-grid">
+        <label class="field wide"><span>{{ t('courses.description') }} <small>{{ t('common.optional') }}</small></span><small class="field-help">{{ t('courses.description_help') }}</small><textarea name="description" rows="4" placeholder="{{ t('courses.description_placeholder') }}">{{ record.description if record else '' }}</textarea></label>
+        <label class="field wide"><span>{{ t('courses.syllabus') }} <small>{{ t('common.optional') }}</small></span><small class="field-help">{{ t('courses.syllabus_help') }}</small><textarea name="syllabus" rows="8" placeholder="{{ t('courses.syllabus_placeholder') }}">{{ record.syllabus if record else '' }}</textarea></label>
+      </div>
+    </div>
+    {% endif %}
+    <div class="form-section">
+      <div class="form-section-head"><span>{{ '04' if is_knowledge or is_course else '03' }}</span><div><h2>{{ t('common.tags') }}</h2><p>{{ t('discipline_tags.direct_help') if direct_tag_edit else t('record_form.tags_desc') }}</p></div></div>
+      {% set tag_record = record %}
+      {% set tag_form_id = 'knowledge-tag-form' if direct_tag_edit else '' %}
+      {% set allow_new_tag = is_knowledge %}
+      {% set show_tag_save = direct_tag_edit %}
+      {% include "partials/tag_picker.html" %}
+    </div>
+  </div>
+
+  <aside class="edit-aside">
+    <div class="panel sticky-panel">
+      <p class="section-label">{{ t('common.proposal_reason') }}</p>
+      {% include "partials/optional_note.html" %}
+      <div class="proposal-flow"><div><span>1</span><p><strong>{{ t('record_form.flow_create') }}</strong><small>{{ t('record_form.flow_create_desc') }}</small></p></div><div><span>2</span><p><strong>{{ t('record_form.flow_review') }}</strong><small>{{ t('record_form.flow_review_desc') }}</small></p></div><div><span>3</span><p><strong>{{ t('record_form.flow_publish') }}</strong><small>{{ t('record_form.flow_publish_desc') }}</small></p></div></div>
+      <button class="button primary-button full" type="submit">{{ t('common.preview_proposal') }} <span>→</span></button>
+      <a class="button text-button full" href="{{ page_root if mode == 'create' else page_root ~ '/' ~ record.id }}">{{ t('common.cancel') }}</a>
+    </div>
+  </aside>
+</form>
+{% if direct_tag_edit %}<form id="knowledge-tag-form" method="post" action="/knowledge/{{ record.id }}/tags"></form>{% endif %}
+{% endblock %}

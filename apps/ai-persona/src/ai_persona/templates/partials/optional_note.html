@@ -1,0 +1,8 @@
+<details class="optional-note wide" {% if note_value|default('') %}open{% endif %}>
+  <summary>{{ note_summary|default(t('common.add_note')) }}</summary>
+  <label class="field">
+    <span>{{ t('common.note') }}</span>
+    <textarea name="{{ note_name|default('reason') }}" rows="2" placeholder="{{ t('common.note_placeholder') }}">{{ note_value|default('') }}</textarea>
+    <small class="field-help">{{ t('common.note_help') }}</small>
+  </label>
+</details>

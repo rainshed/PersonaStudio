@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% set page_title = t('preference_form.new_context') if mode == 'create' else t('preference_form.edit_context') %}
+{% block title %}{{ page_title }} · AI Persona{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', path='/preference-context-form.css').path }}?v=20260908.1">
+<div class="context-editor">
+  <nav class="breadcrumbs" aria-label="{{ t('common.preferences') }}"><a href="/preferences">{{ t('common.preferences') }}</a><span aria-hidden="true">/</span><span>{{ page_title }}</span></nav>
+  <header class="context-editor-head">
+    <div><h1>{{ page_title }}</h1><p>{{ t('preference_form.context_editor_help') }}</p></div>
+    {% if record %}<a class="context-maintain" href="/ai?record_id={{ record.id }}">{{ t('ai.assistant') }}</a>{% endif %}
+  </header>
+
+  <form method="post" action="{{ form_action }}" data-context-editor data-example-label="{{ t('preference_form.example_number', number='{number}') }}" data-remove-label="{{ t('preference_form.remove_example', number='{number}') }}">
+    <input type="hidden" name="return_to" value="{{ return_to }}">
+    {% if record %}<input type="hidden" name="record_revision" value="{{ editor_revision }}">{% endif %}
+    {% if form_errors.get('form') %}<div class="context-form-error" role="alert">{{ form_errors.form }}</div>{% endif %}
+    <section class="context-card" aria-labelledby="context-required-heading">
+      <div class="context-group-head"><span class="context-group-mark" aria-hidden="true">01</span><div><h2 id="context-required-heading">{{ t('preference_form.required_group') }}</h2><p>{{ t('preference_form.required_group_help') }}</p></div></div>
+      <div class="context-fields">
+        <div class="context-field">
+          <label for="context-name">{{ t('record_form.name') }} <span class="context-required" aria-hidden="true">*</span></label>
+          <input id="context-name" name="name" value="{{ editor_values.name }}" placeholder="{{ t('preference_form.name_placeholder') }}" required {% if not form_errors or form_errors.get('name') %}autofocus{% endif %} data-required-message="{{ t('preference_form.required_name') }}" aria-describedby="context-name-error" {% if form_errors.get('name') %}aria-invalid="true"{% endif %}>
+          <p class="context-field-error" id="context-name-error" {% if not form_errors.get('name') %}hidden{% endif %}>{{ form_errors.get('name', '') }}</p>
+        </div>
+        <div class="context-field">
+          <label for="context-description">{{ t('preference_form.description') }} <span class="context-required" aria-hidden="true">*</span></label>
+          <p class="context-help" id="context-description-help">{{ t('preference_form.description_help') }}</p>
+          <textarea id="context-description" name="description" rows="3" placeholder="{{ t('preference_form.description_placeholder') }}" required data-required-message="{{ t('preference_form.required_description') }}" aria-describedby="context-description-help context-description-error" {% if form_errors.get('description') %}aria-invalid="true"{% if not form_errors.get('name') %} autofocus{% endif %}{% endif %}>{{ editor_values.description }}</textarea>
+          <p class="context-field-error" id="context-description-error" {% if not form_errors.get('description') %}hidden{% endif %}>{{ form_errors.get('description', '') }}</p>
+        </div>
+      </div>
+    </section>
+
+    <details class="context-card context-optional" open>
+      <summary><span class="context-group-head"><span class="context-group-mark optional-mark" aria-hidden="true">02</span><span><span class="context-group-title">{{ t('preference_form.optional_group') }}</span><span class="context-group-help">{{ t('preference_form.optional_group_help') }}</span></span></span><svg class="context-chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg></summary>
+      <div class="context-fields">
+        <fieldset class="context-examples" aria-describedby="context-examples-help">
+          <legend>{{ t('preference_form.request_examples') }}</legend>
+          <p class="context-help" id="context-examples-help">{{ t('preference_form.request_examples_help') }}</p>
+          <div class="context-example-list" data-example-list>
+            {% for example in editor_values.activation.intents or [''] %}
+            <div class="context-example-row" data-example-row>
+              <label class="context-sr-only" for="context-example-{{ loop.index }}">{{ t('preference_form.example_number', number=loop.index) }}</label>
+              <textarea id="context-example-{{ loop.index }}" name="request_examples" rows="1" placeholder="{{ t('preference_form.single_example_placeholder') }}">{{ example }}</textarea>
+              <button class="context-remove" type="button" data-remove-example aria-label="{{ t('preference_form.remove_example', number=loop.index) }}" title="{{ t('preference_form.remove_example', number=loop.index) }}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 6 8 8M14 6l-8 8"/></svg></button>
+            </div>
+            {% endfor %}
+          </div>
+          <button class="context-add" type="button" data-add-example><span aria-hidden="true">＋</span> {{ t('preference_form.add_example') }}</button>
+        </fieldset>
+        <div class="context-field">
+          <label for="context-excludes">{{ t('preference_form.excludes') }}</label>
+          <p class="context-help" id="context-excludes-help">{{ t('preference_form.excludes_help') }}</p>
+          <textarea id="context-excludes" name="excludes" rows="2" placeholder="{{ t('preference_form.excludes_placeholder') }}" aria-describedby="context-excludes-help">{{ editor_values.activation.excludes|join('\n') }}</textarea>
+        </div>
+        <div class="context-field">
+          <label for="context-artifacts">{{ t('preference_form.artifact_types') }}</label>
+          <p class="context-help" id="context-artifacts-help">{{ t('preference_form.artifact_types_help') }}</p>
+          <textarea id="context-artifacts" name="artifact_types" rows="2" placeholder="{{ t('preference_form.artifact_types_placeholder') }}" aria-describedby="context-artifacts-help">{{ editor_values.activation.artifact_types|join('\n') }}</textarea>
+        </div>
+      </div>
+    </details>
+
+    <footer class="context-editor-footer">
+      <p>{{ t('preference_form.save_hint') }}</p>
+      <div class="context-footer-actions">
+        {% if record %}
+          {% if record.status == 'archived' %}<button class="context-state-action" type="submit" formnovalidate formaction="/preferences/contexts/{{ record.id }}/state-proposals" name="status" value="active">{{ t('common.restore') }}</button>
+          {% else %}<button class="context-state-action" type="submit" formnovalidate formaction="/preferences/contexts/{{ record.id }}/archive-proposals">{{ t('common.archive') }}</button>{% endif %}
+        {% endif %}
+        <a class="button ghost" href="{{ return_to }}">{{ t('common.cancel') }}</a>
+        <button class="button primary-button" type="submit">{{ t('preference_form.save_context') }}</button>
+      </div>
+    </footer>
+    <template data-example-template>
+      <div class="context-example-row" data-example-row>
+        <label class="context-sr-only"></label>
+        <textarea name="request_examples" rows="1" placeholder="{{ t('preference_form.single_example_placeholder') }}"></textarea>
+        <button class="context-remove" type="button" data-remove-example><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 6 8 8M14 6l-8 8"/></svg></button>
+      </div>
+    </template>
+  </form>
+</div>
+<script src="{{ url_for('static', path='/preference-context-form.js').path }}?v=20260908.1" defer></script>
+{% endblock %}

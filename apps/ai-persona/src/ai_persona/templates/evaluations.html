@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ ui('评测与改进 · AI Persona') }}{% endblock %}
+{% block content %}
+<div id="evaluation-root" class="evaluation-studio">
+<header class="page-head"><div><h1>{{ ui('评测与改进') }}</h1><p class="lead">{{ ui('用真实反馈检查当前方案，或比较一次调整有没有改善。') }}</p></div><a class="button ghost" href="/inbox?view=feedback">{{ ui('前往反馈与审核') }}</a></header>
+<div id="evaluation-notice" class="evaluation-notice" role="status" hidden></div>
+<nav class="studio-tabs" aria-label="{{ ui('评测分类') }}"><button id="evaluation-run-tab" type="button">{{ ui('开始检查') }}</button><button id="evaluation-cases-tab" type="button">{{ ui('测试样例') }}</button><button id="evaluation-reports-tab" type="button">{{ ui('历史记录') }}</button></nav>
+<div class="evaluation-top-tools evaluation-form"><label>{{ ui('检查内容') }}<select id="evaluation-capability"><option value="persona.conversation_learning">{{ ui('对话学习触发') }}</option><option value="persona.activation">{{ ui('偏好触发') }}</option></select></label><button id="evaluation-refresh" class="button ghost" type="button">{{ ui('刷新数据') }}</button></div>
+<section id="evaluation-run-panel">
+<div id="evaluation-active-run" class="evaluation-resume" hidden></div>
+<ol class="evaluation-steps" aria-label="{{ ui('检查步骤') }}"><li id="evaluation-step-label-1">{{ ui('1 选择检查') }}</li><li id="evaluation-step-label-2">{{ ui('2 调整方案') }}</li><li id="evaluation-step-label-3">{{ ui('3 确认并运行') }}</li></ol>
+<form id="evaluation-run-form" class="evaluation-form">
+<section id="evaluation-step-1" class="panel evaluation-panel">
+<h2>{{ ui('这次想检查什么？') }}</h2>
+<div class="evaluation-choice-grid"><label class="evaluation-choice"><input type="radio" name="evaluation-intent" value="current" checked><span><strong>{{ ui('检查当前方案') }}</strong><small>{{ ui('看看现在的判断是否准确、稳定。') }}</small></span></label><label class="evaluation-choice"><input type="radio" name="evaluation-intent" value="compare"><span><strong>{{ ui('手动改进') }}</strong><small>{{ ui('自己修改提示词、模型或思考强度，再比较效果。') }}</small></span></label><label class="evaluation-choice"><input type="radio" name="evaluation-intent" value="automatic"><span><strong>{{ ui('自动改进') }}</strong><small>{{ ui('让 AI 分析错误、精简提示词，逐轮检查并汇报修改。') }}</small></span></label></div>
+<div class="evaluation-sample-summary"><h3>{{ ui('使用哪些样例？') }}</h3><p id="evaluation-selection" role="status"></p><p id="evaluation-coverage" class="evaluation-muted"></p><div class="evaluation-actions"><button id="evaluation-choose" type="button" class="button ghost">{{ ui('选择测试样例') }}</button><button id="evaluation-use-all" type="button" class="button ghost">{{ ui('使用全部可检查样例') }}</button></div><p id="evaluation-empty" hidden>{{ ui('还没有测试样例。先到“反馈与审核”评价一次触发判断，再回到这里检查。') }} <a href="/inbox?view=feedback">{{ ui('前往反馈与审核') }} →</a></p></div>
+<details><summary>{{ ui('使用已保存测试集') }}</summary><div id="evaluation-suites" class="evaluation-list"></div></details>
+<label class="evaluation-repeat">{{ ui('每条样例、每个方案运行几次？') }}<select id="evaluation-repeat"><option value="1">{{ ui('1 次 · 快速检查') }}</option><option value="3">{{ ui('3 次') }}</option><option value="5" selected>{{ ui('5 次 · 观察稳定性') }}</option><option value="10">{{ ui('10 次') }}</option></select></label><p id="evaluation-workload" class="evaluation-muted"></p>
+<div class="evaluation-actions"><button id="evaluation-next-step" type="button" disabled class="button primary-button">{{ ui('下一步') }} →</button></div>
+</section>
+<section id="evaluation-step-2" class="panel evaluation-panel" hidden>
+<h2>{{ ui('调整候选方案') }}</h2><p id="evaluation-adjustment-help" class="evaluation-muted">{{ ui('修改前使用当前方案。候选方案从当前方案复制，只有勾选的项目会改变。') }}</p>
+<section id="evaluation-automatic-settings" class="evaluation-plan" hidden><h3>{{ ui('改进模型') }}</h3><p class="evaluation-muted">{{ ui('分析开发样例与不满意理由，修改提示词。它不会给自己评分，也不会成为实际触发模型。') }}</p><div class="evaluation-form-grid"><label>{{ ui('改进模型连接') }}<select id="evaluation-optimizer-connection"></select></label><label>{{ ui('改进模型') }}<select id="evaluation-optimizer-model"></select></label><label>{{ ui('改进模型思考强度') }}<select id="evaluation-optimizer-reasoning"></select></label></div><label>{{ ui('最多改进轮数') }}<select id="evaluation-max-rounds"><option value="1">1</option><option value="3" selected>3</option><option value="5">5</option><option value="10">10</option></select></label><p class="evaluation-muted">{{ ui('每轮提出一个候选；两类正确率都不下降时才保留改进。连续两轮没有进步或达到限额就停止。同样准确时优先更简洁的提示词。') }}</p></section>
+<div class="evaluation-plan-grid"><section class="evaluation-plan"><span class="evaluation-eyebrow">A</span><h3>{{ ui('当前方案') }}</h3><div id="evaluation-baseline"></div><a href="/settings/models">{{ ui('查看模型设置') }}</a></section><section class="evaluation-plan"><span class="evaluation-eyebrow">B</span><h3>{{ ui('候选方案') }}</h3>
+<label class="evaluation-toggle"><span><input id="evaluation-change-prompt" type="checkbox"><span id="evaluation-prompt-choice-label">{{ ui('修改提示词') }}</span></span></label><div id="evaluation-versions" hidden></div>
+<label class="evaluation-toggle"><span><input id="evaluation-change-model" type="checkbox">{{ ui('更换触发模型') }}</span></label><div id="evaluation-model-fields" hidden><h4>{{ ui('触发模型') }}</h4><p class="evaluation-muted">{{ ui('实际运行候选方案的模型。当前方案 A 保持原模型，候选模型在一次任务内保持固定。') }}</p><label>{{ ui('触发模型连接') }}<select id="evaluation-connection"></select></label><label>{{ ui('触发模型') }}<select id="evaluation-model-id"></select></label></div>
+<label class="evaluation-toggle"><span><input id="evaluation-change-reasoning" type="checkbox">{{ ui('调整思考强度') }}</span></label><div id="evaluation-reasoning-fields" hidden><label>{{ ui('思考强度') }}<select id="evaluation-reasoning"></select></label><p id="evaluation-reasoning-hint" class="evaluation-muted"></p></div>
+<p id="evaluation-changes" class="evaluation-muted"></p>
+</section></div>
+<details><summary>{{ ui('当前处理流程') }}</summary><p id="evaluation-process" class="evaluation-muted"></p></details>
+<details id="evaluation-reference"><summary>{{ ui('查看所选样例的改进参考') }}</summary><p class="evaluation-muted">{{ ui('不满意理由只供修改时参考，不会发送给被测模型，也不参与评分。') }}</p><div id="evaluation-reference-list"></div></details>
+<div class="evaluation-actions"><button id="evaluation-back-1" type="button" class="button ghost">← {{ ui('上一步') }}</button><button id="evaluation-to-confirm" type="button" class="button primary-button">{{ ui('确认检查配置') }} →</button></div>
+</section>
+<section id="evaluation-step-3" class="panel evaluation-panel" hidden>
+<h2>{{ ui('确认这次检查') }}</h2><div id="evaluation-model-preview" role="status"></div>
+<details><summary>{{ ui('运行限额') }}</summary><p class="evaluation-muted">{{ ui('达到任一限额会停止后续运行，并保留已经完成的结果。') }}</p><div class="evaluation-form-grid"><label>{{ ui('最多模型调用次数') }}<input id="evaluation-max-calls" type="number" min="1" max="500" value="100" required></label><label>{{ ui('总 token 预算') }}<input id="evaluation-max-tokens" type="number" min="1000" max="5000000" value="200000" required></label><label>{{ ui('最长运行秒数') }}<input id="evaluation-timeout" type="number" min="10" max="7200" value="900" required></label></div><button id="evaluation-preview" type="button" class="button ghost">{{ ui('更新检查预览') }}</button></details>
+<label class="evaluation-consent"><span><input id="evaluation-consent" type="checkbox" disabled>{{ ui('我确认将上述样例的必要输入发送给这些模型。') }}</span></label><p class="evaluation-muted">{{ ui('测试结果单独保存，不会修改真实 Persona 或启用候选方案。') }}</p><div class="evaluation-actions"><button id="evaluation-back-2" type="button" class="button ghost">← {{ ui('上一步') }}</button><button id="evaluation-start" class="button primary-button" type="submit" disabled>{{ ui('开始检查') }}</button></div>
+</section>
+</form></section>
+<section id="evaluation-cases-panel" class="evaluation-cases-layout" hidden>
+<section class="panel evaluation-panel evaluation-case-list">
+<h2>{{ ui('测试样例') }}</h2><p class="evaluation-muted">{{ ui('明确反馈才收录。未评价的业务结果在“反馈与审核”中查看。') }}</p>
+<div class="evaluation-form"><label>{{ ui('样例状态') }}<select id="evaluation-case-status"><option value="active">{{ ui('有效且可回测') }}</option><option value="withdrawn">{{ ui('已撤回') }}</option><option value="unavailable">{{ ui('缺少回放输入') }}</option><option value="all">{{ ui('全部样例') }}</option></select></label><label>{{ ui('搜索输入') }}<input type="search" id="evaluation-search" maxlength="300" placeholder="{{ ui('搜索用户正文') }}"></label></div>
+<div id="evaluation-list" class="evaluation-list"></div>
+<div class="evaluation-actions"><button id="evaluation-prev" type="button" class="button ghost">{{ ui('上一页') }}</button><span id="evaluation-case-count"></span><button id="evaluation-next" type="button" class="button ghost">{{ ui('下一页') }}</button></div>
+<button id="evaluation-select-all" type="button" class="button ghost">{{ ui('选择全部可检查样例') }}</button>
+<button id="evaluation-to-run" type="button" class="button">{{ ui('使用所选样例检查 →') }}</button>
+<details><summary>{{ ui('备份与迁移') }}</summary><p class="evaluation-muted">{{ ui('用户备份包含理由；评测导出不包含理由。导入不覆盖已有样例。') }}</p><div class="evaluation-actions"><button id="evaluation-backup" type="button" class="button ghost">{{ ui('导出用户备份') }}</button><button id="evaluation-export" type="button" class="button ghost">{{ ui('导出评测数据') }}</button></div><label class="evaluation-reason">{{ ui('导入用户备份') }}<input id="evaluation-import" type="file" accept="application/json,.json"></label></details>
+</section>
+<section class="panel evaluation-panel evaluation-case-detail"><button id="evaluation-case-back" type="button" class="button ghost">{{ ui('返回样例列表') }}</button><div id="evaluation-detail"><h2>{{ ui('选择一条测试样例') }}</h2><p class="evaluation-muted">{{ ui('查看触发标签、冻结输入和审核答案。改选或取消反馈会回到同一条原始结果。') }}</p></div></section>
+</section>
+
+<section id="evaluation-reports-panel" class="evaluation-history-layout" hidden><section class="panel evaluation-panel evaluation-history-list"><h2>{{ ui('历史记录') }}</h2><div id="evaluation-runs" class="evaluation-list"></div></section><section class="panel evaluation-panel"><div id="evaluation-report"><p class="evaluation-muted">{{ ui('选择一次检查，查看两类正确率和每次运行结果。') }}</p></div></section></section>
+<dialog id="evaluation-prompt-editor" class="evaluation-prompt-dialog"><form id="evaluation-prompt-form"><h2>{{ ui('编辑候选提示词') }}</h2><p>{{ ui('保存为新版本后会选入候选方案，不会立即启用。请保留模板中的输入变量。') }}</p><div id="evaluation-prompt-fields" class="evaluation-form"></div><label>{{ ui('修改说明') }}<input id="evaluation-prompt-note" maxlength="500" required></label><p id="evaluation-prompt-error" role="alert" class="error"></p><div class="evaluation-actions"><button id="evaluation-prompt-cancel" type="button" class="button ghost">{{ ui('取消') }}</button><button id="evaluation-prompt-save" type="submit" class="button primary-button">{{ ui('保存为候选版本') }}</button></div></form></dialog>
+</div>
+<script src="/static/evaluations.js?v=20260909.improvement2" defer></script>
+{% endblock %}

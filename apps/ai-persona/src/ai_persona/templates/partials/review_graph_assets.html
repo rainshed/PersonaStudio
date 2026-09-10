@@ -1,0 +1,7 @@
+<link rel="stylesheet" href="/static/knowledge-map.css?v=20260911.review2">
+<link rel="stylesheet" href="/static/review-workspace.css?v=20260911.review2">
+<template id="review-graph-template">{% set graph_interactive = true %}{% set graph = {'nodes': [], 'edges': []} %}{% include "partials/knowledge_graph.html" %}</template>
+{% set graph_labels = {'levels': level_labels, 'relation_labels': relation_labels, 'no_matches': t('knowledge.graph_no_matches'), 'counts': t('knowledge_map.counts', count='{count}', total='{total}', edges='{edges}'), 'expand_branch': t('knowledge_map.expand_branch', title='{title}'), 'collapse_branch': t('knowledge_map.collapse_branch', title='{title}')} %}
+{% for key in ['auto', 'right', 'down', 'bilateral', 'help', 'fullscreen', 'fullscreen_exit', 'error'] %}{% set _ = graph_labels.update({key: t('knowledge_map.' + key)}) %}{% endfor %}
+<script type="application/json" data-graph-labels>{{ graph_labels|tojson }}</script>
+<script src="/static/knowledge-map/vendor/d3.min.js?v=7.9.0" defer></script>

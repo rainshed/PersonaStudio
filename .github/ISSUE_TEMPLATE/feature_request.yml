@@ -1,0 +1,22 @@
+name: Feature request / 功能建议
+description: Explain the user task and the improvement you would like.
+title: "[Feature] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem / 使用问题
+      description: What are you trying to accomplish, and where does the current workflow fall short?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior / 建议行为
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Existing workflow and compatibility / 现有流程与兼容性
+      description: Mention affected pages, commands, integrations, or data formats.

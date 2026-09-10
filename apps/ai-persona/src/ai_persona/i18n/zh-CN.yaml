@@ -1,0 +1,976 @@
+meta:
+  locale_name: 中文
+  other_locale_name: English
+common:
+  app_home: AI Persona Studio 首页
+  main_navigation: 主导航
+  dashboard: 总览
+  knowledge: 知识
+  courses: 课程
+  materials: 材料
+  preferences: 偏好
+  review: 审核
+  data_connected: 数据已连接
+  language: 语言
+  switch_language: Switch to English
+  filter: 筛选
+  search: 搜索
+  search_name_alias: 搜索名称或别名……
+  search_name_alias_summary: "搜索名称、别名或内容……"
+  knowledge_level: "掌握程度"
+  all_levels: 全部水平
+  readonly: 只读
+  required: 必填
+  optional: 可选
+  optional_details: 可选细节
+  edit: 编辑
+  archive: "归档"
+  restore: "恢复"
+  cancel: 取消
+  tags: 标签
+  no_tags: 暂无标签
+  no_summary: "尚未填写内容摘要。"
+  unknown: 未填写
+  status: 状态
+  record: 记录
+  id: ID
+  revision: 对象版本
+  updated_at: 最后更新
+  content_hash: 内容指纹
+  current_value: 当前值
+  suggested_value: 建议值
+  user: 用户
+  you: 你
+  ai: AI
+  items: "{count} 项"
+  files: "{count} 个"
+  relationships: 关系
+  source: 来源
+  original: 原文
+  open: 打开
+  back: 返回
+  breadcrumb: 面包屑
+  add: 新增
+  create: 新建
+  import: 导入
+  save: 保存
+  reason: "备注（可选）"
+  proposal_reason: "保存修改"
+  preview_proposal: "保存"
+  protected: "保存即生效 · 保留历史"
+  line_item: 每行一个
+  choose: 请选择
+  notes: 人工备注
+  summary: "内容摘要"
+  no_evidence: 没有关联证据。
+  evidence: 判断依据
+  add_note: "添加备注（可选）"
+  note: "备注"
+  note_placeholder: "如有需要，可以补充说明；留空也能提交。"
+  note_help: "系统会自动记录修改内容，无需另写修改原因。"
+dashboard:
+  page_title: 总览 · AI Persona
+  heading_before: 早上好，来看看你的
+  heading_emphasis: 知识版图
+  lead: "这里展示 AI 当前真正了解的你。人工保存直接生效，AI 建议经审核后生效，所有变化均可追溯。"
+  current_revision: "当前人格版本 {revision}"
+  empty_title: 这是一个空白人格
+  empty_lead: "先添加一项知识或材料，掌握程度可以以后再补充。你保存的内容会直接生效。"
+  add_first_knowledge: 添加第一项知识
+  add_course: 添加课程
+  import_material: 导入材料
+  knowledge_assets: 知识资产
+  asset_count: 个知识、课程与材料
+  view_all: 查看全部
+  proficient: 精通
+  high_interest: 高兴趣
+  interest_count: 个持续关注的主题
+  pending_review: 待审核
+  pending_message: 项修改等待你的决定
+  all_processed: 所有修改都已处理
+  enter_review: 进入审核台
+  depth_title: 掌握程度
+  browse_knowledge: 浏览知识
+  proficient_desc: 可独立理解与应用
+  familiar_desc: 理解主要概念
+  aware_desc: 知道基本轮廓
+  unspecified_desc: 尚未填写，可以以后补充
+  level_note: 熟练程度不会沿知识层级自动继承，每个判断都有自己的证据。
+  inbox: 审核收件箱
+  changes: "{count} 处"
+  process_all: 处理全部待审核项目
+  inbox_clear: 收件箱已清空
+  inbox_clear_desc: 新的人工编辑或 AI 建议会先出现在这里。
+  composition: 人格构成
+  knowledge_nodes: 知识概念
+  relations: 关系
+  sources: 来源
+  preferences: 偏好
+  recent_releases: 最近发布
+  release_fallback: 已发布一组人格修改
+knowledge:
+  page_title: 知识 · AI Persona
+  title: 知识版图
+  lead: 浏览和维护 AI 对你的知识概念及其层级关系的结构化理解。
+  view_graph: 查看知识图
+  add: 新增知识
+  graph_title: 概念层级图
+  graph_note: "展开分支，一起查看知识点及其相关方法。"
+  graph_aria: 可按兴趣和关系浏览的知识概念图
+  interest_legend: "兴趣"
+  relation_filters: 显示关系
+  graph_help: "点击卡片预览 · 点击下级数量展开分支 · 拖动画布浏览"
+  view_record: "查看 {title}"
+  matches: 个匹配条目
+  empty_title: 没有找到匹配条目
+  empty_desc: 尝试调整搜索词或筛选条件。
+  description: "知识说明"
+  description_help: "说明这个知识点是什么、解决什么问题，以及适用的场景。"
+  description_placeholder: "例如：Krylov 子空间方法通过构造低维子空间，近似求解大型线性系统或矩阵函数。"
+  no_description: "尚未填写知识说明。"
+  personal_notes: "个人笔记"
+  browse_list: "浏览列表"
+  concept_count: "个概念"
+  connection_count: "条关系"
+  graph_search: "搜索图中概念或别名…"
+  graph_group: "知识分组"
+  all_groups: "全部分组"
+  expand_graph: "展开 / 收起画布"
+  search_matches: "个匹配 · Enter 定位下一个"
+  graph_no_matches: "没有匹配的概念，试试其他关键词"
+  zoom_controls: "画布缩放"
+  zoom_in: "放大"
+  zoom_out: "缩小"
+  actual_size: "恢复 100% 大小"
+  fit_graph: "适应画布"
+  node_preview: "概念预览"
+  close_preview: "关闭预览"
+  open_details: "查看完整详情"
+  direct_connections: "直接关联"
+  no_connections: "这个概念暂时没有直接关联。"
+  graph_empty_title: "让知识逐渐连接起来"
+  graph_empty_desc: "添加第一个知识点，建立属于你的概念版图。"
+  graph_no_script: "启用 JavaScript 可使用搜索、缩放与预览；也可以滚动画布并点击节点查看详情。"
+  list_title: "全部知识"
+  list_note: "按名称、内容或掌握程度查找"
+  view_mode: "知识浏览方式"
+  map_view: "图谱"
+  list_view: "列表"
+  current_group: "当前分组"
+  total_concepts: "全部"
+  shown_count: "已显示"
+  folded_count: "收起"
+  expand_all: "展开全部"
+  collapse_to_roots: "收起到两层"
+  children_count: "{count} 个下级"
+  expand_branch: "展开「{title}」的 {count} 个下级"
+  collapse_branch: "收起「{title}」的 {count} 个下级"
+  parents: "上位概念"
+  children: "下位概念"
+  prerequisites: "前置知识"
+  dependents: "依赖此概念"
+  applications: "应用场景"
+  appliedConcepts: "应用于此的概念"
+  related: "相关概念"
+  path_highlighted: "上游路径已高亮"
+  relation_settings: "关系显示"
+  scope_note: "当前分组中的全部概念（含收起的分支）"
+  children_count_one: "{count} 个下级"
+  expand_branch_one: "展开「{title}」的 {count} 个下级"
+  collapse_branch_one: "收起「{title}」的 {count} 个下级"
+  hierarchy_note: "上下位关系构成此树；应用、依赖和相关关系可跨组查看。"
+  all_groups_note: "各层级树独立排列，选中概念可查看跨组关系。"
+  cross_group: "跨组关联"
+  jump_group: "前往分组"
+  back_group: "返回"
+  selection_relations_note: "选中概念时，会临时显示它在画布中的直接关联。"
+  contextual_concepts: "相关方法与概念"
+  related_group_note: "按已有的应用、依赖和相关关系组织。"
+discipline_tags:
+  all: 全部学科
+  filter_label: 按学科标签筛选
+  direct_help: 标签修改会直接生效，不进入审核。
+  add_inline: 新增标签
+  new_placeholder: 例如 Mathematics
+  new_help: 输入一个新名称；保存时会自动创建并选中。
+  save: 保存标签
+  saved: 标签已直接保存
+  preserved_help: 以下历史标签会保留，但不能新增到其他记录。
+courses:
+  page_title: 掌握的课程
+  lead: 按掌握程度、兴趣和标签浏览你记录过的课程。
+  add: 新增课程
+  description: 课程简介
+  description_help: 简要说明课程主题、目标或主要内容。
+  description_placeholder: 例如：介绍统计物理的基本概念与常用分析方法。
+  no_description: 尚未填写课程简介。
+  syllabus: 课程大纲
+  syllabus_help: 可按章节、模块或周次记录课程结构。
+  syllabus_placeholder: "例如：\n第一章 热力学基础\n第二章 系综理论\n第三章 相变与临界现象"
+  no_syllabus: 尚未填写课程大纲。
+materials:
+  page_title: 材料 · AI Persona
+  title: 阅读与作品库
+  lead: 这里保存你读过或参与撰写的材料，并分别记录理解程度、喜欢程度和知识联系。
+  import: 导入材料
+  search_placeholder: 搜索标题、作者、摘要或知识联系……
+  all_types: 全部类型
+  understanding: 理解程度
+  preference: 喜欢程度
+  all_preferences: 全部喜好
+  relationship_to_me: 与我的关系
+  all_relationships: 全部关系
+  related_knowledge: 关联知识
+  all_knowledge: 全部知识
+  knowledge_role: 知识角色
+  all_roles: 全部知识角色
+  importance: 重要程度
+  all_importance: 全部程度
+  all_tags: 全部标签
+  active: 使用中
+  archived: 已归档
+  count: 份材料
+  other_connections: "另有 {count} 条联系"
+  source_saved: 已保存原文
+  empty_title: 没有找到匹配材料
+  empty_desc: 尝试调整搜索词或筛选条件。
+  title_short: 材料
+  all_understanding: 全部理解程度
+  all_user_relationships: 全部用户关系
+  knowledge_domain: 知识领域
+  all_domains: 全部知识领域
+  relation_importance: 关系重要程度
+  current: 当前材料
+detail:
+  edit_record: 编辑此条目
+  interest_level: 兴趣程度
+  scope: "掌握范围"
+  connections: 知识关系
+  connection_count: "{count} 条"
+  this_record: 此条目
+  remove: 移除
+  propose_remove: "移除此关系"
+  no_connections: 尚未记录知识关系。
+  add_connection: 添加关系
+  batch_connection_help: 每一行是一条独立关系，可以为不同知识点选择不同的关系类型。
+  add_another_relation: 添加另一条关系
+  remove_relation_row: 移除这条关系
+  target_knowledge: 目标知识
+  search_knowledge_placeholder: 输入名称、别名或关键词
+  select_knowledge_error: 请从联想结果中选择一个知识点。
+  no_knowledge_matches: 没有匹配的知识点
+  knowledge_search_error: 暂时无法加载知识点，请重试。
+  relation_exists: 已有此关系
+  relation_selected: 本次已选择
+  reason_placeholder: 例如：补充这两个知识之间的依赖关系。
+  preview_relation: "保存关系"
+  preview_relations: "保存关系"
+record_form:
+  create_title: "新建{object}"
+  edit_title: "编辑{object}"
+  lead: "点击保存即确认本次修改，直接生效并保留修改历史。"
+  basics: 基本信息
+  basics_desc: "名称和别名帮助系统识别同一个{object}。"
+  name: 名称
+  aliases: 别名
+  semantic_role: 语义角色
+  cognition: 认知状态
+  cognition_desc: 掌握水平与兴趣相互独立，也不会沿知识关系自动继承。
+  semantic_content: "知识说明与个人记录"
+  semantic_desc: "知识说明介绍概念本身；掌握范围与个人笔记记录你的理解和经验。"
+  course_content: 课程内容
+  course_content_desc: 课程简介和课程大纲均可留空，以后可以随时补充。
+  markdown_note: 支持 Markdown 源文本
+  tags_desc: 选择已有标签，帮助系统进行结构化筛选。
+  why_change: "为什么要{action}？"
+  reason_placeholder: 写下这次变化的原因，方便以后检查历史。
+  flow_create: "填写内容"
+  flow_create_desc: "填写你要保存的信息"
+  flow_review: "保存确认"
+  flow_review_desc: "点击保存即表示确认"
+  flow_publish: "发布生效"
+  flow_publish_desc: "更新知识库"
+material_detail:
+  edit: 编辑材料
+  replace_source: 更换原文
+  propose_restore: "恢复材料"
+  understanding: 理解程度
+  reading_scope: 阅读和理解边界
+  my_review: 我的评价
+  no_review: 尚未记录具体评价。
+  knowledge_connections: 知识联系
+  source_evidence: "{count} 项原文依据"
+  view_in_source: 在原文中查看
+  historical_source: "历史 Source：{source_id}"
+  evidence_located: 已定位原文依据
+  evidence_not_located: 未定位原文依据
+  propose_remove: "移除关系"
+  no_connections: 尚未记录知识联系。
+  pending_connections: 待审核的建议联系
+  view_proposal: 查看提案
+  add_connection: 添加知识联系
+  batch_connection_help: 每一行是一条独立联系，可以分别设置知识作用、重要程度和关系说明。
+  knowledge_concept: 知识概念
+  role_in_material: 在材料中的作用
+  statement_placeholder: 说明这个知识以什么方式出现在材料中。
+  evidence_optional: 原文依据
+  shared_evidence_help: 这里选择的依据会应用于本次添加的全部知识联系。
+  connection_reason_placeholder: 例如：补充文章使用的核心方法。
+  personal_notes: 个人笔记
+  bibliography: 书目信息
+  authors: 作者
+  abstract: 原文摘要
+  published_at: 发表时间
+  venue: 来源
+  language: 语言
+  saved: 已保存
+  source_link: 来源链接
+  original_file: 原始文件
+  imported_at: 导入时间
+  open_source: 打开原文
+  read_extracted: 阅读提取文本
+  view_manifest: 查看 Source Manifest
+  release_history: 发布历史
+material_form:
+  import_title: 导入新材料
+  edit_title: 编辑材料
+  import_lead: 保存原文并整理用户与这份材料之间的关系。
+  edit_lead: "点击保存后直接更新正式记录，并保留修改历史。"
+  separated: 原文与正式记录分离
+  save_source: 保存原文
+  save_source_desc: "选择一种导入方式。确认保存后，原文与材料记录一起生效。"
+  upload: 上传文件
+  upload_formats: PDF、Markdown、TXT 或 HTML
+  paste: 粘贴原文
+  paste_desc: 原样保存为 Markdown
+  from_url: 从链接导入
+  from_url_desc: 可使用 URL、arXiv ID 或 DOI
+  source_file: 原文文件
+  paste_placeholder: 选择“粘贴原文”时填写。
+  source_url: 原文链接
+  identifier_optional: 若已填 arXiv ID 或 DOI，可留空
+  basics_desc: 规范化信息用于阅读、筛选和去重。
+  type: 材料类型
+  title: 标题
+  authors_desc: 每行一个，保持显示顺序
+  venue: 期刊或来源
+  canonical_url: 规范链接
+  reading: 我的阅读情况
+  reading_desc: “我参与撰写”可与一种阅读状态同时选择；理解和喜欢程度相互独立。
+  authored_extra: 可与阅读状态并存
+  reading_one: 阅读状态三选一
+  summary_review: 摘要与评价
+  summary_review_desc: 记录这份材料是什么，以及你为什么喜欢或不喜欢。
+  preference_reason: 偏好原因
+  preference_format: 每行使用“方面 | 具体原因”
+  preference_placeholder: 方法 | 喜欢它采用的数值方法
+  available_aspects: 可用方面
+  personal_notes: 个人笔记
+  markdown: 支持 Markdown
+  tags_desc: 标签用于灵活筛选，知识语义联系在材料发布后单独维护。
+  why_change: "为什么要{action}？"
+  reason_placeholder: 记录这次变化的原因。
+  immutable_source: 原文不可变并记录 Hash
+  review_fields: 检查全部结构化字段
+  publish: 正式发布
+  publish_desc: 更新人格版本和投影
+  replace_separately: 单独更换原文
+material_import:
+  page_title: 导入材料 · AI Persona
+  title: 导入一份材料
+  lead: 提供 arXiv 链接或 Markdown 文件，系统会先识别书目信息、原文摘要和可编辑的内容摘要字段。
+  review_before_save: 识别后先确认，不直接写入
+  could_not_recognize: 暂时无法识别
+  choose_source: 选择材料来源
+  choose_source_desc: 当前只支持两类输入，每次导入一份材料。
+  arxiv_desc: 输入论文链接或 ID
+  markdown_desc: 上传 .md 或 .markdown 文件
+  arxiv_label: arXiv 链接或 ID
+  arxiv_help: 支持 abs、pdf 链接，以及带版本号的 ID。
+  markdown_label: Markdown 文件
+  markdown_help: 原文会按字节保存；frontmatter 中的结构化信息优先。
+  will_extract: 可自动识别
+  extract_fields: 标题、作者、原文摘要、时间、来源、语言、arXiv / DOI 和规范链接
+  recognize: 识别材料
+  recognizing: 正在读取原文与元数据……
+  confirm: 确认识别结果
+  confirm_title: 确认材料信息
+  confirm_lead: 来源中的事实已自动填入；与你有关的判断仍由你选择。
+  autofilled_fields: 项已自动填入
+  review_fields: 项建议检查
+  could_not_create: "无法保存材料"
+  recognition_warnings: 识别提示
+  duplicate_title: 发现已有或相似材料
+  open_existing: 打开已有记录
+  open_original: 打开原文
+  source_facts: 核对来源事实
+  source_facts_desc: 这些字段来自原文或元数据，包括书目信息、原文摘要；内容摘要可在下方自行补充。
+  personal_judgments: 补充与我有关的判断
+  personal_judgments_desc: 阅读状态没有默认值；理解和喜好默认为“未设置”。
+  optional_desc: 内容摘要、阅读边界、评价、笔记和标签都可以以后再补。
+  version_update: 更新已有材料
+  version_update_desc: "这是已有论文的新版本 {version}。保存后更新来源事实和原文，保留你的阅读、理解和喜好记录。"
+  already_saved: 该材料已保存
+  already_saved_desc: 为避免重复记录，请打开已有材料继续维护。
+  ready_to_propose: "确认并保存"
+  ready_desc: "检查以上内容，点击保存后直接生效并保留修改历史。"
+  duplicate_confirm: 我已确认这不是上方的同一份材料
+  create_version_proposal: "保存版本更新"
+  cancel_import: 取消本次导入
+  cancelled: 已取消导入并清理临时文件
+  expires_at: 临时草稿将过期于
+  status:
+    autofilled: 自动填入
+    review_required: 建议检查
+    missing: 未识别
+    user_confirmed: 已确认
+  source:
+    arxiv_metadata: arXiv 元数据
+    markdown_frontmatter: Frontmatter
+    markdown_h1: Markdown H1
+    markdown_section: Markdown 段落
+    markdown_structure: 文档结构
+    markdown_pattern: 正文匹配
+    filename: 文件名
+    language_detection: 语言检测
+    derived_from_arxiv: arXiv ID 派生
+    none: 无来源
+  duplicate:
+    exact: 相同材料
+    possible: 可能重复
+    newer_version: 发现新版本
+    older_version: 已有更新版本
+relation_form:
+  title: 编辑知识联系
+  lead: 修改这个知识在材料中的角色、重要程度和具体说明。
+  independent_review: "保存即生效"
+  endpoint_note: 关系端点不能直接改变；如需更换知识节点，请归档后重新创建。
+  evidence_desc: 可以关联已有 Evidence；原文片段选择将在后续增强。
+  no_evidence: 当前没有可用 Evidence。
+  edit_reason: 修改原因
+  preview: "保存关系修改"
+source:
+  extracted_title: 原文提取文本
+  extracted_lead: 这是从正式 Source 中读取的文本，不是 Material 的个人笔记。
+  open_original: 打开原始文件
+  create_evidence: 将原文片段保存为依据
+  line_count: "共 {count} 行"
+  evidence_desc: "根据左侧行号选择一段原文。保存后，它会直接出现在材料的“原文依据”选项中。"
+  start_line: 开始行
+  end_line: 结束行
+  heading: 所在章节
+  save_reason: 保存原因
+  evidence_reason_placeholder: 例如：这段文本直接说明了材料使用的方法。
+  preview_evidence: "保存原文依据"
+  replace_title: 更换原文
+  replace_lead: "旧原文不会被覆盖；保存后，材料将指向新的原文版本。"
+  old_retained: 旧版本仍然保留
+  current_source: 当前原文
+  choose_new: 选择新原文
+  choose_method: 选择一种导入方式。
+  keep_original: 保留原始文件
+  save_markdown: 保存为 Markdown
+  snapshot: 下载当前快照
+  file: 文件
+  replace_reason: 更换原因
+  replace_reason_placeholder: 例如：替换为论文的新版本。
+  preview_change: "保存原文更新"
+sample_upload:
+  content: "上传内容"
+  file: "上传文件"
+  folder: "上传文件夹"
+  folder_label: "文件夹"
+  choose_folder: "选择样本文件夹"
+  folder_help: "保留文件和子目录，保存上传时的副本。最多 500 个文件、总大小 50 MB；空目录不会上传。"
+  current_folder: "当前样本文件夹"
+  browse: "查看文件"
+  folder_location: "查看文件夹位置"
+  folder_path: "本地文件夹路径"
+  count: "{count} 个文件"
+  selected_files: "查看已选文件"
+  limit_error: "最多支持 500 个文件，总大小不能超过 50 MB。"
+  reselect: "已保留填写的信息，请重新选择要上传的文件或文件夹。"
+  unsupported: "当前浏览器无法选择文件夹，请使用支持文件夹上传的浏览器。"
+  back: "返回我的偏好"
+  download: "下载整个文件夹"
+preferences:
+  workspace_lead: 按场景查看偏好和参考样本
+  choose_scene: 选择场景
+  search_scenes: 搜索场景
+  no_matching_scenes: 没有匹配的场景
+  all_preferences: 全部偏好
+  global_description: 在任何场景下都适用的通用偏好。
+  all_description: 查看和管理所有场景的偏好与参考样本。
+  scene_preferences: 场景偏好
+  shared_preferences: 通用偏好
+  applicable_preferences: 适用偏好
+  shared_help: 适用于所有任务
+  more_actions: 更多操作
+  more_details: 查看原因与补充说明
+  additional_notes: 补充说明
+  sample_reasons: 参考说明
+  content_status: 内容状态（偏好与样本）
+  unarchived: 未归档
+  apply_filters: 应用筛选
+  search_preferences: 搜索偏好
+  no_matching_preferences: 没有符合筛选条件的偏好。
+  no_scene_preferences: 当前没有适用的偏好。
+  no_matching_samples: 没有符合当前状态的参考样本。
+  add_sample_short: 添加
+  reference_when: 参考时机
+  file_location: 查看文件位置
+  local_path: 本地文件路径
+  copy_path: 复制路径
+  path_copied: 路径已复制
+  copy_manually: 已选中路径，请按复制快捷键复制。
+  page_title: 偏好 · AI Persona
+  title: 我的偏好
+  lead: 手动记录你希望 AI 在任务中必须遵守、尽量遵守或应当避免的做法。
+  add_preference: 新增偏好
+  add_context: 新增场景
+  add_example: 新增参考样本
+  search_placeholder: 搜索偏好、条件或原因
+  all_contexts: 全部适用范围
+  all_behaviors: 全部类型
+  current_status: 当前使用
+  filter: 筛选
+  clear_filters: 清除筛选
+  global: 所有任务
+  contexts_title: 偏好场景
+  contexts_lead: 场景界定一组任务；每个场景可以关联一个或多个参考样本文件。
+  no_contexts: 还没有自定义场景。全局偏好可以直接创建。
+  applies: 适用范围
+  condition: 使用条件
+  rationale: 原因
+  always: 始终适用
+  reference: 参考样本
+  no_examples: 这个场景还没有参考样本文件。
+  open_file: 打开文件
+  pause: 暂停使用
+  resume: 恢复使用
+  empty_title: 还没有偏好
+  empty_desc: 从一条最重要的全局偏好开始，之后再逐步补充场景和参考样本。
+preference_form:
+  context: 偏好场景
+  new_context: 新建偏好场景
+  edit_context: 编辑偏好场景
+  context_editor_help: 定义什么时候使用这组偏好。
+  required_group: 必填项
+  required_group_help: 给场景起个名字，说明什么时候使用。
+  optional_group: 选填项
+  optional_group_help: 补充例子和适用边界，帮助 AI 更准确地识别场景。
+  name_placeholder: 例如：学术笔记写作
+  required_name: 请填写场景名称。
+  required_description: 请描述这个场景在什么时候使用。
+  example_number: "典型请求示例 {number}"
+  remove_example: "删除示例 {number}"
+  add_example: 添加示例
+  single_example_placeholder: 例如：帮我把这段讨论整理成学术 note
+  excludes_help: 哪些情况不使用这个场景？每行一个，可留空。
+  excludes_placeholder: 例如：仅翻译论文摘要，不撰写笔记
+  artifact_types_help: 场景通常会产出什么？每行一个，可留空。
+  artifact_types_placeholder: 例如：学术笔记
+  save_hint: 保存后生效，并保留修改历史
+  save_context: 保存场景
+  preference: 偏好
+  example: 参考样本
+  lead: "点击保存后直接生效，并保留本次偏好修改的历史。"
+  context_desc: 定义任务场景
+  context_desc_help: 用用户能看懂的名称和说明界定这类任务。
+  description: 描述
+  description_help: 说明这个场景在什么时候使用，包括适用任务和范围。
+  description_placeholder: 例如：为我撰写或实质性修改学术笔记，内容包括概念解释、公式推导或研究结果分析。
+  key: 场景键（可选）
+  key_help: 给 API 和 Agent 使用的稳定英文标识；留空会自动生成。
+  activation: 激活条件
+  activation_help: 可补充产物类型和不应触发的任务；每行填一项，均可留空。
+  request_examples: 典型请求示例
+  request_examples_help: 你会怎样向 AI 提出这类请求？每条填写一个例子，帮助 AI 理解你的意思，无需逐字匹配。
+  request_examples_placeholder: "例如：帮我把这段讨论整理成学术 note\n请补充这份研究笔记中的公式推导"
+  artifact_types: 产物类型
+  excludes: 不适用情况
+  preference_content: 偏好内容
+  preference_help: 只需先写清楚“希望 AI 怎么做”，条件和原因可以以后再补。
+  behavior: 行为类型
+  instruction: 具体要求
+  instruction_placeholder: 例如：在给出结论前，先列出关键依据
+  scope: 适用范围
+  global_scope: 所有任务
+  contexts_scope: 指定场景
+  choose_contexts: 选择一个或多个场景
+  no_contexts: 还没有场景；可先创建场景，或使用“所有任务”。
+  condition: 使用条件（可选）
+  condition_placeholder: 例如：当用户要求技术方案时
+  rationale: 设置原因（可选）
+  notes: 补充说明（可选）
+  sample_info: 样本信息
+  sample_help: 上传一份值得参考或应该避免的文件或文件夹，并关联它适用的任务场景。
+  sample_type: 样本类型
+  sample_file: 样本文件
+  sample_file_help: 保存上传时的副本，最大 50 MB；需要更新内容时可新建一份样本。
+  current_file: 当前样本文件
+  reasons: 为什么值得参考（可选）
+  one_point_line: 每行一点
+  related_contexts: 适用场景
+  related_contexts_help: 一份样本可以关联多个任务场景。
+  why_action: "为什么要{action}？"
+  reason_placeholder: 记录这项偏好变化的原因。
+  flow_save: 保存结构化变化
+  flow_confirm: 确认你要保存的内容
+  flow_compile: "立即生效"
+  flow_compile_desc: "更新已保存的偏好"
+review:
+  defer_note: 暂缓备注（可选）
+  page_title: 审核 · AI Persona
+  title: 审核收件箱
+  lead: "AI 建议需要你确认后才会生效。人工保存直接生效，可在历史中查看。"
+  pending: 待处理
+  awaiting: 等待决定
+  sorted: 按更新时间排序
+  grouped: 按 ChangeSet 分组
+  dependency_order: 按依赖顺序排列
+  open_change_set: 审核整组
+  all_proposals: 所有审核项
+  independent_proposals: 独立提案
+  change_set: ChangeSet
+  change_set_history: 本组审核记录
+  change_set_progress: "{pending} 项待审核，共 {total} 项"
+  field_changes: 字段变化
+  confidence: 置信度
+  empty_title: 没有待审核修改
+  empty_desc: 你可以从知识、课程或偏好页面发起维护操作。
+  recent: 最近处理
+  ai_suggestion: AI 建议
+  human_edit: 人工编辑
+  stale_title: 这个提案已经过期
+  stale_desc: 目标记录在提案创建后发生了变化，不能直接覆盖。请重新发起修改。
+  dependency_blocked_title: 请先审核依赖项
+  dependency_blocked_desc: "这项修改依赖 {count} 项尚未接受的提案，当前不能发布。"
+  new_object: 新对象
+  staged_source: 待发布原文
+  staged: 暂存
+  file_count: "{count} 个"
+  no_preview: 原始文件已保存；该格式暂无可在审核页显示的提取文本。
+  checks: 检查提示
+  duplicates: "发现可能重复的条目：{titles}"
+  decision: 审核决定
+  accept: 接受并发布
+  edit_title: 确认要保存的内容
+  edit_help: "可直接调整下方信息，再点击“保存并通过”。只通过当前这一条，原始提案和人工修改都会保留。"
+  knowledge_level: 掌握程度
+  edit_accept: "保存并通过"
+  edit_note: 修改说明（可选）
+  edit_note_placeholder: 例如：我已经实际使用过这个方法，但掌握范围仅限一维系统。
+  no_tags: 当前没有可选标签。
+  choose_value: 请选择
+  original_proposal: 查看原始提案与依据
+  corrections: 审核时的人工修改
+  corrections_help: 以下内容展示原提案的建议值与最终确认值。
+  confirmed_value: 人工确认值
+  optional_note: 备注（可选）
+  defer_placeholder: 为什么暂缓？
+  defer: 暂缓决定
+  reject: 拒绝提案
+  reject_with_dependents: "拒绝此提案及 {count} 项依赖提案"
+  dependency_rejected_history: "因依赖提案 {proposal_id} 被拒绝，此提案已自动拒绝。"
+  waiting_for_dependencies: 等待以下依赖项审核：
+  dependent_proposals: "有 {count} 项待审核提案依赖此项。"
+  completed: 这项提案已经完成处理。
+  proposal_info: 提案信息
+  proposal_id: 提案 ID
+  operation: 操作
+  submitter: 提交者
+  target: 目标对象
+  created_at: 创建时间
+  warnings: 提示
+  linked_evidence: 关联证据
+  pending_evidence: 随提案发布的原文依据
+  source_evidence_lines: "原文依据 · 第 {line_start}–{line_end} 行"
+  object_type: "对象类型"
+  rationale: "AI 提议依据"
+  record_action: "{action} · {title}"
+  changed_field: "修改{field}"
+  change_separator: "；"
+  more_changes: "；另有 {count} 项修改"
+  no_final_changes: "审核后保留原有内容"
+  change_summary: "变更内容"
+  actions:
+    create: "新增{entity}"
+    update: "修改{entity}"
+    archive: "归档{entity}"
+    restore: "恢复{entity}"
+    relate: "新增{entity}"
+    unrelate: "移除{entity}"
+  effects:
+    create: "确认后，将把{entity}加入你的知识库。"
+    update: "确认后，将保存你在下方确认的修改。"
+    archive: "确认后，将归档{entity}，并保留历史记录。"
+    restore: "确认后，将恢复使用这项{entity}。"
+    relate: "确认后，将保存这条关系。"
+    unrelate: "确认后，将移除这条关系，历史记录仍会保留。"
+messages:
+  user_archive: "用户主动归档{entity}：{title}"
+  user_restore: "用户主动恢复{entity}：{title}"
+  remove_knowledge_relation: "移除 {source} 与 {target} 的知识关系"
+  remove_material_relation: "移除材料 {material} 与知识 {knowledge} 的联系"
+  remove_relation_default: 移除知识关系
+  reject_default: 当前不采纳这项修改
+  knowledge_created: "新知识已保存并生效"
+  course_created: "新课程已保存并生效"
+  material_created: "新材料已保存并生效"
+  material_updated: "材料修改已保存并生效"
+  material_restored: "材料已恢复"
+  no_source_text: 当前原文没有可阅读的提取文本
+  no_locatable_text: 当前原文没有可用于定位的文本
+  valid_lines: 请填写有效的开始和结束行号
+  line_range: "行号必须在 1–{count} 之间，且一次最多选择 50 行"
+  empty_selection: 选中范围不能只包含空行
+  evidence_created: "原文依据已保存并生效"
+  source_updated: "原文更新已保存并生效"
+  knowledge_relation_created: "知识联系已保存并生效"
+  knowledge_relations_created: "已保存 {count} 条知识联系并生效"
+  relation_updated: "关系修改已保存并生效"
+  record_updated: "修改已保存并生效"
+  archive_created: "记录已归档"
+  relation_removed: "关系已移除"
+  rule_created: "新规则已保存并生效"
+  example_updated: "偏好样本已保存并生效"
+  preference_updated: "偏好修改已保存并生效"
+  invalid_preference_state: 无法将该偏好切换到所选状态
+  accepted: "提案已接受，人格版本已更新为 {revision}"
+  edited_and_accepted: "修改后已通过，人格版本已更新为 {revision}"
+  rejected: 提案已拒绝
+  rejected_with_dependents: "提案已拒绝，并自动拒绝 {count} 项依赖提案"
+  deferred: 提案已暂缓
+labels:
+  level:
+    proficient: 精通
+    familiar: 熟悉
+    aware: 了解
+    unspecified: 未设置
+  interest:
+    high: 高兴趣
+    medium: 中等兴趣
+    low: 低兴趣
+    unspecified: 未设置
+  preference:
+    favorite: 非常喜欢
+    liked: 喜欢
+    neutral: 一般
+    disliked: 不喜欢
+    unspecified: 未标注
+  material_relationship:
+    authored: 我参与撰写
+    studied: 研究过
+    read: 读过
+    skimmed: 浏览过
+  material_type:
+    paper: 论文
+    article: 文章
+    note: 笔记
+    book: 书籍
+    course_material: 课程材料
+    conversation: 对话
+    resume: 简历
+    other: 其他
+  material_knowledge_role:
+    topic: 研究主题
+    problem: 研究问题
+    method: 使用方法
+    theory: 理论基础
+    model: 模型或系统
+    application: 应用方向
+    result: 主要结果
+    background: 背景知识
+    mentioned: 一般提及
+  salience:
+    primary: 核心
+    secondary: 次要
+    mentioned: 仅提及
+  preference_aspect:
+    topic: 主题
+    method: 方法
+    result: 结果
+    research-direction: 研究方向
+    writing-style: 写作方式
+    visualization: 图示
+    practicality: 实用性
+    other: 其他
+  entity:
+    knowledge_node: 知识点
+    course: 课程
+    material: 材料
+    relation: 关系
+    tag: 标签
+    evidence: 证据
+    preference_context: 偏好场景
+    preference: 偏好
+    preference_example: 场景参考样本
+  role:
+    domain: 领域
+    area: 方向
+    topic: 主题
+    concept: 概念
+    theory: 理论
+    model: 模型
+    method: 方法
+    technique: 技术
+    tool: 工具
+  relation:
+    broader_than: 包含
+    part_of: 属于
+    applied_in: 应用于
+    requires: 依赖
+    related_to: 相关
+    covers: 涵盖
+  proposal_status:
+    draft: 草稿
+    pending_review: 待审核
+    accepted: 已接受
+    edited_and_accepted: 编辑后接受
+    rejected: 已拒绝
+    deferred: 已暂缓
+    stale: 已过期
+  operation:
+    create: 新建
+    update: 修改
+    archive: 归档
+    restore: 恢复
+    relate: 添加关系
+    unrelate: 移除关系
+  behavior:
+    required: 必须
+    preferred: 倾向
+    avoid: 避免
+  preference_scope:
+    global: 所有任务
+    contexts: 指定场景
+  preference_status:
+    active: 使用中
+    paused: 已暂停
+    archived: 已归档
+  example_type:
+    positive: 正面样本
+    negative: 反面样本
+  record_status:
+    active: 使用中
+    archived: 已归档
+  field:
+    activation: 激活条件
+    abstract: 原文摘要
+    behavior: 行为类型
+    aliases: 别名
+    body: 正文
+    content_hash: 内容指纹
+    condition: 使用条件
+    context_refs: 适用场景
+    description: 描述
+    bibliography: 书目信息
+    evidence_refs: 证据
+    evidence_kind: 证据类型
+    example_type: 样本类型
+    instruction: 具体要求
+    interest_level: 兴趣程度
+    knowledge_level: 知识水平
+    knowledge_role: 知识角色
+    label: 显示名称
+    locator: 原文位置
+    material_type: 材料类型
+    key: 场景键
+    name: 名称
+    namespace: 命名空间
+    preference_level: 喜欢程度
+    preference_reasons: 偏好原因
+    rationale: 原因
+    reasons: 参考原因
+    relation_type: 关系类型
+    salience: 重要程度
+    semantic_role: 语义角色
+    source_id: 起点知识
+    source_hash: Source 指纹
+    source_ref: 来源
+    status: 状态
+    scope: 适用范围
+    statement: 关系说明
+    summary: 摘要
+    syllabus: 课程大纲
+    supports: 支持对象
+    scope_note: 掌握边界
+    slug: 标识名
+    tags: 标签
+    target_id: 目标知识
+    extraction_method: 提取方式
+    confidence: 置信度
+    title: 名称
+    user_relationships: 与我的关系
+error_replacements:
+  记录已更新，请刷新页面后重新编辑。: 记录已更新，请刷新页面后重新编辑。
+  审核页面已过期，请刷新后重新确认。: 审核页面已过期，请刷新后重新确认。
+  此类提案不支持修改字段后通过。: 此类提案不支持修改字段后通过。
+  修改后与当前记录一致，无需发布；可以拒绝此提案。: 修改后与当前记录一致，无需发布；可以拒绝此提案。
+  请选择要导入的原文文件: 请选择要导入的原文文件
+  请选择参考样本文件: 请选择参考样本文件
+  请选择包含文件的样本文件夹: "请选择包含文件的样本文件夹"
+  文件夹最多支持 500 个文件: "文件夹最多支持 500 个文件"
+  文件夹路径无效，请重新选择文件夹: "文件夹路径无效，请重新选择文件夹"
+  文件夹中存在重名或冲突的文件路径: "文件夹中存在重名或冲突的文件路径"
+  请一次选择一个完整的文件夹: "请一次选择一个完整的文件夹"
+  文件夹总大小不能超过 50 MB: "文件夹总大小不能超过 50 MB"
+  请选择文件或文件夹上传方式: "请选择文件或文件夹上传方式"
+  文件夹打包后超过 50 MB，请减少文件: "文件夹打包后超过 50 MB，请减少文件"
+  未知的原文导入方式: 未知的原文导入方式
+  "书目信息无效：": "书目信息无效："
+  "必须是有效的 JSON 对象：": "必须是有效的 JSON 对象："
+  必须是 JSON 对象: 必须是 JSON 对象
+  偏好原因第: 偏好原因第
+  "行应使用‘方面 | 具体原因’格式": "行应使用‘方面 | 具体原因’格式"
+  "行的方面无效，可选：": "行的方面无效，可选："
+  原文: source
+  材料: material
+  知识: knowledge
+  关系: relation
+  提案: proposal
+  不存在: does not exist
+  无效: invalid
+  必须: must
+  不能为空: cannot be empty
+  已存在: already exists
+  未找到: was not found
+  无法下载: could not download
+  超过: exceeds
+  当前: current
+  请选择: please select
+  未知: unknown
+ai:
+  assistant: AI 维护助手
+  models: 模型设置
+  analyze: 材料智能整理
+  maintain: 用自然语言维护
+
+knowledge_map:
+  layout: 布局
+  auto: 自动
+  right: 横向分层
+  down: 纵向分层
+  bilateral: 双向树
+  collapse: 收起分支
+  relations: 显示关联
+  help: 拖动浏览 · 滚轮 / 双指缩放 · 点击知识点进入详情
+  aria: 可缩放的知识图谱。拖动空白处平移；滚轮或双指缩放；点击知识点进入详情。
+  loading: 正在安排知识图谱…
+  error: 图谱暂时无法加载，请重试或切换到列表查看知识点。
+  retry: 重试
+  counts: '{count} / {total} 个知识点 · {edges} 条可见关系'
+  fit: 查看全图
+  fullscreen: 全屏
+  fullscreen_exit: 退出全屏
+  minimap: 全图导航
+  minimap_aria: 点击小地图定位视野
+  fallback: 点击名称可直接进入详情，也可以切换到列表。
+  expand_branch: 展开 {title} 的下级
+  collapse_branch: 收起 {title} 的下级
+  relation_legend: 关系连线图例
+  direction_broader_than: '包含：蓝色实线，实心箭头从上级指向下级。'
+  direction_requires: '依赖：橙色虚线，空心箭头指向所依赖的前置知识。'
+  direction_applied_in: '应用于：青灰色虚线，柔和转弯，单个小箭头指向应用对象。'
+  direction_related_to: '相关：紫色点线，无箭头，不区分方向。'

@@ -1,0 +1,37 @@
+<section class="review-editor">
+  <div class="panel-head"><div><h2>{{ t('review.edit_title') }}</h2><p class="review-help">{{ t('review.edit_help') }}</p></div></div>
+  {% if review_error %}<div class="warning-banner review-error" role="alert">{{ review_error }}</div>{% endif %}
+  <form id="review-edit-form" method="post" action="/review/{{ proposal.id }}/edit-and-accept">
+    <input type="hidden" name="proposal_revision" value="{{ proposal.proposal_revision }}">
+    <div class="field-grid two">
+      {% for field in review_fields %}
+        {% if field.kind == 'tags' %}
+          <fieldset class="review-tags wide"><legend>{{ field.label or field_labels[field.name] }}</legend>
+            <input type="hidden" name="{{ field.name }}" value="">
+            <div class="checkbox-grid">
+              {% for value, label in field.choices.items() %}<label class="check-card"><input type="checkbox" name="{{ field.name }}" value="{{ value }}" {% if value in field.value %}checked{% endif %}><span><i>✓</i><strong>{{ label }}</strong></span></label>{% else %}<p class="review-help">{% if field.name == 'context_refs' %}{{ t('preference_form.no_contexts') }}{% else %}{{ t('review.no_tags') }}{% endif %}</p>{% endfor %}
+            </div>
+          </fieldset>
+        {% else %}
+          <label class="field {% if field.kind != 'select' %}wide{% endif %}">
+            <span>{{ field.label or field_labels[field.name] }}{% if field.line_list %} <small>{{ t('common.line_item') }}</small>{% endif %}</span>
+            {% if field.user_only %}<small class="field-help">{{ '由你自行填写，不由 AI 推断。' if locale == 'zh-CN' else 'Set by you, not inferred by AI.' }}</small>{% endif %}
+            {% if field.name == 'summary' and presentation.entity_type == 'knowledge_node' %}<small class="field-help">{{ t('knowledge.description_help') }}</small>{% endif %}
+            {% if field.kind == 'select' %}
+              <select name="{{ field.name }}" {% if field.required %}required{% endif %}>
+                {% if field.value not in field.choices %}<option value="{{ field.value }}" selected>{{ field.value or t('review.choose_value') }}</option>{% endif %}
+                {% for value, label in field.choices.items() %}<option value="{{ value }}" {% if field.value == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+              </select>
+            {% elif field.kind == 'text' %}
+              <input name="{{ field.name }}" value="{{ field.value }}" {% if field.required %}required{% endif %}>
+            {% else %}
+              <textarea name="{{ field.name }}" rows="{{ 8 if field.name == 'syllabus' else 5 if field.name == 'body' else 3 }}" {% if field.required %}required{% endif %}>{{ field.value }}</textarea>
+            {% endif %}
+          </label>
+        {% endif %}
+      {% endfor %}
+      {% with note_name='review_note', note_value=review_note %}{% include "partials/optional_note.html" %}{% endwith %}
+    </div>
+    <button class="button accept-button" type="submit" {% if not can_accept_dependencies %}disabled{% endif %}>{{ t('review.edit_accept') }}</button>
+  </form>
+</section>

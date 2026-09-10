@@ -1,0 +1,32 @@
+name: Bug report / 问题报告
+description: Report a reproducible problem with fictional or redacted data.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "Please omit credentials, private conversations, and workspace archives. 请勿上传凭据、私人对话或工作区备份。"
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment / 环境
+      description: Repository revision, OS, Python, Node.js, and relevant doctor results. Redact personal paths.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce / 复现步骤
+      description: Prefer steps using the bundled Demo or a new empty workspace.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and actual behavior / 预期与实际行为
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Redacted evidence / 脱敏后的证据
+      description: Include relevant error text or a screenshot made with fictional data.

@@ -1,0 +1,8 @@
+[role="alert"], .ai-error, .context-field-error, [data-state="error"], [data-error="true"] {
+  scroll-margin-block: 6rem;
+}
+.request-error {
+  padding: 12px 16px; border: 1px solid #c74747; border-radius: 10px;
+  background: #fff1f1; color: #8f2424; white-space: pre-wrap; overflow-wrap: anywhere;
+}
+[tabindex="-1"]:focus-visible { outline: 2px solid #b53b3b; outline-offset: 4px; }

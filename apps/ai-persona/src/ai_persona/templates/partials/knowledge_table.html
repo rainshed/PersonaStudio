@@ -1,0 +1,26 @@
+<div class="result-summary"><strong>{{ records|length }}</strong> {{ t('knowledge.matches') }}</div>
+{% if records %}
+<div class="knowledge-list">
+  {% for loaded in records %}
+    {% set record = loaded.record %}
+    <a class="knowledge-row" href="{{ record_url(record) }}">
+      <span class="entity-glyph {{ record.entity_type }}">
+        {% if record.entity_type == 'knowledge_node' %}{{ record.title[:1] }}{% elif record.entity_type == 'course' %}C{% else %}M{% endif %}
+      </span>
+      <span class="knowledge-main">
+        <span class="knowledge-title"><strong>{{ record.title }}</strong><small>{{ entity_labels[record.entity_type] }}{% if record.semantic_role is defined %} · {{ role_labels[record.semantic_role] }}{% endif %}</small></span>
+        {% if record.summary is defined and record.summary %}<span class="knowledge-summary">{{ record.summary }}</span>{% endif %}
+        {% if record.description is defined and record.description %}<span class="knowledge-summary">{{ record.description }}</span>{% endif %}
+        <span class="tag-line">
+          {% for tag_id in record.tags[:3] %}{% if tag_id in tags %}<i>{{ tags[tag_id].label }}</i>{% endif %}{% endfor %}
+        </span>
+      </span>
+      <span class="level-pill {{ record.knowledge_level }}">{{ level_labels[record.knowledge_level] }}</span>
+      <span class="interest-mark {{ record.interest_level }}"><i></i>{{ interest_labels[record.interest_level] }}</span>
+      <span class="row-arrow">→</span>
+    </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state"><span>⌕</span><strong>{{ t('knowledge.empty_title') }}</strong><p>{{ t('knowledge.empty_desc') }}</p></div>
+{% endif %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ t('materials.page_title') }}{% endblock %}
+{% block content %}
+<section class="page-head simple-head">
+  <div><p class="eyebrow duplicate-in-english">MATERIAL LIBRARY</p><h1>{{ t('materials.title') }}</h1><p class="lead">{{ t('materials.lead') }}</p></div>
+  <div><a class="button primary-button" href="/materials/new">{{ t('materials.import') }}</a></div>
+</section>
+
+<section class="panel knowledge-panel material-library">
+  <form class="filter-bar material-filters" action="/materials" method="get" hx-get="/materials/table" hx-target="#material-results" hx-trigger="input changed delay:250ms, change">
+    <label class="search-box"><span aria-hidden="true">⌕</span><input type="search" name="q" value="{{ filters.query }}" placeholder="{{ t('materials.search_placeholder') }}" autocomplete="off"></label>
+    <label><span class="sr-only">{{ material_type_labels.paper }}</span><select name="material_type"><option value="">{{ t('materials.all_types') }}</option>{% for value, label in material_type_labels.items() %}<option value="{{ value }}" {% if filters.material_type == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('materials.understanding') }}</span><select name="knowledge_level"><option value="">{{ t('materials.all_understanding') }}</option>{% for value, label in level_labels.items() %}<option value="{{ value }}" {% if filters.knowledge_level == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('materials.preference') }}</span><select name="preference_level"><option value="">{{ t('materials.all_preferences') }}</option>{% for value, label in preference_labels.items() %}<option value="{{ value }}" {% if filters.preference_level == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('materials.relationship_to_me') }}</span><select name="relationship"><option value="">{{ t('materials.all_user_relationships') }}</option>{% for value, label in material_relationship_labels.items() %}<option value="{{ value }}" {% if filters.relationship == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('materials.knowledge_domain') }}</span><select name="knowledge_id"><option value="">{{ t('materials.all_domains') }}</option>{% for item in knowledge_nodes %}<option value="{{ item.id }}" {% if filters.knowledge_id == item.id %}selected{% endif %}>{{ item.title }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('materials.knowledge_role') }}</span><select name="knowledge_role"><option value="">{{ t('materials.all_roles') }}</option>{% for value, label in material_knowledge_role_labels.items() %}<option value="{{ value }}" {% if filters.knowledge_role == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('materials.relation_importance') }}</span><select name="salience"><option value="">{{ t('materials.all_importance') }}</option>{% for value, label in salience_labels.items() %}<option value="{{ value }}" {% if filters.salience == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('common.tags') }}</span><select name="tag_id"><option value="">{{ t('materials.all_tags') }}</option>{% for tag in tags %}<option value="{{ tag.id }}" {% if filters.tag_id == tag.id %}selected{% endif %}>{{ tag.label }}</option>{% endfor %}</select></label>
+    <label><span class="sr-only">{{ t('common.status') }}</span><select name="status"><option value="active" {% if filters.status == 'active' %}selected{% endif %}>{{ t('materials.current') }}</option><option value="archived" {% if filters.status == 'archived' %}selected{% endif %}>{{ t('materials.archived') }}</option></select></label>
+    <noscript><button class="button small" type="submit">{{ t('common.filter') }}</button></noscript>
+  </form>
+  <div id="material-results" aria-live="polite">
+    {% include "partials/material_table.html" %}
+  </div>
+</section>
+{% endblock %}
