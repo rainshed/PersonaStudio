@@ -251,7 +251,9 @@ def proposal_lock(state_root: Path) -> Iterator[None]:
     resolved_state_root = state_root.resolve()
     resolved_state_root.mkdir(parents=True, exist_ok=True)
     lock_path = resolved_state_root / "persona-mcp.lock"
-    with lock_path.open("a+b") as lock_file:
+    from .reset_storage import content_access
+
+    with content_access(resolved_state_root), lock_path.open("a+b") as lock_file:
         fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
         try:
             # Finish interrupted AI candidate updates before any human review mutation.

@@ -1,6 +1,6 @@
-# 怎样判断一组能带是否拓扑非平庸
+# How to Determine Whether Bands Are Topologically Nontrivial
 
-从已有能带知识引入几何相位、占据子空间和保护对称性，避免凭外观判断拓扑。
+Introduce geometric phases, occupied subspaces, and protecting symmetries from familiar band concepts, avoiding classifications based on appearance alone.
 
 ## Abstract
 
@@ -11,8 +11,8 @@ No source abstract recorded.
 - Type: `article`
 - Authors: AI Persona Demo
 - Published: 2026-09-01
-- Venue: 原创演示短文
-- Language: zh-CN
+- Venue: Original Demo Article
+- Language: en
 - arXiv: None
 - DOI: None
 - ISBN: None
@@ -27,16 +27,16 @@ No source abstract recorded.
 
 ## Preference Reasons
 
-- **practicality** — 可用来练习科研阅读与任务组织。
+- **practicality** — Useful for practicing research reading and organizing tasks.
 
 ## Knowledge Connections
 
-- **Berry 相位与 Berry 曲率** — background; primary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_topology_berry`)
-- **Chern 数** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_topology_chern`)
-- **整数量子霍尔效应** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_topology_quantum_hall`)
-- **时间反演对称拓扑绝缘体** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_topology_topological_insulator`)
-- **自旋轨道耦合** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_topology_spin_orbit`)
-- **拓扑能带理论** — topic; primary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_topology_topology`)
+- **Berry Phase and Berry Curvature** — background; primary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_topology_berry`)
+- **Chern Numbers** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_topology_chern`)
+- **Integer Quantum Hall Effect** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_topology_quantum_hall`)
+- **Spin-Orbit Coupling** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_topology_spin_orbit`)
+- **Time-Reversal-Symmetric Topological Insulators** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_topology_topological_insulator`)
+- **Topological Band Theory** — topic; primary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_topology_topology`)
 
 ## Tags
 
@@ -44,7 +44,7 @@ Physics
 
 ## Personal Notes
 
-原创示例文章，可公开体验阅读与审核。
+An original example article for exploring reading and review in the public Demo.
 
 ## Source
 
@@ -53,9 +53,9 @@ Physics
 - Provider: ai-persona-synthetic-demo
 - Version: Unknown
 - URL: None
-- Content hash: `sha256:dec8d10531a47eeb9583ff3625acd29268446a3a8af0281d19c3b208f422f90d`
+- Content hash: `sha256:bc5f6a4dfd4c971f7988482fff84ddd79fee0423909cc1aa240cdd61333a3da3`
 - Files:
-  - `original.md` — original; text/markdown; sha256:dec8d10531a47eeb9583ff3625acd29268446a3a8af0281d19c3b208f422f90d
+  - `original.md` — original; text/markdown; sha256:bc5f6a4dfd4c971f7988482fff84ddd79fee0423909cc1aa240cdd61333a3da3
 
 ## Record
 

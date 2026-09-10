@@ -10,7 +10,9 @@ scope: contexts
 context_refs:
 - pctx_demo_numerics
 behavior: required
-instruction: 大规模计算前先做小尺寸验证；在可行时与精确对角化对照能量或代表性观测量，并检查归一化和模型约定。
-condition: 新增算法实现或改变模型定义。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Validate small systems before large calculations. Where feasible, compare
+  energies or representative observables with exact diagonalization, and check normalization
+  and model conventions.
+condition: Adding an algorithm implementation or changing the model definition.
+rationale: A fictional Demo user preference.
 ---

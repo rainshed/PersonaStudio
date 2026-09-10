@@ -1,5 +1,5 @@
-# 正例：可核查的计算计划
+# Positive Example: A Verifiable Calculation Plan
 
-使用 Julia、ITensors.jl 与 ITensorMPS.jl，保存项目依赖与随机种子。先在可由 ED 处理的尺寸检查能量、边界与归一化，再逐项扫描键维数、截断阈值和时间步长。
+Use Julia, ITensors.jl, and ITensorMPS.jl, saving project dependencies and random seeds. First check energies, boundary conditions, and normalization at a size accessible to exact diagonalization (ED), then scan bond dimension, truncation threshold, and time step separately.
 
-Demo 虚构提交入口：scripts/submit_job.sh。先确认它存在并阅读参数说明；若支持 dry-run，再检查 configs/small.toml 对应的命令和资源。当前材料只描述流程，没有实际提交任务。结果以独立 run ID 保存，checkpoint 与参数一起校验。
+The Demo's fictional submission entry point is scripts/submit_job.sh. First confirm that it exists and read the parameter documentation. If it supports a dry run, check the command and resources for configs/small.toml. This material describes a workflow only; no jobs have been submitted. Save results under a unique run ID and validate checkpoints together with their parameters.

@@ -6,16 +6,18 @@ status: active
 revision: 1
 created_at: '2026-09-01T00:00:00Z'
 updated_at: '2026-09-01T00:00:00Z'
-title: Cooper 配对
+title: Cooper Pairing
 aliases: []
 knowledge_level: aware
 interest_level: medium
-summary: 学习费米面附近电子配对的基本图像，区分配对形成与宏观相干。
-scope_note: 可在 Demo 中修改这一程度，观察 note 解释起点如何变化。
+summary: Learn the basic picture of electron pairing near the Fermi surface, distinguishing
+  pair formation from macroscopic coherence.
+scope_note: Change this level in the Demo to explore how it affects the starting point
+  of a note.
 tags:
 - tag_physics
 evidence_refs: []
 semantic_role: concept
 ---
 
-虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。
+Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.

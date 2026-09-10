@@ -1,5 +1,5 @@
 {
-  "content_hash": "sha256:a15996370927d99c38bd1bc442185b338393bdf46ee4129e9c0c4ae77d861c7f",
+  "content_hash": "sha256:791775a3e98347672a39a8a07ce4923b709639434d0b006a1d53af48dffe4b40",
   "courses": [],
   "evidence_index": [
     {
@@ -7,7 +7,7 @@
       "entity_type": "evidence",
       "evidence_kind": "authored_material",
       "extraction_method": "demo-seed",
-      "human_notes": "本条仅定位到原创 Demo 文章，不证明真实用户的掌握程度。",
+      "human_notes": "This record locates an original Demo article only; it does not establish a real user's knowledge level.",
       "id": "ev_demo_bands",
       "locator": {
         "file": "original.md",
@@ -16,7 +16,7 @@
       },
       "revision": 1,
       "schema": "ai-persona.evidence/v1",
-      "source_hash": "sha256:373d19ef13c9656d3e8e004abe411f1ae4879b9981a16b4371f1781d81f5eb1c",
+      "source_hash": "sha256:afc3efb407148119d9b01a13b01ee8c049d2bf5d8546a73ed3537d750e0fb36a",
       "source_id": "src_demo_article_bands",
       "status": "active",
       "supports": [
@@ -29,7 +29,7 @@
       "entity_type": "evidence",
       "evidence_kind": "authored_material",
       "extraction_method": "demo-seed",
-      "human_notes": "本条仅定位到原创 Demo 文章，不证明真实用户的掌握程度。",
+      "human_notes": "This record locates an original Demo article only; it does not establish a real user's knowledge level.",
       "id": "ev_demo_crystal",
       "locator": {
         "file": "original.md",
@@ -38,7 +38,7 @@
       },
       "revision": 1,
       "schema": "ai-persona.evidence/v1",
-      "source_hash": "sha256:a3596c95e3f1c77a90dfe2ae8679e128e868be76dcddf56836945bdf656566c0",
+      "source_hash": "sha256:779e4abc98acb0ca158440f13e04e192bab6cf41b4f115f293e316c3209d2b01",
       "source_id": "src_demo_article_crystal",
       "status": "active",
       "supports": [
@@ -51,7 +51,7 @@
       "entity_type": "evidence",
       "evidence_kind": "authored_material",
       "extraction_method": "demo-seed",
-      "human_notes": "本条仅定位到原创 Demo 文章，不证明真实用户的掌握程度。",
+      "human_notes": "This record locates an original Demo article only; it does not establish a real user's knowledge level.",
       "id": "ev_demo_magnetism",
       "locator": {
         "file": "original.md",
@@ -60,7 +60,7 @@
       },
       "revision": 1,
       "schema": "ai-persona.evidence/v1",
-      "source_hash": "sha256:8f1cb20b125f55181626717b1c5b9e1400794c402fde4611eeb7f91cc82992e5",
+      "source_hash": "sha256:47a82ac07adc3589d9485dee0f43d53e65e485932e0d8bfd439674e6ab60fc13",
       "source_id": "src_demo_article_magnetism",
       "status": "active",
       "supports": [
@@ -73,7 +73,7 @@
       "entity_type": "evidence",
       "evidence_kind": "authored_material",
       "extraction_method": "demo-seed",
-      "human_notes": "本条仅定位到原创 Demo 文章，不证明真实用户的掌握程度。",
+      "human_notes": "This record locates an original Demo article only; it does not establish a real user's knowledge level.",
       "id": "ev_demo_superconductivity",
       "locator": {
         "file": "original.md",
@@ -82,7 +82,7 @@
       },
       "revision": 1,
       "schema": "ai-persona.evidence/v1",
-      "source_hash": "sha256:9758e02f2535cf4c8a580a2f915134a9f252db6a336a608ae65b2e1bd663dda9",
+      "source_hash": "sha256:211c9c3582af82f07d508e237ee8245f20a50aa01c2c938ee40c00a71750f3fd",
       "source_id": "src_demo_article_superconductivity",
       "status": "active",
       "supports": [
@@ -95,7 +95,7 @@
       "entity_type": "evidence",
       "evidence_kind": "authored_material",
       "extraction_method": "demo-seed",
-      "human_notes": "本条仅定位到原创 Demo 文章，不证明真实用户的掌握程度。",
+      "human_notes": "This record locates an original Demo article only; it does not establish a real user's knowledge level.",
       "id": "ev_demo_topology",
       "locator": {
         "file": "original.md",
@@ -104,7 +104,7 @@
       },
       "revision": 1,
       "schema": "ai-persona.evidence/v1",
-      "source_hash": "sha256:dec8d10531a47eeb9583ff3625acd29268446a3a8af0281d19c3b208f422f90d",
+      "source_hash": "sha256:bc5f6a4dfd4c971f7988482fff84ddd79fee0423909cc1aa240cdd61333a3da3",
       "source_id": "src_demo_article_topology",
       "status": "active",
       "supports": [
@@ -120,20 +120,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_anisotropy",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "分析不同磁化方向的能量差，区分单离子、交换和形状各向异性。",
+      "summary": "Analyze energy differences between magnetization directions, distinguishing single-ion, exchange, and shape anisotropy.",
       "tags": [
         "tag_physics"
       ],
-      "title": "磁各向异性",
+      "title": "Magnetic Anisotropy",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -141,20 +141,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_bcs",
       "interest_level": "high",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "theory",
       "status": "active",
-      "summary": "学习弱耦合配对的平均场描述，理解能隙、自洽条件和理论假设。",
+      "summary": "Learn the mean-field description of weak-coupling pairing, including the energy gap, self-consistency conditions, and theoretical assumptions.",
       "tags": [
         "tag_physics"
       ],
-      "title": "BCS 理论",
+      "title": "BCS Theory",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -162,20 +162,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_bdg",
       "interest_level": "high",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "method",
       "status": "active",
-      "summary": "学习用粒子与空穴组成的基底求解超导平均场准粒子问题。",
+      "summary": "Learn to solve superconducting mean-field quasiparticle problems in a basis of particle and hole components.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Bogoliubov–de Gennes 方程",
+      "title": "Bogoliubov–de Gennes Equations",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -183,20 +183,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_berry",
       "interest_level": "high",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "了解参数空间中的几何相位，正在学习规范选择及离散动量网格的计算。",
+      "summary": "Know the idea of geometric phase in parameter space, and learn gauge choices and calculations on discrete momentum grids.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Berry 相位与 Berry 曲率",
+      "title": "Berry Phase and Berry Curvature",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -204,20 +204,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_bloch",
       "interest_level": "high",
       "knowledge_level": "proficient",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "theory",
       "status": "active",
-      "summary": "用周期部分与平面波因子表示晶体电子态，理解能带的动量标记。",
+      "summary": "Represent crystal electron states as a periodic function times a plane wave, and understand momentum labels for energy bands.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Bloch 定理",
+      "title": "Bloch's Theorem",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -225,20 +225,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_bravais",
       "interest_level": "medium",
       "knowledge_level": "proficient",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "区分平移晶格、基元和原胞，能从晶格矢量重建周期结构。",
+      "summary": "Distinguish the translation lattice, basis, and primitive cell, and reconstruct periodic structures from lattice vectors.",
       "tags": [
         "tag_physics"
       ],
-      "title": "布拉菲晶格与原胞",
+      "title": "Bravais Lattices and Primitive Cells",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -246,20 +246,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_chern",
       "interest_level": "high",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "学习二维能带拓扑不变量，核对占据子空间、能隙和数值积分收敛。",
+      "summary": "Study topological invariants of two-dimensional bands, checking the occupied subspace, energy gap, and numerical integration convergence.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Chern 数",
+      "title": "Chern Numbers",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -267,20 +267,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_condensed",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "domain",
       "status": "active",
-      "summary": "以晶体中的电子、晶格和磁性自由度为主线，理解材料的集体性质。",
+      "summary": "Understand collective material properties through electronic, lattice, and magnetic degrees of freedom in crystals.",
       "tags": [
         "tag_physics"
       ],
-      "title": "凝聚态物理",
+      "title": "Condensed Matter Physics",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -288,20 +288,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_cooper",
       "interest_level": "medium",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "学习费米面附近电子配对的基本图像，区分配对形成与宏观相干。",
+      "summary": "Learn the basic picture of electron pairing near the Fermi surface, distinguishing pair formation from macroscopic coherence.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Cooper 配对",
+      "title": "Cooper Pairing",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -309,20 +309,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_crystal",
       "interest_level": "medium",
       "knowledge_level": "proficient",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "area",
       "status": "active",
-      "summary": "从周期结构、对称性和原子振动建立材料计算的几何基础。",
+      "summary": "Build the geometric foundation for materials calculations from periodic structures, symmetry, and atomic vibrations.",
       "tags": [
         "tag_physics"
       ],
-      "title": "晶体结构与晶格动力学",
+      "title": "Crystal Structure and Lattice Dynamics",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -330,20 +330,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_dft",
       "interest_level": "high",
       "knowledge_level": "proficient",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "method",
       "status": "active",
-      "summary": "熟悉基态电子密度计算流程，能够检查泛函、赝势和数值收敛条件。",
+      "summary": "Know the workflow for ground-state electron-density calculations and check functionals, pseudopotentials, and numerical convergence.",
       "tags": [
         "tag_physics"
       ],
-      "title": "密度泛函理论（DFT）",
+      "title": "Density Functional Theory (DFT)",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -351,20 +351,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_dos",
       "interest_level": "high",
       "knowledge_level": "proficient",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "technique",
       "status": "active",
-      "summary": "比较总态密度与轨道投影，区分展宽、采样和投影定义带来的差异。",
+      "summary": "Compare total and orbital-projected densities of states, separating the effects of broadening, sampling, and projection definitions.",
       "tags": [
         "tag_physics"
       ],
-      "title": "态密度与轨道投影",
+      "title": "Density of States and Orbital Projections",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -372,20 +372,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_electronic",
       "interest_level": "high",
       "knowledge_level": "proficient",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "area",
       "status": "active",
-      "summary": "把晶体结构、轨道成分与能带联系起来，关注二维材料的低能电子态。",
+      "summary": "Connect crystal structure and orbital character to energy bands, focusing on low-energy electronic states in two-dimensional materials.",
       "tags": [
         "tag_physics"
       ],
-      "title": "电子结构计算",
+      "title": "Electronic Structure Calculations",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -393,20 +393,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_exchange",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "区分有效交换参数的符号、邻接范围和拟合所采用的自旋归一化。",
+      "summary": "Distinguish sign conventions, neighbor ranges, and spin normalization when fitting effective exchange parameters.",
       "tags": [
         "tag_physics"
       ],
-      "title": "交换相互作用",
+      "title": "Exchange Interactions",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -414,20 +414,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_fermi_surface",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "在给定化学势下分析金属能带的费米面形状、电子口袋和空穴口袋。",
+      "summary": "Analyze Fermi-surface shapes, electron pockets, and hole pockets in metallic bands at a specified chemical potential.",
       "tags": [
         "tag_physics"
       ],
-      "title": "费米面",
+      "title": "Fermi Surfaces",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -435,20 +435,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_ginzburg_landau",
       "interest_level": "medium",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "theory",
       "status": "active",
-      "summary": "从序参量自由能理解超导的空间变化，注意现象学参数和适用温区。",
+      "summary": "Understand spatial variations in superconductivity through order-parameter free energy, noting phenomenological parameters and the applicable temperature range.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Ginzburg–Landau 理论",
+      "title": "Ginzburg–Landau Theory",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -456,20 +456,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_heisenberg",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "model",
       "status": "active",
-      "summary": "以自旋之间的交换耦合描述磁性，比较不同磁构型及模型适用条件。",
+      "summary": "Describe magnetism through exchange couplings between spins, comparing magnetic configurations and the model's range of validity.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Heisenberg 自旋模型",
+      "title": "Heisenberg Spin Models",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -477,20 +477,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_kohn_sham",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "theory",
       "status": "active",
-      "summary": "理解有效单粒子问题的自洽求解，以及近似交换关联泛函的作用。",
+      "summary": "Understand the self-consistent solution of an effective single-particle problem and the role of approximate exchange-correlation functionals.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Kohn–Sham 方程",
+      "title": "Kohn–Sham Equations",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -498,20 +498,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_magnetism",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "area",
       "status": "active",
-      "summary": "围绕二维磁性材料理解磁序、交换作用和低能自旋激发。",
+      "summary": "Understand magnetic order, exchange interactions, and low-energy spin excitations in two-dimensional magnetic materials.",
       "tags": [
         "tag_physics"
       ],
-      "title": "局域磁矩与磁性",
+      "title": "Local Moments and Magnetism",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -519,20 +519,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_phonon",
       "interest_level": "medium",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "从谐近似下的动力学矩阵理解振动模式，检查虚频和结构稳定性。",
+      "summary": "Understand vibrational modes through the harmonic dynamical matrix, and check imaginary frequencies and structural stability.",
       "tags": [
         "tag_physics"
       ],
-      "title": "声子与动力学矩阵",
+      "title": "Phonons and Dynamical Matrices",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -540,20 +540,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_quantum_hall",
       "interest_level": "medium",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "topic",
       "status": "active",
-      "summary": "理解量子化霍尔响应的基本图景，继续学习其与能带拓扑的联系。",
+      "summary": "Understand the basic picture of quantized Hall response and continue learning its connection to band topology.",
       "tags": [
         "tag_physics"
       ],
-      "title": "整数量子霍尔效应",
+      "title": "Integer Quantum Hall Effect",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -561,20 +561,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_reciprocal",
       "interest_level": "high",
       "knowledge_level": "proficient",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "构造倒易基矢和高对称路径，检查不同晶胞约定下的动量坐标。",
+      "summary": "Construct reciprocal basis vectors and high-symmetry paths, and check momentum coordinates across unit-cell conventions.",
       "tags": [
         "tag_physics"
       ],
-      "title": "倒易晶格与布里渊区",
+      "title": "Reciprocal Lattices and Brillouin Zones",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -582,20 +582,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_spin_orbit",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "concept",
       "status": "active",
-      "summary": "在电子结构中考虑自旋与轨道自由度的耦合，分析能带劈裂与磁各向异性。",
+      "summary": "Include the coupling of spin and orbital degrees of freedom in electronic structure, and analyze band splitting and magnetic anisotropy.",
       "tags": [
         "tag_physics"
       ],
-      "title": "自旋轨道耦合",
+      "title": "Spin-Orbit Coupling",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -603,20 +603,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_spin_wave",
       "interest_level": "high",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "method",
       "status": "active",
-      "summary": "正在学习围绕有序态展开得到磁振子谱，并检查涨落较大时的适用边界。",
+      "summary": "Learn to derive magnon spectra by expanding around an ordered state, and check the limits of the approach when fluctuations are large.",
       "tags": [
         "tag_physics"
       ],
-      "title": "线性自旋波理论",
+      "title": "Linear Spin-Wave Theory",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -624,20 +624,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_superconductivity",
       "interest_level": "medium",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "area",
       "status": "active",
-      "summary": "作为拓展方向学习配对、序参量、准粒子与电磁响应。",
+      "summary": "Explore pairing, order parameters, quasiparticles, and electromagnetic response as a new research direction.",
       "tags": [
         "tag_physics"
       ],
-      "title": "超导物理",
+      "title": "Superconductivity",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -645,20 +645,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_tight_binding",
       "interest_level": "high",
       "knowledge_level": "proficient",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "model",
       "status": "active",
-      "summary": "以局域轨道、在位能和跃迁参数建立有效 Hamiltonian，核对轨道与相位约定。",
+      "summary": "Build effective Hamiltonians from local orbitals, on-site energies, and hopping parameters, checking orbital and phase conventions.",
       "tags": [
         "tag_physics"
       ],
-      "title": "紧束缚模型",
+      "title": "Tight-Binding Models",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -666,20 +666,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_topological_insulator",
       "interest_level": "high",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "topic",
       "status": "active",
-      "summary": "学习体能隙、保护对称性及边界态的联系，区分 Z₂ 指标与 Chern 数。",
+      "summary": "Study the connection between bulk gaps, protecting symmetries, and boundary states, distinguishing Z₂ indices from Chern numbers.",
       "tags": [
         "tag_physics"
       ],
-      "title": "时间反演对称拓扑绝缘体",
+      "title": "Time-Reversal-Symmetric Topological Insulators",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -687,20 +687,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_topology",
       "interest_level": "high",
       "knowledge_level": "aware",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "area",
       "status": "active",
-      "summary": "正在从普通能带分析过渡到几何相位、拓扑不变量与边界态的描述。",
+      "summary": "Extend conventional band analysis to geometric phases, topological invariants, and boundary states.",
       "tags": [
         "tag_physics"
       ],
-      "title": "拓扑能带理论",
+      "title": "Topological Band Theory",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -708,20 +708,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_vortex",
       "interest_level": "medium",
       "knowledge_level": "unspecified",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "topic",
       "status": "active",
-      "summary": "尚未系统学习，计划从穿透深度、相干长度和磁通量子化入手。",
+      "summary": "Not yet studied systematically; plan to begin with penetration depth, coherence length, and magnetic flux quantization.",
       "tags": [
         "tag_physics"
       ],
-      "title": "第二类超导体与磁通涡旋",
+      "title": "Type-II Superconductors and Flux Vortices",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
@@ -729,20 +729,20 @@
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "knowledge_node",
       "evidence_refs": [],
-      "human_notes": "虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。",
+      "human_notes": "Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.",
       "id": "kn_demo_wannier",
       "interest_level": "high",
       "knowledge_level": "familiar",
       "revision": 1,
       "schema": "ai-persona.knowledge-node/v1",
-      "scope_note": "可在 Demo 中修改这一程度，观察 note 解释起点如何变化。",
+      "scope_note": "Change this level in the Demo to explore how it affects the starting point of a note.",
       "semantic_role": "method",
       "status": "active",
-      "summary": "用局域化轨道构造有效模型，检查投影、能窗及插值对目标能带的再现。",
+      "summary": "Construct effective models with localized orbitals, checking projections, energy windows, and interpolation against the target bands.",
       "tags": [
         "tag_physics"
       ],
-      "title": "Wannier 函数与能带插值",
+      "title": "Wannier Functions and Band Interpolation",
       "updated_at": "2026-09-01T00:00:00Z"
     }
   ],
@@ -755,16 +755,16 @@
           "AI Persona Demo"
         ],
         "identifiers": {},
-        "language": "zh-CN",
+        "language": "en",
         "published_at": "2026-09-01",
-        "venue": "原创演示短文"
+        "venue": "Original Demo Article"
       },
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "material",
       "evidence_refs": [
         "ev_demo_bands"
       ],
-      "human_notes": "原创示例文章，可公开体验阅读与审核。",
+      "human_notes": "An original example article for exploring reading and review in the public Demo.",
       "id": "mat_demo_bands",
       "knowledge_level": "aware",
       "material_type": "article",
@@ -772,18 +772,18 @@
       "preference_reasons": [
         {
           "aspect": "practicality",
-          "note": "可用来练习科研阅读与任务组织。"
+          "note": "Useful for practicing research reading and organizing tasks."
         }
       ],
       "revision": 1,
-      "schema": "ai-persona.material/v2",
+      "schema": "ai-persona.material/v3",
       "source_ref": "src_demo_article_bands",
       "status": "active",
-      "summary": "演示怎样从自洽电子结构计算组织能带、态密度和局域轨道模型。",
+      "summary": "Organize bands, densities of states, and local-orbital models from self-consistent electronic structure calculations.",
       "tags": [
         "tag_physics"
       ],
-      "title": "从 DFT 能带到 Wannier 有效模型",
+      "title": "From DFT Bands to Wannier Effective Models",
       "updated_at": "2026-09-01T00:00:00Z",
       "user_relationships": [
         "read"
@@ -797,16 +797,16 @@
           "AI Persona Demo"
         ],
         "identifiers": {},
-        "language": "zh-CN",
+        "language": "en",
         "published_at": "2026-09-01",
-        "venue": "原创演示短文"
+        "venue": "Original Demo Article"
       },
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "material",
       "evidence_refs": [
         "ev_demo_crystal"
       ],
-      "human_notes": "原创示例文章，可公开体验阅读与审核。",
+      "human_notes": "An original example article for exploring reading and review in the public Demo.",
       "id": "mat_demo_crystal",
       "knowledge_level": "familiar",
       "material_type": "article",
@@ -814,18 +814,18 @@
       "preference_reasons": [
         {
           "aspect": "practicality",
-          "note": "可用来练习科研阅读与任务组织。"
+          "note": "Useful for practicing research reading and organizing tasks."
         }
       ],
       "revision": 1,
-      "schema": "ai-persona.material/v2",
+      "schema": "ai-persona.material/v3",
       "source_ref": "src_demo_article_crystal",
       "status": "active",
-      "summary": "用晶胞、动量坐标和振动模式串起二维材料的结构检查。",
+      "summary": "Connect unit cells, momentum coordinates, and vibrational modes to structural checks for two-dimensional materials.",
       "tags": [
         "tag_physics"
       ],
-      "title": "从原胞到声子谱：二维材料计算的起点",
+      "title": "From Primitive Cells to Phonon Spectra: A Starting Point for 2D Materials",
       "updated_at": "2026-09-01T00:00:00Z",
       "user_relationships": [
         "read"
@@ -839,16 +839,16 @@
           "AI Persona Demo"
         ],
         "identifiers": {},
-        "language": "zh-CN",
+        "language": "en",
         "published_at": "2026-09-01",
-        "venue": "原创演示短文"
+        "venue": "Original Demo Article"
       },
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "material",
       "evidence_refs": [
         "ev_demo_magnetism"
       ],
-      "human_notes": "原创示例文章，可公开体验阅读与审核。",
+      "human_notes": "An original example article for exploring reading and review in the public Demo.",
       "id": "mat_demo_magnetism",
       "knowledge_level": "aware",
       "material_type": "article",
@@ -856,18 +856,18 @@
       "preference_reasons": [
         {
           "aspect": "practicality",
-          "note": "可用来练习科研阅读与任务组织。"
+          "note": "Useful for practicing research reading and organizing tasks."
         }
       ],
       "revision": 1,
-      "schema": "ai-persona.material/v2",
+      "schema": "ai-persona.material/v3",
       "source_ref": "src_demo_article_magnetism",
       "status": "active",
-      "summary": "围绕交换参数、磁各向异性与自旋波整理一个假想二维磁体的模型。",
+      "summary": "Organize a model of a hypothetical two-dimensional magnet around exchange parameters, magnetic anisotropy, and spin waves.",
       "tags": [
         "tag_physics"
       ],
-      "title": "从磁构型能量到自旋波：一份建模笔记",
+      "title": "From Magnetic Configuration Energies to Spin Waves: A Modeling Note",
       "updated_at": "2026-09-01T00:00:00Z",
       "user_relationships": [
         "read"
@@ -881,16 +881,16 @@
           "AI Persona Demo"
         ],
         "identifiers": {},
-        "language": "zh-CN",
+        "language": "en",
         "published_at": "2026-09-01",
-        "venue": "原创演示短文"
+        "venue": "Original Demo Article"
       },
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "material",
       "evidence_refs": [
         "ev_demo_superconductivity"
       ],
-      "human_notes": "原创示例文章，可公开体验阅读与审核。",
+      "human_notes": "An original example article for exploring reading and review in the public Demo.",
       "id": "mat_demo_superconductivity",
       "knowledge_level": "aware",
       "material_type": "article",
@@ -898,18 +898,18 @@
       "preference_reasons": [
         {
           "aspect": "practicality",
-          "note": "可用来练习科研阅读与任务组织。"
+          "note": "Useful for practicing research reading and organizing tasks."
         }
       ],
       "revision": 1,
-      "schema": "ai-persona.material/v2",
+      "schema": "ai-persona.material/v3",
       "source_ref": "src_demo_article_superconductivity",
       "status": "active",
-      "summary": "以配对、准粒子和序参量为线索逐步引入超导，体现不同掌握程度的解释需求。",
+      "summary": "Introduce superconductivity through pairing, quasiparticles, and order parameters, adapting explanations to different levels of familiarity.",
       "tags": [
         "tag_physics"
       ],
-      "title": "给能带研究者的超导入门路线",
+      "title": "A Route into Superconductivity for Band-Structure Researchers",
       "updated_at": "2026-09-01T00:00:00Z",
       "user_relationships": [
         "skimmed"
@@ -923,16 +923,16 @@
           "AI Persona Demo"
         ],
         "identifiers": {},
-        "language": "zh-CN",
+        "language": "en",
         "published_at": "2026-09-01",
-        "venue": "原创演示短文"
+        "venue": "Original Demo Article"
       },
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "material",
       "evidence_refs": [
         "ev_demo_topology"
       ],
-      "human_notes": "原创示例文章，可公开体验阅读与审核。",
+      "human_notes": "An original example article for exploring reading and review in the public Demo.",
       "id": "mat_demo_topology",
       "knowledge_level": "familiar",
       "material_type": "article",
@@ -940,25 +940,25 @@
       "preference_reasons": [
         {
           "aspect": "practicality",
-          "note": "可用来练习科研阅读与任务组织。"
+          "note": "Useful for practicing research reading and organizing tasks."
         }
       ],
       "revision": 1,
-      "schema": "ai-persona.material/v2",
+      "schema": "ai-persona.material/v3",
       "source_ref": "src_demo_article_topology",
       "status": "active",
-      "summary": "从已有能带知识引入几何相位、占据子空间和保护对称性，避免凭外观判断拓扑。",
+      "summary": "Introduce geometric phases, occupied subspaces, and protecting symmetries from familiar band concepts, avoiding classifications based on appearance alone.",
       "tags": [
         "tag_physics"
       ],
-      "title": "怎样判断一组能带是否拓扑非平庸",
+      "title": "How to Determine Whether Bands Are Topologically Nontrivial",
       "updated_at": "2026-09-01T00:00:00Z",
       "user_relationships": [
         "read"
       ]
     }
   ],
-  "persona_id": "demo-condensed-matter-v3",
+  "persona_id": "demo-condensed-matter-v4",
   "persona_revision": 1,
   "preference_contexts": [
     {
@@ -969,20 +969,20 @@
           "svg"
         ],
         "excludes": [
-          "解释一张已有图片而不修改图片",
-          "制作与科研数据无关的宣传插画"
+          "Explain an existing image without modifying it",
+          "Create promotional illustrations unrelated to research data"
         ],
         "intents": [
-          "把有无自旋轨道耦合的能带画在同一张图上",
-          "调整这张误差棒图的坐标轴和图例"
+          "Plot the bands with and without spin-orbit coupling in the same figure",
+          "Adjust the axes and legend of this error-bar plot"
         ]
       },
       "created_at": "2026-09-01T00:00:00Z",
-      "description": "为科研数据新建或实质性修改图表，包括比较曲线、标度分析和论文插图。仅讨论图中物理意义时不触发。",
+      "description": "Create or substantially revise plots of research data, including curve comparisons, scaling analyses, and publication figures. Does not apply when only discussing the physics in an existing figure.",
       "entity_type": "preference_context",
       "id": "pctx_demo_figure",
       "key": "research.figure",
-      "name": "科研绘图",
+      "name": "Research Figures",
       "revision": 1,
       "schema": "ai-persona.preference-context/v1",
       "status": "active",
@@ -994,20 +994,20 @@
           "markdown"
         ],
         "excludes": [
-          "只翻译一个术语",
-          "撰写面向完全不同读者的宣传文案"
+          "Translate a single term",
+          "Write promotional copy for an entirely different audience"
         ],
         "intents": [
-          "写一份从能带知识引入 Berry 曲率的 note",
-          "把这次 Wannier 能带插值检查整理成学术笔记"
+          "Write a note introducing Berry curvature from band-structure concepts",
+          "Turn this Wannier band-interpolation check into an academic note"
         ]
       },
       "created_at": "2026-09-01T00:00:00Z",
-      "description": "为用户撰写或实质性修改科研主题的 Markdown note，包含概念解释、方法推导或结果分析。",
+      "description": "Write or substantially revise a Markdown note on a research topic, including conceptual explanations, method derivations, or analysis of results.",
       "entity_type": "preference_context",
       "id": "pctx_demo_note",
       "key": "research.note",
-      "name": "学术 note",
+      "name": "Academic Notes",
       "revision": 1,
       "schema": "ai-persona.preference-context/v1",
       "status": "active",
@@ -1020,20 +1020,20 @@
           "simulation-report"
         ],
         "excludes": [
-          "只解释 MPS 的定义而不编写或运行计算",
-          "只修改现有图片的字体与图例"
+          "Explain the definition of an MPS without writing or running a calculation",
+          "Only change fonts and legends in an existing figure"
         ],
         "intents": [
-          "用张量网络计算自旋链的时间演化",
-          "检查收敛后准备提交一组参数扫描任务"
+          "Compute the time evolution of a spin chain using tensor networks",
+          "Check convergence, then prepare a batch of parameter-scan jobs"
         ]
       },
       "created_at": "2026-09-01T00:00:00Z",
-      "description": "为凝聚态物理问题设计、编写、运行或检查数值计算，包含电子结构计算、张量网络模拟与计算任务准备。仅解释概念时不触发。",
+      "description": "Design, write, run, or review numerical calculations for condensed matter physics, including electronic structure, tensor-network simulations, and preparation of computational jobs. Does not apply to conceptual explanations alone.",
       "entity_type": "preference_context",
       "id": "pctx_demo_numerics",
       "key": "research.numerics",
-      "name": "数值计算",
+      "name": "Numerical Computing",
       "revision": 1,
       "schema": "ai-persona.preference-context/v1",
       "status": "active",
@@ -1042,8 +1042,8 @@
   ],
   "preference_examples": [
     {
-      "condition": "为科研数据新建或实质性修改图表，包括比较曲线、标度分析和论文插图。仅讨论图中物理意义时不触发。",
-      "content_hash": "sha256:f08520cda5b00f9c61286568a2a42c98ef9abf87bc37ef1a12e0f6b84c1933ff",
+      "condition": "Create or substantially revise plots of research data, including curve comparisons, scaling analyses, and publication figures. Does not apply when only discussing the physics in an existing figure.",
+      "content_hash": "sha256:930c79c8a36a1352529c2543c2ab6037f905b435f88586b0d95258bd33ca1d59",
       "context_refs": [
         "pctx_demo_figure"
       ],
@@ -1052,18 +1052,18 @@
       "example_type": "negative",
       "id": "pex_demo_figure_negative",
       "reasons": [
-        "对照本场景的规则检查信息、步骤与记录是否完整。"
+        "Use this context’s rules to check whether the information, steps, and records are complete."
       ],
       "revision": 1,
       "schema": "ai-persona.preference-example/v3",
       "source_ref": "src_demo_sample_figure_negative",
       "status": "active",
-      "title": "科研绘图 · 反例",
+      "title": "Research Figures · Negative Example",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
-      "condition": "为科研数据新建或实质性修改图表，包括比较曲线、标度分析和论文插图。仅讨论图中物理意义时不触发。",
-      "content_hash": "sha256:1591784a4fdf49c5a11c4e6be4ef203f6d119fd6d2b878a683e32344353b030f",
+      "condition": "Create or substantially revise plots of research data, including curve comparisons, scaling analyses, and publication figures. Does not apply when only discussing the physics in an existing figure.",
+      "content_hash": "sha256:8130a2a5c31ac871d6313fa827384a3a8de19f2e90238a8f4f3eb9db7f379344",
       "context_refs": [
         "pctx_demo_figure"
       ],
@@ -1072,18 +1072,18 @@
       "example_type": "positive",
       "id": "pex_demo_figure_positive",
       "reasons": [
-        "对照本场景的规则检查信息、步骤与记录是否完整。"
+        "Use this context’s rules to check whether the information, steps, and records are complete."
       ],
       "revision": 1,
       "schema": "ai-persona.preference-example/v3",
       "source_ref": "src_demo_sample_figure_positive",
       "status": "active",
-      "title": "科研绘图 · 正例",
+      "title": "Research Figures · Positive Example",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
-      "condition": "为用户撰写或实质性修改科研主题的 Markdown note，包含概念解释、方法推导或结果分析。",
-      "content_hash": "sha256:67af534b8f1e3fefd88216ff7de3c2954fc69d241b5c5433cf436e1969e8c577",
+      "condition": "Write or substantially revise a Markdown note on a research topic, including conceptual explanations, method derivations, or analysis of results.",
+      "content_hash": "sha256:c90e104db87609c734bfbb37cf5627cbbcc2b41d12d35977deec14c00352962b",
       "context_refs": [
         "pctx_demo_note"
       ],
@@ -1092,18 +1092,18 @@
       "example_type": "negative",
       "id": "pex_demo_note_negative",
       "reasons": [
-        "对照本场景的规则检查信息、步骤与记录是否完整。"
+        "Use this context’s rules to check whether the information, steps, and records are complete."
       ],
       "revision": 1,
       "schema": "ai-persona.preference-example/v3",
       "source_ref": "src_demo_sample_note_negative",
       "status": "active",
-      "title": "学术 note · 反例",
+      "title": "Academic Notes · Negative Example",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
-      "condition": "为用户撰写或实质性修改科研主题的 Markdown note，包含概念解释、方法推导或结果分析。",
-      "content_hash": "sha256:d5775ac70e187848826439cb076d08685df88fb8506d12dbd2993e57e1154c5c",
+      "condition": "Write or substantially revise a Markdown note on a research topic, including conceptual explanations, method derivations, or analysis of results.",
+      "content_hash": "sha256:224afcc352db0611139bead8288f8f33d14dbdbedb868bb17cf15c82cf661ced",
       "context_refs": [
         "pctx_demo_note"
       ],
@@ -1112,18 +1112,18 @@
       "example_type": "positive",
       "id": "pex_demo_note_positive",
       "reasons": [
-        "对照本场景的规则检查信息、步骤与记录是否完整。"
+        "Use this context’s rules to check whether the information, steps, and records are complete."
       ],
       "revision": 1,
       "schema": "ai-persona.preference-example/v3",
       "source_ref": "src_demo_sample_note_positive",
       "status": "active",
-      "title": "学术 note · 正例",
+      "title": "Academic Notes · Positive Example",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
-      "condition": "为凝聚态物理问题设计、编写、运行或检查数值计算，包含电子结构计算、张量网络模拟与计算任务准备。仅解释概念时不触发。",
-      "content_hash": "sha256:cf5fd51711d857715695a87ef50affd9870059a227dfc32e4ffa16795914eed3",
+      "condition": "Design, write, run, or review numerical calculations for condensed matter physics, including electronic structure, tensor-network simulations, and preparation of computational jobs. Does not apply to conceptual explanations alone.",
+      "content_hash": "sha256:c501fa911ec7e313eb5ae193655c736d027e3d15b6c69b40f94e1504a66c0b05",
       "context_refs": [
         "pctx_demo_numerics"
       ],
@@ -1132,18 +1132,18 @@
       "example_type": "negative",
       "id": "pex_demo_numerics_negative",
       "reasons": [
-        "对照本场景的规则检查信息、步骤与记录是否完整。"
+        "Use this context’s rules to check whether the information, steps, and records are complete."
       ],
       "revision": 1,
       "schema": "ai-persona.preference-example/v3",
       "source_ref": "src_demo_sample_numerics_negative",
       "status": "active",
-      "title": "数值计算 · 反例",
+      "title": "Numerical Computing · Negative Example",
       "updated_at": "2026-09-01T00:00:00Z"
     },
     {
-      "condition": "为凝聚态物理问题设计、编写、运行或检查数值计算，包含电子结构计算、张量网络模拟与计算任务准备。仅解释概念时不触发。",
-      "content_hash": "sha256:4478383effc9ec19f3f603bd3c473a750cc489f75635792dbc3796df043c4854",
+      "condition": "Design, write, run, or review numerical calculations for condensed matter physics, including electronic structure, tensor-network simulations, and preparation of computational jobs. Does not apply to conceptual explanations alone.",
+      "content_hash": "sha256:b7d1bd46c91e0bc7cf4e77663ef08abdfa5e8b6a52ff61a2b0d1d1bd57c2c4e9",
       "context_refs": [
         "pctx_demo_numerics"
       ],
@@ -1152,28 +1152,28 @@
       "example_type": "positive",
       "id": "pex_demo_numerics_positive",
       "reasons": [
-        "对照本场景的规则检查信息、步骤与记录是否完整。"
+        "Use this context’s rules to check whether the information, steps, and records are complete."
       ],
       "revision": 1,
       "schema": "ai-persona.preference-example/v3",
       "source_ref": "src_demo_sample_numerics_positive",
       "status": "active",
-      "title": "数值计算 · 正例",
+      "title": "Numerical Computing · Positive Example",
       "updated_at": "2026-09-01T00:00:00Z"
     }
   ],
   "preferences": [
     {
       "behavior": "preferred",
-      "condition": "用户没有明确指定格式。",
+      "condition": "The user has not explicitly specified a format.",
       "context_refs": [
         "pctx_demo_figure"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_figure_01",
-      "instruction": "未指定输出格式时，适合栅格呈现的科研图优先输出 PNG；论文排版或明确要求矢量时提供 PDF/SVG。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "When no output format is specified, prefer PNG for research figures suited to raster output; provide PDF/SVG for publication layouts or explicit vector requests.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1182,15 +1182,15 @@
     },
     {
       "behavior": "required",
-      "condition": "图中包含数据、参数分组或误差估计。",
+      "condition": "The figure contains data, parameter groups, or uncertainty estimates.",
       "context_refs": [
         "pctx_demo_figure"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_figure_02",
-      "instruction": "标明坐标轴的物理量与单位；图例说明参数组，误差条说明其统计含义。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Label axes with physical quantities and units; identify parameter groups in the legend and explain the statistical meaning of error bars.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1199,15 +1199,15 @@
     },
     {
       "behavior": "preferred",
-      "condition": "需要比较多组数据或多幅图。",
+      "condition": "Comparing multiple datasets or figures.",
       "context_refs": [
         "pctx_demo_figure"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_figure_03",
-      "instruction": "同一物理量跨图保持一致配色，使用色觉友好的颜色并用线型辅助区分。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Use consistent colors for the same physical quantity across figures, choose colors accessible to readers with color-vision deficiencies, and add line styles to distinguish series.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1216,15 +1216,15 @@
     },
     {
       "behavior": "required",
-      "condition": "涉及数据处理或拟合。",
+      "condition": "Processing or fitting data.",
       "context_refs": [
         "pctx_demo_figure"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_figure_04",
-      "instruction": "保留原始数据和独立制图脚本，说明筛选、归一化与拟合区间，不为美观隐藏不一致结果。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Keep the original data and a standalone plotting script. Explain filtering, normalization, and fitting ranges, and do not hide inconsistent results for appearance.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1233,15 +1233,15 @@
     },
     {
       "behavior": "required",
-      "condition": "为本 Demo 用户撰写专业 note。",
+      "condition": "Writing a technical note for this Demo user.",
       "context_refs": [
         "pctx_demo_note"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_note_01",
-      "instruction": "先查询与主题相关的 Persona 知识背景；对未记录或仅为 aware 的概念补充清楚的解释，并连接已有知识。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "First query the Persona knowledge relevant to the topic. Clearly explain concepts that are unrecorded or rated only as aware, and connect them to existing knowledge.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1250,15 +1250,15 @@
     },
     {
       "behavior": "required",
-      "condition": "出现公式、缩写或新记号。",
+      "condition": "Introducing equations, abbreviations, or new notation.",
       "context_refs": [
         "pctx_demo_note"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_note_02",
-      "instruction": "新符号首次出现时给出定义，公式前后说明物理意义、假设和适用范围。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Define new symbols at first use, and explain the physical meaning, assumptions, and scope of equations in the surrounding prose.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1267,15 +1267,15 @@
     },
     {
       "behavior": "preferred",
-      "condition": "组织 note 正文。",
+      "condition": "Organizing the body of a note.",
       "context_refs": [
         "pctx_demo_note"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_note_03",
-      "instruction": "用连贯段落展开论证，只在逻辑分组时使用列表，避免一句一行和不必要的换行。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Develop arguments in connected paragraphs. Use lists for logical groupings, avoiding a separate line for every sentence and unnecessary line breaks.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1284,15 +1284,15 @@
     },
     {
       "behavior": "required",
-      "condition": "汇总论文结论、数值结果或推测。",
+      "condition": "Summarizing paper conclusions, numerical results, or conjectures.",
       "context_refs": [
         "pctx_demo_note"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_note_04",
-      "instruction": "分别说明来源中的结论、自己的推导和待验证的问题；引用材料时保留可定位的来源。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Distinguish conclusions from sources, your own derivations, and questions awaiting verification. Retain traceable source references when citing materials.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1301,15 +1301,15 @@
     },
     {
       "behavior": "preferred",
-      "condition": "没有明确指定其他语言或既有算法框架。",
+      "condition": "No other language or existing algorithm framework has been explicitly specified.",
       "context_refs": [
         "pctx_demo_numerics"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_numerics_01",
-      "instruction": "张量网络算法优先采用 Julia 的 ITensor 生态：基础张量操作使用 ITensors.jl，MPS/MPO 与相关算法使用 ITensorMPS.jl。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Prefer the Julia ITensor ecosystem for tensor-network algorithms: ITensors.jl for basic tensor operations, and ITensorMPS.jl for MPS/MPO objects and related algorithms.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1318,15 +1318,15 @@
     },
     {
       "behavior": "required",
-      "condition": "新增算法实现或改变模型定义。",
+      "condition": "Adding an algorithm implementation or changing the model definition.",
       "context_refs": [
         "pctx_demo_numerics"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_numerics_02",
-      "instruction": "大规模计算前先做小尺寸验证；在可行时与精确对角化对照能量或代表性观测量，并检查归一化和模型约定。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Validate small systems before large calculations. Where feasible, compare energies or representative observables with exact diagonalization, and check normalization and model conventions.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1335,15 +1335,15 @@
     },
     {
       "behavior": "required",
-      "condition": "使用近似算法或据此解释物理结果。",
+      "condition": "Using approximate algorithms or interpreting physical results obtained from them.",
       "context_refs": [
         "pctx_demo_numerics"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_numerics_03",
-      "instruction": "分别检查键维数、截断阈值、时间步长和系统尺寸的收敛，报告实际执行的检查及残余误差。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Check convergence separately with respect to bond dimension, truncation threshold, time step, and system size. Report the checks actually performed and the remaining errors.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1352,15 +1352,15 @@
     },
     {
       "behavior": "required",
-      "condition": "运行并保存数值实验。",
+      "condition": "Running and saving numerical experiments.",
       "context_refs": [
         "pctx_demo_numerics"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_numerics_04",
-      "instruction": "保存 Julia 版本、Project.toml、Manifest.toml、随机种子、参数文件和代码版本，让结果可以复现。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Save the Julia version, Project.toml, Manifest.toml, random seeds, parameter files, and code version so results can be reproduced.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1369,15 +1369,15 @@
     },
     {
       "behavior": "required",
-      "condition": "准备提交批量或长时间计算；脚本名仅为 Demo 示例，不代表实际服务器配置。",
+      "condition": "Preparing batch or long-running calculations; the script name is a Demo example and does not describe an actual server configuration.",
       "context_refs": [
         "pctx_demo_numerics"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_numerics_05",
-      "instruction": "按 Demo 的虚构协议，通过 scripts/submit_job.sh 与参数文件准备提交；先检查脚本和 dry-run 能力，说明资源与输出路径。脚本缺失时明确说明，不假定真实集群存在此入口。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Under the Demo's fictional protocol, prepare submission through scripts/submit_job.sh and a parameter file. First inspect the script and dry-run support, then state the resources and output paths. If the script is missing, say so; do not assume a real cluster provides this entry point.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1386,15 +1386,15 @@
     },
     {
       "behavior": "required",
-      "condition": "保存结果或继续已有任务。",
+      "condition": "Saving results or continuing an existing job.",
       "context_refs": [
         "pctx_demo_numerics"
       ],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "preference",
       "id": "pref_demo_numerics_06",
-      "instruction": "使用独立 run ID 保存数据、日志和 checkpoint，不覆盖其他运行；恢复计算前核对模型、参数和依赖版本。",
-      "rationale": "虚构的 Demo 用户偏好。",
+      "instruction": "Save data, logs, and checkpoints under a unique run ID without overwriting other runs. Verify the model, parameters, and dependency versions before resuming a calculation.",
+      "rationale": "A fictional Demo user preference.",
       "revision": 1,
       "schema": "ai-persona.preference/v1",
       "scope": "contexts",
@@ -1479,7 +1479,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_bands",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_dft",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1495,7 +1495,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_bands",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_dos",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1511,7 +1511,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_bands",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_electronic",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1527,7 +1527,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_bands",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_fermi_surface",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1543,7 +1543,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_bands",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_kohn_sham",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1559,7 +1559,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_bands",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_tight_binding",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1575,7 +1575,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_bands",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_wannier",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1591,7 +1591,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_crystal",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_bloch",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1607,7 +1607,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_crystal",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_bravais",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1623,7 +1623,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_crystal",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_crystal",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1639,7 +1639,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_crystal",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_phonon",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1655,7 +1655,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_crystal",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_reciprocal",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1671,7 +1671,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_magnetism",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_anisotropy",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1687,7 +1687,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_magnetism",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_exchange",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1703,7 +1703,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_magnetism",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_heisenberg",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1719,7 +1719,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_magnetism",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_magnetism",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1735,7 +1735,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_magnetism",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_spin_wave",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1751,7 +1751,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_superconductivity",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_bcs",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1767,7 +1767,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_superconductivity",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_bdg",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1783,7 +1783,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_superconductivity",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_cooper",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1799,7 +1799,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_superconductivity",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_ginzburg_landau",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1815,7 +1815,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_superconductivity",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_superconductivity",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1831,7 +1831,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_superconductivity",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_vortex",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1847,7 +1847,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_topology",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_berry",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1863,7 +1863,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_topology",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_chern",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1879,7 +1879,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_topology",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_quantum_hall",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1895,7 +1895,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_topology",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_spin_orbit",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1911,7 +1911,7 @@
       "salience": "secondary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_topology",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_topological_insulator",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -1927,7 +1927,7 @@
       "salience": "primary",
       "schema": "ai-persona.relation/v2",
       "source_id": "mat_demo_topology",
-      "statement": "本文用这个主题组织阅读或实践问题。",
+      "statement": "This article uses the topic to organize reading or practical questions.",
       "status": "active",
       "target_id": "kn_demo_topology",
       "updated_at": "2026-09-01T00:00:00Z"
@@ -2378,9 +2378,7 @@
   "schema_version": "ai-persona.snapshot/v1",
   "tags": [
     {
-      "aliases": [
-        "物理"
-      ],
+      "aliases": [],
       "created_at": "2026-09-01T00:00:00Z",
       "entity_type": "tag",
       "id": "tag_physics",

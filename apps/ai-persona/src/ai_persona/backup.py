@@ -13,6 +13,7 @@ import shutil
 import sqlite3
 import tarfile
 import tempfile
+from contextlib import closing
 from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 
@@ -31,11 +32,16 @@ SQLITE_DATABASES = {
     "persona-state/persona.sqlite3", "persona-state/ai-assistant.sqlite3",
     "persona-state/preference-applications.sqlite3", "persona-state/prompts/prompts.sqlite3",
     "conversation-learning/conversation-learning.sqlite3",
+    "persona-state/extraction/tasks.sqlite3",
+    "persona-state/editor-drafts.sqlite3", "persona-state/material-handoffs.sqlite3",
+    "persona-state/mcp-setup.sqlite3",
 }
 TRANSIENT_PATHS = {
     "persona-state/ui-server.json", "persona-state/ui-server.log", "persona-state/ui-server-start.lock",
     "conversation-learning/worker.json", "conversation-learning/worker.lock",
     "conversation-learning/worker.log", "conversation-learning/stop.request",
+    "persona-state/content-access.lock", "persona-state/content-reset.lock",
+    "persona-state/content-reset.active", "persona-state/content-reset.json",
 }
 
 
@@ -82,9 +88,22 @@ def _files(root: Path, name: str):
     return sorted(files)
 
 
+def _database_signature(source: Path) -> str:
+    # Compare database content, not WAL/checkpoint timestamps or data_version.
+    with tempfile.TemporaryDirectory(prefix="persona-db-check-") as temporary:
+        snapshot = Path(temporary) / "snapshot.sqlite3"
+        _snapshot_file(source, snapshot, sqlite_snapshot=True)
+        with snapshot.open('rb') as stream:
+            return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
 def _signature(roots: dict[str, Path]) -> dict:
     return {
-        f"{name}/{p.relative_to(root).as_posix()}": (p.stat().st_size, p.stat().st_mtime_ns)
+        f"{name}/{p.relative_to(root).as_posix()}": (
+            _database_signature(p)
+            if f"{name}/{p.relative_to(root).as_posix()}" in SQLITE_DATABASES
+            else (p.stat().st_size, p.stat().st_mtime_ns)
+        )
         for name, root in roots.items() for p in _files(root, name)
     }
 
@@ -94,6 +113,8 @@ def _skip(name: str, relative: Path) -> bool:
     # staged original must survive, including filenames that resemble caches.
     if name == "persona-data":
         return False
+    if name == "persona-state" and relative.parts and relative.parts[0].startswith(".content-reset-"):
+        return True
     path = f"{name}/{relative.as_posix()}"
     return path in TRANSIENT_PATHS or any(path in {db + "-wal", db + "-shm"} for db in SQLITE_DATABASES)
 
@@ -101,8 +122,8 @@ def _skip(name: str, relative: Path) -> bool:
 def _snapshot_file(source: Path, target: Path, *, sqlite_snapshot: bool = False) -> None:
     target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     if sqlite_snapshot:
-        with sqlite3.connect(source.as_uri() + "?mode=ro", uri=True) as src:
-            with sqlite3.connect(target) as dst:
+        with closing(sqlite3.connect(source.as_uri() + "?mode=ro", uri=True)) as src:
+            with closing(sqlite3.connect(target)) as dst:
                 src.backup(dst)
                 if dst.execute("PRAGMA quick_check").fetchone()[0] != "ok":
                     raise ValueError(f"Invalid database: {source.name}")
@@ -127,9 +148,28 @@ def backup_workspace(workspace: Path, output: Path, *, learning_dir: Path | None
     for name, root in roots.items():
         _files(root, name)
     _assert_stopped(workspace, learning)
-    store = PersonaStore(data).load()
-    before = _signature(roots)
+    return _backup_roots(roots, output)
+
+
+def backup_quiesced(data: Path, state: Path, learning: Path, output: Path) -> dict:
+    """Use the portable backup format while the reset owner has stopped all writers."""
+    from .reset_storage import OWNER
+
+    if not OWNER.get():
+        raise ValueError("A live content reset must own the workspace before making this backup.")
+    return _backup_roots({"persona-data": data, "persona-state": state,
+                          "conversation-learning": learning}, output)
+
+
+def _backup_roots(roots: dict[str, Path], output: Path) -> dict:
+    output = output.expanduser().absolute()
+    if any(root.resolve() == output.resolve() or root.resolve() in output.resolve().parents for root in roots.values()):
+        raise ValueError("Save backups outside the workspace and learning directories.")
+    if output.exists() or output.is_symlink():
+        raise ValueError("Backup destination already exists; choose a new filename.")
+    store = PersonaStore(roots["persona-data"]).load()
     output.parent.mkdir(parents=True, exist_ok=True)
+    before = _signature(roots)
     with tempfile.TemporaryDirectory(prefix="persona-backup-") as tmp:
         staged = Path(tmp)
         manifest = {"schema": SCHEMA, "created_at": datetime.now(UTC).isoformat(),

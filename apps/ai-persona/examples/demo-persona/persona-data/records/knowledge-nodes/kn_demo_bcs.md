@@ -6,16 +6,18 @@ status: active
 revision: 1
 created_at: '2026-09-01T00:00:00Z'
 updated_at: '2026-09-01T00:00:00Z'
-title: BCS 理论
+title: BCS Theory
 aliases: []
 knowledge_level: aware
 interest_level: high
-summary: 学习弱耦合配对的平均场描述，理解能隙、自洽条件和理论假设。
-scope_note: 可在 Demo 中修改这一程度，观察 note 解释起点如何变化。
+summary: Learn the mean-field description of weak-coupling pairing, including the
+  energy gap, self-consistency conditions, and theoretical assumptions.
+scope_note: Change this level in the Demo to explore how it affects the starting point
+  of a note.
 tags:
 - tag_physics
 evidence_refs: []
 semantic_role: theory
 ---
 
-虚构画像：研究二维磁性与拓扑材料的博士生；熟悉晶体与 DFT，正在学习拓扑与超导。掌握程度和兴趣完全为演示设定。
+Fictional profile: a doctoral researcher studying two-dimensional magnetic and topological materials, familiar with crystals and DFT, and learning topology and superconductivity. Knowledge and interest levels are assigned solely for demonstration.

@@ -61,6 +61,7 @@ def mount_ai_routes(app, data_root: Path, state_root: Path, templates, common_co
     app.state.model_setup = ModelSetup()
     workers = ThreadPoolExecutor(max_workers=2, thread_name_prefix="persona-ai")
     active: dict[str, str] = {}
+    app.state.ai_jobs = active
     active_lock = threading.Lock()
 
     def done(session_id, run_id):

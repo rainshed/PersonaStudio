@@ -28,6 +28,7 @@ Clients differ in how this server entry is nested in their configuration. Keep t
 
 | Tools | Purpose |
 | --- | --- |
+| `verify_persona_connection` | Complete an explicit Studio connection probe without reading personal content or calling a model. |
 | `get_knowledge_map`, `search_knowledge`, `get_persona_records` | Discover and read scoped effective knowledge. |
 | `search_preferences`, `get_preference_records` | Inspect reviewed preferences, contexts, and examples for maintenance without activating them. |
 | `list_source_files`, `search_source_content`, `read_source` | Inspect permitted source files, text, images, and table content. |
@@ -41,7 +42,15 @@ Semantic retrieval runs a local embedding model. Its first use can download mode
 
 本地 MCP 使用 stdio，客户端应配置绝对项目路径和工作区路径。MCP 只能查询正式记录或提交待审核提案，不提供通过与发布工具；知识、证据和来源都受范围约束。本地语义检索首次使用需要下载模型，降级状态会明确返回。
 
+For agent-assisted setup, give Codex the [local MCP runbook (中文)](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md), also downloadable from **Settings → Application access**. It covers configuration backups and merging, client reload, and a real verification tool call against the selected workspace.
+
+也可以在「设置 → 应用接入」下载[本机 MCP 配置流程](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md)交给 Codex，完成配置备份与合并、客户端加载和真实工具调用验证。仅写入配置或显示服务进程已启动，不代表实际客户端已经接通。
+
 ## Codex learning and preference application / Codex 学习与偏好应用
+
+Saving preferences requires neither a Hook nor MCP. Automatic use in daily Codex messages and conversation learning share the Codex Hook, but each feature has its own switch. Basic MCP queries require client configuration, independently of the Hook. **Settings → Application access** provides a workspace-specific MCP entry and a 15-minute verification message to send from the actual client; the verification is tied to the host, workspace and configuration. It does not test model-backed activation. Material extraction at `/extract` uses its own Codex runtime and does not require a daily-conversation Hook.
+
+保存偏好不要求 Hook 或 MCP。日常自动应用偏好与对话学习共用 Codex Hook，但分别开启；普通 MCP 查询只要求客户端配置，不依赖 Hook。「设置 → 应用接入」提供当前工作区的 MCP 配置和 15 分钟内有效的验证消息。请在实际客户端发送；验证绑定主机、工作区和配置，不代表需要模型的场景匹配已可用。「从材料提取知识」使用独立的 Codex 运行组件，无需安装日常对话 Hook。
 
 Use **Settings → Application access** to select the Codex source, projects/sessions, and whether previous conversation context is available. Install and verify the integration through that page, then review the new Hook in the host application's trust workflow. Preserve unrelated Hooks and MCP settings.
 
@@ -50,6 +59,10 @@ Learning, source trust, model processing, and preference application are indepen
 The unified Hook supports both learning and preference application. AI-generated candidates still require review. The Demo does not install host Hooks or collect real sessions.
 
 在「设置 → 应用接入」选择真实使用的 Codex 来源、项目或会话范围与前文策略，安装后还需在宿主应用中检查 Hook 信任状态。各项自动功能独立启用；请用真实客户端新发起一轮请求验证，连接探针不能代替实际触发。Demo 不安装宿主 Hook 或采集真实会话。
+
+For agent-assisted local installation, give Codex the [Hook setup runbook (中文)](../apps/ai-persona/src/ai_persona/static/guides/CODEX_HOOK_SETUP.zh-CN.md), also downloadable from **Settings → Application access**. It uses Studio's existing installer and distinguishes configuration installation, host trust, actual Hook delivery, and optional feature activation.
+
+也可以把[本机 Hook 安装流程](../apps/ai-persona/src/ai_persona/static/guides/CODEX_HOOK_SETUP.zh-CN.md)交给 Codex 执行；「设置 → 应用接入」提供下载入口。安装使用 Studio 已有接口，分别检查配置安装、宿主信任、实际消息接收和用户选择的自动功能。
 
 Detailed behavior: [conversation learning](../apps/ai-persona/docs/AI_PERSONA_CONVERSATION_LEARNING_USAGE.zh-CN.md) and [preference application](../apps/ai-persona/docs/AI_PERSONA_PREFERENCE_ACTIVATION_USAGE.zh-CN.md).
 

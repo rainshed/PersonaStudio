@@ -7,7 +7,7 @@ revision: 1
 created_at: '2026-09-01T00:00:00Z'
 updated_at: '2026-09-01T00:00:00Z'
 source_id: src_demo_article_topology
-source_hash: sha256:dec8d10531a47eeb9583ff3625acd29268446a3a8af0281d19c3b208f422f90d
+source_hash: sha256:bc5f6a4dfd4c971f7988482fff84ddd79fee0423909cc1aa240cdd61333a3da3
 locator:
   file: original.md
   line_start: 1
@@ -18,4 +18,4 @@ evidence_kind: authored_material
 extraction_method: demo-seed
 ---
 
-本条仅定位到原创 Demo 文章，不证明真实用户的掌握程度。
+This record locates an original Demo article only; it does not establish a real user's knowledge level.

@@ -22,6 +22,24 @@ Do not delete `persona-state` as a blanket cleanup step: some of its content can
 
 不要把整个 `persona-state` 当缓存删除，其中部分内容无法从正式记录重建。工作区备份包含工作区数据、状态及对应学习库，不包含全局模型凭据。换机器后请重新配置模型连接。
 
+## Reset content in Studio / 在 Studio 中重新初始化
+
+Open **Settings → Data management → Clear content, keep settings** to preview and clear knowledge, relations, materials, personal preferences, proposals, review history, extraction tasks, maintenance drafts, learning content and evaluation data. Model connections and authentication, application access, prompts, language and extraction defaults remain configured. This acts on the current workspace only.
+
+进入 **设置 → 数据管理 → 重新初始化 Persona → 清空内容，保留配置**。先预览知识、关系、材料、偏好、提案、审核历史、整理任务、维护会话、学习内容与评测数据的清理范围；模型连接、登录授权、应用接入、提示词、语言和默认提取规则保留。只处理当前工作区。
+
+For a single material collection, open **Read papers, organize knowledge → Clear this extraction**. All result revisions in that collection are cleared, while its uploaded files/arXiv sources and extraction settings stay available for another run. Unchanged accepted records created by the collection can be removed; records edited during review or later, updates to existing records, and content referenced elsewhere are preserved and listed in the preview. Shared source files are retained.
+
+只重做某批材料时，在 **读论文，整理知识 → 整理与审核 → 清除本次提取结果** 操作。清除这个材料集合各轮产生的结果，保留输入文件、arXiv 来源和提取设置，可以直接重新整理。已采纳且未改动的新增记录可一起移除；审核时或之后改过的记录、对既有记录的修改、被其他内容引用的记录会保留，并在预览中说明。
+
+Both actions require explicit confirmation after preview. Active tasks are stopped before deletion; if they cannot stop promptly, nothing is cleared. A changed preview must be refreshed. Failed writes roll back; an interrupted reset recovers when Studio next starts. After a full reset, old learning event identities are retained as content-free hashes to prevent replay; subsequent learning uses only new context.
+
+两种操作都需要在预览后确认。清理前会停止运行中的任务；若无法及时停止，则不清理。预览后的数据发生变化时需重新预览。写入失败会回滚，意外中断后下次启动会恢复。全量清理后，仅保留不含正文的旧学习事件哈希以防重放，后续学习只使用新上下文。
+
+**Backup is optional and unchecked by default.** If selected, a private standard workspace archive is saved to `<workspace>/backups/persona-content-*.tar.gz`; the completion dialog shows its exact path. It includes the pre-reset workspace and learning data (also for a single-collection reset) and can be restored into a new workspace using the `restore` command below. It does not include global model credentials. Without a backup, a successfully completed reset cannot be undone. Existing backups are not removed.
+
+**备份可选，默认不勾选。** 勾选后，在 `<workspace>/backups/persona-content-*.tar.gz` 保存清理前的标准工作区备份；完成弹窗会显示完整路径。即使只清理单次提取，备份也保存整个工作区及学习数据，可用下文的 `restore` 恢复到新工作区；不包含全局模型凭据。不备份时，成功清理后无法撤销。已有备份不会被清除。
+
 ## Prepare a consistent copy / 备份前准备
 
 Wait for active work to finish. Close MCP clients and other processes that write to this workspace, stop automatic learning, and stop Studio before backup or migration. A running client can reconnect or write after Studio exits; stopping only the browser window is insufficient.

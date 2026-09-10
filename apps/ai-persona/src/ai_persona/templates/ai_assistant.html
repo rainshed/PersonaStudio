@@ -10,7 +10,7 @@
       <div class="ai-scenario-grid">
         <div class="ai-paper-scenario">
         <button type="button" class="ai-scenario" data-scenario="paper" aria-pressed="false"><span class="ai-scenario-icon" aria-hidden="true">↗</span><strong>{{ '读论文，整理知识' if locale == 'zh-CN' else 'Read a paper' }}</strong><span>{{ 'arXiv 链接或论文文件' if locale == 'zh-CN' else 'An arXiv link or paper file' }}</span><small>{{ '材料 · 知识 · 关系' if locale == 'zh-CN' else 'Materials · Knowledge · Relations' }}</small></button>
-          <a class="ai-batch-entry" href="/extract">{{ '同时从多篇材料中提取知识' if locale == 'zh-CN' else 'Extract knowledge from multiple sources' }} <span aria-hidden="true">→</span></a>
+          <a class="ai-batch-entry" href="/extract">{{ '从材料提取知识 · 使用 Codex' if locale == 'zh-CN' else 'Extract knowledge from multiple sources' }} <span aria-hidden="true">→</span></a>
         </div>
         <button type="button" class="ai-scenario" data-scenario="notes" aria-pressed="false"><span class="ai-scenario-icon" aria-hidden="true">≡</span><strong>{{ '从笔记中提取知识' if locale == 'zh-CN' else 'Learn from notes' }}</strong><span>{{ '自己的 notes 或一段文字' if locale == 'zh-CN' else 'Your notes or pasted text' }}</span><small>{{ '知识 · 关系' if locale == 'zh-CN' else 'Knowledge · Relations' }}</small></button>
         <button type="button" class="ai-scenario" data-scenario="course" aria-pressed="false"><span class="ai-scenario-icon" aria-hidden="true">▤</span><strong>{{ '整理一门课程' if locale == 'zh-CN' else 'Organize a course' }}</strong><span>{{ '课程主页截图或大纲文件' if locale == 'zh-CN' else 'A course screenshot or syllabus file' }}</span><small>{{ '课程 · 大纲 · 知识' if locale == 'zh-CN' else 'Courses · Syllabus · Knowledge' }}</small></button>
@@ -20,7 +20,7 @@
       <div id="ai-scope" class="ai-scope"></div>
       <div id="ai-inputs" class="ai-stack">
         <fieldset class="ai-input-group"><legend>{{ '1. 提供资料' if locale == 'zh-CN' else '1. Add sources' }}</legend>
-          <div class="ai-source-tabs" aria-label="{{ '资料输入方式' if locale == 'zh-CN' else 'Source input method' }}">
+          <a href="/materials/new?use=ai" class="home-link">{{ '统一添加材料：保存、提取或交给 AI →' if locale == 'zh-CN' else 'Add a material: save, extract or use with AI →' }}</a><div class="ai-source-tabs" aria-label="{{ '资料输入方式' if locale == 'zh-CN' else 'Source input method' }}">
             {% for value, zh, en in [('link','链接','Link'),('file','文件','File'),('text','文本','Text'),('existing','已有材料','Existing materials')] %}<button type="button" class="ai-source-tab" data-source-mode="{{ value }}" aria-pressed="{{ 'true' if value == 'link' else 'false' }}" aria-controls="ai-source-{{ value }}">{{ zh if locale == 'zh-CN' else en }}</button>{% endfor %}
           </div>
           <div id="ai-source-link" class="ai-stack">
@@ -29,7 +29,7 @@
           </div>
           <div id="ai-source-file" class="ai-stack" hidden>
             <p id="ai-file-selection" class="ai-muted" role="status"></p>
-            <div id="ai-drop-zone" class="ai-file-drop"><label class="field"><span>{{ '选择或拖入论文、笔记、课程截图' if locale == 'zh-CN' else 'Choose or drop a paper, notes, or course screenshot' }}</span><input id="ai-files" type="file" accept=".txt,.md,.markdown,.pdf,.png,.jpg,.jpeg,.webp" multiple></label><button id="ai-upload-files" class="button ghost" type="button">{{ '上传并读取' if locale == 'zh-CN' else 'Upload and read' }}</button></div>
+            <div id="ai-drop-zone" class="ai-file-drop"><label class="field"><span>{{ '选择或拖入论文、笔记、课程截图' if locale == 'zh-CN' else 'Choose or drop a paper, notes, or course screenshot' }}</span><input id="ai-files" data-assistant-source-capability type="file" accept=".txt,.md,.markdown,.pdf,.png,.jpg,.jpeg,.webp" multiple></label><button id="ai-upload-files" class="button ghost" type="button">{{ '上传并读取' if locale == 'zh-CN' else 'Upload and read' }}</button></div>
             <p class="ai-muted">{{ '支持 PDF、TXT、Markdown、PNG、JPEG、WebP，每份最多 20 MB；文本最多 750 KB。图片会发送给已配置的模型识别文字，请核对识别结果。' if locale == 'zh-CN' else 'PDF, TXT, Markdown, PNG, JPEG and WebP, up to 20 MB per file; text up to 750 KB. Images are sent to your configured model for transcription; check the extracted text.' }}</p>
           </div>
           <div id="ai-source-text" class="ai-stack" hidden>

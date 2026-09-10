@@ -105,6 +105,9 @@ def test_demo_never_reuses_real_studio_on_same_port(tmp_path, monkeypatch):
             start_ui(sample, port=real_port, open_browser=True)
         assert not opened
         assert ui_status(workspace)["pid"] == original["pid"]
+        with pytest.raises(RuntimeError, match="只能运行一个"):
+            start_ui(sample, port=demo_port, open_browser=False, startup_timeout=20)
+        stop_ui(workspace)
         started = start_ui(sample, port=demo_port, open_browser=False, startup_timeout=20)
         assert started["pid"] != original["pid"]
         from types import SimpleNamespace
@@ -112,14 +115,16 @@ def test_demo_never_reuses_real_studio_on_same_port(tmp_path, monkeypatch):
         from ai_persona import mcp_server
 
         review = {}
+
         def server(data, state, **kwargs):
             review.update(kwargs)
             return SimpleNamespace(run=lambda transport: None)
+
         monkeypatch.setattr(mcp_server, "create_mcp_server", server)
         assert mcp_server.main(["--demo"]) == 0
         assert review["review_base_url"] == f"http://127.0.0.1:{demo_port}"
         stop_ui(sample)
-        assert ui_status(workspace)["running"]
+        assert not ui_status(workspace)["running"]
     finally:
         stop_ui(sample)
         stop_ui(workspace)
@@ -243,16 +248,16 @@ def test_automatic_port_preserves_another_studio(tmp_path, monkeypatch, is_demo)
     monkeypatch.setattr(launcher, "DEMO_PORT" if is_demo else "DEFAULT_PORT", preferred)
     monkeypatch.setattr(launcher, "_open_browser", opened.append)
     try:
-        original = start_ui(original_workspace, port=preferred, open_browser=False, startup_timeout=20)
-        started = start_ui(selected, open_browser=True, startup_timeout=20)
-        assert started["url"] != original["url"]
-        assert started["pid"] != original["pid"]
-        assert not started["already_running"]
-        assert opened == [started["url"]]
+        original = start_ui(
+            original_workspace, port=preferred, open_browser=False, startup_timeout=20
+        )
+        with pytest.raises(RuntimeError, match="只能运行一个"):
+            start_ui(selected, open_browser=True, startup_timeout=20)
+        assert not opened
+        assert not ui_status(selected)["running"]
         assert ui_status(original_workspace)["pid"] == original["pid"]
         stop_ui(selected)
         assert ui_status(original_workspace)["running"]
-        assert ui_status(original_workspace)["pid"] == original["pid"]
     finally:
         stop_ui(selected)
         stop_ui(original_workspace)
@@ -276,7 +281,9 @@ def test_explicit_occupied_port_is_rejected_without_starting_or_opening(tmp_path
 
 @pytest.mark.parametrize("failure", ["spawn", "startup"])
 def test_failed_launch_releases_reserved_port_and_removes_own_descriptor(
-    tmp_path, monkeypatch, failure,
+    tmp_path,
+    monkeypatch,
+    failure,
 ):
     workspace = _private_workspace(tmp_path / "private")
     preferred = _available_port()
@@ -312,17 +319,29 @@ def test_failed_launch_releases_reserved_port_and_removes_own_descriptor(
             process.wait(timeout=5)
 
 
-def test_supervised_server_tracks_pid_and_ignores_forwarded_peer(tmp_path: Path):
+@pytest.mark.parametrize("supervised", [False, True])
+def test_all_foreground_servers_track_pid_and_ignore_forwarded_peer(tmp_path: Path, supervised):
     data, state = tmp_path / "persona-data", tmp_path / "persona-state"
     shutil.copytree(demo_workspace().data_root, data)
     workspace = PersonaWorkspace(root=tmp_path, data_root=data, state_root=state)
     port = _available_port()
     origin = "https://test-mac.example.ts.net:8443"
-    process = subprocess.Popen([
-        sys.executable, "-m", "ai_persona", "serve", "--workspace", str(tmp_path),
-        "--port", str(port), "--supervised",
-    ], env={**os.environ, "AI_PERSONA_PUBLIC_ORIGIN": origin},
-        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    process = subprocess.Popen(
+        [
+            sys.executable,
+            "-m",
+            "ai_persona",
+            "serve",
+            "--workspace",
+            str(tmp_path),
+            "--port",
+            str(port),
+            *(["--supervised"] if supervised else []),
+        ],
+        env={**os.environ, "AI_PERSONA_PUBLIC_ORIGIN": origin},
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
     try:
         deadline = time.monotonic() + 15
         while time.monotonic() < deadline:
@@ -332,10 +351,38 @@ def test_supervised_server_tracks_pid_and_ignores_forwarded_peer(tmp_path: Path)
             time.sleep(0.1)
         status = ui_status(workspace)
         assert status["running"] and status["pid"] == process.pid
-        request = Request(f"http://127.0.0.1:{port}/healthz", headers={
-            "Host": "test-mac.example.ts.net:8443", "Origin": origin,
-            "X-Forwarded-For": "100.64.0.2", "X-Forwarded-Proto": "http",
-        })
+        reused = start_ui(workspace, port=_available_port(), open_browser=False)
+        assert reused["already_running"] and reused["pid"] == process.pid
+        other = _private_workspace(tmp_path / "other")
+        with pytest.raises(RuntimeError, match="只能运行一个"):
+            start_ui(other, open_browser=False)
+        duplicate = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "ai_persona",
+                "serve",
+                "--workspace",
+                str(other.root),
+                "--port",
+                str(_available_port()),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=15,
+        )
+        assert duplicate.returncode != 0
+        assert "只能运行一个" in duplicate.stdout + duplicate.stderr
+        assert not (other.state_root / "ui-server.json").exists()
+        request = Request(
+            f"http://127.0.0.1:{port}/healthz",
+            headers={
+                "Host": "test-mac.example.ts.net:8443",
+                "Origin": origin,
+                "X-Forwarded-For": "100.64.0.2",
+                "X-Forwarded-Proto": "http",
+            },
+        )
         with build_opener(ProxyHandler({})).open(request, timeout=3) as response:
             assert response.status == 200
     finally:
@@ -344,3 +391,58 @@ def test_supervised_server_tracks_pid_and_ignores_forwarded_peer(tmp_path: Path)
     # Uvicorn re-raises SIGTERM after shutdown; status clears a stale descriptor.
     assert ui_status(workspace)["running"] is False
     assert not (state / "ui-server.json").exists()
+
+
+def test_concurrent_starts_share_one_pid_and_setup_reuses_it(tmp_path, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+
+    from ai_persona import onboarding
+
+    work = _private_workspace(tmp_path / "work")
+    port = _available_port()
+    opened = []
+    monkeypatch.setattr(onboarding.webbrowser, "open", opened.append)
+    try:
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(
+                pool.map(lambda _: start_ui(work, port=port, open_browser=False), range(2))
+            )
+        assert results[0]["pid"] == results[1]["pid"]
+        assert sorted(r["already_running"] for r in results) == [False, True]
+        assert onboarding.run_setup(open_browser=True) == 0
+        assert opened == [results[0]["url"]]
+        assert ui_status(work)["pid"] == results[0]["pid"]
+    finally:
+        stop_ui(work)
+
+
+def test_crash_releases_single_service_lock_and_allows_restart(tmp_path):
+    work = _private_workspace(tmp_path / "work")
+    try:
+        old = start_ui(work, port=_available_port(), open_browser=False)
+        os.kill(old["pid"], 9)
+        deadline = time.monotonic() + 10
+        while launcher._pid_is_running(old["pid"]) and time.monotonic() < deadline:
+            time.sleep(0.05)
+        new = start_ui(work, port=_available_port(), open_browser=False)
+        assert new["pid"] != old["pid"]
+        assert ui_status(work)["running"]
+        # Removing metadata must never defeat the process-lifetime lock.
+        launcher._pid_path(work).unlink()
+        (launcher._global_root() / launcher.PID_FILENAME).unlink()
+        with pytest.raises(RuntimeError, match="只能运行一个"):
+            start_ui(work, port=_available_port(), open_browser=False)
+        info = launcher.UIServerInfo(
+            pid=new["pid"],
+            host="127.0.0.1",
+            port=int(new["url"].rsplit(":", 1)[1]),
+            url=new["url"],
+            workspace=str(work.root),
+            data_root=str(work.data_root),
+            state_root=str(work.state_root),
+            started_at="test",
+        )
+        launcher._write_info(work, info)
+        launcher._write_info_file(launcher._global_root() / launcher.PID_FILENAME, info)
+    finally:
+        stop_ui(work)

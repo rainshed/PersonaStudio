@@ -1,21 +1,21 @@
-# 从原胞到声子谱：二维材料计算的起点
+# From Primitive Cells to Phonon Spectra: A Starting Point for 2D Materials
 
-> AI Persona 原创虚构示例。研究者、阅读记录和练习计划均为演示设定；本文不报告真实材料发现。
+> An original fictional AI Persona example. The researcher, reading history, and exercise plans are invented for the Demo; this article reports no real materials discoveries.
 
-## 先把结构说清楚
+## Define the structure first
 
-这位研究者准备研究一类假想的二维磁性薄层。开始计算前，他先记录原胞的晶格矢量、基元中的原子位置，以及模拟薄层时使用的真空层厚度。晶格描述周期平移，基元描述附着在每个晶格点上的结构；蜂窝排列不能不加说明地当成单原子布拉菲晶格。
+The researcher plans to study a hypothetical two-dimensional magnetic layer. Before calculating anything, they record the primitive lattice vectors, atomic positions in the basis, and the vacuum spacing used to simulate the layer. The lattice describes periodic translations, while the basis describes the structure attached to each lattice point. A honeycomb arrangement should not be treated as a monatomic Bravais lattice without explaining its basis.
 
-## 倒空间中的坐标约定
+## Coordinate conventions in reciprocal space
 
-设 aᵢ 为实空间原胞基矢，bⱼ 为倒易基矢，采用 aᵢ·bⱼ=2πδᵢⱼ 的约定，其中 δᵢⱼ 为 Kronecker 符号。高对称点的分数坐标依赖选定的倒易基矢。更换晶胞后，沿用旧的标签而不检查实际路径，可能使两张能带图无法直接比较。
+Let aᵢ denote the real-space primitive vectors and bⱼ the reciprocal basis vectors, using the convention aᵢ·bⱼ=2πδᵢⱼ, where δᵢⱼ is the Kronecker delta. Fractional coordinates of high-symmetry points depend on the chosen reciprocal basis. Reusing old labels after changing the cell, without checking the actual path, can make two band plots unsuitable for direct comparison.
 
-Bloch 定理把周期势中的电子态写成平面波因子与周期函数的乘积。它说明为何可以在布里渊区内组织能带，但不保证任意选取的一条高对称路径覆盖全部带边位置。
+Bloch's theorem expresses an electron state in a periodic potential as a plane-wave factor times a periodic function. It explains why bands can be organized within the Brillouin zone, but does not guarantee that an arbitrary high-symmetry path passes through every band extremum.
 
-## 怎样处理声子虚频
+## How to handle imaginary phonon frequencies
 
-在谐近似下，声子频率来自动力学矩阵的本征值问题。若出现虚频，先检查结构是否充分弛豫、力常数与采样是否收敛，再讨论可能的结构不稳定性。二维材料靠近 Γ 点的柔性振动需要仔细处理数值误差；不能只凭一小段负频就宣布发现新相。
+In the harmonic approximation, phonon frequencies follow from the eigenvalue problem of the dynamical matrix. If imaginary frequencies appear, first check structural relaxation and convergence of force constants and sampling, then consider possible structural instabilities. Flexural modes near Γ in two-dimensional materials require careful treatment of numerical errors. A small region of negative plotted frequencies alone does not establish a new phase.
 
-## 留下可追溯的输入
+## Keep inputs traceable
 
-本练习保存原始结构、弛豫后的结构、坐标约定和声子计算参数。绘图时标注路径与频率单位，便于后续比较应变和磁构型的影响。这里列出的是待执行的检查清单，没有伪造计算输出。
+This exercise retains the original and relaxed structures, coordinate conventions, and phonon calculation parameters. Plots label the path and frequency units so that the effects of strain and magnetic configurations can be compared later. These are planned checks, with no fabricated calculation outputs.

@@ -236,6 +236,7 @@
       ? L('已添加 ', 'Added ') + connections.length + L(' 个连接：', ' connections: ') + connections.map(c => c.name).join('、')
       : L('先添加账号连接，再选择使用的模型。', 'Add an account connection before choosing models.');
     $('model-new').className = connections.length ? 'button ghost' : 'button primary-button';
+    $('model-new').disabled = false;
     $('model-accounts').dataset.empty = String(!connections.length);
     routePickers.clear(); $('model-generation').replaceChildren(); $('model-judgment').replaceChildren(); $('model-default').replaceChildren();
     if (!config.settings.connections.length) $('model-accounts').open = true;

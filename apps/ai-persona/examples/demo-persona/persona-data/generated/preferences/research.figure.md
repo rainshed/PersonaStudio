@@ -1,26 +1,26 @@
-# Personal Preferences: 科研绘图
+# Personal Preferences: Research Figures
 
 - Context key: `research.figure`
-- Content hash: `sha256:7b17b856ec96a0c9bcbba2a1fd40f30cadada05875552a756e5c3129b20f8181`
+- Content hash: `sha256:a0bead9f3bf0269574b0e18203f9fd0caf2f81bcc6d8e8d8caebe7ee9e6c1d82`
 
 
 ## Required
 
-- `pref_demo_figure_02` — 标明坐标轴的物理量与单位；图例说明参数组，误差条说明其统计含义。
-  - When: 图中包含数据、参数分组或误差估计。
-  - Why: 虚构的 Demo 用户偏好。
-- `pref_demo_figure_04` — 保留原始数据和独立制图脚本，说明筛选、归一化与拟合区间，不为美观隐藏不一致结果。
-  - When: 涉及数据处理或拟合。
-  - Why: 虚构的 Demo 用户偏好。
+- `pref_demo_figure_02` — Label axes with physical quantities and units; identify parameter groups in the legend and explain the statistical meaning of error bars.
+  - When: The figure contains data, parameter groups, or uncertainty estimates.
+  - Why: A fictional Demo user preference.
+- `pref_demo_figure_04` — Keep the original data and a standalone plotting script. Explain filtering, normalization, and fitting ranges, and do not hide inconsistent results for appearance.
+  - When: Processing or fitting data.
+  - Why: A fictional Demo user preference.
 
 ## Preferred
 
-- `pref_demo_figure_01` — 未指定输出格式时，适合栅格呈现的科研图优先输出 PNG；论文排版或明确要求矢量时提供 PDF/SVG。
-  - When: 用户没有明确指定格式。
-  - Why: 虚构的 Demo 用户偏好。
-- `pref_demo_figure_03` — 同一物理量跨图保持一致配色，使用色觉友好的颜色并用线型辅助区分。
-  - When: 需要比较多组数据或多幅图。
-  - Why: 虚构的 Demo 用户偏好。
+- `pref_demo_figure_01` — When no output format is specified, prefer PNG for research figures suited to raster output; provide PDF/SVG for publication layouts or explicit vector requests.
+  - When: The user has not explicitly specified a format.
+  - Why: A fictional Demo user preference.
+- `pref_demo_figure_03` — Use consistent colors for the same physical quantity across figures, choose colors accessible to readers with color-vision deficiencies, and add line styles to distinguish series.
+  - When: Comparing multiple datasets or figures.
+  - Why: A fictional Demo user preference.
 
 ## Avoid
 
@@ -28,20 +28,20 @@ No active preferences.
 
 ## Reference Examples
 
-- `pex_demo_figure_negative` — 科研绘图 · 反例 (negative)
+- `pex_demo_figure_negative` — Research Figures · Negative Example (negative)
   - File: `sources/src_demo_sample_figure_negative/original.md`
   - Original filename: `src_demo_sample_figure_negative`
-  - Content hash: `sha256:f08520cda5b00f9c61286568a2a42c98ef9abf87bc37ef1a12e0f6b84c1933ff`
-  - When: 为科研数据新建或实质性修改图表，包括比较曲线、标度分析和论文插图。仅讨论图中物理意义时不触发。
-  - 对照本场景的规则检查信息、步骤与记录是否完整。
-- `pex_demo_figure_positive` — 科研绘图 · 正例 (positive)
+  - Content hash: `sha256:930c79c8a36a1352529c2543c2ab6037f905b435f88586b0d95258bd33ca1d59`
+  - When: Create or substantially revise plots of research data, including curve comparisons, scaling analyses, and publication figures. Does not apply when only discussing the physics in an existing figure.
+  - Use this context’s rules to check whether the information, steps, and records are complete.
+- `pex_demo_figure_positive` — Research Figures · Positive Example (positive)
   - File: `sources/src_demo_sample_figure_positive/original.md`
   - Original filename: `src_demo_sample_figure_positive`
-  - Content hash: `sha256:1591784a4fdf49c5a11c4e6be4ef203f6d119fd6d2b878a683e32344353b030f`
-  - When: 为科研数据新建或实质性修改图表，包括比较曲线、标度分析和论文插图。仅讨论图中物理意义时不触发。
-  - 对照本场景的规则检查信息、步骤与记录是否完整。
+  - Content hash: `sha256:8130a2a5c31ac871d6313fa827384a3a8de19f2e90238a8f4f3eb9db7f379344`
+  - When: Create or substantially revise plots of research data, including curve comparisons, scaling analyses, and publication figures. Does not apply when only discussing the physics in an existing figure.
+  - Use this context’s rules to check whether the information, steps, and records are complete.
 
 ## Final Check
 
-- [ ] 标明坐标轴的物理量与单位；图例说明参数组，误差条说明其统计含义。
-- [ ] 保留原始数据和独立制图脚本，说明筛选、归一化与拟合区间，不为美观隐藏不一致结果。
+- [ ] Label axes with physical quantities and units; identify parameter groups in the legend and explain the statistical meaning of error bars.
+- [ ] Keep the original data and a standalone plotting script. Explain filtering, normalization, and fitting ranges, and do not hide inconsistent results for appearance.

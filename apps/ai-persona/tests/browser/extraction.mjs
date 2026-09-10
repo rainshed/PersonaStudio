@@ -15,11 +15,11 @@ try{
   await mkdir(resolve('.qa/extraction-ui'),{recursive:true});
   await page.goto(base+'/ai');
   await expect(page.locator('[data-scenario="paper"]')).toHaveAttribute('aria-pressed','true');
-  await expect(page.locator('.ai-paper-scenario a')).toHaveText('同时从多篇材料中提取知识 →');
+  await expect(page.locator('.ai-paper-scenario a')).toHaveText('从材料提取知识 · 使用 Codex →');
   await page.screenshot({path:resolve('.qa/extraction-ui/assistant-desktop.png'),fullPage:true});
   await page.locator('.ai-batch-entry').click();
   await expect(page.locator('.studio-maintenance.active')).toHaveAttribute('href','/ai');
-  await expect(page.locator('#ex-runtime')).toContainText('已连接');
+  await expect(page.locator('#ex-runtime')).toContainText('已登录');
   await expect(page.locator('#ex-max')).toHaveValue('20');
   await expect(page.locator('#ex-max')).toBeVisible();
   await expect(page.locator('#ex-rules')).not.toHaveAttribute('open','');

@@ -1004,6 +1004,11 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
     check_demo_paths(data_root, state_root)
     resolved_data_root = data_root.resolve()
     resolved_state_root = state_root.resolve()
+    from .reset_storage import recover
+
+    recover(resolved_state_root)
+    from .workspace_registry import display_name
+
     demo = is_demo_data(resolved_data_root)
     package_root = Path(__file__).resolve().parent
     templates = Jinja2Templates(directory=package_root / "templates")
@@ -1168,7 +1173,7 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
             upload = form.get("source_file")
             if upload is None or not getattr(upload, "filename", ""):
                 raise MaterialSourceError("请选择要导入的原文文件")
-            content = await upload.read(50 * 1024 * 1024 + 1)
+            content = await upload.read(20 * 1024 * 1024 + 1)
             staged = await run_in_threadpool(
                 stage_source,
                 resolved_data_root,
@@ -1308,6 +1313,8 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
             "section": section,
             "persona": store.config,
             "is_demo": demo,
+            "workspace_id": workspace_identity(resolved_data_root, resolved_state_root),
+            "workspace_label": display_name(resolved_data_root),
             "locale": locale,
             "supported_locales": SUPPORTED_LOCALES,
             "t": t,
@@ -1365,7 +1372,9 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
     ) -> HTMLResponse:
         store = load_store()
         context = common_context(request, store, "materials")
-        context.update({"error": error, "arxiv_input": arxiv_input})
+        material_use = request.query_params.get("use", "library")
+        context.update({"error": error, "arxiv_input": arxiv_input,
+                        "material_use": material_use if material_use in {"extract", "ai"} else "library"})
         return templates.TemplateResponse(
             request=request,
             name="material_import.html",
@@ -1392,6 +1401,7 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
         context.update(
             {
                 "draft": draft,
+                "material_use": request.query_params.get("use", "library"),
                 "values": _import_form_values(draft, form),
                 "all_tags": _domain_tags(store),
                 "duplicate_records": duplicate_records,
@@ -1934,18 +1944,21 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
         try:
             if input_kind == "arxiv":
                 draft = await run_in_threadpool(import_service.create_arxiv, arxiv_input)
-            elif input_kind == "markdown":
+            elif input_kind in {"markdown", "file"}:
                 upload = form.get("markdown_file")
                 if upload is None or not getattr(upload, "filename", ""):
-                    raise MaterialImportError("请选择 Markdown 文件")
-                content = await upload.read(50 * 1024 * 1024 + 1)
+                    raise MaterialImportError("请选择 Markdown、TXT 或文本 PDF 文件")
+                content = await upload.read(20 * 1024 * 1024 + 1)
                 draft = await run_in_threadpool(
-                    import_service.create_markdown,
+                    import_service.create_file,
                     str(upload.filename),
                     content,
                 )
+            elif input_kind == "text":
+                title = str(form.get("source_title", "")).strip() or "粘贴文本"
+                draft = await run_in_threadpool(import_service.create_file, title + ".txt", str(form.get("source_text", "")).encode())
             else:
-                raise MaterialImportError("当前只支持 arXiv 和 Markdown 导入")
+                raise MaterialImportError("请选择 arXiv、Markdown、文本 PDF、TXT 或粘贴文本")
         except (MaterialImportError, ImportDraftError) as exc:
             return render_import_landing(
                 request,
@@ -1953,7 +1966,9 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
                 arxiv_input=arxiv_input,
                 status_code=422,
             )
-        return RedirectResponse(f"/materials/imports/{draft.id}", status_code=303)
+        use = request.query_params.get("use", "library")
+        suffix = "?use=" + use if use in {"extract", "ai"} else ""
+        return RedirectResponse(f"/materials/imports/{draft.id}" + suffix, status_code=303)
 
     @app.get("/materials/imports/{draft_id}", response_class=HTMLResponse)
     async def review_material_import(draft_id: str, request: Request) -> HTMLResponse:
@@ -3738,4 +3753,9 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
     from .studio_web import mount_studio_routes
 
     mount_studio_routes(app, resolved_data_root, resolved_state_root, templates, common_context)
+    from .content_reset_web import mount_content_reset_routes
+
+    mount_content_reset_routes(app, resolved_data_root, resolved_state_root)
+    from .first_use import mount_first_use
+    mount_first_use(app, resolved_data_root, resolved_state_root, templates, common_context)
     return app

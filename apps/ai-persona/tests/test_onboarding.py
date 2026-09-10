@@ -67,6 +67,7 @@ def test_demo_does_not_replace_config_or_start_real_workspace(setup, tmp_path, m
     config.write_text('[defaults]\nworkspace = "/existing/workspace"\n')
     before = config.read_bytes()
     demo = tmp_path / "demo"
+    (demo / "persona-data").mkdir(parents=True)
     monkeypatch.setattr(onboarding, "demo_workspace", lambda: PersonaWorkspace(demo, demo / "persona-data", demo / "persona-state", True))
     response = client.post("/api/setup", json={"mode": "demo", "path": "/ignored"})
     assert response.status_code == 200

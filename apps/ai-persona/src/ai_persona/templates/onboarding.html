@@ -19,15 +19,22 @@
       <label class="choice"><input type="radio" name="mode" value="{{ mode }}" {% if mode == 'demo' %}checked{% endif %}><span class="choice-content"><strong>{{ text[mode] }}</strong><span>{{ text[mode + '_text'] }}</span></span></label>
       {% endfor %}
     </fieldset>
-    <section id="workspace-fields" class="workspace-fields" hidden>
+    <section id="workspace-fields" class="workspace-fields setup-fields" hidden>
+      <div id="workspace-name-field"><label for="workspace-name">{{ '工作区名称' if language == 'zh-CN' else 'Workspace name' }}</label><input id="workspace-name" maxlength="80" value="{{ '我的 Persona' if language == 'zh-CN' else 'My Persona' }}"></div>
+      <p>{{ '数据位置（可展开更改）' if language == 'zh-CN' else 'Data location (expand to change)' }}: <span id="workspace-location-preview">{{ default_workspace }}</span></p>
+      <details id="workspace-location"><summary>{{ '保存位置与高级设置' if language == 'zh-CN' else 'Location and advanced settings' }}</summary>
       <label for="workspace-path">{{ text.path }}</label><input id="workspace-path" name="path" value="{{ default_workspace }}" maxlength="4096" autocomplete="off" spellcheck="false" aria-describedby="path-hint"><p id="path-hint" class="hint">{{ text.path_hint }}</p>
-      <div id="persona-id-field" hidden><label for="persona-id">{{ text.id }}</label><input id="persona-id" name="persona_id" value="my-persona" minlength="2" maxlength="64" pattern="[a-z0-9][a-z0-9_-]{1,63}" autocomplete="off" spellcheck="false" aria-describedby="id-hint"><p id="id-hint" class="hint">{{ text.id_hint }}</p></div>
+      <div id="persona-id-field" hidden><label for="persona-id">{{ text.id }}</label><input id="persona-id" name="persona_id" value="" minlength="2" maxlength="64" pattern="[a-z0-9][a-z0-9_-]{1,63}" autocomplete="off" spellcheck="false" aria-describedby="id-hint"><p id="id-hint" class="hint">{{ text.id_hint }}</p></div>
+      </details>
+      <label for="workspace-purpose">{{ '接下来想做什么？' if language == 'zh-CN' else 'What would you like to do next?' }}</label><select id="workspace-purpose"><option value="/">{{ '先手动整理' if language == 'zh-CN' else 'Explore and edit manually' }}</option><option value="/extract">{{ '从材料提取知识（Codex）' if language == 'zh-CN' else 'Extract knowledge (Codex)' }}</option><option value="/settings/models">{{ '设置 AI 维护助手' if language == 'zh-CN' else 'Set up AI maintenance' }}</option><option value="/settings?tab=sources">{{ '让 Codex 使用 Persona' if language == 'zh-CN' else 'Connect Codex to Persona' }}</option></select>
     </section>
+    {% if switching %}<p>{{ '切换会停止当前 Studio。运行中的任务需先结束，已有 Hook 和 MCP 仍指向原工作区。' if language == 'zh-CN' else 'Switching stops the current Studio. Finish active tasks first. Hooks and MCP keep their original workspace.' }}</p><label><input id="confirm-switch" type="checkbox" required> {{ '确认切换工作区' if language == 'zh-CN' else 'Confirm workspace switch' }}</label>{% endif %}
     <p class="default-note">{{ text.default_note }}</p>
     <label class="default-note setup-ai-next"><input id="setup-ai-next" type="checkbox" checked> {{ '打开后引导我设置 AI（也可以稍后设置）' if language == 'zh-CN' else 'Guide me through AI setup next (I can also do this later)' }}</label>
     <div class="setup-actions"><button id="setup-submit" type="submit">{{ text.continue }} <span aria-hidden="true">→</span></button><a id="setup-open-running" hidden>{{ text.open_running }} →</a><p id="setup-status" role="status" aria-live="polite"></p></div>
     <details id="setup-details" hidden><summary>{{ text.details }}</summary><pre id="setup-error-details"></pre></details>
   </form>
+  {% if recent_workspaces %}<section class="workspace-list"><h2>{{ '最近的工作区' if language == 'zh-CN' else 'Recent workspaces' }}</h2>{% for entry in recent_workspaces %}<button type="button" data-open-workspace="{{ entry.path }}" {% if not entry.exists %}disabled{% endif %}>{{ entry.name }}{% if not entry.exists %} · {{ '找不到文件夹' if language == 'zh-CN' else 'Folder not found' }}{% endif %}</button>{% endfor %}</section>{% endif %}
   <footer><span class="local-dot" aria-hidden="true"></span><p>{{ text.local }}</p></footer>
 </main>
 </body>

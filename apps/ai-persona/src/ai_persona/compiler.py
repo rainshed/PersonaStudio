@@ -75,6 +75,9 @@ class PersonaCompiler:
         self.store = PersonaStore(self.data_root)
 
     def build(self) -> BuildResult:
+        from .reset_storage import recover
+
+        recover(self.state_root)
         self.store.load()
         assert self.store.config is not None
         self._write_schemas()

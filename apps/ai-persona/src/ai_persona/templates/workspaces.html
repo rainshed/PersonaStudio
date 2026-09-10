@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ '工作区' if locale == 'zh-CN' else 'Workspaces' }} · AI Persona{% endblock %}
+{% block content %}{% set zh=locale=='zh-CN' %}
+<section class="page-head"><div><h1>{{ '工作区' if zh else 'Workspaces' }}</h1><p>{{ '创建、打开或切换你的 Persona。' if zh else 'Create, open or switch your Persona.' }}</p></div></section>
+<section class="panel workspace-panel"><h2>{{ workspace_label }}</h2><p id="workspace-path" class="workspace-path">{{ workspace_path }}</p><p class="workspace-path">{{ '草稿与运行状态：' if zh else 'Drafts and runtime state: ' }}{{ workspace_state_path }}</p><button id="workspace-copy" class="button ghost">{{ '复制数据位置' if zh else 'Copy data location' }}</button><p>{{ '这是个人数据的位置，更新应用代码不会自动删除这里的内容。' if zh else 'Your personal data lives here. Updating application code does not remove it.' }}</p></section>
+<section class="panel workspace-panel"><h2>{{ '最近的工作区' if zh else 'Recent workspaces' }}</h2>{% for entry in recent_workspaces %}<p data-recent-workspace><strong>{{ entry.name }}</strong> · <span class="workspace-path">{{ entry.path }}</span>{% if not entry.exists %} · {{ '找不到文件夹' if zh else 'Folder not found' }}{% endif %} <button type="button" class="button ghost small" data-forget-workspace="{{ entry.path }}">{{ '移出最近列表' if zh else 'Remove from recents' }}</button></p>{% else %}<p>{{ '打开或创建工作区后会记录在这里。' if zh else 'Workspaces you open or create will appear here.' }}</p>{% endfor %}
+<button id="open-workspace-manager" class="button primary-button">{{ '创建、打开或切换工作区' if zh else 'Create, open or switch workspace' }}</button><p id="workspace-feedback" role="status"></p>
+<p>{{ '当前只运行一个 Studio。切换前会检查运行中的任务；Codex Hook、MCP 和远程连接仍指向原工作区，不会自动改绑。请在服务所在电脑上操作。' if zh else 'Only one Studio runs at a time. Switching checks active tasks. Codex Hooks, MCP and remote connections keep their original workspace. Use this on the Studio computer.' }}</p></section>
+{% endblock %}

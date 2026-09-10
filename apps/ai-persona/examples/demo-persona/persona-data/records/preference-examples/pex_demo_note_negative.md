@@ -9,10 +9,12 @@ updated_at: '2026-09-01T00:00:00Z'
 context_refs:
 - pctx_demo_note
 example_type: negative
-title: 学术 note · 反例
-condition: 为用户撰写或实质性修改科研主题的 Markdown note，包含概念解释、方法推导或结果分析。
+title: Academic Notes · Negative Example
+condition: Write or substantially revise a Markdown note on a research topic, including
+  conceptual explanations, method derivations, or analysis of results.
 reasons:
-- 对照本场景的规则检查信息、步骤与记录是否完整。
+- Use this context’s rules to check whether the information, steps, and records are
+  complete.
 source_ref: src_demo_sample_note_negative
-content_hash: sha256:67af534b8f1e3fefd88216ff7de3c2954fc69d241b5c5433cf436e1969e8c577
+content_hash: sha256:c90e104db87609c734bfbb37cf5627cbbcc2b41d12d35977deec14c00352962b
 ---

@@ -10,7 +10,8 @@ scope: contexts
 context_refs:
 - pctx_demo_note
 behavior: required
-instruction: 分别说明来源中的结论、自己的推导和待验证的问题；引用材料时保留可定位的来源。
-condition: 汇总论文结论、数值结果或推测。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Distinguish conclusions from sources, your own derivations, and questions
+  awaiting verification. Retain traceable source references when citing materials.
+condition: Summarizing paper conclusions, numerical results, or conjectures.
+rationale: A fictional Demo user preference.
 ---

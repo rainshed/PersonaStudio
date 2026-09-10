@@ -3,3 +3,5 @@
 .setup-actions{flex-wrap:wrap}#setup-open-running{font-size:14px;font-weight:600;color:#2b5947;text-underline-offset:4px}#setup-details{margin-top:20px;padding:14px 17px;border:1px solid #d9e0d6;border-radius:8px;background:#fafbf7;font-size:13px;color:#52655a}#setup-details summary{cursor:pointer;font-weight:600}#setup-error-details{white-space:pre-wrap;overflow-wrap:anywhere;max-height:240px;overflow:auto;font-size:12px;line-height:1.65;margin:13px 0 0}
 
 .setup-ai-next{display:flex;align-items:flex-start;gap:8px;margin-bottom:24px}.setup-ai-next input{accent-color:#2c5e4b;flex-shrink:0}
+
+#workspace-location{margin:16px 0}#workspace-location summary{cursor:pointer;font-size:13px;margin-bottom:16px}#workspace-location-preview{overflow-wrap:anywhere}.workspace-fields select{width:100%;padding:12px;font:inherit;border:1px solid #cbd5c8;border-radius:7px}.workspace-list button{padding:10px 14px;margin:4px;border:1px solid #cbd5c8;border-radius:8px;background:#fafbf7;cursor:pointer}.workspace-list button:disabled{cursor:default;opacity:.55}

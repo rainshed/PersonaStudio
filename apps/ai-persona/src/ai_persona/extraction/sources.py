@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 import textwrap
 from pathlib import Path
@@ -98,6 +99,7 @@ def parse_file(content, filename):
         if not content.startswith(b"%PDF-"):
             raise AgentServiceError("invalid_pdf", "文件内容不是有效 PDF。")
         lines, sections, warnings = [], [], []
+        readable_characters = 0
         with _pdf_lock:
             document = pdfium.PdfDocument(content)
             try:
@@ -111,6 +113,7 @@ def parse_file(content, filename):
                     finally:
                         textpage.close()
                         page.close()
+                    readable_characters += len(text.strip())
                     sections.append(
                         {"title": f"第 {i + 1} 页", "page": i + 1, "start": len(lines) + 1}
                     )
@@ -122,6 +125,8 @@ def parse_file(content, filename):
                     lines.extend(lines_for(text) + [""])
             finally:
                 document.close()
+        if readable_characters < 20:
+            raise AgentServiceError("source_text_required", "这份 PDF 没有可靠的可读文字，请上传带文字的 PDF 或补充文本。")
         return finish_index(lines, sections), warnings
     if suffix not in {".md", ".markdown", ".txt"}:
         raise AgentServiceError("unsupported_file", "请上传 Markdown、TXT 或 PDF 文件。")
@@ -138,10 +143,29 @@ def parse_file(content, filename):
     return finish_index(lines, sections), []
 
 
-def import_source(data_root, state_root, *, filename=None, content=None, arxiv=None):
+def import_source(data_root, state_root, *, filename=None, content=None, arxiv=None, draft_id=None):
     metadata, attachments = {}, []
     identifier = version = url = None
-    if arxiv:
+    if draft_id:
+        from ..material_imports.service import MaterialImportService
+        importer = MaterialImportService(data_root, state_root)
+        draft = importer.get(draft_id)
+        content = importer.repository.file_path(draft, draft.original_file).read_bytes()
+        filename = draft.display_name
+        metadata = draft.values.model_dump(mode="json")
+        title = metadata["title"]
+        identifier, version, url = draft.source_identifier, draft.source_version, draft.source_url
+        if draft.input_kind == "arxiv":
+            extracted = next((f for f in draft.files if f.role == "extracted_text"), None)
+            if extracted:
+                index, warnings = parse_file(importer.repository.file_path(draft, extracted.path).read_bytes(), "source.md")
+            else:
+                index, warnings = parse_file(content, "paper.pdf")
+        else:
+            index, warnings = parse_file(content, filename)
+        media = "application/pdf" if filename.lower().endswith(".pdf") else "text/markdown"
+        attachments.append(SourceAttachment("metadata.json", json.dumps(metadata, ensure_ascii=False).encode(), "application/json"))
+    elif arxiv:
         doc = fetch_arxiv_document(arxiv, prefer_html=True)
         identifier, version = doc.normalized.base_id, doc.version
         url = f"https://arxiv.org/abs/{identifier}{version}"
@@ -212,8 +236,8 @@ def import_source(data_root, state_root, *, filename=None, content=None, arxiv=N
                 data_root,
                 content=content,
                 filename=filename,
-                source_type="paper" if arxiv else "task_attachment",
-                provider="arxiv" if arxiv else "local",
+                source_type="paper" if identifier else "task_attachment",
+                provider="arxiv" if identifier else "local",
                 media_type=media,
                 identifier=identifier,
                 version=version,

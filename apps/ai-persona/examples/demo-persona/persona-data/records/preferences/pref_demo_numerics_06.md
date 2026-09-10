@@ -10,7 +10,9 @@ scope: contexts
 context_refs:
 - pctx_demo_numerics
 behavior: required
-instruction: 使用独立 run ID 保存数据、日志和 checkpoint，不覆盖其他运行；恢复计算前核对模型、参数和依赖版本。
-condition: 保存结果或继续已有任务。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Save data, logs, and checkpoints under a unique run ID without overwriting
+  other runs. Verify the model, parameters, and dependency versions before resuming
+  a calculation.
+condition: Saving results or continuing an existing job.
+rationale: A fictional Demo user preference.
 ---

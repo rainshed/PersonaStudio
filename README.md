@@ -26,6 +26,8 @@ To explore the included fictional persona first:
 
 The Demo prefers port **8766** and automatically uses an available port if it is occupied. It uses its own editable copy of the sample data. No model account is needed to browse or manually edit it.
 
+Studio runs as a single service for the current OS user. Repeated starts reuse the same workspace. Use the sidebar workspace menu to switch after an active-task check; command-line switching still requires stopping the current Studio.
+
 ## What you can do
 
 - Organize knowledge, courses, reading materials, relationships, and reusable preferences.

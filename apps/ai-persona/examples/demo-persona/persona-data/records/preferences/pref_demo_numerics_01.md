@@ -10,7 +10,8 @@ scope: contexts
 context_refs:
 - pctx_demo_numerics
 behavior: preferred
-instruction: 张量网络算法优先采用 Julia 的 ITensor 生态：基础张量操作使用 ITensors.jl，MPS/MPO 与相关算法使用 ITensorMPS.jl。
-condition: 没有明确指定其他语言或既有算法框架。
-rationale: 虚构的 Demo 用户偏好。
+instruction: 'Prefer the Julia ITensor ecosystem for tensor-network algorithms: ITensors.jl
+  for basic tensor operations, and ITensorMPS.jl for MPS/MPO objects and related algorithms.'
+condition: No other language or existing algorithm framework has been explicitly specified.
+rationale: A fictional Demo user preference.
 ---

@@ -78,7 +78,7 @@
   function fillChoices(id, records, selected) {
     $(id).replaceChildren(...records.map(r => {
       const label = node('label', null, 'ai-check'), input = node('input');
-      input.type = 'checkbox'; input.value = r.id; input.checked = selected.includes(r.id);
+      input.type = 'checkbox'; input.id = id + '-' + r.id; input.value = r.id; input.checked = selected.includes(r.id);
       label.dataset.search = `${r.title} ${r.id}`.toLocaleLowerCase();
       label.append(input, node('span', `${r.title} · ${vocabulary.entities[r.entity_type] || r.entity_type}${r.status === 'active' ? '' : ' · ' + r.status}`));
       return label;
@@ -104,7 +104,7 @@
   function renderAttachments(spec) {
     $('ai-attachments').replaceChildren(...(session?.attachments || []).map(a => {
       const card = node('div', null, 'ai-source-card'), label = node('label', null, 'ai-check'), use = node('input');
-      use.type = 'checkbox'; use.value = a.id; use.dataset.use = ''; use.checked = (spec.attachment_ids || []).includes(a.id);
+      use.type = 'checkbox'; use.id = 'use-' + a.id; use.value = a.id; use.dataset.use = ''; use.checked = (spec.attachment_ids || []).includes(a.id);
       label.append(use, node('strong', a.title)); card.append(label);
       const meta = a.material_metadata;
       if (meta) card.append(node('p', [meta.bibliography?.authors?.join(', '), meta.bibliography?.published_at, a.arxiv_request ? 'arXiv: ' + a.arxiv_request : ''].filter(Boolean).join(' · '), 'ai-source-meta'));
@@ -119,12 +119,12 @@
       for (const warning of a.warnings || []) card.append(node('p', warning, 'ai-source-meta'));
       if (a.parse_status === 'needs_text') card.append(node('p', L('未能提取正文。请取消勾选这份依据，补充可读取的 PDF、文字或截图后再开始。', 'No readable text. Deselect this source and add a readable PDF, text or screenshot.'), 'ai-error'));
       const collectLabel = node('label', null, 'ai-check'), collect = node('input');
-      collect.type = 'checkbox'; collect.value = a.id; collect.dataset.collect = ''; collect.checked = (spec.collect_attachment_ids || []).includes(a.id);
+      collect.type = 'checkbox'; collect.id = 'collect-' + a.id; collect.value = a.id; collect.dataset.collect = ''; collect.checked = (spec.collect_attachment_ids || []).includes(a.id);
       collectLabel.append(collect, node('span', L('同时生成材料收录候选', 'Also propose adding to Materials'))); card.append(collectLabel);
       const relationLabel = node('label', null, 'field'), relationship = node('select');
       relationLabel.append(node('span', L('我与这份材料的关系', 'My relationship to this material')));
       for (const [v,text] of [['',L('请选择实际情况', 'Choose the actual state')],['skimmed',L('略读过', 'Skimmed')],['read',L('读过', 'Read')],['studied',L('学习过', 'Studied')],['authored',L('我写的', 'Authored by me')]]) { const o=node('option',text); o.value=v; relationship.append(o); }
-      relationship.value = spec.attachment_relationships?.[a.id] || '';
+      relationship.id = 'relationship-' + a.id; relationship.value = spec.attachment_relationships?.[a.id] || '';
       relationLabel.append(relationship); relationLabel.hidden = !collect.checked; card.append(relationLabel);
       collect.addEventListener('change', () => { relationLabel.hidden = !collect.checked; if (collect.checked) { use.checked = true; $('ai-target-types').querySelector('[value="material"]').checked = true; } });
       use.addEventListener('change', () => { if (!use.checked) { collect.checked = false; relationLabel.hidden = true; } card.classList.toggle('ai-source-inactive', !use.checked); });
@@ -145,7 +145,7 @@
     const spec = taskInput();
     session = await api(endpoint('attachment'), { version: session.version, text, title });
     spec.attachment_ids.push(session.attachments.at(-1).id);
-    renderAttachments(spec); inputDirty = true; render(); await historyList();
+    renderAttachments(spec); inputDirty = true; render(); await historyList();root.dispatchEvent(new Event('input',{bubbles:true}));
   }
   async function addSource(kind, payload) {
     await ensureSession(); await saveEdits();
@@ -389,7 +389,7 @@
     dirty = false;
     render();
   }
-  $('ai-message-form').addEventListener('submit', e => { e.preventDefault(); action(async () => {
+  $('ai-message-form').addEventListener('persona:send', e => { e.preventDefault(); action(async () => {
     if ($('ai-paste').value.trim()) throw new Error(L('请先点击“添加文本依据”，再发送需求。', 'Add the pasted text source before sending.'));
     if ($('ai-arxiv-url').value.trim()) throw new Error(L('请先点击“添加论文”，再开始整理。', 'Add the paper before starting.'));
     if (pendingFiles.length) throw new Error(L('请先点击“上传并读取”，再开始整理。', 'Upload and read the selected files before starting.'));
@@ -406,6 +406,7 @@
     }
     session = await api(endpoint('message'), { version: session.version, message: $('ai-message').value });
     $('ai-message').value = ''; render(); poll(); await historyList();
+    root.dispatchEvent(new Event('input', {bubbles:true}));
   }); });
   $('ai-save').addEventListener('click', () => action(async () => {
     await saveEdits(); await historyList();
@@ -418,7 +419,7 @@
     show(L('已生成待审核提案，正式 Persona 尚未改变。', 'Pending proposals created. Effective Persona is unchanged.'));
   }));
   $('ai-cancel').addEventListener('click', () => action(async () => {
-    session = await api(endpoint('cancel'), { version: session.version }); clearTimeout(timer); render(); await historyList();
+    session = await api(endpoint('cancel'), { version: session.version }); clearTimeout(timer); render(); await historyList();root.dispatchEvent(new Event('input',{bubbles:true}));
   }));
   $('ai-resume').addEventListener('click', () => action(async () => {
     if (dirty) throw new Error(L('请先保存草稿编辑；保存后可通过新消息继续。', 'Save draft edits first, then continue with a new message.'));
@@ -468,7 +469,7 @@
     }
     $('ai-files').value = '';
   }));
-  window.addEventListener('beforeunload', event => { if (dirty || inputDirty || $('ai-paste').value || $('ai-arxiv-url').value || pendingFiles.length || $('ai-message').value.trim() && $('ai-message').value !== suggestedMessage) { event.preventDefault(); event.returnValue = ''; } });
+  window.addEventListener('beforeunload', event => { if (!window.PersonaDrafts?.isLeaving() && (dirty || (window.PersonaDrafts?.hasUnpersisted(root) ?? inputDirty))) { event.preventDefault(); event.returnValue = ''; } });
   action(async () => {
     options = (await api('/api/ai/options')).records;
     const id = new URLSearchParams(location.search).get('session');
@@ -478,6 +479,7 @@
     if (root.dataset.materialId || session?.maintenance?.material_ids?.length) sourceMode('existing');
     showPendingFiles();
     render(); await historyList(); poll();
+    window.PersonaDrafts?.mount(root, {query:['session','material_id','record_id'],exclude:'#ai-draft-panel',extraPending:()=>pendingFiles.length>0||dirty,beforeSave:async()=>{if(dirty)await saveEdits();}});
     if (!session && root.dataset.materialId) $('ai-message').value = L('请根据这份材料整理摘要、相关知识与关系候选。优先复用已有概念，并给出原文证据。', 'Analyze this material: propose a summary, knowledge and relationships. Reuse existing concepts and cite source evidence.');
   });
 })();

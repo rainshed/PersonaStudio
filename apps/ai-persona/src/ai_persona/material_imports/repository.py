@@ -4,7 +4,9 @@ import hashlib
 import json
 import os
 import shutil
+import sqlite3
 import tempfile
+from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -72,7 +74,7 @@ class ImportDraftRepository:
         except (OSError, ValidationError, ValueError) as exc:
             raise ImportDraftError("材料导入草稿无效") from exc
         now = datetime.now(timezone.utc)
-        if draft.expires_at <= now:
+        if draft.expires_at <= now and not self.has_editor(draft_id):
             self.delete(draft_id)
             raise ImportDraftError("材料导入草稿已经过期，请重新识别材料")
         for item in draft.files:
@@ -80,6 +82,17 @@ class ImportDraftRepository:
             if hashlib.sha256(file_path.read_bytes()).hexdigest() != item.sha256:
                 raise ImportDraftError(f"材料导入草稿文件已变化：{item.path}")
         return draft
+
+    def has_editor(self, draft_id: str) -> bool:
+        """Keep uploaded sources while a durable, unfinished editor refers to them."""
+        path = self.root.parent / "editor-drafts.sqlite3"
+        if not path.is_file():
+            return False
+        with closing(sqlite3.connect(path)) as db:
+            return db.execute(
+                "SELECT 1 FROM drafts WHERE closed=0 AND (page=? OR page LIKE ?) LIMIT 1",
+                (f"/materials/imports/{draft_id}", f"/materials/imports/{draft_id}?%"),
+            ).fetchone() is not None
 
     def file_path(self, draft: ImportDraft, relative_path: str) -> Path:
         declared = {item.path for item in draft.files}
@@ -114,7 +127,7 @@ class ImportDraftRepository:
                 )
             except (OSError, ValidationError, ValueError):
                 continue
-            if draft.expires_at <= now:
+            if draft.expires_at <= now and not self.has_editor(draft.id):
                 shutil.rmtree(path, ignore_errors=True)
                 removed += 1
         return removed

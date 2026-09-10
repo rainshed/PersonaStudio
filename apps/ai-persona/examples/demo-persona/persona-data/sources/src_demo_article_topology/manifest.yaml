@@ -7,9 +7,9 @@ origin:
   identifier: src_demo_article_topology
   retrieved_at: '2026-09-01T00:00:00Z'
 canonical_file: original.md
-content_hash: dec8d10531a47eeb9583ff3625acd29268446a3a8af0281d19c3b208f422f90d
+content_hash: bc5f6a4dfd4c971f7988482fff84ddd79fee0423909cc1aa240cdd61333a3da3
 files:
 - path: original.md
   role: original
   media_type: text/markdown
-  sha256: dec8d10531a47eeb9583ff3625acd29268446a3a8af0281d19c3b208f422f90d
+  sha256: bc5f6a4dfd4c971f7988482fff84ddd79fee0423909cc1aa240cdd61333a3da3

@@ -1,25 +1,25 @@
-# 从 DFT 能带到 Wannier 有效模型
+# From DFT Bands to Wannier Effective Models
 
-> AI Persona 原创虚构示例。软件文档链接用于方法参考，本文不含任何真实项目的参数或数据。
+> An original fictional AI Persona example. Software documentation links provide methodological references; this article contains no parameters or data from a real project.
 
-## 研究任务与已知背景
+## Research task and existing background
 
-假想任务是理解某种二维材料费米能附近的轨道成分。研究者熟悉 DFT 操作，但仍在积累 Wannier 建模经验。note 应从他熟悉的能带图出发，解释为何还需要局域轨道表示，以及这种表示如何支持更密的动量采样。
+The hypothetical task is to understand orbital character near the Fermi energy of a two-dimensional material. The researcher is comfortable with DFT workflows but is still gaining experience with Wannier modeling. The note should start from familiar band plots, explain why a local-orbital representation is useful, and show how it supports denser momentum sampling.
 
-## 自洽与后处理分开记录
+## Record self-consistency and post-processing separately
 
-DFT 的 Kohn–Sham 计算通过有效单粒子问题更新电子密度，直到满足指定的自洽条件。练习中记录交换关联泛函、赝势、自旋设置和收敛阈值。能带路径计算与态密度计算的采样目的不同；应在收敛的密度基础上安排后处理，而非仅使用高对称路径估计总态密度。
+A Kohn–Sham DFT calculation updates the electron density through an effective single-particle problem until the chosen self-consistency conditions are satisfied. The exercise records the exchange-correlation functional, pseudopotentials, spin settings, and convergence thresholds. Band-path and density-of-states calculations serve different sampling purposes. Post-processing should use a converged density, and a high-symmetry path alone should not be used to estimate the total density of states.
 
-能量图统一写作 E−E_F，其中 E 为所画的能带能量，E_F 为本次结果采用的费米能参照。若比较不同计算，必须说明如何对齐能量；绝缘体的费米能位置也不能不加说明地当作普适基准。
+Energy plots consistently use E−E_F, where E is the plotted band energy and E_F is the Fermi-energy reference for that result. Comparisons between calculations must explain energy alignment. The position of the Fermi energy in an insulator should not be treated as a universal reference without clarification.
 
-## 从轨道投影到有效模型
+## From orbital projections to an effective model
 
-紧束缚模型使用局域轨道、在位能与跃迁矩阵元。Wannier 函数提供从选定能带子空间构造局域表示的途径。研究者应记录初始投影和所用能窗，再把插值能带与原始计算重叠比较；仅看到局域函数的展宽减小，不能代替目标能窗内的精度检查。
+Tight-binding models use local orbitals, on-site energies, and hopping matrix elements. Wannier functions provide a way to construct a localized representation of a selected band subspace. The researcher should record the initial projections and energy windows, then overlay interpolated bands with the original calculation. A reduction in orbital spread does not replace accuracy checks within the target energy window.
 
-对于金属，还需核对费米面附近的交叉与小口袋是否稳定；对于轨道投影态密度，应注明投影约定。模型只在已验证的能量和参数范围内用于后续分析。
+For metals, also check whether crossings and small pockets near the Fermi surface are stable. For orbital-projected densities of states, state the projection convention. Use the model for subsequent analysis only within the energy and parameter ranges that have been validated.
 
-## 练习交付物
+## Exercise deliverables
 
-本练习计划保存一份参数表、一张原始与插值能带对照图，以及拟合误差说明。它不指定未经验证的最优参数，也不声称已经运行软件。
+The planned deliverables are a parameter table, a comparison plot of original and interpolated bands, and an account of fitting errors. The exercise specifies no unverified optimal parameters and does not claim that software has already been run.
 
-参考：[Quantum ESPRESSO 电子结构计算指南](https://www.quantum-espresso.org/Doc/pw_user_guide/node10.html)；[Wannier90 局域化轨道教程](https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_1/)。
+References: [Quantum ESPRESSO electronic structure calculation guide](https://www.quantum-espresso.org/Doc/pw_user_guide/node10.html); [Wannier90 localized-orbital tutorial](https://wannier90.readthedocs.io/en/latest/tutorials/tutorial_1/).

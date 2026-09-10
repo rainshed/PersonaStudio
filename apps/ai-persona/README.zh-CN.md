@@ -25,7 +25,7 @@ AI 模型功能可选。「设置 → 模型」会检查环境，引导安装组
 
 ## 材料整理与知识图
 
-AI 维护助手「读论文，整理知识」中的「同时从多篇材料中提取知识」支持多篇 arXiv 和多个 Markdown、PDF、TXT 文件。Codex 按章节读取、合并知识与关系，再生成待审核提案；可修改提取规则、继续检查点及审核成功部分。复用本机 Codex 登录，或在页面连接 ChatGPT / OpenAI API key。详见[使用说明与当前边界](docs/AI_PERSONA_EXTRACTION_USAGE.zh-CN.md)。
+「从材料提取知识」支持多篇 arXiv 和多个 Markdown、PDF、TXT 文件。Codex 按章节读取、合并知识与关系，再生成待审核提案；可修改提取规则、继续检查点及审核成功部分。复用本机 Codex 登录，或在页面连接 ChatGPT / OpenAI API key；无需日常对话 Hook。详见[使用说明与当前边界](docs/AI_PERSONA_EXTRACTION_USAGE.zh-CN.md)。
 
 ## 保留的能力
 

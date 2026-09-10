@@ -1,23 +1,23 @@
-# 从磁构型能量到自旋波：一份建模笔记
+# From Magnetic Configuration Energies to Spin Waves: A Modeling Note
 
-> AI Persona 原创虚构示例。以下磁构型比较和计算计划均未实际执行，不对应真实样品。
+> An original fictional AI Persona example. The magnetic configuration comparisons and calculation plans below have not been carried out and do not describe a real sample.
 
-## 磁性模型从约定开始
+## Magnetic models begin with conventions
 
-研究者希望把若干磁构型的能量差映射为有效交换参数。他采用 H=∑⟨ij⟩Jᵢⱼ Sᵢ·Sⱼ，其中 H 为模型 Hamiltonian，Sᵢ 为第 i 个位置的自旋，每条选定的键只求和一次。在这个符号约定下，正 J 倾向反平行排列。若文献采用相反的 Hamiltonian 符号，不能直接照抄其交换参数的正负解释。
+The researcher wants to map energy differences between magnetic configurations onto effective exchange parameters. They use H=∑⟨ij⟩Jᵢⱼ Sᵢ·Sⱼ, where H is the model Hamiltonian, Sᵢ is the spin at site i, and each selected bond is counted once. Under this sign convention, positive J favors antiparallel alignment. If a reference uses the opposite Hamiltonian sign, its interpretation of positive and negative exchange parameters cannot be copied directly.
 
-拟合前还应注明自旋长度和纳入的邻接范围。不同参数组可能解释同一组有限的能量差；增加独立构型并检查预测误差，才能判断有效模型是否足够。
+Before fitting, also specify the spin length and neighbor range. Different parameter sets may explain the same finite set of energy differences. Additional independent configurations and prediction-error checks help determine whether the effective model is adequate.
 
-## 二维磁体的各向异性
+## Anisotropy in two-dimensional magnets
 
-除各向同性交换外，示例还计划比较不同磁化方向的能量。磁各向异性可能来自多种机制，讨论时需区分单离子项、各向异性交换及形状效应。这里不把一个能量差自动等同于全部磁性机制，也不根据零温能量比较直接给出转变温度。
+Alongside isotropic exchange, the example plans to compare energies for different magnetization directions. Magnetic anisotropy can have several origins, so distinguish single-ion terms, anisotropic exchange, and shape effects. A single energy difference does not automatically account for every magnetic mechanism, and zero-temperature energy comparisons alone do not directly determine a transition temperature.
 
-## 从有序态到自旋波
+## From an ordered state to spin waves
 
-这位研究者对 Heisenberg 模型较熟悉，但对线性自旋波理论只达到入门程度。因此 note 先解释围绕候选有序态展开的思路，再介绍磁振子色散；若参考态不稳定或量子涨落很强，线性近似需要重新评估。
+The researcher is familiar with Heisenberg models but has only an introductory understanding of linear spin-wave theory. The note therefore explains expansion around a candidate ordered state before introducing magnon dispersion. If the reference state is unstable or quantum fluctuations are strong, the linear approximation must be reassessed.
 
-## 一个可执行的数值练习
+## A numerical exercise to carry out
 
-先用小系统检查模型符号和边界条件。若选择张量网络方法，按 Demo 偏好使用 Julia ITensors.jl 与 ITensorMPS.jl，再做键维数、截断阈值和系统尺寸检查。只有涉及时间演化时才扫描时间步长。
+Use a small system first to check model signs and boundary conditions. If choosing tensor-network methods, follow the Demo preference for Julia's ITensors.jl and ITensorMPS.jl, then check bond dimension, truncation threshold, and system size. Scan the time step only when time evolution is involved.
 
-假想项目约定用 scripts/submit_job.sh 读取 configs/small.toml。实际工作时应先确认文件存在并阅读参数说明；若支持 dry-run，再检查请求的资源与输出位置。本文没有安装提交脚本，也没有向任何集群提交任务。
+The hypothetical project uses scripts/submit_job.sh with configs/small.toml. In actual work, first confirm that the script exists and read its parameter documentation. If it supports a dry run, check the requested resources and output locations. This article installs no submission script and has submitted no jobs to any cluster.

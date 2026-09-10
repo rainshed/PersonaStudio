@@ -11,6 +11,6 @@ relation_type: covers
 target_id: kn_demo_dos
 knowledge_role: background
 salience: secondary
-statement: 本文用这个主题组织阅读或实践问题。
+statement: This article uses the topic to organize reading or practical questions.
 evidence_refs: []
 ---

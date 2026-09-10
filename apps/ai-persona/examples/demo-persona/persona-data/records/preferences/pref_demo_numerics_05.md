@@ -10,7 +10,11 @@ scope: contexts
 context_refs:
 - pctx_demo_numerics
 behavior: required
-instruction: 按 Demo 的虚构协议，通过 scripts/submit_job.sh 与参数文件准备提交；先检查脚本和 dry-run 能力，说明资源与输出路径。脚本缺失时明确说明，不假定真实集群存在此入口。
-condition: 准备提交批量或长时间计算；脚本名仅为 Demo 示例，不代表实际服务器配置。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Under the Demo's fictional protocol, prepare submission through scripts/submit_job.sh
+  and a parameter file. First inspect the script and dry-run support, then state the
+  resources and output paths. If the script is missing, say so; do not assume a real
+  cluster provides this entry point.
+condition: Preparing batch or long-running calculations; the script name is a Demo
+  example and does not describe an actual server configuration.
+rationale: A fictional Demo user preference.
 ---

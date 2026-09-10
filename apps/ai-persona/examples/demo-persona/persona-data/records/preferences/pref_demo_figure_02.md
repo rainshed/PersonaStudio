@@ -10,7 +10,8 @@ scope: contexts
 context_refs:
 - pctx_demo_figure
 behavior: required
-instruction: 标明坐标轴的物理量与单位；图例说明参数组，误差条说明其统计含义。
-condition: 图中包含数据、参数分组或误差估计。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Label axes with physical quantities and units; identify parameter groups
+  in the legend and explain the statistical meaning of error bars.
+condition: The figure contains data, parameter groups, or uncertainty estimates.
+rationale: A fictional Demo user preference.
 ---

@@ -1,6 +1,6 @@
 # AI Persona Demo
 
-- Persona: `demo-condensed-matter-v3`
+- Persona: `demo-condensed-matter-v4`
 - Persona revision: `1`
 - Canonical records: `132`
 - Sources: `11`

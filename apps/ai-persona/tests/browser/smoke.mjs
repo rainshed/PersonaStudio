@@ -204,6 +204,8 @@ try {
   await page.screenshot({path: join(screenshots, 'studio-setup.png'), fullPage: true});
   await page.locator('input[value=create]').check();
   await expect(page.locator('#workspace-path')).toBeVisible();
+  await expect(page.locator('#workspace-name')).toBeVisible();
+  await page.locator('#workspace-location summary').click();
   await expect(page.locator('#persona-id')).toBeVisible();
   await page.locator('#workspace-path').fill('relative-path');
   await page.locator('#setup-submit').click();

@@ -78,6 +78,7 @@ def test_mcp_exposes_only_the_query_and_proposal_capabilities(tmp_path: Path) ->
         async with Client(create_mcp_server(data_root, state_root)) as client:
             listed = await client.list_tools()
             assert [tool.name for tool in listed.tools] == [
+                "verify_persona_connection",
                 "resolve_persona_activation",
                 "prepare_preference_context",
                 "ingest_conversation_event",
@@ -101,7 +102,7 @@ def test_mcp_exposes_only_the_query_and_proposal_capabilities(tmp_path: Path) ->
                 assert tool.annotations.open_world_hint is (tool.name == "resolve_persona_activation")
                 assert tool.annotations.idempotent_hint is (tool.name != "resolve_persona_activation")
                 assert tool.annotations.read_only_hint is (
-                    tool.name not in {"propose_change_set", "ingest_conversation_event"}
+                    tool.name not in {"propose_change_set", "ingest_conversation_event", "verify_persona_connection"}
                 )
 
             injected = await client.call_tool(
@@ -665,7 +666,7 @@ def test_mcp_stdio_process_completes_a_real_handshake(tmp_path: Path) -> None:
         )
         async with Client(parameters, read_timeout_seconds=10) as client:
             listed = await client.list_tools()
-            assert len(listed.tools) == 15
+            assert len(listed.tools) == 16
             result = structured(
                 await client.call_tool("search_knowledge", {"query": "TEBD", "limit": 1})
             )

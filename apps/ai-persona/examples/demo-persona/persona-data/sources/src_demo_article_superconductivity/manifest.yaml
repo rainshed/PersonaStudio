@@ -7,9 +7,9 @@ origin:
   identifier: src_demo_article_superconductivity
   retrieved_at: '2026-09-01T00:00:00Z'
 canonical_file: original.md
-content_hash: 9758e02f2535cf4c8a580a2f915134a9f252db6a336a608ae65b2e1bd663dda9
+content_hash: 211c9c3582af82f07d508e237ee8245f20a50aa01c2c938ee40c00a71750f3fd
 files:
 - path: original.md
   role: original
   media_type: text/markdown
-  sha256: 9758e02f2535cf4c8a580a2f915134a9f252db6a336a608ae65b2e1bd663dda9
+  sha256: 211c9c3582af82f07d508e237ee8245f20a50aa01c2c938ee40c00a71750f3fd

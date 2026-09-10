@@ -10,7 +10,8 @@ scope: contexts
 context_refs:
 - pctx_demo_numerics
 behavior: required
-instruction: 保存 Julia 版本、Project.toml、Manifest.toml、随机种子、参数文件和代码版本，让结果可以复现。
-condition: 运行并保存数值实验。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Save the Julia version, Project.toml, Manifest.toml, random seeds, parameter
+  files, and code version so results can be reproduced.
+condition: Running and saving numerical experiments.
+rationale: A fictional Demo user preference.
 ---

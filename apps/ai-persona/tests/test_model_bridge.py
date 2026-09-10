@@ -57,7 +57,7 @@ def test_missing_runtime_cannot_reuse_a_healthy_old_daemon(tmp_path, monkeypatch
     with pytest.raises(AgentServiceError) as error:
         client.ensure()
     assert error.value.code == "runtime_missing"
-    assert "models-install" in str(error.value)
+    assert "设置 → 模型" in str(error.value)
     assert "不需要重新授权" in str(error.value)
     assert not descriptor_calls
 

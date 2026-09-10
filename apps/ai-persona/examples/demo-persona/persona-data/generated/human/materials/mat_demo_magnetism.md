@@ -1,6 +1,6 @@
-# 从磁构型能量到自旋波：一份建模笔记
+# From Magnetic Configuration Energies to Spin Waves: A Modeling Note
 
-围绕交换参数、磁各向异性与自旋波整理一个假想二维磁体的模型。
+Organize a model of a hypothetical two-dimensional magnet around exchange parameters, magnetic anisotropy, and spin waves.
 
 ## Abstract
 
@@ -11,8 +11,8 @@ No source abstract recorded.
 - Type: `article`
 - Authors: AI Persona Demo
 - Published: 2026-09-01
-- Venue: 原创演示短文
-- Language: zh-CN
+- Venue: Original Demo Article
+- Language: en
 - arXiv: None
 - DOI: None
 - ISBN: None
@@ -27,15 +27,15 @@ No source abstract recorded.
 
 ## Preference Reasons
 
-- **practicality** — 可用来练习科研阅读与任务组织。
+- **practicality** — Useful for practicing research reading and organizing tasks.
 
 ## Knowledge Connections
 
-- **交换相互作用** — background; primary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_magnetism_exchange`)
-- **Heisenberg 自旋模型** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_magnetism_heisenberg`)
-- **磁各向异性** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_magnetism_anisotropy`)
-- **线性自旋波理论** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_magnetism_spin_wave`)
-- **局域磁矩与磁性** — topic; primary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_magnetism_magnetism`)
+- **Exchange Interactions** — background; primary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_magnetism_exchange`)
+- **Heisenberg Spin Models** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_magnetism_heisenberg`)
+- **Linear Spin-Wave Theory** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_magnetism_spin_wave`)
+- **Magnetic Anisotropy** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_magnetism_anisotropy`)
+- **Local Moments and Magnetism** — topic; primary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_magnetism_magnetism`)
 
 ## Tags
 
@@ -43,7 +43,7 @@ Physics
 
 ## Personal Notes
 
-原创示例文章，可公开体验阅读与审核。
+An original example article for exploring reading and review in the public Demo.
 
 ## Source
 
@@ -52,9 +52,9 @@ Physics
 - Provider: ai-persona-synthetic-demo
 - Version: Unknown
 - URL: None
-- Content hash: `sha256:8f1cb20b125f55181626717b1c5b9e1400794c402fde4611eeb7f91cc82992e5`
+- Content hash: `sha256:47a82ac07adc3589d9485dee0f43d53e65e485932e0d8bfd439674e6ab60fc13`
 - Files:
-  - `original.md` — original; text/markdown; sha256:8f1cb20b125f55181626717b1c5b9e1400794c402fde4611eeb7f91cc82992e5
+  - `original.md` — original; text/markdown; sha256:47a82ac07adc3589d9485dee0f43d53e65e485932e0d8bfd439674e6ab60fc13
 
 ## Record
 

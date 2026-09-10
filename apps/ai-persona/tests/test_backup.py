@@ -163,3 +163,37 @@ def test_backup_never_reports_success_for_an_archive_too_large_to_restore(worksp
     with pytest.raises(ValueError, match="exceeds"):
         backup.backup_workspace(workspace, archive)
     assert not archive.exists()
+
+
+@pytest.mark.parametrize('commit_change', [False, True])
+def test_database_checkpoint_is_not_mistaken_for_content_change(workspace, tmp_path, monkeypatch, commit_change):
+    from contextlib import closing
+
+    path = workspace / 'persona-state/ai-assistant.sqlite3'
+    snapshot = backup._snapshot_file
+    with closing(sqlite3.connect(path)) as writer:
+        writer.execute('PRAGMA journal_mode=WAL')
+        writer.execute("INSERT INTO drafts VALUES ('New draft before backup')")
+        writer.commit()
+
+        def checkpoint(source, target, **kwargs):
+            snapshot(source, target, **kwargs)
+            if source == path and target.parent.name == 'persona-state':
+                if commit_change:
+                    writer.execute("INSERT INTO drafts VALUES ('Unexpected concurrent edit')")
+                    writer.commit()
+                else:
+                    writer.execute('PRAGMA wal_checkpoint(TRUNCATE)')
+
+        monkeypatch.setattr(backup, '_snapshot_file', checkpoint)
+        archive = tmp_path / 'checkpoint.tar.gz'
+        if commit_change:
+            with pytest.raises(ValueError, match='changed'):
+                backup.backup_workspace(workspace, archive)
+            assert not archive.exists()
+        else:
+            backup.backup_workspace(workspace, archive)
+            restored = tmp_path / 'checkpoint-restored'
+            backup.restore_workspace(archive, restored)
+            with closing(sqlite3.connect(restored/'persona-state/ai-assistant.sqlite3')) as db:
+                assert db.execute('SELECT COUNT(*) FROM drafts').fetchone()[0] == 2

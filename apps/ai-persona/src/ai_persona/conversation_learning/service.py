@@ -67,6 +67,28 @@ class ConversationLearningService:
             settings = repo.settings(db)
             if not settings.enabled or not authorized(connection, event):
                 return {"status": "ignored_by_policy", "reason": "source_disabled_or_out_of_scope"}
+            reset = db.execute("SELECT value FROM config WHERE key='content_reset_at'").fetchone()
+            if reset:
+                import hashlib
+                import json
+
+                identity = hashlib.sha256(json.dumps(
+                    [principal, event.conversation_id, event.message.id], ensure_ascii=False
+                ).encode()).hexdigest()
+                old = db.execute("SELECT 1 FROM reset_receipts WHERE identity=?", (identity,)).fetchone()
+                if old or (event.occurred_at and event.occurred_at.timestamp() <= float(reset[0])):
+                    return {"status": "ignored_by_policy", "reason": "content_reset"}
+                if snapshot:
+                    # After a reset only retain context observed since the reset.
+                    known = {r[0] for r in db.execute(
+                        "SELECT message_id FROM events WHERE connection_id=? AND conversation_id=?",
+                        (principal, event.conversation_id),
+                    )} | {event.message.id}
+                    first_new = next((i for i, m in enumerate(snapshot.messages) if m.id in known), len(snapshot.messages))
+                    snapshot = snapshot.model_copy(update={
+                        "messages": snapshot.messages[first_new:],
+                        "coverage": "partial" if first_new else snapshot.coverage,
+                    })
             identity_payload = event.model_dump(mode="json", by_alias=True)
             identity_payload.pop("event_id")
             identity_payload.pop("occurred_at")

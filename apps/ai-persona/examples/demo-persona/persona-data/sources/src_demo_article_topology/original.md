@@ -1,21 +1,21 @@
-# 怎样判断一组能带是否拓扑非平庸
+# How to Determine Whether Bands Are Topologically Nontrivial
 
-> AI Persona 原创虚构示例。本文安排学习步骤，不对任何真实材料作拓扑分类。
+> An original fictional AI Persona example. This article outlines a learning path and does not classify any real material.
 
-## 从熟悉的能带到陌生的几何信息
+## From familiar bands to unfamiliar geometric information
 
-研究者已经会看能带与轨道投影，但还不熟悉 Berry 几何。note 先说明：能量本征值并未包含本征态随动量变化的全部信息；几何相位关心的是态在参数空间中的变化。对一条孤立能带，可用局部规范定义 Berry 联络 Aₙ(k)=i⟨uₙₖ|∇ₖuₙₖ⟩，其中 k 为晶体动量、n 为能带编号、uₙₖ 为 Bloch 态的周期部分。
+The researcher can already interpret bands and orbital projections but is new to Berry geometry. The note first explains that energy eigenvalues do not contain all the information about how eigenstates vary with momentum. Geometric phases concern changes of states in parameter space. For an isolated band, a local gauge defines the Berry connection Aₙ(k)=i⟨uₙₖ|∇ₖuₙₖ⟩, where k is crystal momentum, n is the band index, and uₙₖ is the periodic part of the Bloch state.
 
-## 从曲率到拓扑指标
+## From curvature to a topological index
 
-Berry 曲率由联络的旋度给出。在适当的二维有隙能带问题中，对整个布里渊区的占据态曲率积分可以构造 Chern 数。数值上应先说明占据子空间和能隙，再检查网格收敛及简并附近的处理。仅沿高对称路径画出曲率，不能替代整个布里渊区的积分。
+Berry curvature is the curl of the connection. In an appropriate gapped two-dimensional band problem, integrating the occupied-state curvature over the full Brillouin zone gives a Chern number with the proper normalization. A numerical calculation should specify the occupied subspace and gap, then check grid convergence and the treatment of degeneracies. Plotting curvature only along a high-symmetry path cannot replace integration over the full Brillouin zone.
 
-## 对称性决定要问什么
+## Symmetry determines the relevant question
 
-整数量子霍尔效应帮助建立 Chern 拓扑与响应的联系。对于时间反演对称的自旋电子体系，还需要学习适用的 Z₂ 分类；总 Chern 数为零并不自动说明该体系在这种分类下平庸。自旋轨道耦合可以改变能带与对称性允许的结构，但“存在自旋轨道耦合”也不是拓扑判据。
+The integer quantum Hall effect helps connect Chern topology to response. For time-reversal-symmetric systems of spinful electrons, the applicable Z₂ classification must also be considered. A zero total Chern number does not automatically imply a trivial phase in that classification. Spin-orbit coupling can change bands and the structures allowed by symmetry, but its presence alone is not a topological criterion.
 
-## 如何形成一份可审核的判断
+## Build an assessment that can be reviewed
 
-示例报告先列 Hamiltonian 或有效模型、填充和保护对称性，再选择相应不变量，最后检查边界谱是否与体性质一致。带反转与边界态图像提供线索，但应说明能隙、边界终止和稳定性检查。所有未执行的部分保留为学习计划。
+The example report first specifies the Hamiltonian or effective model, filling, and protecting symmetries, then selects the appropriate invariant and checks whether the boundary spectrum agrees with the bulk properties. Band inversion and boundary-state plots offer clues, but the gap, boundary termination, and stability checks should be stated. Every step not yet carried out remains part of the learning plan.
 
-参考：[Topology in condensed matter：Haldane 模型、Berry 曲率与 Chern 数](https://topocondmat.org/w4-haldane/haldane-model/)。
+Reference: [Topology in condensed matter: the Haldane model, Berry curvature, and Chern numbers](https://topocondmat.org/w4-haldane/haldane-model/).

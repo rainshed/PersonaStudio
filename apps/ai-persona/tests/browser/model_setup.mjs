@@ -71,7 +71,9 @@ try {
   page.on('pageerror', e => errors.push(e.message));
   await page.goto(base + '/?lang=en');
   await page.locator('[name=mode][value=create]').check();
+  await page.locator('#workspace-location summary').click();
   await page.locator('#workspace-path').fill(workspace);
+  await page.locator('#workspace-purpose').selectOption('/settings/models');
   await page.locator('#setup-submit').click();
   await page.waitForURL('**/settings/models', {timeout: 25000});
   studioURL = new URL(page.url()).origin;

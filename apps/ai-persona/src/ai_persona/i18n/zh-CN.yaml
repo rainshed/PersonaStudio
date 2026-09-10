@@ -57,7 +57,7 @@ common:
   reason: "备注（可选）"
   proposal_reason: "保存修改"
   preview_proposal: "保存"
-  protected: "保存即生效 · 保留历史"
+  protected: "保存到当前 Persona · 保留历史"
   line_item: 每行一个
   choose: 请选择
   notes: 人工备注
@@ -574,7 +574,7 @@ preference_form:
   save_context: 保存场景
   preference: 偏好
   example: 参考样本
-  lead: "点击保存后直接生效，并保留本次偏好修改的历史。"
+  lead: "保存到当前 Persona 并保留修改历史。自动用于 Codex 对话还需设置应用接入。"
   context_desc: 定义任务场景
   context_desc_help: 用用户能看懂的名称和说明界定这类任务。
   description: 描述
@@ -617,7 +617,7 @@ preference_form:
   reason_placeholder: 记录这项偏好变化的原因。
   flow_save: 保存结构化变化
   flow_confirm: 确认你要保存的内容
-  flow_compile: "立即生效"
+  flow_compile: "保存到当前 Persona"
   flow_compile_desc: "更新已保存的偏好"
 review:
   defer_note: 暂缓备注（可选）
@@ -733,9 +733,9 @@ messages:
   record_updated: "修改已保存并生效"
   archive_created: "记录已归档"
   relation_removed: "关系已移除"
-  rule_created: "新规则已保存并生效"
-  example_updated: "偏好样本已保存并生效"
-  preference_updated: "偏好修改已保存并生效"
+  rule_created: "新规则已保存到当前 Persona"
+  example_updated: "偏好样本已保存到当前 Persona"
+  preference_updated: "偏好修改已保存到当前 Persona"
   invalid_preference_state: 无法将该偏好切换到所选状态
   accepted: "提案已接受，人格版本已更新为 {revision}"
   edited_and_accepted: "修改后已通过，人格版本已更新为 {revision}"

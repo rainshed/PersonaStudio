@@ -30,6 +30,8 @@
 <a class="settings-record-link" href="/inbox?view=all&amp;type=activation">{{ ui('查看偏好应用记录') }} →</a></section>
 </section>
 <section data-settings-panel="retention" class="settings-stack" hidden>
+<section class="panel studio-settings-panel"><h2>{{ '重新初始化 Persona' if locale == 'zh-CN' else 'Reset Persona content' }}</h2><p class="settings-note">{{ '清空知识、材料、偏好及处理记录，保留模型连接、登录授权和应用设置。先预览清理范围，备份可选。' if locale == 'zh-CN' else 'Clear knowledge, materials, preferences and processing history while keeping connections, authentication and settings. Preview first; backup is optional.' }}</p><button type="button" class="button ghost" data-content-reset>{{ '清空内容，保留配置…' if locale == 'zh-CN' else 'Clear content, keep settings…' }}</button></section>
+<link rel="stylesheet" href="/static/content-reset.css?v=1"><script type="module" src="/static/content-reset.mjs?v=1"></script>
 <section class="panel studio-settings-panel"><h2>{{ ui('临时内容保留') }}</h2><p class="settings-note">{{ ui('到期自动清理；查看、搜索和反馈不会延长保留时间。') }}</p>
 <form id="learning-retention" class="learning-form">
 <div class="settings-fields">

@@ -1,3 +1,3 @@
-# 反例：信息缺失的科研图
+# Negative Example: A Research Figure with Missing Information
 
-只交付一张截图，不标单位与误差含义；为使曲线重合删除不符合预期的点，也不保存处理与绘图代码。
+Deliver only a screenshot without units or an explanation of uncertainty. Delete unexpected points to make the curves overlap, and keep no data-processing or plotting code.

@@ -7,17 +7,19 @@ revision: 1
 created_at: '2026-09-01T00:00:00Z'
 updated_at: '2026-09-01T00:00:00Z'
 key: research.figure
-name: 科研绘图
-description: 为科研数据新建或实质性修改图表，包括比较曲线、标度分析和论文插图。仅讨论图中物理意义时不触发。
+name: Research Figures
+description: Create or substantially revise plots of research data, including curve
+  comparisons, scaling analyses, and publication figures. Does not apply when only
+  discussing the physics in an existing figure.
 activation:
   intents:
-  - 把有无自旋轨道耦合的能带画在同一张图上
-  - 调整这张误差棒图的坐标轴和图例
+  - Plot the bands with and without spin-orbit coupling in the same figure
+  - Adjust the axes and legend of this error-bar plot
   artifact_types:
   - png
   - pdf
   - svg
   excludes:
-  - 解释一张已有图片而不修改图片
-  - 制作与科研数据无关的宣传插画
+  - Explain an existing image without modifying it
+  - Create promotional illustrations unrelated to research data
 ---

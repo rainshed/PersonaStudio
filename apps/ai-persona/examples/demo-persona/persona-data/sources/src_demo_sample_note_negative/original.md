@@ -1,6 +1,6 @@
-# 反例：跳过定义与证据
+# Negative Example: Skipping Definitions and Evidence
 
-显然所有系统都满足同一个标度。
-给任意能带加一个 Δ 就证明它是超导体。
-公式的符号无需解释。
-没有来源，但可以宣布已经验证。
+Obviously every system obeys the same scaling.
+Adding a Δ to any band proves that it is a superconductor.
+There is no need to explain the symbols.
+There are no sources, but we can claim the result is verified.

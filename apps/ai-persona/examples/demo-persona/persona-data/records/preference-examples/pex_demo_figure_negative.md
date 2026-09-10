@@ -9,10 +9,13 @@ updated_at: '2026-09-01T00:00:00Z'
 context_refs:
 - pctx_demo_figure
 example_type: negative
-title: 科研绘图 · 反例
-condition: 为科研数据新建或实质性修改图表，包括比较曲线、标度分析和论文插图。仅讨论图中物理意义时不触发。
+title: Research Figures · Negative Example
+condition: Create or substantially revise plots of research data, including curve
+  comparisons, scaling analyses, and publication figures. Does not apply when only
+  discussing the physics in an existing figure.
 reasons:
-- 对照本场景的规则检查信息、步骤与记录是否完整。
+- Use this context’s rules to check whether the information, steps, and records are
+  complete.
 source_ref: src_demo_sample_figure_negative
-content_hash: sha256:f08520cda5b00f9c61286568a2a42c98ef9abf87bc37ef1a12e0f6b84c1933ff
+content_hash: sha256:930c79c8a36a1352529c2543c2ab6037f905b435f88586b0d95258bd33ca1d59
 ---

@@ -10,7 +10,9 @@ scope: contexts
 context_refs:
 - pctx_demo_note
 behavior: required
-instruction: 先查询与主题相关的 Persona 知识背景；对未记录或仅为 aware 的概念补充清楚的解释，并连接已有知识。
-condition: 为本 Demo 用户撰写专业 note。
-rationale: 虚构的 Demo 用户偏好。
+instruction: First query the Persona knowledge relevant to the topic. Clearly explain
+  concepts that are unrecorded or rated only as aware, and connect them to existing
+  knowledge.
+condition: Writing a technical note for this Demo user.
+rationale: A fictional Demo user preference.
 ---

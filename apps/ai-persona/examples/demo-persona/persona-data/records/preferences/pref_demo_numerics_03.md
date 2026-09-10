@@ -10,7 +10,10 @@ scope: contexts
 context_refs:
 - pctx_demo_numerics
 behavior: required
-instruction: 分别检查键维数、截断阈值、时间步长和系统尺寸的收敛，报告实际执行的检查及残余误差。
-condition: 使用近似算法或据此解释物理结果。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Check convergence separately with respect to bond dimension, truncation
+  threshold, time step, and system size. Report the checks actually performed and
+  the remaining errors.
+condition: Using approximate algorithms or interpreting physical results obtained
+  from them.
+rationale: A fictional Demo user preference.
 ---

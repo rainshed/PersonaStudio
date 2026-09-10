@@ -62,7 +62,7 @@ class ModelClient:
         if not (self.runtime / "node_modules/@earendil-works/pi-ai/package.json").is_file():
             raise AgentServiceError(
                 "runtime_missing",
-                "本机模型运行依赖缺失，请运行 ai-persona models-install 并重启模型服务；"
+                "模型组件尚未准备好，请打开“设置 → 模型”安装组件并重新检查；"
                 "此错误不需要重新授权。",
             )
         existing = self._descriptor()

@@ -23,10 +23,11 @@
 </section>
 {% endif %}
 
+<section class="first-use-card" data-material-handoff="{{ draft.id }}"><h2>{{ '来源已准备好，接下来做什么？' if locale == 'zh-CN' else 'Source ready. What next?' }}</h2><p>{{ '在下方核对信息并保存，或把原始来源交给 AI。不会重复上传，也不会自动开始分析；下方未保存的编辑会保留为草稿。' if locale == 'zh-CN' else 'Review and save below, or send the original source to AI. No re-upload or automatic analysis. Unsaved edits below remain in a draft.' }}</p><div class="ai-actions"><button type="button" class="button {{ 'primary-button' if material_use == 'extract' else 'ghost' }}" data-use-material="extract">{{ '从材料提取知识 · Codex' if locale == 'zh-CN' else 'Extract knowledge · Codex' }}</button><button type="button" class="button {{ 'primary-button' if material_use == 'ai' else 'ghost' }}" data-use-material="ai">{{ '交给 AI 维护助手' if locale == 'zh-CN' else 'Use in AI maintenance' }}</button></div><p data-handoff-status role="status"></p></section>
 {% set form_action = '/materials/imports/' ~ draft.id ~ ('/version-proposals' if version_match else '/proposals') %}
 <form class="edit-layout material-edit-layout import-review-layout" method="post" action="{{ form_action }}">
   <div class="panel form-panel">
-    <div class="source-preview-strip"><div><span class="entity-glyph material">{{ 'aX' if draft.input_kind == 'arxiv' else 'MD' }}</span><span><strong>{{ draft.display_name }}</strong><small>{{ draft.source_provider }}{% if draft.source_version %} · {{ draft.source_version }}{% endif %} · SHA-256 {{ draft.source_hash[:12] }}…</small></span></div><a class="button ghost small" href="/materials/imports/{{ draft.id }}/source" target="_blank">{{ t('material_import.open_original') }}</a></div>
+    <div class="source-preview-strip"><div><span class="entity-glyph material">{{ {'arxiv':'aX','markdown':'MD','pdf':'PDF','text':'TXT'}.get(draft.input_kind, 'TXT') }}</span><span><strong>{{ draft.display_name }}</strong><small>{{ draft.source_provider }}{% if draft.source_version %} · {{ draft.source_version }}{% endif %} · SHA-256 {{ draft.source_hash[:12] }}…</small></span></div><a class="button ghost small" href="/materials/imports/{{ draft.id }}/source" target="_blank">{{ t('material_import.open_original') }}</a></div>
 
     <div class="form-section">
       <div class="form-section-head"><span>01</span><div><h2>{{ t('material_import.source_facts') }}</h2><p>{{ t('material_import.source_facts_desc') }}</p></div></div>
@@ -72,7 +73,7 @@
     {% if not blocked_matches %}<label class="field"><span>{{ t('common.note') }}</span><textarea name="reason" rows="4" placeholder="{{ t('common.note_placeholder') }}">{{ values.reason }}</textarea></label><button class="button primary-button full" type="submit">{{ t('material_import.create_version_proposal') if version_match else t('common.preview_proposal') }} <span>→</span></button>{% endif %}
     {% if blocked_matches %}{% set match = blocked_matches[0] %}<a class="button primary-button full" href="/materials/{{ match.material_id }}">{{ t('material_import.open_existing') }}</a>{% endif %}
     <button class="button text-button full" type="submit" formaction="/materials/imports/{{ draft.id }}/cancel" formmethod="post">{{ t('material_import.cancel_import') }}</button>
-    <p class="draft-expiry">{{ t('material_import.expires_at') }} {{ draft.expires_at.strftime('%Y-%m-%d %H:%M UTC') }}</p>
+    <p class="draft-expiry">{{ '保存编辑草稿后，原文件会一直保留到确认保存或取消导入。' if locale == 'zh-CN' else 'Once an editor draft is saved, its original file is retained until you save the material or cancel the import.' }}</p>
   </div></aside>
 </form>
 {% endblock %}

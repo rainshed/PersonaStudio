@@ -19,6 +19,7 @@ from ai_persona.web import create_app
 os.environ["AI_PERSONA_SEMANTIC_SEARCH"] = "0"
 root = Path(tempfile.mkdtemp(prefix="persona-extraction-browser-"))
 data, state = root / "data", root / "state"
+os.environ["AI_PERSONA_LEARNING_DIR"] = str(root / "learning")
 shutil.copytree(demo_workspace().data_root, data)
 PersonaCompiler(data, state).build()
 CodexBackend.status = lambda self: {"available": True, "authenticated": True}

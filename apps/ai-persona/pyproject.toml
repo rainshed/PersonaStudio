@@ -48,7 +48,7 @@ ignore-vcs = true
 
 [tool.hatch.build.targets.sdist]
 include = ["/src/**", "/tests/**", "/examples/**", "/scripts/**", "/docs/**", "/README*.md", "/pyproject.toml", "/uv.lock", "/LICENSE", "/.python-version"]
-exclude = ["**/node_modules/**", "**/__pycache__/**", "**/persona-state/**", "**/.lock", "**/.DS_Store", "**/*.sqlite3*"]
+exclude = ["**/node_modules/**", "**/__pycache__/**", "**/persona-state/**", "**/.lock", "**/.DS_Store", "**/*.sqlite3*", "/docs/AI_PERSONA_FIRST_USE_UX_DESIGN.zh-CN.md"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -78,5 +78,6 @@ cache-keys = [
   { file = "src/**/*.yaml" },
   { file = "src/**/*.svg" },
   { file = "src/**/*.txt" },
+  { file = "src/**/*.md" },
   { file = "examples/demo-persona/persona-data/**/*" },
 ]

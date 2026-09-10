@@ -7,9 +7,9 @@ origin:
   identifier: src_demo_article_magnetism
   retrieved_at: '2026-09-01T00:00:00Z'
 canonical_file: original.md
-content_hash: 8f1cb20b125f55181626717b1c5b9e1400794c402fde4611eeb7f91cc82992e5
+content_hash: 47a82ac07adc3589d9485dee0f43d53e65e485932e0d8bfd439674e6ab60fc13
 files:
 - path: original.md
   role: original
   media_type: text/markdown
-  sha256: 8f1cb20b125f55181626717b1c5b9e1400794c402fde4611eeb7f91cc82992e5
+  sha256: 47a82ac07adc3589d9485dee0f43d53e65e485932e0d8bfd439674e6ab60fc13

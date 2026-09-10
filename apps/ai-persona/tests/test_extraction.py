@@ -423,16 +423,26 @@ def test_isolated_runtime_and_internal_hook(monkeypatch, tmp_path):
     assert process_input(None, None, None, "unused", {}) is None
 
 
-def test_scanned_pdf_is_flagged_and_original_page_can_be_verified(service):
+def test_partially_readable_pdf_flags_scanned_pages_and_keeps_page_verification(service):
     import base64
     import io
+    from pathlib import Path
 
+    import pypdfium2 as pdfium
     from PIL import Image
 
     buffer = io.BytesIO()
     Image.new("RGB", (100, 100), "white").save(buffer, format="PDF")
+    # A scanned page may accompany readable pages; it stays available for visual checks.
+    scan = pdfium.PdfDocument(buffer.getvalue())
+    text = pdfium.PdfDocument(next((Path(__file__).parent / "fixtures/legacy-demo/persona-data/sources").glob("*/original.pdf")))
+    scan.import_pages(text)
+    combined = io.BytesIO()
+    scan.save(combined)
+    scan.close()
+    text.close()
     task = service.repository.create()
-    task = service.add(task["id"], task["revision"], filename="scan.pdf", content=buffer.getvalue())
+    task = service.add(task["id"], task["revision"], filename="scan.pdf", content=combined.getvalue())
     member = task["members"][0]
     assert member["warnings"] and member["index"]["sections"][0]["page"] == 1
     run = phase(service, task, member["source_id"])

@@ -42,9 +42,9 @@ def test_public_demo_is_complete_and_rebuildable(isolated):
     assert len(store.of_type(Material)) == 5
     assert all(m.material_type == "article" for m in store.of_type(Material))
     contexts = {c.id: c.name for c in store.of_type(PreferenceContext)}
-    assert set(contexts.values()) == {"科研绘图", "学术 note", "数值计算"}
+    assert set(contexts.values()) == {"Research Figures", "Academic Notes", "Numerical Computing"}
     assert Counter(contexts[c] for p in store.of_type(Preference) for c in p.context_refs) == {
-        "科研绘图": 4, "学术 note": 4, "数值计算": 6,
+        "Research Figures": 4, "Academic Notes": 4, "Numerical Computing": 6,
     }
     assert Counter((contexts[c], e.example_type)
                    for e in store.of_type(PreferenceExample) for c in e.context_refs) == {
@@ -54,7 +54,7 @@ def test_public_demo_is_complete_and_rebuildable(isolated):
     numerical = [p.instruction for p in store.of_type(Preference)
                  if p.context_refs == ["pctx_demo_numerics"]]
     assert any("ITensorMPS.jl" in p and "ITensors.jl" in p for p in numerical)
-    assert any("scripts/submit_job.sh" in p and "虚构" in p for p in numerical)
+    assert any("scripts/submit_job.sh" in p and "fictional" in p for p in numerical)
     first = PersonaCompiler(workspace.data_root, workspace.state_root).build()
     snapshot = first.snapshot_path.read_bytes()
     PersonaCompiler(workspace.data_root, workspace.state_root).build()

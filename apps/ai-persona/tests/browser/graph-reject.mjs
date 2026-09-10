@@ -9,7 +9,7 @@ let log='',browser;child.stdout.on('data',v=>log+=v);child.stderr.on('data',v=>l
 try{
  let base;for(let i=0;i<300;i++){base=log.match(/READY (http:\/\/127.0.0.1:\d+)/)?.[1];if(base)break;if(child.exitCode!==null)throw Error(log);await new Promise(r=>setTimeout(r,100));}assert(base,log);
  browser=await chromium.launch({headless:true});const page=await browser.newPage({viewport:{width:1280,height:900}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto(base+'/extract');await expect(page.locator('#ex-runtime')).toContainText('已连接');
+ await page.goto(base+'/extract');await expect(page.locator('#ex-runtime')).toContainText('已登录');
  await expect(page.locator('#ex-language')).toBeVisible();await expect(page.locator('#ex-language')).toHaveValue('zh');
  await page.locator('#ex-language').selectOption('en');await page.locator('#ex-rules summary').click();await page.locator('#ex-defaults').click();await expect(page.locator('#ex-policy-feedback')).toContainText('保存');
  await page.reload();await expect(page.locator('#ex-language')).toHaveValue('en');

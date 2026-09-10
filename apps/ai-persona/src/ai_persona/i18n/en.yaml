@@ -57,7 +57,7 @@ common:
   reason: "Note (optional)"
   proposal_reason: "Save changes"
   preview_proposal: "Save"
-  protected: "Saved changes take effect immediately · History retained"
+  protected: "Saved to this Persona · History retained"
   line_item: One per line
   choose: Select…
   notes: Notes
@@ -574,7 +574,7 @@ preference_form:
   save_context: Save context
   preference: Preference
   example: Reference sample
-  lead: "Saving applies your preferences immediately and retains the change history."
+  lead: "Save preferences to this Persona. Automatic use in Codex requires application setup."
   context_desc: Define a task context
   context_desc_help: Use a clear name and description to define this group of tasks.
   description: Description
@@ -617,7 +617,7 @@ preference_form:
   reason_placeholder: Record why this preference is changing.
   flow_save: Save structured changes
   flow_confirm: Confirm the content to save
-  flow_compile: "Take effect immediately"
+  flow_compile: "Save to this Persona"
   flow_compile_desc: "Update saved preferences"
 review:
   defer_note: Add a deferral note (optional)
@@ -733,9 +733,9 @@ messages:
   record_updated: "Changes saved and applied"
   archive_created: "Record archived"
   relation_removed: "Relationship removed"
-  rule_created: "Rule saved and applied"
-  example_updated: "Preference example saved and applied"
-  preference_updated: "Preference changes saved and applied"
+  rule_created: "Rule saved to this Persona"
+  example_updated: "Preference example saved to this Persona"
+  preference_updated: "Preference changes saved to this Persona"
   invalid_preference_state: This preference cannot be changed to the selected state
   accepted: "Proposal accepted; persona revision is now {revision}"
   edited_and_accepted: "Edited proposal accepted; persona revision is now {revision}"

@@ -1,6 +1,6 @@
-# 从 DFT 能带到 Wannier 有效模型
+# From DFT Bands to Wannier Effective Models
 
-演示怎样从自洽电子结构计算组织能带、态密度和局域轨道模型。
+Organize bands, densities of states, and local-orbital models from self-consistent electronic structure calculations.
 
 ## Abstract
 
@@ -11,8 +11,8 @@ No source abstract recorded.
 - Type: `article`
 - Authors: AI Persona Demo
 - Published: 2026-09-01
-- Venue: 原创演示短文
-- Language: zh-CN
+- Venue: Original Demo Article
+- Language: en
 - arXiv: None
 - DOI: None
 - ISBN: None
@@ -27,17 +27,17 @@ No source abstract recorded.
 
 ## Preference Reasons
 
-- **practicality** — 可用来练习科研阅读与任务组织。
+- **practicality** — Useful for practicing research reading and organizing tasks.
 
 ## Knowledge Connections
 
-- **紧束缚模型** — background; primary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_bands_tight_binding`)
-- **Kohn–Sham 方程** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_bands_kohn_sham`)
-- **Wannier 函数与能带插值** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_bands_wannier`)
-- **密度泛函理论（DFT）** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_bands_dft`)
-- **态密度与轨道投影** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_bands_dos`)
-- **费米面** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_bands_fermi_surface`)
-- **电子结构计算** — topic; primary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_bands_electronic`)
+- **Tight-Binding Models** — background; primary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_bands_tight_binding`)
+- **Density Functional Theory (DFT)** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_bands_dft`)
+- **Density of States and Orbital Projections** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_bands_dos`)
+- **Fermi Surfaces** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_bands_fermi_surface`)
+- **Kohn–Sham Equations** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_bands_kohn_sham`)
+- **Wannier Functions and Band Interpolation** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_bands_wannier`)
+- **Electronic Structure Calculations** — topic; primary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_bands_electronic`)
 
 ## Tags
 
@@ -45,7 +45,7 @@ Physics
 
 ## Personal Notes
 
-原创示例文章，可公开体验阅读与审核。
+An original example article for exploring reading and review in the public Demo.
 
 ## Source
 
@@ -54,9 +54,9 @@ Physics
 - Provider: ai-persona-synthetic-demo
 - Version: Unknown
 - URL: None
-- Content hash: `sha256:373d19ef13c9656d3e8e004abe411f1ae4879b9981a16b4371f1781d81f5eb1c`
+- Content hash: `sha256:afc3efb407148119d9b01a13b01ee8c049d2bf5d8546a73ed3537d750e0fb36a`
 - Files:
-  - `original.md` — original; text/markdown; sha256:373d19ef13c9656d3e8e004abe411f1ae4879b9981a16b4371f1781d81f5eb1c
+  - `original.md` — original; text/markdown; sha256:afc3efb407148119d9b01a13b01ee8c049d2bf5d8546a73ed3537d750e0fb36a
 
 ## Record
 

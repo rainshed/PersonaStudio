@@ -10,7 +10,8 @@ scope: contexts
 context_refs:
 - pctx_demo_note
 behavior: required
-instruction: 新符号首次出现时给出定义，公式前后说明物理意义、假设和适用范围。
-condition: 出现公式、缩写或新记号。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Define new symbols at first use, and explain the physical meaning, assumptions,
+  and scope of equations in the surrounding prose.
+condition: Introducing equations, abbreviations, or new notation.
+rationale: A fictional Demo user preference.
 ---

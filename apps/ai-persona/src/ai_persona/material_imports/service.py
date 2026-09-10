@@ -243,6 +243,32 @@ class MaterialImportService:
             source_hash=source_hash,
         )
 
+    def create_file(self, filename: str, content: bytes) -> ImportDraft:
+        from ..agent import AgentServiceError
+        from ..extraction.sources import MAX_UPLOAD, parse_file
+        filename = Path(filename.replace("\\", "/")).name
+        if not content or len(content) > MAX_UPLOAD:
+            raise MaterialImportError("文件应非空且不超过 20 MB。")
+        if Path(filename).suffix.lower() in {".md", ".markdown"}:
+            return self.create_markdown(filename, content)
+        try:
+            index, warnings = parse_file(content, filename)
+        except AgentServiceError as exc:
+            raise MaterialImportError(exc.message) from exc
+        kind = "pdf" if filename.lower().endswith(".pdf") else "text"
+        original = "original.pdf" if kind == "pdf" else "original.txt"
+        values = ImportMetadata(material_type="paper" if kind == "pdf" else "note", title=Path(filename).stem)
+        return self._create_draft(
+            input_kind=kind, original_input=filename, display_name=filename,
+            provider="file-upload", identifier=None, version=None, url=None,
+            original_file=original, values=values,
+            states={"title": ImportFieldState(source="filename", status="review_required")},
+            warnings=["标题暂取自文件名；请核对并补充书目信息。", *warnings],
+            files={original: content, "attachments/structured.md": index["text"].encode()},
+            media_types={original: "application/pdf" if kind == "pdf" else "text/plain", "attachments/structured.md": "text/markdown"},
+            file_roles={"attachments/structured.md": "extracted_text"}, source_hash=_digest(content),
+        )
+
     def _create_draft(
         self,
         *,

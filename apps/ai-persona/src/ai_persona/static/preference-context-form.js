@@ -36,6 +36,12 @@
   }
 
   form.querySelector('[data-add-example]').addEventListener('click', addExample);
+  form.addEventListener('persona:restore-draft', event => {
+    const examples = event.detail.request_examples;
+    if (!examples) return;
+    list.replaceChildren();
+    for (let i = 0; i < Math.max(1, examples.length); i++) addExample();
+  });
   list.addEventListener('click', (event) => {
     const button = event.target.closest('[data-remove-example]');
     if (!button) return;
@@ -47,6 +53,7 @@
       renumber();
       next.querySelector('textarea').focus();
     }
+    form.dispatchEvent(new Event('input', {bubbles: true}));
   });
 
   form.querySelectorAll('[required]').forEach((input) => {

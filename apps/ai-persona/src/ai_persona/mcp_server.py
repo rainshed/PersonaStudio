@@ -122,6 +122,11 @@ def create_mcp_server(
         ),
     )
 
+    @server.tool(name="verify_persona_connection", description="Complete an explicitly requested Studio MCP connection check using its short-lived code. Does not read personal content or call a model.", annotations=PROPOSAL_ANNOTATIONS)
+    def verify_persona_connection(code: str) -> dict:
+        from .mcp_setup import verify_connection
+        return _invoke(lambda: verify_connection(data_root, state_root, code))
+
     @server.tool(
         name="resolve_persona_activation",
         description=(
@@ -301,6 +306,8 @@ def _parser() -> argparse.ArgumentParser:
         type=Path,
         help="persona workspace containing persona-data and persona-state",
     )
+    parser.add_argument("--data", type=Path, help="explicit persona data directory")
+    parser.add_argument("--state", type=Path, help="explicit persona state directory")
     parser.add_argument("--demo", action="store_true", help="use the bundled demo persona")
     parser.add_argument(
         "--review-base-url",
@@ -314,8 +321,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         workspace = resolve_workspace(
             workspace=args.workspace,
-            data_root=None,
-            state_root=None,
+            data_root=args.data,
+            state_root=args.state,
             demo=args.demo,
             require_data=True,
             require_state=True,

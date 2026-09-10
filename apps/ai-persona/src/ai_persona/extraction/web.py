@@ -26,6 +26,8 @@ def mount_extraction_routes(app, data_root, state_root, templates, common_contex
     login = LoginManager(codex_home=codex_home)
     workers = ThreadPoolExecutor(max_workers=1, thread_name_prefix="persona-extract")
 
+    app.state.extraction_jobs = {}
+
     @app.on_event("shutdown")
     def stop():
         for task in service.repository.list():
@@ -140,7 +142,9 @@ def mount_extraction_routes(app, data_root, state_root, templates, common_contex
                     partial=value.get("partial", False),
                     expected_max_nodes=value.get("expected_max_nodes"),
                 )
-                workers.submit(service.run, task_id, run_id)
+                future = workers.submit(service.run, task_id, run_id)
+                app.state.extraction_jobs[run_id] = future
+                future.add_done_callback(lambda _future: app.state.extraction_jobs.pop(run_id, None))
                 return service.view(task_id)
             if action == "cancel":
                 return await run_in_threadpool(service.cancel, task_id)

@@ -9,7 +9,7 @@ import shutil
 import tempfile
 from pathlib import Path
 
-DEMO_VERSION = "condensed-matter-v3"
+DEMO_VERSION = "condensed-matter-v4"
 DEMO_PORT = 8766
 MARKER = "demo.json"
 ROOT_MARKER = ".ai-persona-demo.json"

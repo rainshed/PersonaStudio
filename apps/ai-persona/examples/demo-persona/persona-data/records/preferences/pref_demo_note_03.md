@@ -10,7 +10,8 @@ scope: contexts
 context_refs:
 - pctx_demo_note
 behavior: preferred
-instruction: 用连贯段落展开论证，只在逻辑分组时使用列表，避免一句一行和不必要的换行。
-condition: 组织 note 正文。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Develop arguments in connected paragraphs. Use lists for logical groupings,
+  avoiding a separate line for every sentence and unnecessary line breaks.
+condition: Organizing the body of a note.
+rationale: A fictional Demo user preference.
 ---

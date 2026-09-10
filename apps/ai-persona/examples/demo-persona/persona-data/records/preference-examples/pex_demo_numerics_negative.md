@@ -9,10 +9,13 @@ updated_at: '2026-09-01T00:00:00Z'
 context_refs:
 - pctx_demo_numerics
 example_type: negative
-title: 数值计算 · 反例
-condition: 为凝聚态物理问题设计、编写、运行或检查数值计算，包含电子结构计算、张量网络模拟与计算任务准备。仅解释概念时不触发。
+title: Numerical Computing · Negative Example
+condition: Design, write, run, or review numerical calculations for condensed matter
+  physics, including electronic structure, tensor-network simulations, and preparation
+  of computational jobs. Does not apply to conceptual explanations alone.
 reasons:
-- 对照本场景的规则检查信息、步骤与记录是否完整。
+- Use this context’s rules to check whether the information, steps, and records are
+  complete.
 source_ref: src_demo_sample_numerics_negative
-content_hash: sha256:cf5fd51711d857715695a87ef50affd9870059a227dfc32e4ffa16795914eed3
+content_hash: sha256:c501fa911ec7e313eb5ae193655c736d027e3d15b6c69b40f94e1504a66c0b05
 ---

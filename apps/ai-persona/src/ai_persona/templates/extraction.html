@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}多篇材料提取 · AI 维护助手 · AI Persona{% endblock %}
+{% block title %}从材料提取知识 · AI Persona{% endblock %}
 {% block content %}
 {% include "partials/review_graph_assets.html" %}
 <link rel="stylesheet" href="/static/extraction.css?v=20260910.budget2">
-<section class="page-head ai-page-head"><div><p class="eyebrow">PERSONA · AI ASSISTANT</p><h1>读论文，整理知识</h1><p class="lead">同时从多篇材料中提取知识与关系，整理到同一张知识图。</p></div><a class="button ghost" href="/ai">返回 AI 维护助手</a></section>
+<section class="page-head ai-page-head"><div><p class="eyebrow">PERSONA · AI ASSISTANT</p><h1>从材料提取知识</h1><p class="lead">支持一份或多份材料；当前由 Codex 整理，审核后保存。无需安装对话 Hook。</p></div><a class="button ghost" href="/ai">返回 AI 维护助手</a></section>
 <div id="extraction-root" class="ai-workspace">
   <div class="ai-stack">
     <div class="ex-task-bar">
@@ -12,7 +12,7 @@
     </div>
     <section class="panel ai-panel ex-connection" aria-label="Codex 连接">
       <div class="ex-connection-heading"><strong>由 Codex 整理</strong><span id="ex-runtime" class="ai-muted" role="status">正在检查 Codex…</span></div>
-      <details><summary>登录与连接设置</summary><div class="ai-stack ex-settings">
+      <details open><summary>登录与连接设置</summary><div class="ai-stack ex-settings">
         <p class="ai-muted">沿用本机 Codex 登录，也可以在这里连接 ChatGPT 或 OpenAI API key。</p>
         <div class="ai-actions"><button class="button ghost" id="ex-login">登录 Codex / ChatGPT</button><button class="button ghost" id="ex-refresh-auth">刷新登录状态</button></div>
         <details><summary>使用 OpenAI API key</summary><div class="ai-stack ex-settings"><label class="field"><span>API key</span><input id="ex-key" type="password" autocomplete="off"></label><div class="ai-actions"><button class="button ghost" id="ex-key-login">连接</button></div><p class="ai-muted">密钥仅交给本机 Codex 凭据存储，不会保存到材料任务。</p></div></details>
@@ -21,11 +21,11 @@
     </section>
     <section class="panel ai-panel ai-stack ai-compose-panel ex-compose">
       <fieldset class="ai-input-group" id="ex-input-panel"><legend>1. 添加材料</legend>
-        <p class="ai-muted">可以混合添加多篇 arXiv 论文和本地文件；一份材料也可以开始。</p>
+        <a href="/materials/new?use=extract" class="home-link">统一添加材料：支持粘贴文本与保存到材料库 →</a><p class="ai-muted">可以混合添加多篇 arXiv 论文和本地文件；一份材料也可以开始。</p>
         <div class="ai-url-row"><label class="field"><span>arXiv 链接或 ID，一行一篇</span><textarea id="ex-links" rows="3" placeholder="https://arxiv.org/abs/…"></textarea></label><button class="button ghost" id="ex-add-links">添加链接</button></div>
-        <div class="ai-file-drop"><label class="field"><span>选择多个 Markdown、TXT 或 PDF 文件</span><input id="ex-files" disabled type="file" multiple accept=".md,.markdown,.txt,.pdf"></label></div>
+        <div class="ai-file-drop"><label class="field"><span>选择多个 Markdown、TXT 或 PDF 文件</span><input id="ex-files" disabled type="file" multiple accept=".md,.markdown,.txt,.pdf" data-source-capability></label></div>
         <p class="ai-muted">每个集合最多 20 份材料，每个文件最大 20 MB。同一论文的不同格式，可在清单中标记为同一材料。</p>
-        <div id="ex-input-feedback" class="ex-feedback" role="alert" tabindex="-1"></div><div id="ex-members"></div>
+        <label class="field"><span>或粘贴文本</span><textarea id="ex-text" rows="4" maxlength="750000"></textarea></label><button type="button" id="ex-add-text" class="button ghost">添加文本</button><div id="ex-input-feedback" class="ex-feedback" role="alert" tabindex="-1"></div><div id="ex-members"></div>
       </fieldset>
       <fieldset class="ai-input-group"><legend>2. 希望整理什么</legend>
         <label class="field"><span>这次的整理目标</span><textarea id="ex-goal" rows="2"></textarea></label>
@@ -53,7 +53,7 @@
       </div>
     </section>
     <section class="panel ai-panel ai-stack ex-panel" aria-label="整理进度与审核">
-      <h2>3. 整理与审核</h2><p id="ex-run-budget" class="ex-run-budget" hidden></p><p id="ex-status" class="ai-muted" role="status">添加材料后即可开始。</p><p id="ex-summary"></p><div id="ex-review"></div>
+      <h2>3. 整理与审核</h2><div class="ai-actions"><button type="button" class="button ghost" id="ex-clear-results" hidden>清除本次提取结果…</button></div><p id="ex-run-budget" class="ex-run-budget" hidden></p><p id="ex-status" class="ai-muted" role="status">添加材料后即可开始。</p><p id="ex-summary"></p><div id="ex-review"></div>
       <details id="ex-progress"><summary>读取进度与检查点</summary><ol id="ex-events"></ol></details>
       <div class="ai-actions"><button class="button ghost" id="ex-partial">只整理成功部分</button><span class="ai-muted">部分材料未完成时，可以先审核已完成的结果。</span></div>
     </section>
@@ -65,5 +65,6 @@
   </div>
 </div>
 <link rel="stylesheet" href="/static/conversation-learning.css?v=20260911.review2">
-<script type="module" src="/static/extraction.js?v=20260911.review2"></script>
+<link rel="stylesheet" href="/static/content-reset.css?v=1">
+<script type="module" src="/static/extraction.js?v=20260912.reset1"></script>
 {% endblock %}

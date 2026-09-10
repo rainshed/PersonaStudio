@@ -7,9 +7,9 @@ origin:
   identifier: src_demo_article_crystal
   retrieved_at: '2026-09-01T00:00:00Z'
 canonical_file: original.md
-content_hash: a3596c95e3f1c77a90dfe2ae8679e128e868be76dcddf56836945bdf656566c0
+content_hash: 779e4abc98acb0ca158440f13e04e192bab6cf41b4f115f293e316c3209d2b01
 files:
 - path: original.md
   role: original
   media_type: text/markdown
-  sha256: a3596c95e3f1c77a90dfe2ae8679e128e868be76dcddf56836945bdf656566c0
+  sha256: 779e4abc98acb0ca158440f13e04e192bab6cf41b4f115f293e316c3209d2b01

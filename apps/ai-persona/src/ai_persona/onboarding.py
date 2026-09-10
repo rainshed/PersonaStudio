@@ -19,7 +19,7 @@ from starlette.background import BackgroundTask
 from starlette.concurrency import run_in_threadpool
 
 from .initialization import initialize_persona
-from .launcher import start_ui
+from .launcher import StudioAlreadyRunning, active_ui, start_ui
 from .store import PersonaStore, StoreValidationError
 from .web_access import StudioAccess, StudioAccessMiddleware
 from .workspace import demo_workspace, resolve_workspace, save_configured_workspace
@@ -101,7 +101,7 @@ def _workspace_path(value: object) -> Path:
     return candidate
 
 
-def create_setup_app(*, default_workspace: Path | None = None) -> FastAPI:
+def create_setup_app(*, default_workspace: Path | None = None, switch_from=None) -> FastAPI:
     app = FastAPI(title="Persona Studio setup", docs_url=None, redoc_url=None, openapi_url=None)
     app.add_middleware(StudioAccessMiddleware, policy=StudioAccess())
     package = Path(__file__).resolve().parent
@@ -124,6 +124,14 @@ def create_setup_app(*, default_workspace: Path | None = None) -> FastAPI:
         )
         return response
 
+    recommended = default_workspace or Path.home() / "PersonaStudioData/my-persona"
+    if default_workspace is None:
+        base = recommended
+        count = 2
+        while recommended.exists() and (not recommended.is_dir() or any(recommended.iterdir())):
+            recommended = base.with_name(base.name + "-" + str(count))
+            count += 1
+
     @app.get("/")
     def index(request: Request):
         language = request.query_params.get("lang")
@@ -131,7 +139,9 @@ def create_setup_app(*, default_workspace: Path | None = None) -> FastAPI:
             language = "zh-CN" if request.headers.get("accept-language", "").startswith("zh") else "en"
         return templates.TemplateResponse(request, "onboarding.html", {
             "language": language, "text": MESSAGES[language], "token": app.state.setup_token,
-            "default_workspace": str(default_workspace or Path.home() / "PersonaStudioData/my-persona"),
+            "switching": switch_from is not None,
+            "recent_workspaces": __import__("ai_persona.workspace_registry", fromlist=["recents"]).recents(),
+            "default_workspace": str(recommended),
         })
 
     def prepare(payload):
@@ -146,7 +156,7 @@ def create_setup_app(*, default_workspace: Path | None = None) -> FastAPI:
                 if mode == "create" and root not in created_here:
                     if root.exists() and any(root.iterdir()):
                         raise SetupError("not_empty")
-                    persona_id = payload.get("persona_id", "my-persona")
+                    persona_id = payload.get("persona_id") or "persona-" + secrets.token_hex(5)
                     if not isinstance(persona_id, str) or not re.fullmatch(r"[a-z0-9][a-z0-9_-]{1,63}", persona_id):
                         raise SetupError("invalid_id")
                     initialize_persona(root / "persona-data", root / "persona-state", persona_id=persona_id)
@@ -163,10 +173,49 @@ def create_setup_app(*, default_workspace: Path | None = None) -> FastAPI:
                     raise SetupError("open_invalid")
             else:
                 raise SetupError("invalid_request")
-            result = start_ui(workspace, host="127.0.0.1", open_browser=False)
+            # Validate target write access before stopping a healthy Studio.
+            from tempfile import TemporaryFile
+            workspace.state_root.mkdir(parents=True, exist_ok=True)
+            for directory in (workspace.data_root, workspace.state_root):
+                with TemporaryFile(dir=directory) as check:
+                    check.write(b"workspace access check")
+                    check.flush()
+            different = switch_from is not None and (workspace.data_root != switch_from.data_root or workspace.state_root != switch_from.state_root)
+            # A previous attempt may have started the target but failed to save defaults.
+            if different:
+                running = active_ui()
+                if running and running.data_root == str(workspace.data_root) and running.state_root == str(workspace.state_root):
+                    different = False
+            if different:
+                if payload.get("confirm_switch") is not True:
+                    raise SetupError("invalid_request")
+                from .launcher import stop_ui
+                from .workspace_switch import prepare_original
+                prepare_original(switch_from)
+                try:
+                    stop_ui(switch_from)
+                except Exception:
+                    try:
+                        prepare_original(switch_from, release=True)
+                    except Exception:
+                        logger.exception("Could not release the original workspace")
+                    raise
+            try:
+                result = start_ui(workspace, host="127.0.0.1", open_browser=False)
+            except Exception as startup_error:
+                # The independent setup page stays available even if recovery also fails.
+                if different:
+                    try:
+                        start_ui(switch_from, host="127.0.0.1", open_browser=False)
+                    except Exception as recovery_error:
+                        logger.exception("Could not reopen the original workspace")
+                        raise RuntimeError(f"目标工作区启动失败：{startup_error}；原工作区恢复也未成功：{recovery_error}。请在此页面重试或重新打开原工作区。") from recovery_error
+                raise
             completed = {"ok": True, "url": result["url"], "demo": workspace.is_demo}
             if mode != "demo":
                 try:
+                    from .workspace_registry import remember
+                    remember(workspace.root, payload.get("name") if mode == "create" else None)
                     save_configured_workspace(workspace.root)
                 except (OSError, ValueError) as exc:
                     logger.exception("Studio started, but saving the default workspace failed")
@@ -213,6 +262,8 @@ def create_setup_app(*, default_workspace: Path | None = None) -> FastAPI:
             return response
         except SetupError as exc:
             return JSONResponse({"ok": False, "error": text[str(exc)]}, status_code=400)
+        except StudioAlreadyRunning as exc:
+            return JSONResponse({"ok": False, "error": str(exc)}, status_code=409)
         except PermissionError as exc:
             logger.exception("Workspace setup could not access a required folder")
             return JSONResponse({"ok": False, "error": text["permission_denied"],
@@ -231,6 +282,15 @@ def run_setup(*, port: int = 0, open_browser: bool = True) -> int:
 
     if not 0 <= port <= 65535:
         raise ValueError("port must be between 0 and 65535")
+    existing = active_ui()
+    if existing:
+        print(f"Studio 已在运行：{existing.url}", flush=True)
+        if open_browser:
+            try:
+                webbrowser.open(existing.url)
+            except webbrowser.Error:
+                pass
+        return 0
     app = create_setup_app()
     server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", proxy_headers=False, log_level="warning"))
     app.state.shutdown = lambda: setattr(server, "should_exit", True)

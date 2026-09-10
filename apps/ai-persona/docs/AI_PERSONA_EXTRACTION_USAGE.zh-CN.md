@@ -2,12 +2,12 @@
 
 本地实现日期：2026-09-10。对应单材料 Codex 提取及多材料知识图两阶段设计；代码在本仓库，尚不代表 GitHub Release 已发布。
 
-English: open **AI Assistant → Read a paper → Extract knowledge from multiple sources** (`/extract`). Add arXiv links and Markdown/PDF/TXT files, customize the extraction rules, and run Codex. Results are proposals; review them before they change your knowledge base. The first extraction interface currently uses Chinese labels. Other application pages retain their existing language support.
+English: open **Extract knowledge from materials** (`/extract`). Add arXiv links and Markdown/PDF/TXT files, customize the extraction rules, and run Codex. Results are proposals; review them before they change your knowledge base. The first extraction interface currently uses Chinese labels. Other application pages retain their existing language support.
 
 ## 使用流程
 
-1. 在 AI 维护助手的「读论文，整理知识」卡片中，点击「同时从多篇材料中提取知识」。
-2. 首次使用时连接 Codex。已有本机 Codex 登录可直接复用；也可在页面打开 ChatGPT 登录，或提交 OpenAI API key。认证完成后刷新登录状态。这里使用 Codex，不使用旧 AI 维护助手的模型路由；旧模块的其他平台能力继续保留。
+1. 从概览、AI 维护助手或材料预览进入「从材料提取知识」。统一「添加材料」入口还支持粘贴文本；准备好的同一来源可用于材料库、提取或 AI 维护，无需重复上传。
+2. 首次使用时连接 Codex。已有本机 Codex 登录可直接复用；也可在页面打开 ChatGPT 登录，或提交 OpenAI API key。认证完成后刷新登录状态。这里使用 Codex，不使用旧 AI 维护助手的模型路由；旧模块的其他平台能力继续保留。此功能不要求安装日常对话 Hook，运行前会再次检查 Codex。
 3. 多行粘贴 arXiv 链接/ID，或一次选择多个 Markdown、TXT、PDF 文件；可以混合添加。检查清单、固定版本和解析警告。重复内容/相同 arXiv 版本自动排除；不同格式是否为同一论文不能总是自动判定，可在清单里明确关联。
 4. 修改目标、知识点定义、关系规则和关注领域，选择提取结果语言（中文或英文，默认中文）；Codex 自主安排阅读。规则可以保存为下次默认值；本集合保存自己的规则快照。
 5. 点击「开始 / 继续整理」。所有材料在同一轮任务内可用，Codex 自主决定阅读顺序、交叉检索和深入程度；检查点可选。页面显示实际读取位置，不把进度估计伪装成百分比。
@@ -21,7 +21,7 @@ English: open **AI Assistant → Read a paper → Extract knowledge from multipl
 - 本地 Markdown 按标题组织，PDF 按页组织。原文件保持不变，另存稳定的结构化文本表示和行号。
 - Agent 初始收到任务目标、规则、来源标识和应用生成的字段契约；通过工具按需检索和阅读。搜索命中不能直接当证据，必须读取有完整行号的片段。
 - 保存的依据绑定来源 ID、版本、文件、行号及哈希；提交再次校验。不能引用未读、已改变或已移出结果的来源。
-- PDF 图像只用于核对，不能冒充已抽取的文字证据。扫描件暂不提供 OCR；没有可靠文字依据的内容进入限制/待核对项。
+- PDF 图像只用于核对，不能冒充已抽取的文字证据。扫描件暂不提供 OCR；完全没有可靠文字的 PDF 会在导入时被阻止，提示改用带文字 PDF 或补充文本。部分页缺文字会逐页警告，原页仍可用于核对。
 - 不从上传、讨论或提取行为推断用户已读、喜欢、感兴趣或掌握某个知识点。
 
 材料契约升级为 `ai-persona.material/v3`：`user_relationships: []` 表示未指定。读取已有 v2 记录时保留原关系并升级内存表示；已有正式文件不会因打开页面而被批量改写。后续正常保存使用 v3。新 schema 随构建输出，旧阅读状态继续可筛选。v1 不在本次迁移范围内。

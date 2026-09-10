@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from ..models import Bibliography
 
-ImportKind = Literal["arxiv", "markdown"]
+ImportKind = Literal["arxiv", "markdown", "pdf", "text"]
 ImportFieldStatus = Literal["autofilled", "review_required", "missing", "user_confirmed"]
 DuplicateKind = Literal["exact", "possible", "newer_version", "older_version"]
 

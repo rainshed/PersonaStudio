@@ -19,10 +19,16 @@
     document.getElementById('persona-id-field').hidden = mode !== 'create';
     path.required = mode !== 'demo';
     path.disabled = mode === 'demo';
-    personaId.required = mode === 'create';
+    personaId.required = false;
+    document.getElementById('workspace-name-field').hidden=mode!=='create';
+    document.querySelector('.setup-ai-next').hidden=mode!=='demo';
+    if(mode==='open')document.getElementById('workspace-location').open=true;
+    document.getElementById('workspace-location-preview').textContent=path.value;
     personaId.disabled = mode !== 'create';
   }
+  document.querySelectorAll('[data-open-workspace]').forEach(button=>button.onclick=()=>{form.elements.mode.value='open';path.value=button.dataset.openWorkspace;updateFields();});
   form.addEventListener('change', updateFields);
+  path.addEventListener('input',()=>document.getElementById('workspace-location-preview').textContent=path.value);
   updateFields();
   form.addEventListener('submit', async event => {
     event.preventDefault();
@@ -37,15 +43,17 @@
       const response = await fetch('/api/setup', {
         method: 'POST',
         headers: {'Content-Type': 'application/json', 'X-Persona-Setup': form.dataset.token, 'X-Persona-Language': form.dataset.language},
-        body: JSON.stringify({mode: form.elements.mode.value, path: path.value, persona_id: personaId.value})
+        body: JSON.stringify({mode: form.elements.mode.value, path: path.value, persona_id: personaId.value, name: document.getElementById('workspace-name').value, confirm_switch: !!document.getElementById('confirm-switch')?.checked})
       });
       const result = await response.json();
       showDetails(result.details);
       if (!response.ok || !result.ok) throw new Error(result.error || form.dataset.failed);
       const destination = new URL(result.url);
       if (destination.protocol !== 'http:' || destination.hostname !== '127.0.0.1') throw new Error(form.dataset.failed);
-      if (document.getElementById('setup-ai-next').checked) {
+      if (form.elements.mode.value === 'demo' && document.getElementById('setup-ai-next').checked) {
         destination.pathname = '/settings/models';
+      } else if(form.elements.mode.value !== 'demo') {
+        const next = new URL(document.getElementById('workspace-purpose').value, destination);destination.pathname=next.pathname;destination.search=next.search;
       }
       if (result.warning) {
         status.textContent = result.warning;

@@ -227,7 +227,7 @@
       "type": "integer"
     },
     "schema": {
-      "const": "ai-persona.material/v2",
+      "const": "ai-persona.material/v3",
       "title": "Schema",
       "type": "string"
     },
@@ -287,7 +287,6 @@
         ],
         "type": "string"
       },
-      "minItems": 1,
       "title": "User Relationships",
       "type": "array"
     }
@@ -303,7 +302,6 @@
     "material_type",
     "title",
     "bibliography",
-    "user_relationships",
     "preference_level",
     "source_ref"
   ],

@@ -1,3 +1,3 @@
-# 正例：从能带背景解释 BCS
+# Positive Example: Explaining BCS from a Band-Structure Background
 
-背景来源：Demo 的 Bloch 定理为 proficient，BCS 理论为 aware。材料来源：原创示例《给能带研究者的超导入门路线》“从配对到平均场”一节。先从正常态能带解释 ξₖ 是相对于化学势的能量，再定义 Δ 为配对能隙参数；公式 Eₖ=√(ξₖ²+|Δ|²) 仅针对这里的均匀单带 s 波平均场模型。这里没有执行新的计算，配对参数如何自洽求解保留为待学习问题。
+Background source: the Demo rates Bloch's Theorem as proficient and BCS Theory as aware. Material source: the original example article A Route into Superconductivity for Band-Structure Researchers, section 'From pairing to mean field'. Start from normal-state bands to explain ξₖ as energy relative to the chemical potential, then define Δ as the pairing gap parameter. The formula Eₖ=√(ξₖ²+|Δ|²) applies only to the uniform, single-band, s-wave mean-field model used here. No new calculations have been performed; solving for the pairing parameter self-consistently remains a learning question.

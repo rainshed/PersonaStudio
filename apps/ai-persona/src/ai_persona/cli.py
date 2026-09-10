@@ -4,7 +4,6 @@ import argparse
 import json
 import os
 import sys
-from contextlib import nullcontext
 from pathlib import Path
 
 from .compiler import PersonaCompiler
@@ -164,7 +163,7 @@ def _parser() -> argparse.ArgumentParser:
     _add_location_arguments(serve, include_data=True, include_state=True)
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, help="Studio port (real: 8765; Demo: 8766)")
-    serve.add_argument("--supervised", action="store_true", help="track foreground server for launchd")
+    serve.add_argument("--supervised", action="store_true", help="compatibility option; all foreground servers are tracked")
     serve.add_argument("--listen-fd", type=int, help=argparse.SUPPRESS)
     return parser
 
@@ -422,10 +421,9 @@ def main(argv: list[str] | None = None) -> int:
             assert workspace.data_root is not None
             assert workspace.state_root is not None
             port = args.port if args.port is not None else DEMO_PORT if workspace.is_demo else 8765
-            PersonaCompiler(workspace.data_root, workspace.state_root).build()
-            app = create_app(workspace.data_root, workspace.state_root)
-            tracking = track_ui_process(workspace, args.host, port) if args.supervised else nullcontext()
-            with tracking:
+            with track_ui_process(workspace, args.host, port, reserved=args.listen_fd is not None):
+                PersonaCompiler(workspace.data_root, workspace.state_root).build()
+                app = create_app(workspace.data_root, workspace.state_root)
                 if args.listen_fd is None:
                     uvicorn.run(
                         app, host=args.host, port=port, log_level="info", proxy_headers=False,

@@ -11,7 +11,7 @@ import sys
 import time
 import webbrowser
 from collections import deque
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -20,7 +20,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
 
 from .demo import DEMO_PORT, workspace_identity
-from .workspace import PersonaWorkspace
+from .workspace import PersonaWorkspace, user_config_path
 
 PID_FILENAME = "ui-server.json"
 LOG_FILENAME = "ui-server.log"
@@ -58,7 +58,10 @@ def _browser_url(host: str, port: int) -> str:
 
 
 def _read_info(workspace: PersonaWorkspace) -> UIServerInfo | None:
-    path = _pid_path(workspace)
+    return _read_info_file(_pid_path(workspace))
+
+
+def _read_info_file(path: Path) -> UIServerInfo | None:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
         return UIServerInfo(
@@ -76,7 +79,10 @@ def _read_info(workspace: PersonaWorkspace) -> UIServerInfo | None:
 
 
 def _write_info(workspace: PersonaWorkspace, info: UIServerInfo) -> None:
-    path = _pid_path(workspace)
+    _write_info_file(_pid_path(workspace), info)
+
+
+def _write_info_file(path: Path, info: UIServerInfo) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(".tmp")
     temporary.write_text(
@@ -87,40 +93,102 @@ def _write_info(workspace: PersonaWorkspace, info: UIServerInfo) -> None:
     os.replace(temporary, path)
 
 
+class StudioAlreadyRunning(RuntimeError):
+    """A different workspace owns the single Studio service."""
+
+
+def _global_root() -> Path:
+    # Shared by installed and source launchers; isolated config homes isolate tests.
+    root = user_config_path().parent / "studio-service"
+    root.mkdir(parents=True, exist_ok=True)
+    return root
+
+
+def _global_info() -> UIServerInfo | None:
+    return _read_info_file(_global_root() / PID_FILENAME)
+
+
 def _remove_info(workspace: PersonaWorkspace) -> None:
+    local = _read_info(workspace)
     _pid_path(workspace).unlink(missing_ok=True)
+    active = _global_info()
+    if local and active and active.pid == local.pid:
+        (_global_root() / PID_FILENAME).unlink(missing_ok=True)
+
+
+def _existing_service() -> UIServerInfo | None:
+    info = _global_info()
+    if info and _pid_is_running(info.pid) and _is_managed_process(info):
+        return info
+    if info:
+        (_global_root() / PID_FILENAME).unlink(missing_ok=True)
+    return None
+
+
+def active_ui() -> UIServerInfo | None:
+    info = _existing_service()
+    return info if info and _health(info.url) else None
+
+
+def _check_service_unlocked() -> None:
+    with (_global_root() / "service.lock").open("a+") as lock:
+        try:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise StudioAlreadyRunning(
+                "Studio 已在运行或正在退出；只能运行一个服务，请稍后重试。"
+            ) from exc
+        fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
+
+
+def _other_workspace(info: UIServerInfo) -> StudioAlreadyRunning:
+    return StudioAlreadyRunning(
+        f"已有 Studio 正在运行，使用其他工作区：{info.workspace or info.data_root}（{info.url}）。"
+        "只能运行一个服务，请先停止现有 Studio，再打开此工作区。"
+    )
 
 
 @contextmanager
-def track_ui_process(workspace: PersonaWorkspace, host: str, port: int):
-    """Keep start/status/logs usable when a supervisor owns the foreground server."""
+def track_ui_process(workspace: PersonaWorkspace, host: str, port: int, *, reserved: bool = False):
+    """Every foreground/background entry holds one process-lifetime service lock."""
     assert workspace.data_root is not None and workspace.state_root is not None
     pid = os.getpid()
-    with _start_lock(workspace):
-        previous = _read_info(workspace)
-        if previous and previous.pid != pid and _pid_is_running(previous.pid):
-            raise RuntimeError("Studio is already running; stop the existing process first")
-        _write_info(workspace, UIServerInfo(
-            pid=pid, host=host, port=port, url=_browser_url(host, port),
-            workspace=str(workspace.root) if workspace.root else None,
-            data_root=str(workspace.data_root), state_root=str(workspace.state_root),
-            started_at=datetime.now(UTC).isoformat(),
-        ))
-    try:
-        yield
-    finally:
-        with _start_lock(workspace):
+    with (_global_root() / "service.lock").open("a+") as lifetime:
+        with nullcontext() if reserved else _start_lock(workspace):
+            try:
+                fcntl.flock(lifetime.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise StudioAlreadyRunning(
+                    "Studio 已在运行或正在启动；只能运行一个服务，请使用已有页面。"
+                ) from exc
+            previous = _existing_service()
+            if previous and previous.pid != pid:
+                raise _other_workspace(previous)
+            info = UIServerInfo(
+                pid=pid,
+                host=host,
+                port=port,
+                url=_browser_url(host, port),
+                workspace=str(workspace.root) if workspace.root else None,
+                data_root=str(workspace.data_root),
+                state_root=str(workspace.state_root),
+                started_at=datetime.now(UTC).isoformat(),
+            )
+            _write_info(workspace, info)
+            _write_info_file(_global_root() / PID_FILENAME, info)
+        try:
+            yield
+        finally:
+            # Do not wait for the launch/stop lock: stop holds it while waiting for us.
             current = _read_info(workspace)
             if current and current.pid == pid:
                 _remove_info(workspace)
+            fcntl.flock(lifetime.fileno(), fcntl.LOCK_UN)
 
 
 @contextmanager
 def _start_lock(workspace: PersonaWorkspace) -> Iterator[None]:
-    assert workspace.state_root is not None
-    workspace.state_root.mkdir(parents=True, exist_ok=True)
-    lock_path = workspace.state_root / LOCK_FILENAME
-    with lock_path.open("a+", encoding="utf-8") as lock_file:
+    with (_global_root() / LOCK_FILENAME).open("a+", encoding="utf-8") as lock_file:
         fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
         try:
             yield
@@ -251,7 +319,16 @@ def start_ui(
 
     url = _browser_url(host, port)
     with _start_lock(workspace):
-        existing = _read_info(workspace)
+        existing = _existing_service() or _read_info(workspace)
+        if (
+            existing
+            and _pid_is_running(existing.pid)
+            and (
+                existing.data_root != str(workspace.data_root)
+                or existing.state_root != str(workspace.state_root)
+            )
+        ):
+            raise _other_workspace(existing)
         if existing is not None and _pid_is_running(existing.pid):
             health = _health(existing.url)
             if health is None:
@@ -260,7 +337,10 @@ def start_ui(
                     f"inspect {_log_path(workspace)}"
                 )
             if health.get("workspace_id") != identity:
-                raise RuntimeError("此端口运行的是其他工作区或旧版服务，不会打开它。请使用其他端口。")
+                raise RuntimeError(
+                    "此端口运行的是其他工作区或旧版服务，不会打开它。请使用其他端口。"
+                )
+            _write_info_file(_global_root() / PID_FILENAME, existing)
             if open_browser:
                 _open_browser(existing.url)
             return {
@@ -276,11 +356,12 @@ def start_ui(
         if existing is not None:
             _remove_info(workspace)
 
+        _check_service_unlocked()
         unmanaged_health = _health(url)
         if unmanaged_health is not None and unmanaged_health.get("workspace_id") != identity:
-            if not automatic_port:
-                raise RuntimeError("此端口运行的是其他工作区或旧版服务，不会打开它。请使用其他端口。")
-            unmanaged_health = None
+            raise StudioAlreadyRunning(
+                "已有 Studio 在运行其他工作区；只能运行一个服务，请先停止它再切换。"
+            )
         if unmanaged_health is not None:
             if open_browser:
                 _open_browser(url)
@@ -297,14 +378,24 @@ def start_ui(
 
         log_path = _log_path(workspace)
         log_path.parent.mkdir(parents=True, exist_ok=True)
-        with _reserve_listener(host, port, automatic=automatic_port) as listener, log_path.open("a", encoding="utf-8") as log_file:
+        with (
+            _reserve_listener(host, port, automatic=automatic_port) as listener,
+            log_path.open("a", encoding="utf-8") as log_file,
+        ):
             port = listener.getsockname()[1]
             url = _browser_url(host, port)
             command = [
-                sys.executable, "-m", "ai_persona", "serve",
+                sys.executable,
+                "-m",
+                "ai_persona",
+                "serve",
                 *_location_arguments(workspace),
-                "--host", host, "--port", str(port),
-                "--listen-fd", str(listener.fileno()),
+                "--host",
+                host,
+                "--port",
+                str(port),
+                "--listen-fd",
+                str(listener.fileno()),
             ]
             process = subprocess.Popen(  # noqa: S603
                 command,
@@ -326,6 +417,7 @@ def start_ui(
             started_at=datetime.now(UTC).isoformat(),
         )
         _write_info(workspace, info)
+        _write_info_file(_global_root() / PID_FILENAME, info)
 
         deadline = time.monotonic() + startup_timeout
         health: dict[str, Any] | None = None

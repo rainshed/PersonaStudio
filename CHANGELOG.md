@@ -4,6 +4,14 @@
 
 ### PersonaStudio repository
 
+- Add downloadable Codex runbooks for Hook installation and MCP configuration in Application access. Accept explicit data/state paths in the MCP entry point so Studio-generated configurations start successfully.
+
+- Add model readiness checks with a return to the original AI task; durable, versioned editor drafts; shared arXiv/Markdown/text-PDF/TXT/pasted-text intake; separate Hook and MCP verification; and named workspaces with a guarded browser switch coordinator. Conversation learning and automatic preferences share one Hook and remain independently enabled. Images remain supporting AI inputs.
+
+- Add preview-and-confirm content initialization that retains connections/settings, plus collection-scoped extraction cleanup with edited/shared-record protection and preserved inputs. Stop active work before clearing, recover interrupted changes, prevent old learning events from replaying, and offer optional portable backups.
+
+- Enforce a shared Studio service lock across foreground, background, installed and source entry points. Repeated starts reuse the active workspace; other workspaces and Demo require stopping it first. Release the service lock on exit or crash, and reuse active Studio when opening setup.
+
 - Let Codex choose its own reading strategy across a material collection, with application-provided output contracts and actionable validation errors. Count repeated source excerpts once toward the evidence budget.
 - Reuse the home knowledge graph in review, support inline personal-state choices and dependency-aware batch acceptance, and allow direct rejection of pending knowledge proposals from the graph.
 - Add Chinese/English extraction output settings with saved defaults and per-task snapshots. Display the node limit prominently and list verified concepts deferred because of it.

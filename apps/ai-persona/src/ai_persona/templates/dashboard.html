@@ -32,6 +32,7 @@
     <a class="button primary-button" href="/ai">{{ icon('sparkles') }}{{ '让 AI 帮我维护' if zh else 'Maintain with AI' }}</a>
   </header>
 
+  {% if not is_demo %}<section class="first-use-card"><h2>{{ '接下来想做什么？' if zh else 'What would you like to do?' }}</h2><div class="ai-actions"><a href="/materials/new">{{ '添加材料' if zh else 'Add materials' }}</a><a href="/extract">{{ '从材料提取知识 · 使用 Codex' if zh else 'Extract knowledge · requires Codex' }}</a><span>{{ 'AI 维护助手' if zh else 'AI maintenance' }} · <span data-model-readiness></span></span><a href="/settings?tab=sources">{{ '让 Codex 使用 Persona' if zh else 'Connect Codex to Persona' }}</a></div><div data-integration-status></div></section>{% endif %}
   {% if pending_count %}
   <section class="home-review-notice" aria-label="{{ '待审核提醒' if zh else 'Awaiting review' }}">
     {{ icon('inbox') }}<div><strong>{{ pending_count }} {{ '条候选，等你确认' if zh else 'candidates awaiting your review' }}</strong><p>{{ pending_breakdown }}</p></div>

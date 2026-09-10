@@ -1,6 +1,6 @@
-# 给能带研究者的超导入门路线
+# A Route into Superconductivity for Band-Structure Researchers
 
-以配对、准粒子和序参量为线索逐步引入超导，体现不同掌握程度的解释需求。
+Introduce superconductivity through pairing, quasiparticles, and order parameters, adapting explanations to different levels of familiarity.
 
 ## Abstract
 
@@ -11,8 +11,8 @@ No source abstract recorded.
 - Type: `article`
 - Authors: AI Persona Demo
 - Published: 2026-09-01
-- Venue: 原创演示短文
-- Language: zh-CN
+- Venue: Original Demo Article
+- Language: en
 - arXiv: None
 - DOI: None
 - ISBN: None
@@ -27,16 +27,16 @@ No source abstract recorded.
 
 ## Preference Reasons
 
-- **practicality** — 可用来练习科研阅读与任务组织。
+- **practicality** — Useful for practicing research reading and organizing tasks.
 
 ## Knowledge Connections
 
-- **Cooper 配对** — background; primary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_superconductivity_cooper`)
-- **BCS 理论** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_superconductivity_bcs`)
-- **Bogoliubov–de Gennes 方程** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_superconductivity_bdg`)
-- **Ginzburg–Landau 理论** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_superconductivity_ginzburg_landau`)
-- **第二类超导体与磁通涡旋** — background; secondary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_superconductivity_vortex`)
-- **超导物理** — topic; primary: 本文用这个主题组织阅读或实践问题。 (`rel_demo_article_superconductivity_superconductivity`)
+- **Cooper Pairing** — background; primary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_superconductivity_cooper`)
+- **BCS Theory** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_superconductivity_bcs`)
+- **Bogoliubov–de Gennes Equations** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_superconductivity_bdg`)
+- **Ginzburg–Landau Theory** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_superconductivity_ginzburg_landau`)
+- **Type-II Superconductors and Flux Vortices** — background; secondary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_superconductivity_vortex`)
+- **Superconductivity** — topic; primary: This article uses the topic to organize reading or practical questions. (`rel_demo_article_superconductivity_superconductivity`)
 
 ## Tags
 
@@ -44,7 +44,7 @@ Physics
 
 ## Personal Notes
 
-原创示例文章，可公开体验阅读与审核。
+An original example article for exploring reading and review in the public Demo.
 
 ## Source
 
@@ -53,9 +53,9 @@ Physics
 - Provider: ai-persona-synthetic-demo
 - Version: Unknown
 - URL: None
-- Content hash: `sha256:9758e02f2535cf4c8a580a2f915134a9f252db6a336a608ae65b2e1bd663dda9`
+- Content hash: `sha256:211c9c3582af82f07d508e237ee8245f20a50aa01c2c938ee40c00a71750f3fd`
 - Files:
-  - `original.md` — original; text/markdown; sha256:9758e02f2535cf4c8a580a2f915134a9f252db6a336a608ae65b2e1bd663dda9
+  - `original.md` — original; text/markdown; sha256:211c9c3582af82f07d508e237ee8245f20a50aa01c2c938ee40c00a71750f3fd
 
 ## Record
 

@@ -1,4 +1,5 @@
 # Private workspaces and machine state never belong in the application repository.
+/apps/ai-persona/docs/AI_PERSONA_FIRST_USE_UX_DESIGN.zh-CN.md
 **/persona-state/
 **/persona-data/
 !apps/ai-persona/examples/**/persona-data/

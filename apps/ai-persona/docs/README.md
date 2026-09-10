@@ -9,6 +9,8 @@ For current installation and lifecycle commands, start with the repository's [En
 - [Model connections and AI maintenance / 模型接入](AI_PERSONA_MODEL_INTEGRATION.zh-CN.md)
 - [Conversation learning / 对话学习](AI_PERSONA_CONVERSATION_LEARNING_USAGE.zh-CN.md)
 - [Preference application / 偏好应用](AI_PERSONA_PREFERENCE_ACTIVATION_USAGE.zh-CN.md)
+- [Let Codex install the local Hook / 交给 Codex 的本机 Hook 安装流程](../src/ai_persona/static/guides/CODEX_HOOK_SETUP.zh-CN.md)
+- [Let Codex configure local MCP / 交给 Codex 的本机 MCP 配置流程](../src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md)
 - [Feedback and personal test cases / 反馈与样例](AI_PERSONA_FEEDBACK_BENCHMARK_USAGE.zh-CN.md)
 - [Remote Codex / 远端 Codex](REMOTE_CODEX.zh-CN.md)
 - [Remote setup runbook / 远端接入执行指南](REMOTE_CODEX_AGENT_RUNBOOK.zh-CN.md)

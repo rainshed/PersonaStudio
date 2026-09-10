@@ -10,7 +10,9 @@ scope: contexts
 context_refs:
 - pctx_demo_figure
 behavior: preferred
-instruction: 同一物理量跨图保持一致配色，使用色觉友好的颜色并用线型辅助区分。
-condition: 需要比较多组数据或多幅图。
-rationale: 虚构的 Demo 用户偏好。
+instruction: Use consistent colors for the same physical quantity across figures,
+  choose colors accessible to readers with color-vision deficiencies, and add line
+  styles to distinguish series.
+condition: Comparing multiple datasets or figures.
+rationale: A fictional Demo user preference.
 ---

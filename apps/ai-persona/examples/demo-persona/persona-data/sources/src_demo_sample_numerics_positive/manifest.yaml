@@ -7,9 +7,9 @@ origin:
   identifier: src_demo_sample_numerics_positive
   retrieved_at: '2026-09-01T00:00:00Z'
 canonical_file: original.md
-content_hash: 4478383effc9ec19f3f603bd3c473a750cc489f75635792dbc3796df043c4854
+content_hash: b7d1bd46c91e0bc7cf4e77663ef08abdfa5e8b6a52ff61a2b0d1d1bd57c2c4e9
 files:
 - path: original.md
   role: original
   media_type: text/markdown
-  sha256: 4478383effc9ec19f3f603bd3c473a750cc489f75635792dbc3796df043c4854
+  sha256: b7d1bd46c91e0bc7cf4e77663ef08abdfa5e8b6a52ff61a2b0d1d1bd57c2c4e9
