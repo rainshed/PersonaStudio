@@ -14,6 +14,8 @@
 
 下文提案与同步契约属于内部服务和历史接口参考，不是当前外部工具列表。当前接入步骤以[集成说明](../../../docs/INTEGRATIONS.md)为准。
 
+初始化响应的 `instructions` 使用 `source`、`purpose` 和 `interest_level` 三个分块：说明 AI Persona 提供与当前任务相关的个人知识结构、掌握程度、兴趣和材料，供 Agent 个性化调整解释、例子与延伸；兴趣等级决定主动推荐行为，具体含义见[产品定义](AI_PERSONA_PRD.zh-CN.md#73-兴趣程度-interest_level)。各工具的用途和参数继续由工具定义提供。说明原文维护在[服务入口](../src/ai_persona/mcp_server.py)。
+
 **查询与读取行为**
 
 - `get_knowledge_map` 交付节点内容、个人状态和正式关系，可全局分页或按已知 ID 展开 1—2 跳。孤立课程和未分类内容可在未限定查询中发现。

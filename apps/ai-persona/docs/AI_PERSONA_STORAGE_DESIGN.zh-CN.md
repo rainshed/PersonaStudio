@@ -304,10 +304,10 @@ ID 由系统生成，使用对象前缀加 UUID/ULID，不从标题、路径或�
 
 `interest_level` 使用：
 
-- `high`
-- `medium`
-- `low`
-- `unspecified`
+- `high`：主动推荐相关内容，包括相关延伸。
+- `medium`：仅推荐与当前问题或任务直接相关的内容。
+- `low`：不基于这项兴趣主动推荐内容；用户主动问到该主题时仍正常回答。
+- `unspecified`：未设置。
 
 没有可靠信息时必须使用 `unspecified`，不能根据出现次数静默推断。
 
