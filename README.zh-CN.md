@@ -78,7 +78,7 @@ AI Persona 是一份由用户维护并掌控的个人 AI 档案，主要包括�
 
 ## 安装
 
-知我目前支持 macOS 和 Linux。首次安装与以后更新使用同一条命令：
+知我 0.1.0 目前正式支持 macOS。首次安装与以后更新使用同一条命令：
 
 ```sh
 curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh
@@ -112,7 +112,7 @@ ai-persona start
 
 | 组件 | 要求 |
 | --- | --- |
-| 操作系统 | macOS 或 Linux；暂不支持原生 Windows，WSL 需要在实际环境验证。 |
+| 操作系统 | macOS；Linux 与 Windows 暂不在正式支持范围内。 |
 | Python | 3.12 或更新版本，由安装器通过 uv 准备。 |
 | Node.js | 使用可选 AI 模型功能时需要 22.19 或更新版本，并包含 npm。 |
 | 模型账号 | 可选；浏览和人工编辑无需模型账号。 |

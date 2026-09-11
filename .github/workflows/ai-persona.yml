@@ -12,11 +12,7 @@ permissions:
 
 jobs:
   checks:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
@@ -38,7 +34,7 @@ jobs:
           uv run --no-project --python 3.12 python scripts/test-installer.py --dist-dir dist/release-test
 
   browser:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5

@@ -78,7 +78,7 @@ Manual edits take effect when saved. AI-generated changes do not modify official
 
 ## Installation
 
-PersonaStudio currently supports macOS and Linux. Use the same command for the first installation and later updates:
+PersonaStudio 0.1.0 currently supports macOS. Use the same command for the first installation and later updates:
 
 ```sh
 curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh
@@ -112,7 +112,7 @@ Browsing and manual editing do not require a model account. Only model-powered f
 
 | Component | Requirement |
 | --- | --- |
-| Operating system | macOS or Linux. Native Windows is not supported; WSL requires validation in the actual environment. |
+| Operating system | macOS. Linux and Windows are not currently supported. |
 | Python | 3.12 or later, prepared through uv by the installer. |
 | Node.js | 22.19 or later with npm, required only for optional AI model features. |
 | Model account | Optional. Browsing and manual editing work without one. |
