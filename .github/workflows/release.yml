@@ -34,6 +34,8 @@ jobs:
           node-version: '24'
       - name: Verify tag exists
         run: git rev-parse --verify "refs/tags/$RELEASE_TAG"
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
       - name: Run application checks
         run: uv run --no-project --python 3.12 python scripts/check.py
       - name: Verify distributable Python packages
@@ -47,6 +49,16 @@ jobs:
             --source-date-epoch "$epoch"
       - name: Test one-line installation
         run: uv run --no-project --python 3.12 python scripts/test-installer.py --dist-dir dist/release
+      - name: Run browser flows
+        run: |
+          npm run test:errors
+          npm run test:connections
+          npm run test:home
+          npm run test:ux
+          npm run test:reset
+          npm run test:browser
+          npm run test:first-use
+          npm run test:extraction
       - name: Create draft release and upload assets
         env:
           GH_TOKEN: ${{ github.token }}

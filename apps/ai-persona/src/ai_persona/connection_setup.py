@@ -6,7 +6,7 @@ import socket
 from .demo import workspace_identity
 from .workspace_registry import display_name
 
-GUIDE_REF = "8e2c7eba3fc3549ca0401c64b468308ca302dfe4"
+GUIDE_REF = "d229916a940f497a1b077b697cb1c6981629e16f"
 GUIDE_DIRECTORY = "apps/ai-persona/src/ai_persona/static/guides"
 
 

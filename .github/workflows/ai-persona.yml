@@ -53,6 +53,10 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run test:errors
+      - run: npm run test:connections
+      - run: npm run test:home
+      - run: npm run test:ux
+      - run: npm run test:reset
       - run: npm run test:browser
       - run: npm run test:first-use
       - run: npm run test:extraction
