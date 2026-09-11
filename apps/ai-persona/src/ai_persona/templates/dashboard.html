@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ t('dashboard.page_title') }}{% endblock %}
-{% block styles %}<link rel="stylesheet" href="/static/studio-overview.css?v=20260909.1">{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/studio-overview.css?v=20260911.guide1">{% endblock %}
 {% macro icon(kind) -%}
 <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   {% if kind == 'knowledge_node' %}<path d="M12 5v15M3 4h5a4 4 0 0 1 4 3 4 4 0 0 1 4-3h5v15h-5a5 5 0 0 0-4 2 5 5 0 0 0-4-2H3Z"/>
@@ -10,6 +10,10 @@
   {% elif kind == 'relation' %}<circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M6 7v10m12-10c0 7-12 3-12 10"/>
   {% elif kind == 'check' %}<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>
   {% elif kind == 'inbox' %}<path d="m5 4-3 10v6h20v-6L19 4ZM2 14h6l2 3h4l2-3h6"/>
+  {% elif kind == 'info' %}<circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10h.01"/>
+  {% elif kind == 'plug' %}<path d="M8 3v5m8-5v5M6 8h12v3a6 6 0 0 1-12 0ZM12 17v4"/>
+  {% elif kind == 'search' %}<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>
+  {% elif kind == 'edit' %}<path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14ZM3 22h18"/>
   {% else %}<path d="M12 3v18M3 12h18m-14-5 10 10m0-10L7 17"/>{% endif %}
 </svg>
 {%- endmacro %}
@@ -29,10 +33,49 @@
 <div class="persona-home" id="persona-home">
   <header class="home-heading">
     <div><h1>{{ '概览' if zh else 'Overview' }}</h1><p>{{ '你确认的知识与偏好，都在这里。' if zh else 'The knowledge and preferences you have confirmed, in one place.' }}</p></div>
-    <a class="button primary-button" href="/ai">{{ icon('sparkles') }}{{ '让 AI 帮我维护' if zh else 'Maintain with AI' }}</a>
+    <span class="home-support">{{ icon('info') }}{{ '当前版本仅支持 Codex 接入' if zh else 'This version supports Codex integration only' }}</span>
   </header>
 
-  {% if not is_demo %}<section class="first-use-card"><h2>{{ '接下来想做什么？' if zh else 'What would you like to do?' }}</h2><div class="ai-actions"><a href="/materials/new">{{ '添加材料' if zh else 'Add materials' }}</a><a href="/extract">{{ '从材料提取知识 · 使用 Codex' if zh else 'Extract knowledge · requires Codex' }}</a><span>{{ 'AI 维护助手' if zh else 'AI maintenance' }} · <span data-model-readiness></span></span><a href="/settings?tab=sources">{{ '让 Codex 使用 Persona' if zh else 'Connect Codex to Persona' }}</a></div><div data-integration-status></div></section>{% endif %}
+  {% if not is_demo %}
+  <section class="home-guide" id="home-setup" aria-label="{{ '使用准备' if zh else 'Getting ready' }}">
+    <div class="home-setup-ready" id="home-setup-ready" hidden>
+      {{ icon('check') }}<div><strong>{{ '使用准备已完成' if zh else 'Setup is complete' }}</strong><p>{{ '模型已配置 · Hook 已验证 · MCP 已验证' if zh else 'Model configured · Hook verified · MCP verified' }}</p></div>
+      <button class="home-link" id="home-setup-toggle" type="button" aria-controls="home-setup-details" aria-expanded="false">{{ '查看设置' if zh else 'View setup' }} ⌄</button>
+    </div>
+    <div id="home-setup-details">
+      <div class="home-section-heading"><h2>{{ '完成使用准备' if zh else 'Get ready to use Persona' }}</h2><div class="home-setup-progress"><span id="home-setup-progress" role="status">{{ '正在检查设置…' if zh else 'Checking setup…' }}</span><button class="home-link" id="home-setup-refresh" type="button" hidden>{{ '刷新状态' if zh else 'Refresh status' }}</button></div></div>
+      <p class="home-guide-intro">{{ '按需设置 AI 能力与 Codex 接入，也可以随时手动添加资料。' if zh else 'Set up AI and Codex features as needed. You can add content manually at any time.' }}</p>
+      <div class="home-setup-grid">
+        {% for key, glyph, title, description, action, url in [
+          ('model', 'sparkles', 'AI 模型' if zh else 'AI model', '为 AI 维护助手配置模型，帮助你整理知识与偏好。' if zh else 'Configure a model for the AI maintenance assistant to organize knowledge and preferences.', '设置模型' if zh else 'Set up model', '/settings/models'),
+          ('hook', 'plug', 'Codex Hook', '连接日常对话，用于自动应用偏好与对话学习。' if zh else 'Connect everyday conversations for automatic preferences and conversation learning.', '设置 Hook' if zh else 'Set up Hook', '/settings?tab=sources#hook-setup'),
+          ('mcp', 'search', 'MCP 查询' if zh else 'MCP queries', '让 Codex 按需查询你的 Persona 知识与偏好。' if zh else 'Let Codex look up your Persona knowledge and preferences when needed.', '配置 MCP' if zh else 'Set up MCP', '/settings?tab=sources#mcp-setup')
+        ] %}
+        <article class="home-setup-item" data-setup-item="{{ key }}">
+          <h3>{{ icon(glyph) }}{{ title }}</h3>
+          <span class="home-setup-status" data-setup-status data-state="checking" role="status">{{ '正在检查…' if zh else 'Checking…' }}</span>
+          <p>{{ description }}</p>
+          <a class="button ghost" data-setup-action href="{{ url }}">{{ action }} →</a>
+        </article>
+        {% endfor %}
+      </div>
+      <p class="home-setup-note">{{ 'Hook 验证后，自动偏好与对话学习需分别开启。MCP 查询可独立使用。' if zh else 'After Hook verification, enable automatic preferences and learning separately. MCP queries work independently.' }} <a class="home-link" href="/settings?tab=capabilities">{{ '管理自动功能' if zh else 'Manage automatic features' }} →</a></p>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="home-guide home-enrichment" aria-labelledby="home-enrichment-title">
+    <h2 id="home-enrichment-title">{{ '丰富你的 Persona' if zh else 'Build your Persona' }}</h2>
+    <div class="home-enrichment-grid">
+      <div><h3>{{ icon('edit') }}{{ '手动添加' if zh else 'Add content manually' }}</h3><p>{{ '直接记录知识、偏好，或添加参考材料。手动编辑并保存后生效。' if zh else 'Record knowledge and preferences or add reference materials. Manual edits take effect when you save.' }}</p><div class="home-enrichment-links">
+        <a class="home-link" href="/knowledge/new">{{ '添加知识' if zh else 'Add knowledge' }} →</a>
+        <a class="home-link" href="/preferences/new">{{ '添加偏好' if zh else 'Add a preference' }} →</a>
+        <a class="home-link" href="/materials/new">{{ '添加材料' if zh else 'Add materials' }} →</a>
+      </div></div>
+      <div><h3>{{ icon('sparkles') }}{{ '借助 AI 添加与整理' if zh else 'Add and organize with AI' }}</h3><p>{{ '告诉 AI 你想整理什么，也可以提供材料，让它提出新增或修改建议。' if zh else 'Tell AI what you want to organize and optionally provide materials. It will propose additions or changes.' }}</p><a class="button primary-button" href="/ai">{{ '打开 AI 维护助手' if zh else 'Open AI maintenance assistant' }} →</a></div>
+    </div>
+    <p class="home-review-rule">{{ icon('check') }}<span>{{ 'AI 辅助产生的新增与修改，' if zh else 'All AI-assisted additions and changes ' }}<strong>{{ '必须经你审核通过后才会写入正式 Persona。' if zh else 'require your review and approval before they enter your Persona.' }}</strong></span></p>
+  </section>
   {% if pending_count %}
   <section class="home-review-notice" aria-label="{{ '待审核提醒' if zh else 'Awaiting review' }}">
     {{ icon('inbox') }}<div><strong>{{ pending_count }} {{ '条候选，等你确认' if zh else 'candidates awaiting your review' }}</strong><p>{{ pending_breakdown }}</p></div>
@@ -58,14 +101,6 @@
     </div>
   </section>
 
-  {% if persona_empty %}
-  <section class="home-onboarding">
-    <h2>{{ '从一条知识或偏好开始' if zh else 'Start with one piece of knowledge or a preference' }}</h2>
-    <p>{{ '记录你已经了解的内容，或告诉 AI 你希望它如何回应。' if zh else 'Record something you know, or tell AI how you want it to respond.' }}</p>
-    <div><a class="home-link" href="/knowledge/new">{{ '添加知识' if zh else 'Add knowledge' }} →</a><a class="home-link" href="/preferences/new">{{ '添加偏好' if zh else 'Add a preference' }} →</a></div>
-  </section>
-  {% endif %}
-
   <section class="home-changes" aria-labelledby="home-changes-title">
     <div class="home-section-heading"><h2 id="home-changes-title">{{ '最近的变化' if zh else 'Recent changes' }}</h2>
       {% if recent_changes|length > 3 %}<button type="button" class="home-link" id="home-expand-changes" aria-controls="home-extra-changes" aria-expanded="false" data-expand-label="{{ '展开全部 ' ~ recent_changes|length ~ ' 条' if zh else 'Show all ' ~ recent_changes|length ~ ' changes' }}" data-collapse-label="{{ '收起变化' if zh else 'Show fewer' }}" hidden>{{ '展开全部 ' ~ recent_changes|length ~ ' 条' if zh else 'Show all ' ~ recent_changes|length ~ ' changes' }} <span aria-hidden="true">⌄</span></button>{% endif %}
@@ -84,4 +119,5 @@
   </footer>
 </div>
 <script src="/static/studio-overview.js?v=20260909.1" defer></script>
+{% if not is_demo %}<script src="/static/home-setup.js?v=20260911.guide2" defer></script>{% endif %}
 {% endblock %}

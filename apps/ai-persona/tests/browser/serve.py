@@ -9,19 +9,24 @@ from pathlib import Path
 import uvicorn
 
 from ai_persona.compiler import PersonaCompiler
+from ai_persona.initialization import initialize_persona
 from ai_persona.model_bridge import ModelClient
 from ai_persona.onboarding import create_setup_app
 from ai_persona.web import create_app
 from ai_persona.workspace import demo_workspace
 
 parser = argparse.ArgumentParser()
-parser.add_argument("mode", choices=["demo", "setup"])
+parser.add_argument("mode", choices=["demo", "setup", "empty"])
 args = parser.parse_args()
 workspace = None
 if args.mode == "demo":
     workspace = demo_workspace()
     PersonaCompiler(workspace.data_root, workspace.state_root).build()
     app = create_app(workspace.data_root, workspace.state_root)
+elif args.mode == "empty":
+    data, state = Path.cwd() / "persona-data", Path.cwd() / "persona-state"
+    initialize_persona(data, state, persona_id="browser-test")
+    app = create_app(data, state)
 else:
     app = create_setup_app(default_workspace=Path("/path/to/my-persona"))
 

@@ -16,9 +16,14 @@ export class SettingsWorkspace {
       document.getElementById('settings-page-description').textContent = descriptions[tab][1];
       for (const panel of document.querySelectorAll('[data-settings-panel]')) panel.hidden = panel.dataset.settingsPanel !== tab;
       for (const link of tabs) link.setAttribute('aria-current', link.dataset.settingsTab === tab ? 'page' : 'false');
+      const anchor = {'#hook-setup': 'hook-setup', '#mcp-setup': 'mcp-setup'}[location.hash];
+      if (tab === 'sources' && anchor) requestAnimationFrame(() => {
+        document.getElementById(anchor)?.scrollIntoView({block: 'start', behavior: 'instant'});
+      });
     };
     for (const link of tabs) link.addEventListener('click', event => {event.preventDefault(); history.pushState({},'',link.href); show();});
-    window.addEventListener('popstate', show); show();
+    window.addEventListener('popstate', show);
+    window.addEventListener('hashchange', show); show();
     document.querySelectorAll('[data-settings-revert]').forEach(button => button.addEventListener('click', () => {
       const form = document.getElementById(button.dataset.settingsRevert);
       const saved = this.savedForms.get(form);

@@ -136,3 +136,6 @@
 
 /* First-use model setup remains usable before any model dependencies exist. */
 .model-controls{border:0;padding:0;margin:0;min-width:0}.model-controls:disabled{opacity:.5}.model-setup{padding:22px;margin:20px 0 28px;border:1px solid var(--line,#d9e0d6);border-radius:12px;background:var(--surface,#fafbf7)}.model-setup h2{margin:0 0 16px}.model-setup-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;list-style:none;margin:0 0 18px;padding:0}.model-setup-steps li{font-size:13px;padding:9px;border-bottom:3px solid #d9e0d6}.model-setup-steps li[data-done=true]{border-color:#397154;color:#28533f}.model-setup-steps li[aria-current=step]{font-weight:700;border-color:#bd8c40}.model-setup .ai-actions{flex-wrap:wrap}.model-setup[data-state=failed] #model-setup-message{color:#a1402e}#model-runtime-checks:empty{display:none}#model-runtime-checks{padding-left:20px}@media(max-width:680px){.model-setup{padding:16px}.model-setup-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Home setup links reveal the sources tab before scrolling to these sections. */
+.studio-settings #hook-setup, .studio-settings #mcp-setup { scroll-margin-top: 20px; }
+.studio-settings #hook-setup:target, .studio-settings #mcp-setup:target { outline: 2px solid var(--accent); outline-offset: 3px; }

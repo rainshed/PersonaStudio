@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "Browser verification for the independently packaged PersonaStudio applications",
   "scripts": {
+    "test:home": "node apps/ai-persona/tests/browser/home-setup.mjs",
     "test:ux": "node apps/ai-persona/tests/browser/first-use-ux.mjs",
     "test:reset": "node apps/ai-persona/tests/browser/content-reset.mjs",
     "test:browser": "node apps/ai-persona/tests/browser/smoke.mjs",

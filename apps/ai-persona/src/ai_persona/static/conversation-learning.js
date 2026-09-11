@@ -1,7 +1,7 @@
 import {ui} from './studio-i18n.mjs?v=20260908.studio3.1';
 import {LearningWorkerControl} from './learning-worker-control.mjs?v=20260907.toggle1';
 import {CodexSetup} from './codex-setup.mjs?v=20260909.remote1';
-import {SettingsWorkspace} from './settings-workspace.mjs?v=20260909.setup1';
+import {SettingsWorkspace} from './settings-workspace.mjs?v=20260911.guide1';
 
 (() => {
   const $ = (id) => document.getElementById(id);
