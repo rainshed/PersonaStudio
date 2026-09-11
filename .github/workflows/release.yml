@@ -34,6 +34,7 @@ jobs:
           node-version: '24'
       - name: Verify tag exists
         run: git rev-parse --verify "refs/tags/$RELEASE_TAG"
+      - run: uv sync --locked --project apps/ai-persona --extra dev
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - name: Run application checks

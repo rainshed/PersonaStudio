@@ -50,6 +50,7 @@ jobs:
         with:
           node-version: '24'
           cache: npm
+      - run: uv sync --locked --project apps/ai-persona --extra dev
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run test:errors
