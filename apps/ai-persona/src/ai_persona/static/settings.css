@@ -139,3 +139,23 @@
 /* Home setup links reveal the sources tab before scrolling to these sections. */
 .studio-settings #hook-setup, .studio-settings #mcp-setup { scroll-margin-top: 20px; }
 .studio-settings #hook-setup:target, .studio-settings #mcp-setup:target { outline: 2px solid var(--accent); outline-offset: 3px; }
+.connection-setup { margin-bottom: 24px; }
+.connection-setup-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.connection-setup-card { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); display: flex; flex-direction: column; gap: 16px; }
+.connection-setup-card .settings-section-head { margin: 0; align-items: center; }
+.connection-setup-card p { margin: 0; color: var(--muted); font-size: 13px; }
+.connection-setup-card > p:first-of-type { flex: 1; }
+.connection-setup-card .setup-inline-actions { flex-wrap: wrap; gap: 12px; }
+.connection-setup-card .setup-inline-actions a { color: var(--accent); font-size: 13px; }
+.connection-setup-card .button { white-space: normal; text-align: center; }
+.connection-setup-card .settings-advanced { margin: 0; }
+.connection-setup-card textarea { font-size: 13px; overflow-wrap: anywhere; }
+.connection-copy-feedback:empty { display: none; }
+.connection-badge { color: var(--muted); background: var(--canvas); padding: 3px 9px; border-radius: 20px; font-size: 12px; }
+.connection-badge[data-state=done] { background: var(--green-soft); color: #286950; }
+.connection-badge[data-state=waiting] { background: var(--ochre-soft); color: #855b25; }
+.settings-shell .connection-manual { margin: 18px 0; padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.connection-manual[open] > summary { margin-bottom: 22px; }
+.connection-manual [data-mcp-setup] > button { margin: 8px 10px 8px 0; }
+@media (max-width: 900px) { .connection-setup-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .main-content:has(.settings-shell) .mobile-header { flex-wrap: wrap; gap: 12px; } .main-content:has(.settings-shell) .mobile-header-tools { flex-wrap: wrap; } .main-content:has(.settings-shell) .mobile-language-switcher button { white-space: nowrap; } .connection-setup-card { padding: 17px; } .connection-setup > .settings-section-head, .connection-setup-card .settings-section-head { flex-wrap: wrap; gap: 10px; } }

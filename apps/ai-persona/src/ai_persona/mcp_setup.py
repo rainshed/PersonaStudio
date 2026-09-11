@@ -184,6 +184,9 @@ def mount_mcp_setup(app, data_root, state_root):
                 + json.dumps(server_arguments(data_root, state_root), ensure_ascii=False)
                 + "\nenabled_tools = "
                 + json.dumps(PUBLIC_QUERY_TOOLS)
+                # Codex does not forward CODEX_HOME to stdio servers by default.
+                # Use the client's effective home to bind read observations correctly.
+                + '\nenv_vars = ["CODEX_HOME"]'
                 + "\n\n[mcp_servers.ai_persona.env]\nPYTHONPATH = "
                 + json.dumps(str(Path(__file__).resolve().parents[1]), ensure_ascii=False)
                 + "\n"

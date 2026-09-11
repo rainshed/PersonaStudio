@@ -335,8 +335,11 @@ def test_generated_mcp_configuration_starts_and_reads_over_stdio(studio):
 
     async def scenario():
         env = {key: value for key, value in os.environ.items()
-               if key.startswith("AI_PERSONA_") or key == "CODEX_HOME"}
+               if key.startswith("AI_PERSONA_")}
         assert settings["env"]["PYTHONPATH"] == str(Path(__file__).resolve().parents[1] / "src")
+        # Model Codex's explicit forwarding instead of inheriting the test process home.
+        env.update({key: os.environ[key] for key in settings.pop("env_vars", [])
+                    if key in os.environ})
         env.update(settings.pop("env"))
         async with Client(StdioServerParameters(**settings, env=env), read_timeout_seconds=10) as external:
             listed = await external.list_tools()

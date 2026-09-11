@@ -49,7 +49,7 @@
         {% for key, glyph, title, description, action, url in [
           ('model', 'sparkles', 'AI 模型' if zh else 'AI model', '为 AI 维护助手配置模型，帮助你整理知识与偏好。' if zh else 'Configure a model for the AI maintenance assistant to organize knowledge and preferences.', '设置模型' if zh else 'Set up model', '/settings/models'),
           ('hook', 'plug', 'Codex Hook', '连接日常对话，用于自动应用偏好与对话学习。' if zh else 'Connect everyday conversations for automatic preferences and conversation learning.', '设置 Hook' if zh else 'Set up Hook', '/settings?tab=sources#hook-setup'),
-          ('mcp', 'search', 'MCP 查询' if zh else 'MCP queries', '让 Codex 按需查询你的 Persona 知识与偏好。' if zh else 'Let Codex look up your Persona knowledge and preferences when needed.', '配置 MCP' if zh else 'Set up MCP', '/settings?tab=sources#mcp-setup')
+          ('mcp', 'search', 'MCP 查询' if zh else 'MCP queries', '让 Codex 按需查询你的 Persona 知识与来源。' if zh else 'Let Codex look up your Persona knowledge and sources when needed.', '配置 MCP' if zh else 'Set up MCP', '/settings?tab=sources#mcp-setup')
         ] %}
         <article class="home-setup-item" data-setup-item="{{ key }}">
           <h3>{{ icon(glyph) }}{{ title }}</h3>

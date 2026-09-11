@@ -47,6 +47,12 @@ def mount_studio_routes(app, data_root, state_root, templates, common_context):
             check_request(request)
             store = PersonaStore(data_root).load(verify_source_files=False)
             context = common_context(request, store, section=section)
+            if section == "settings":
+                from .connection_setup import setup_instructions
+
+                context["connection_setup"] = setup_instructions(
+                    data_root, state_root, str(request.base_url)
+                )
             context["trial_context"] = next((c for c in store.of_type(PreferenceContext) if c.id == request.query_params.get("context")), None)
             return templates.TemplateResponse(request, template, context)
         except Exception as exc:

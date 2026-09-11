@@ -28,6 +28,12 @@ The Demo prefers port **8766** and automatically uses an available port if it is
 
 Studio runs as a single service for the current OS user. Repeated starts reuse the same workspace. Use the sidebar workspace menu to switch after an active-task check; command-line switching still requires stopping the current Studio.
 
+## Connect Codex
+
+In **Settings → App connections**, copy the Hook or MCP setup instructions and paste into your everyday Codex. Each prompt includes the active workspace and its guide.
+
+Setup guides: [Hook](apps/ai-persona/src/ai_persona/static/guides/CODEX_HOOK_SETUP.md) · [MCP](apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.md).
+
 ## What you can do
 
 - Organize knowledge, courses, reading materials, relationships, and reusable preferences.

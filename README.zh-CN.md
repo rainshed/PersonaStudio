@@ -28,6 +28,12 @@ Demo 首选 **8766** 端口，被占用时自动选择空闲端口，在独立�
 
 Studio 在当前系统用户下只运行一个服务。重复启动同一工作区会复用已有服务；可从侧栏「管理与切换工作区」创建、打开或切换到其他工作区和 Demo；页面会先检查任务，再停止原 Studio。命令行切换仍需先停止当前服务。
 
+## 接入 Codex
+
+在「设置 → 应用接入」复制 Hook 或 MCP 接入指令，粘贴到日常使用的 Codex。指令包含当前工作区和指南链接。
+
+接入指南：[Hook](apps/ai-persona/src/ai_persona/static/guides/CODEX_HOOK_SETUP.md) · [MCP](apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.md)。
+
 ## 可以做什么
 
 - 整理知识、课程、阅读材料、关系与可复用的个人偏好。

@@ -64,9 +64,9 @@ AI 维护会在进入和运行前检查所需模型；前往设置前保留输�
 
 「从材料提取知识」使用独立的 Codex 连接，无需日常 Hook。日常自动偏好与对话学习共用 Codex Hook，完成安装、信任和接入验证后分别开启；学习还需模型与后台处理。MCP 查询单独配置客户端。详见[集成说明](INTEGRATIONS.md)。
 
-希望由 Codex 帮你安装 Hook，可以在「设置 → 应用接入」下载[本机 Hook 安装流程](../apps/ai-persona/src/ai_persona/static/guides/CODEX_HOOK_SETUP.zh-CN.md)，把文件交给日常使用的 Codex。它会检查环境、保留并备份已有配置、安装接入，再引导你完成信任和真实消息验证。
+在「设置 → 应用接入」分别点击「复制 Hook 接入指令」或「复制 MCP 接入指令」，粘贴到你日常使用的 Codex。指令自动包含当前 Persona、Studio 地址和 GitHub 接入指南。配置后返回页面刷新状态；详细操作可展开「手动配置与排查」。
 
-MCP 也提供[交给 Codex 的配置流程](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md)，可在同一页面下载。Codex 会识别工作区、合并客户端配置，再分别执行服务自检和目标客户端的只读查询测试。MCP 配置与 Hook 安装分别进行。
+接入指南：[Hook](../apps/ai-persona/src/ai_persona/static/guides/CODEX_HOOK_SETUP.md) · [MCP](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.md)。
 
 ## 5. 启动、诊断与停止
 

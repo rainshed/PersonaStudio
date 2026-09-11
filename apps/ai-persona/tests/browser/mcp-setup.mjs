@@ -40,6 +40,7 @@ try {
   const context=await browser.newContext({locale:'zh-CN',viewport:{width:1280,height:1000}});
   const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url+'/settings?tab=sources#mcp-setup');
+  await page.locator('#mcp-manual > summary').click();
   const panel=page.locator('[data-mcp-setup]');
   await expect(panel).toContainText('服务尚未自检');
   await panel.getByRole('button',{name:'运行服务自检',exact:true}).click();
@@ -73,7 +74,7 @@ asyncio.run(run())
   const output=resolve(app,'../../browser-results');await mkdir(output,{recursive:true});
   await panel.screenshot({path:join(output,'mcp-setup-readonly.png')});
   await context.addCookies([{name:'ai_persona_locale',value:'en',url}]);
-  await page.reload();await expect(panel).toContainText('Successful read observed');
+  await page.reload();await page.locator('#mcp-manual > summary').click();await expect(panel).toContainText('Successful read observed');
   await expect(panel).toContainText('Service self-check passed');
   assert.deepEqual(errors,[]);
   console.log('MCP setup: six tools, isolated self-check, empty-scope client read, and bilingual status passed');

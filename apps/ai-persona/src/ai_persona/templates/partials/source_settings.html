@@ -1,9 +1,30 @@
-<div class="first-use-grid"><section class="first-use-card" id="hook-setup"><h2>{{ '自动应用偏好与对话学习' if locale == 'zh-CN' else 'Automatic preferences and learning' }}</h2><p>{{ '共用同一个 Codex Hook：安装并在 Codex 中信任，验证接入后分别启用。保存内容不需要 Hook；学习候选仍需审核。' if locale == 'zh-CN' else 'Both use one Codex Hook. Install, trust it in Codex, verify, then enable each feature separately. Saving content needs no Hook; learning candidates require review.' }}</p><div data-integration-status></div>
-<div class="setup-inline-actions"><a class="button ghost" href="/static/guides/CODEX_HOOK_SETUP.zh-CN.md" download="PersonaStudio-Codex-Hook-安装说明.md">{{ '下载 Codex 安装说明' if locale == 'zh-CN' else 'Download setup guide (中文)' }}</a></div>
-<p class="settings-note">{{ '把文件交给你日常使用的 Codex，说“请按文档帮我安装 Hook”。Codex 会检查环境、备份并合并配置，再引导你完成信任和测试消息验证。' if locale == 'zh-CN' else 'Give the file to your usual Codex and ask it to install the Hook. Codex checks your environment, backs up and merges configuration, then guides you through trust and a test message.' }}</p>
-</section><section class="first-use-card" id="mcp-setup"><h2>{{ '通过 MCP 查询 Persona' if locale == 'zh-CN' else 'Query Persona through MCP' }}</h2><p>{{ '独立配置客户端，不依赖 Hook。生成验证消息后，请在要连接的 Codex 会话中发送；15 分钟内有效。' if locale == 'zh-CN' else 'Configure the client separately; no Hook is required. Send the generated verification message in your Codex session within 15 minutes.' }}</p><div class="setup-inline-actions"><a class="button ghost" href="/static/guides/CODEX_MCP_SETUP.zh-CN.md" download="PersonaStudio-Codex-MCP-配置说明.md">{{ '下载 MCP 配置说明' if locale == 'zh-CN' else 'Download MCP guide (中文)' }}</a></div>
-<p class="settings-note">{{ '把文件交给你日常使用的 Codex，说“请按文档帮我配置 MCP”。Codex 会保留并备份已有配置，连接当前工作区，再验证实际工具调用。' if locale == 'zh-CN' else 'Give the file to your usual Codex and ask it to configure MCP. Codex preserves and backs up existing settings, connects this workspace, then verifies a tool call.' }}</p>
-<div data-mcp-setup></div></section></div>
+{% set zh = locale == 'zh-CN' %}
+<section id="connection-setup" class="connection-setup" aria-labelledby="connection-setup-title">
+  <div class="settings-section-head">
+    <div>
+      <h2 id="connection-setup-title">{{ '让 Codex 帮你完成接入' if zh else 'Let Codex set up your connection' }}</h2>
+      <p class="settings-note">{{ '复制下方的接入指令，让 Codex 帮你完成配置。' if zh else 'Copy the instructions below to let Codex set up the connection.' }}</p>
+      <p class="settings-note">{{ '指令包含当前设备与 Persona 工作区信息，请粘贴到运行在同一台电脑上的 Codex。' if zh else 'These instructions include this device and Persona workspace information. Paste them into Codex running on the same computer.' }}</p>
+    </div>
+    <button type="button" class="button ghost" data-connection-refresh>{{ '刷新状态' if zh else 'Refresh status' }}</button>
+  </div>
+  <div class="connection-setup-grid">
+    {% for kind, title, description in [
+      ('hook', 'Codex Hook', '自动应用偏好、从对话中学习。接入后，两项功能分别开启。' if zh else 'Apply preferences and learn from conversations. Enable each feature separately after setup.'),
+      ('mcp', 'MCP', '让 Codex 按需查询 Persona 中的知识与来源。可独立使用。' if zh else 'Let Codex look up Persona knowledge and sources on demand. Works independently.')
+    ] %}
+    <section class="connection-setup-card" id="{{ kind }}-setup" aria-labelledby="{{ kind }}-setup-title">
+      <div class="settings-section-head"><h3 id="{{ kind }}-setup-title">{{ title }}</h3><span class="connection-badge" data-connection-status="{{ kind }}" data-state="checking" role="status">{{ '正在检查…' if zh else 'Checking…' }}</span></div>
+      <p>{{ description }}</p>
+      <div class="setup-inline-actions"><button type="button" class="button primary-button" data-copy-connection="{{ kind }}">{{ ('复制 Hook 接入指令' if kind == 'hook' else '复制 MCP 接入指令') if zh else ('Copy Hook setup instructions' if kind == 'hook' else 'Copy MCP setup instructions') }}</button><a href="{{ connection_setup[kind].guide_url }}" target="_blank" rel="noopener">{{ '查看 GitHub 说明' if zh else 'Read the GitHub guide' }} ↗</a></div>
+      <p class="settings-note connection-copy-feedback" data-copy-feedback="{{ kind }}" role="status"></p>
+      <details class="settings-advanced" data-prompt-preview="{{ kind }}"><summary>{{ '查看将复制的指令' if zh else 'Preview instructions' }}</summary><label class="field">{{ '已包含当前 Persona 和 Studio 地址' if zh else 'Includes this Persona and Studio address' }}<textarea rows="8" readonly data-connection-prompt="{{ kind }}">{{ connection_setup[kind].prompt }}</textarea></label></details>
+    </section>
+    {% endfor %}
+  </div>
+</section>
+<details class="settings-advanced connection-manual" id="mcp-manual"><summary>{{ '手动配置与排查 · MCP' if zh else 'Manual setup & troubleshooting · MCP' }}</summary><div data-mcp-setup></div></details>
+<details class="settings-advanced connection-manual" id="hook-manual"><summary>{{ '手动配置与排查 · Hook' if zh else 'Manual setup & troubleshooting · Hook' }}</summary>
 <section class="settings-source-group">
 <div class="settings-section-head"><div><h2>{{ ui('Codex 接入') }}</h2><p class="settings-note">{{ ui('管理本机与已配置的远端 Codex。对话学习与偏好应用共用一次接入。') }}</p></div><button id="learning-source-new" class="button primary-button" type="button">＋ {{ ui('接入 Codex') }}</button></div>
 <div id="learning-connections" class="settings-stack"></div>
@@ -61,3 +82,6 @@
 </div>
 </section>
 </section>
+
+</details>
+<script src="/static/connection-setup.js?v=20260911.1" defer></script>
