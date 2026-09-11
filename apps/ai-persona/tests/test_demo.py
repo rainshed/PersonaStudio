@@ -10,6 +10,7 @@ from persona_fixture import demo_workspace
 
 from ai_persona.cli import main as cli_main
 from ai_persona.compiler import PersonaCompiler
+from ai_persona.demo import demo_seed
 from ai_persona.frontmatter import FrontmatterError, load_yaml_text
 from ai_persona.i18n import validate_catalogs
 from ai_persona.index import prepare_context, search_index
@@ -139,7 +140,7 @@ def test_init_creates_an_empty_persona_ready_for_use(tmp_path: Path) -> None:
     dashboard = client.get("/")
     assert dashboard.status_code == 200
     assert "<h1>概览</h1>" in dashboard.text
-    assert "从一条知识或偏好开始" in dashboard.text
+    assert "丰富你的 Persona" in dashboard.text
     assert "/knowledge/new" in dashboard.text
     created = client.post(
         "/knowledge/proposals",
@@ -335,6 +336,28 @@ def test_web_demo_renders_dashboard_and_knowledge_detail(tmp_path: Path) -> None
     assert "Time-Evolving Block Decimation" in detail.text
     assert preferences.status_code == 200
     assert "当前没有适用的偏好" in preferences.text
+
+
+def test_public_demo_presents_the_confirmed_knowledge_base_first(tmp_path: Path) -> None:
+    data_root = tmp_path / "persona-data"
+    state_root = tmp_path / "persona-state"
+    shutil.copytree(demo_seed(), data_root)
+    client = TestClient(create_app(data_root, state_root))
+
+    dashboard = client.get("/")
+    knowledge = client.get("/knowledge")
+    preferences = client.get("/preferences")
+
+    assert dashboard.status_code == 200
+    assert "浏览这份知识库" in dashboard.text
+    assert "知识图谱" in dashboard.text
+    assert "已经过用户确认的内容" in dashboard.text
+    assert "都必须经用户审核通过后才会进入知识库" in dashboard.text
+    assert "建立自己的知识库" in dashboard.text
+    assert "当前版本仅支持 Codex 接入" not in dashboard.text
+    assert 'href="/evaluations"' not in dashboard.text
+    assert "查看 Codex 接入状态" not in knowledge.text
+    assert "试判场景（调用模型）" not in preferences.text
 
 
 def test_web_edit_saves_immediately_with_audit_history(tmp_path: Path) -> None:

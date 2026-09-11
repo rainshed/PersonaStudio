@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ t('dashboard.page_title') }}{% endblock %}
-{% block styles %}<link rel="stylesheet" href="/static/studio-overview.css?v=20260911.guide1">{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/studio-overview.css?v=20260911.demo1">{% endblock %}
 {% macro icon(kind) -%}
 <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
   {% if kind == 'knowledge_node' %}<path d="M12 5v15M3 4h5a4 4 0 0 1 4 3 4 4 0 0 1 4-3h5v15h-5a5 5 0 0 0-4 2 5 5 0 0 0-4-2H3Z"/>
@@ -28,13 +28,33 @@
   <span class="home-arrow" aria-hidden="true">›</span>
 </a>
 {%- endmacro %}
+{% macro asset_section(active_counts, zh, demo_view=false) -%}
+  <section class="home-assets{% if demo_view %} home-demo-assets{% endif %}" aria-labelledby="home-assets-title">
+    <div class="home-section-heading"><h2 id="home-assets-title">{% if demo_view %}{{ '浏览这份知识库' if zh else 'Browse this knowledge base' }}{% else %}{{ '我的 Persona' if zh else 'My Persona' }}{% endif %}</h2><span>{{ '已经过用户确认的内容' if demo_view and zh else 'User-confirmed content' if demo_view else '已确认的内容' if zh else 'Confirmed content' }}</span></div>
+    {% if demo_view %}<p class="home-demo-intro">{{ '这份示例展示了知识、材料和偏好如何被整理在同一个知识库中。' if zh else 'This sample shows how knowledge, materials and preferences are organized in one knowledge base.' }}</p>{% endif %}
+    <div class="home-asset-grid">
+      {% for entity, path, label, unit in [('knowledge_node', 'knowledge', '知识图谱', '个知识点'), ('material', 'materials', '材料', '份材料'), ('preference', 'preferences', '偏好', '条偏好'), ('course', 'courses', '课程', '门课程')] %}
+      {% if entity != 'course' or active_counts.get(entity, 0) %}
+      <a class="home-asset" href="/{{ path }}" data-asset="{{ entity }}">
+        <span class="home-asset-label">{{ icon(entity) }}{{ label if zh else ('Knowledge graph' if entity == 'knowledge_node' else t('common.' + path)) }}</span>
+        <span class="home-asset-value"><strong>{{ active_counts.get(entity, 0) }}</strong><span>{{ unit if zh else t('common.' + path)|lower }}</span></span>
+        {% if demo_view %}<span class="home-asset-description">{% if entity == 'knowledge_node' %}{{ '查看知识结构，以及每个知识点的掌握程度和兴趣。' if zh else 'Explore the structure, mastery and interest recorded for each topic.' }}{% elif entity == 'material' %}{{ '查看读过的材料、理解程度、喜欢程度和知识联系。' if zh else 'Review saved materials, understanding, preference and knowledge links.' }}{% elif entity == 'preference' %}{{ '查看不同场景下确认的偏好和参考样本。' if zh else 'See confirmed preferences and examples for different contexts.' }}{% else %}{{ '查看学习过的课程及其相关知识。' if zh else 'See courses and their related knowledge.' }}{% endif %}</span>{% endif %}
+        <span class="home-asset-arrow" aria-hidden="true">↗</span>
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+{%- endmacro %}
 {% block content %}
 {% set zh = locale == 'zh-CN' %}
 <div class="persona-home" id="persona-home">
   <header class="home-heading">
-    <div><h1>{{ '概览' if zh else 'Overview' }}</h1><p>{{ '你确认的知识与偏好，都在这里。' if zh else 'The knowledge and preferences you have confirmed, in one place.' }}</p></div>
-    <span class="home-support">{{ icon('info') }}{{ '当前版本仅支持 Codex 接入' if zh else 'This version supports Codex integration only' }}</span>
+    <div><h1>{{ '概览' if zh else 'Overview' }}</h1><p>{% if is_demo %}{{ '这是一份已经搭建好的个人知识库。' if zh else 'This is a completed personal knowledge base.' }}{% else %}{{ '你确认的知识与偏好，都在这里。' if zh else 'The knowledge and preferences you have confirmed, in one place.' }}{% endif %}</p></div>
+    {% if is_demo %}<span class="home-support">{{ icon('info') }}{{ '所有内容均为虚构示例' if zh else 'All content is fictional sample data' }}</span>{% else %}<span class="home-support">{{ icon('info') }}{{ '当前版本仅支持 Codex 接入' if zh else 'This version supports Codex integration only' }}</span>{% endif %}
   </header>
+
+  {% if is_demo %}{{ asset_section(active_counts, zh, true) }}{% endif %}
 
   {% if not is_demo %}
   <section class="home-guide" id="home-setup" aria-label="{{ '使用准备' if zh else 'Getting ready' }}">
@@ -65,16 +85,17 @@
   {% endif %}
 
   <section class="home-guide home-enrichment" aria-labelledby="home-enrichment-title">
-    <h2 id="home-enrichment-title">{{ '丰富你的 Persona' if zh else 'Build your Persona' }}</h2>
+    <h2 id="home-enrichment-title">{% if is_demo %}{{ '维护这份知识库' if zh else 'Maintain this knowledge base' }}{% else %}{{ '丰富你的 Persona' if zh else 'Build your Persona' }}{% endif %}</h2>
     <div class="home-enrichment-grid">
-      <div><h3>{{ icon('edit') }}{{ '手动添加' if zh else 'Add content manually' }}</h3><p>{{ '直接记录知识、偏好，或添加参考材料。手动编辑并保存后生效。' if zh else 'Record knowledge and preferences or add reference materials. Manual edits take effect when you save.' }}</p><div class="home-enrichment-links">
+      <div><h3>{{ icon('edit') }}{{ '手动添加与修改' if zh else 'Add and edit manually' }}</h3><p>{{ '直接记录知识、偏好，或添加参考材料。由你保存的内容会直接进入知识库。' if zh else 'Record knowledge and preferences or add reference materials. Content you save enters the knowledge base directly.' }}</p><div class="home-enrichment-links">
         <a class="home-link" href="/knowledge/new">{{ '添加知识' if zh else 'Add knowledge' }} →</a>
         <a class="home-link" href="/preferences/new">{{ '添加偏好' if zh else 'Add a preference' }} →</a>
         <a class="home-link" href="/materials/new">{{ '添加材料' if zh else 'Add materials' }} →</a>
       </div></div>
-      <div><h3>{{ icon('sparkles') }}{{ '借助 AI 添加与整理' if zh else 'Add and organize with AI' }}</h3><p>{{ '告诉 AI 你想整理什么，也可以提供材料，让它提出新增或修改建议。' if zh else 'Tell AI what you want to organize and optionally provide materials. It will propose additions or changes.' }}</p><a class="button primary-button" href="/ai">{{ '打开 AI 维护助手' if zh else 'Open AI maintenance assistant' }} →</a></div>
+      <div><h3>{{ icon('sparkles') }}{{ '使用 AI 辅助维护' if zh else 'Maintain with AI' }}</h3><p>{{ '提供材料或说明需要整理的内容，AI 会提出新增或修改建议。' if zh else 'Provide source material or describe what to organize. AI will propose additions or changes.' }}</p><a class="button primary-button" href="/ai">{{ '打开 AI 维护助手' if zh else 'Open AI maintenance assistant' }} →</a></div>
     </div>
-    <p class="home-review-rule">{{ icon('check') }}<span>{{ 'AI 辅助产生的新增与修改，' if zh else 'All AI-assisted additions and changes ' }}<strong>{{ '必须经你审核通过后才会写入正式 Persona。' if zh else 'require your review and approval before they enter your Persona.' }}</strong></span></p>
+    <p class="home-review-rule">{{ icon('check') }}<span>{% if is_demo %}{{ 'AI 产生的每一条候选内容，' if zh else 'Every item proposed by AI ' }}<strong>{{ '都必须经用户审核通过后才会进入知识库。' if zh else 'must be reviewed and approved by the user before it enters the knowledge base.' }}</strong>{% else %}{{ 'AI 辅助产生的新增与修改，' if zh else 'All AI-assisted additions and changes ' }}<strong>{{ '必须经你审核通过后才会写入正式 Persona。' if zh else 'require your review and approval before they enter your Persona.' }}</strong>{% endif %}</span></p>
+    {% if is_demo %}<div class="home-review-flow" aria-label="{{ 'AI 辅助维护流程' if zh else 'AI-assisted maintenance flow' }}"><span>{{ '提供内容' if zh else 'Add content' }}</span><i>→</i><span>{{ 'AI 整理候选' if zh else 'AI proposes' }}</span><i>→</i><span>{{ '用户审核' if zh else 'User reviews' }}</span><i>→</i><span>{{ '写入知识库' if zh else 'Saved to knowledge base' }}</span></div>{% if pending_count %}<a class="home-link" href="/inbox">{{ '查看待审核内容' if zh else 'Review pending content' }} →</a>{% endif %}{% endif %}
   </section>
   {% if pending_count %}
   <section class="home-review-notice" aria-label="{{ '待审核提醒' if zh else 'Awaiting review' }}">
@@ -89,17 +110,7 @@
     <p id="home-runtime-message"></p><a class="home-link" href="/settings?tab=capabilities">{{ '查看运行状态' if zh else 'View runtime settings' }} →</a>
   </section>
 
-  <section class="home-assets" aria-labelledby="home-assets-title">
-    <div class="home-section-heading"><h2 id="home-assets-title">{{ '我的 Persona' if zh else 'My Persona' }}</h2><span>{{ '已确认的内容' if zh else 'Confirmed content' }}</span></div>
-    <div class="home-asset-grid">
-      {% for entity, path, label, unit in [('knowledge_node', 'knowledge', '知识', '个知识点'), ('preference', 'preferences', '偏好', '条偏好'), ('material', 'materials', '材料', '份材料'), ('course', 'courses', '课程', '门课程')] %}
-      <a class="home-asset" href="/{{ path }}" data-asset="{{ entity }}">
-        <span class="home-asset-label">{{ icon(entity) }}{{ label if zh else t('common.' + path) }}</span>
-        <span class="home-asset-value"><strong>{{ active_counts.get(entity, 0) }}</strong><span>{{ unit if zh else t('common.' + path)|lower }}</span></span><span class="home-asset-arrow" aria-hidden="true">↗</span>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
+  {% if not is_demo %}{{ asset_section(active_counts, zh) }}{% endif %}
 
   <section class="home-changes" aria-labelledby="home-changes-title">
     <div class="home-section-heading"><h2 id="home-changes-title">{{ '最近的变化' if zh else 'Recent changes' }}</h2>
@@ -113,11 +124,20 @@
     {% else %}<p class="home-no-changes">{{ '还没有保存记录。确认或主动保存内容后，变化会出现在这里。' if zh else 'No saved changes yet. Content you confirm or save will appear here.' }}</p>{% endif %}
   </section>
 
+  {% if is_demo %}
+  <section class="home-demo-cta" aria-labelledby="home-demo-cta-title">
+    <div><h2 id="home-demo-cta-title">{{ '建立自己的知识库' if zh else 'Build your own knowledge base' }}</h2><p>{{ '从自己的知识、材料和偏好开始，逐步整理一份属于你的 Persona。' if zh else 'Start with your own knowledge, materials and preferences, and build a Persona over time.' }}</p></div>
+    <a class="button ghost" href="/workspaces">{{ '创建或打开工作区' if zh else 'Create or open a workspace' }} →</a>
+  </section>
+  {% endif %}
+
+  {% if not is_demo %}
   <footer class="home-footer">
     <span class="home-runtime" id="home-runtime" data-state="unknown" role="status"><span class="home-runtime-dot" aria-hidden="true"></span><span id="home-runtime-label">{{ '正在读取运行状态…' if zh else 'Checking runtime status…' }}</span></span>
     <a class="home-link" href="/inbox?view=all">{{ '运行记录' if zh else 'Activity records' }} <span aria-hidden="true">›</span></a>
   </footer>
+  {% endif %}
 </div>
-<script src="/static/studio-overview.js?v=20260909.1" defer></script>
+<script src="/static/studio-overview.js?v=20260911.demo1" defer></script>
 {% if not is_demo %}<script src="/static/home-setup.js?v=20260911.guide2" defer></script>{% endif %}
 {% endblock %}

@@ -45,7 +45,7 @@
           {{ '概览' if locale == 'zh-CN' else 'Overview' }}
         </a>
         <details class="persona-nav" open data-assets-active="{{ 'true' if section in ['knowledge', 'courses', 'materials', 'preferences'] else 'false' }}">
-          <summary>{{ '我的 Persona' if locale == 'zh-CN' else 'My Persona' }}</summary>
+          <summary>{% if is_demo %}{{ '示例知识库' if locale == 'zh-CN' else 'Sample knowledge base' }}{% else %}{{ '我的 Persona' if locale == 'zh-CN' else 'My Persona' }}{% endif %}</summary>
           <div class="persona-nav-items">
         <a href="/knowledge" class="{% if section == 'knowledge' %}active{% endif %}">
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 2.5 8 12 13l7.8-4.1V15H22V8L12 3Zm-6 9v4.7c0 1.4 2.7 3.3 6 3.3s6-1.9 6-3.3V12l-6 3-6-3Z"/></svg>
@@ -67,10 +67,10 @@
         </details>
         <a href="/inbox" class="{% if section in ['review', 'inbox'] %}active{% endif %}">
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19 3h-4.2A3 3 0 0 0 12 1a3 3 0 0 0-2.8 2H5a2 2 0 0 0-2 2v16h18V5a2 2 0 0 0-2-2Zm-7 0.2a.8.8 0 1 1 0 1.6.8.8 0 0 1 0-1.6ZM8 17l-3-3 1.4-1.4L8 14.2l4.6-4.6L14 11l-6 6Z"/></svg>
-          <span class="studio-nav-long">{{ '反馈与审核' if locale == 'zh-CN' else 'Feedback & review' }}</span><span class="studio-nav-short">{{ '反馈审核' if locale == 'zh-CN' else 'Review' }}</span>
+          <span class="studio-nav-long">{% if is_demo %}{{ '审核' if locale == 'zh-CN' else 'Review' }}{% else %}{{ '反馈与审核' if locale == 'zh-CN' else 'Feedback & review' }}{% endif %}</span><span class="studio-nav-short">{{ '审核' if locale == 'zh-CN' else 'Review' }}</span>
           <span class="nav-count" data-inbox-pending title="{{ '待审核候选数' if locale == 'zh-CN' else 'Candidates awaiting review' }}" {% if not pending_count %}hidden{% endif %}>{{ pending_count }}</span>
         </a>
-        <a href="/evaluations" class="{% if section == 'evaluations' %}active{% endif %}"><span class="studio-nav-long">{{ '评测与改进' if locale == 'zh-CN' else 'Evaluation & improvement' }}</span><span class="studio-nav-short">{{ '评测改进' if locale == 'zh-CN' else 'Evaluate' }}</span></a>
+        {% if not is_demo %}<a href="/evaluations" class="{% if section == 'evaluations' %}active{% endif %}"><span class="studio-nav-long">{{ '评测与改进' if locale == 'zh-CN' else 'Evaluation & improvement' }}</span><span class="studio-nav-short">{{ '评测改进' if locale == 'zh-CN' else 'Evaluate' }}</span></a>{% endif %}
         <a href="/settings" class="{% if section in ['settings', 'models'] %}active{% endif %}">{{ '设置' if locale == 'zh-CN' else 'Settings' }}</a>
       </nav>
       {% if section != 'dashboard' %}<a href="/ai" class="studio-maintenance {% if section == 'ai' %}active{% endif %}">✦ {{ t('ai.assistant') }}</a>{% endif %}
@@ -90,7 +90,7 @@
     <main class="main-content">
       {% if is_demo %}
       <div class="demo-banner" role="note"><strong>DEMO</strong>
-        {{ '独立示例工作区 · 修改仅保存在 Demo · 模型连接单独配置 · 不采集真实会话' if locale == 'zh-CN' else 'Isolated sample workspace · Demo edits only · Separate model connections · No real conversation capture' }}
+        {{ '示例知识库 · 可以自由浏览和修改 · 所有操作只保存在此 Demo 中' if locale == 'zh-CN' else 'Sample knowledge base · Free to browse and edit · All changes stay in this Demo' }}
       </div>
       {% endif %}
       <header class="mobile-header">
@@ -111,7 +111,7 @@
           {{ message }}
         </div>
       {% endif %}
-      {% if section in ['preferences', 'knowledge'] %}<details class="first-use-card"><summary>{{ '内容保存在当前 Persona · 查看 Codex 接入状态' if locale == 'zh-CN' else 'Saved in this Persona · Codex connection status' }}</summary><p>{{ '自动应用偏好和对话学习共用 Codex Hook，分别开启。MCP 查询需要单独配置客户端。' if locale == 'zh-CN' else 'Automatic preferences and conversation learning share a Codex Hook, with separate switches. MCP queries need client setup.' }}</p><div data-integration-status></div><a href="/settings?tab=sources">{{ '设置应用接入' if locale == 'zh-CN' else 'Set up application access' }} →</a></details>{% endif %}
+      {% if not is_demo and section in ['preferences', 'knowledge'] %}<details class="first-use-card"><summary>{{ '内容保存在当前 Persona · 查看 Codex 接入状态' if locale == 'zh-CN' else 'Saved in this Persona · Codex connection status' }}</summary><p>{{ '自动应用偏好和对话学习共用 Codex Hook，分别开启。MCP 查询需要单独配置客户端。' if locale == 'zh-CN' else 'Automatic preferences and conversation learning share a Codex Hook, with separate switches. MCP queries need client setup.' }}</p><div data-integration-status></div><a href="/settings?tab=sources">{{ '设置应用接入' if locale == 'zh-CN' else 'Set up application access' }} →</a></details>{% endif %}
       {% block content %}{% endblock %}
     </main>
   </div>

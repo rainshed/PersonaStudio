@@ -55,7 +55,8 @@
 .persona-home .home-review-rule { display: flex; align-items: flex-start; gap: 9px; margin-top: 20px; padding: 12px 14px; background: var(--accent-soft); border-radius: 7px; font-size: 13px; }
 .persona-home .home-review-rule .home-icon { margin-top: 2px; color: var(--accent); width: 17px; height: 17px; }
 .persona-home .home-section-heading > span { color: var(--muted); font-size: 12px; }
-.persona-home .home-asset-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 11px; background: var(--paper); }
+.persona-home .home-demo-intro { margin: -5px 0 15px; color: var(--muted); font-size: 13px; }
+.persona-home .home-asset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); border: 1px solid var(--line); border-radius: 11px; background: var(--paper); }
 .persona-home .home-asset { position: relative; min-width: 0; padding: 20px; border-radius: 10px; }
 .persona-home .home-asset + .home-asset { border-left: 1px solid var(--line); border-top-left-radius: 0; border-bottom-left-radius: 0; }
 .persona-home .home-asset:hover, .persona-home .home-change:hover { background: #f8f9ff; }
@@ -64,8 +65,16 @@
 .persona-home .home-asset-value { display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; margin-top: 12px; }
 .persona-home .home-asset-value strong { font-size: 30px; line-height: 1.25; letter-spacing: -.7px; font-variant-numeric: tabular-nums; }
 .persona-home .home-asset-value > span { font-size: 12px; color: var(--muted); }
+.persona-home .home-asset-description { display: block; margin-top: 10px; padding-right: 12px; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .persona-home .home-asset-arrow { position: absolute; right: 17px; top: 18px; color: #9aa4b8; font-size: 15px; }
 .persona-home .home-assets { margin-bottom: 26px; }
+.persona-home .home-demo-assets { margin-bottom: 22px; }
+.persona-home .home-review-flow { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 14px; color: var(--muted); font-size: 12px; }
+.persona-home .home-review-flow span { padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--canvas); color: var(--ink); }
+.persona-home .home-review-flow i { color: #9aa4b8; font-style: normal; }
+.persona-home .home-demo-cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 24px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 11px; background: var(--paper); }
+.persona-home .home-demo-cta p { margin-top: 4px; color: var(--muted); font-size: 13px; }
+.persona-home .home-demo-cta .button { flex: none; }
 .persona-home .home-change-list { border: 1px solid var(--line); border-radius: 11px; background: var(--paper); overflow: clip; }
 .persona-home .home-change { display: grid; grid-template-columns: 38px minmax(0, 1fr) 16px; gap: 15px; align-items: center; padding: 19px 21px; }
 .persona-home .home-change + .home-change, .persona-home #home-extra-changes { border-top: 1px solid var(--line); }
@@ -92,6 +101,7 @@
   .persona-home .home-setup-item .button { grid-column: 1 / -1; width: auto; justify-self: start; }
   .persona-home .home-enrichment-grid { grid-template-columns: 1fr; gap: 18px; }
   .persona-home .home-enrichment-grid > div + div { border-left: 0; border-top: 1px solid var(--line); padding: 18px 0 0; }
+  .persona-home .home-demo-cta { align-items: flex-start; flex-direction: column; gap: 14px; }
   .persona-home .home-asset { padding: 17px 14px; }
   .persona-home .home-asset-arrow { display: none; }
   .persona-home .home-asset-value { gap: 5px; }

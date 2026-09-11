@@ -18,6 +18,7 @@
   const message = document.getElementById('home-runtime-message');
   const runtime = document.getElementById('home-runtime');
   const label = document.getElementById('home-runtime-label');
+  if (!panel || !message || !runtime || !label) return;
   const text = (cn, en) => zh ? cn : en;
   function show(status, state, notice = '') {
     label.textContent = status;
