@@ -62,6 +62,7 @@ def main() -> None:
     args = parser.parse_args()
     dist = args.dist_dir.resolve()
     manifest = json.loads((dist / "release-manifest.json").read_text())
+    assert manifest["platforms"] == ["macos"]
     archive = dist / manifest["archive"]
     installer = dist / "install.sh"
     with tempfile.TemporaryDirectory(prefix="personastudio-installer-") as directory:

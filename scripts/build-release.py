@@ -171,7 +171,7 @@ def main() -> None:
         "archive": archive.name,
         "sha256": archive_hash,
         "requires_python": ">=3.12",
-        "platforms": ["macos", "linux"],
+        "platforms": ["macos"],
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     installer = dist / "install.sh"
     render_installer(installer, release_version, archive, archive_hash)

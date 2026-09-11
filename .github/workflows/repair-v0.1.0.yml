@@ -1,0 +1,76 @@
+name: Repair v0.1.0 release metadata
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/repair-v0.1.0.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Download published assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dist/repair
+          gh release download v0.1.0 \
+            --repo "$GITHUB_REPOSITORY" \
+            --dir dist/repair \
+            --pattern install.sh \
+            --pattern personastudio-v0.1.0.tar.gz \
+            --pattern release-manifest.json
+      - name: Correct supported platforms and checksums
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          root = Path("dist/repair")
+          manifest_path = root / "release-manifest.json"
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+          assert manifest["tag"] == "v0.1.0"
+          assert manifest["version"] == "0.1.0"
+          assert manifest["archive"] == "personastudio-v0.1.0.tar.gz"
+          manifest["platforms"] = ["macos"]
+          manifest_path.write_text(
+              json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          assets = [root / manifest["archive"], root / "install.sh", manifest_path]
+          (root / "SHA256SUMS").write_text(
+              "".join(f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}\n" for path in assets),
+              encoding="utf-8",
+          )
+          PY
+          cd dist/repair
+          shasum -a 256 -c SHA256SUMS
+      - name: Replace release metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload v0.1.0 \
+            --repo "$GITHUB_REPOSITORY" \
+            --clobber \
+            dist/repair/release-manifest.json \
+            dist/repair/SHA256SUMS
+      - name: Verify published metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dist/verify
+          gh release download v0.1.0 \
+            --repo "$GITHUB_REPOSITORY" \
+            --dir dist/verify \
+            --pattern install.sh \
+            --pattern personastudio-v0.1.0.tar.gz \
+            --pattern release-manifest.json \
+            --pattern SHA256SUMS
+          cd dist/verify
+          shasum -a 256 -c SHA256SUMS
+          python3 -c 'import json; assert json.load(open("release-manifest.json"))["platforms"] == ["macos"]'
