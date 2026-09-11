@@ -18,7 +18,10 @@ from .conversation_learning.repository import LearningRepository
 
 
 def command(data_root, state_root, repository, connection_id, action):
-    return [sys.executable, "-m", "ai_persona", "codex-hook", action,
+    installed = os.environ.get("AI_PERSONA_COMMAND")
+    prefix = ([installed] if installed and Path(installed).is_absolute()
+              else [sys.executable, "-m", "ai_persona"])
+    return [*prefix, "codex-hook", action,
             "--data", str(data_root), "--state", str(state_root),
             "--queue-dir", str(repository.directory), "--connection", connection_id]
 
@@ -26,10 +29,14 @@ def command(data_root, state_root, repository, connection_id, action):
 def hook_config(data_root, state_root, repository, connection_id):
     if repository.connection(connection_id).adapter != "codex":
         raise ValueError("请选择 Codex 来源。")
+    invocation = command(data_root, state_root, repository, connection_id, "run")
+    installed = os.environ.get("AI_PERSONA_COMMAND")
+    if not (installed and Path(installed).is_absolute()):
+        invocation = ["env", "PYTHONPATH=" + str(Path(__file__).resolve().parents[1]),
+                      *invocation]
     return {"hooks": {"UserPromptSubmit": [{"hooks": [{
         "type": "command",
-        "command": shlex.join(["env", "PYTHONPATH=" + str(Path(__file__).resolve().parents[1]),
-                               *command(data_root, state_root, repository, connection_id, "run")]),
+        "command": shlex.join(invocation),
         # The application enforces the configurable 1–60 second turn budget.
         "timeout": 62, "additionalContextLimit": 0,
         "statusMessage": "正在处理 AI Persona",

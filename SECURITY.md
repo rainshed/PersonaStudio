@@ -18,9 +18,3 @@ If this repository has GitHub private vulnerability reporting enabled, use **Sec
 A useful private report describes the affected revision, operating system, minimal reproduction using fictional data, expected boundary, and observed result. Report compromised provider credentials to the provider and rotate them through its normal account controls.
 
 Only the current development revision is maintained here; a release support policy has not been established.
-
-## 中文说明
-
-本应用面向本地单用户使用，不提供多用户隔离。个人工作区、模型凭据、含私人内容的日志和备份不能提交到公共仓库。模型调用可能将所选输入发送给你配置的提供方；对话采集、学习与来源信任需要分别开启。
-
-发现漏洞时，优先使用仓库已启用的 GitHub 私密漏洞报告功能；如果没有该入口，可公开询问维护者的私密报告渠道，但不要公开漏洞利用细节、凭据或私人数据。

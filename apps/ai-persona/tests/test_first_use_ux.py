@@ -354,6 +354,19 @@ def test_generated_mcp_configuration_starts_and_reads_over_stdio(studio):
     assert studio_client.get("/api/studio/integrations").json()["connections"] == []
 
 
+def test_generated_mcp_configuration_uses_installed_stable_command(studio, monkeypatch):
+    import tomllib
+
+    _, client, _, _ = studio
+    stable = "/fixture/bin/ai-persona-mcp"
+    monkeypatch.setenv("AI_PERSONA_MCP_COMMAND", stable)
+    snippet = client.get("/api/studio/mcp-setup").json()["config"]
+    settings = tomllib.loads(snippet)["mcp_servers"]["ai_persona"]
+    assert settings["command"] == stable
+    assert settings["args"][0] == "--data"
+    assert "env" not in settings
+
+
 def test_mcp_diagnostic_failure_does_not_report_a_client_read(studio, monkeypatch):
     from ai_persona import mcp_setup
     _, client, _, _ = studio

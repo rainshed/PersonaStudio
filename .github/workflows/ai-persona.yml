@@ -2,9 +2,9 @@ name: AI Persona
 
 on:
   push:
-    paths: ['apps/ai-persona/**', 'scripts/**', 'tests/**', 'package*.json', '.github/workflows/**']
+    paths: ['apps/ai-persona/**', 'scripts/**', 'tests/**', 'package*.json', 'install.sh', 'README*.md', 'CHANGELOG.md', 'docs/**', '.github/workflows/**']
   pull_request:
-    paths: ['apps/ai-persona/**', 'scripts/**', 'tests/**', 'package*.json', '.github/workflows/**']
+    paths: ['apps/ai-persona/**', 'scripts/**', 'tests/**', 'package*.json', 'install.sh', 'README*.md', 'CHANGELOG.md', 'docs/**', '.github/workflows/**']
   workflow_dispatch:
 
 permissions:
@@ -32,6 +32,10 @@ jobs:
         run: uv run --no-project --python 3.12 python scripts/check.py
       - name: Verify distributable packages in a clean environment
         run: uv run --no-project --python 3.12 python scripts/verify-release.py
+      - name: Build and test the one-line installer
+        run: |
+          uv run --no-project --python 3.12 python scripts/build-release.py --dist-dir dist/release-test
+          uv run --no-project --python 3.12 python scripts/test-installer.py --dist-dir dist/release-test
 
   browser:
     runs-on: ubuntu-latest

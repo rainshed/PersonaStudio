@@ -1,0 +1,9 @@
+#!/bin/sh
+# Run the bundled MCP server with the same locked environment as Studio.
+set -eu
+PERSONA_REPO=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+if ! command -v uv >/dev/null 2>&1; then
+    printf '%s\n' 'AI Persona needs uv. Install it from https://docs.astral.sh/uv/getting-started/installation/ and run this command again.' >&2
+    exit 1
+fi
+exec uv run --locked --no-editable --project "$PERSONA_REPO/apps/ai-persona" ai-persona-mcp "$@"

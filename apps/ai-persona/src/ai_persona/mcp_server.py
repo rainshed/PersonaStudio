@@ -14,6 +14,7 @@ from .workspace import resolve_workspace
 
 def create_mcp_server(data_root: Path, state_root: Path) -> MCPServer[Any]:
     """Expose only reviewed knowledge and declared source reads to external agents."""
+    from . import __version__
     from .demo import check_demo_paths
     from .mcp_setup import configuration, record_client_read
 
@@ -25,7 +26,7 @@ def create_mcp_server(data_root: Path, state_root: Path) -> MCPServer[Any]:
         name="ai-persona",
         title="AI Persona",
         description="Read reviewed personal knowledge and declared source content.",
-        version="0.1.0",
+        version=__version__,
         instructions=(
             "source: AI Persona\n\n"
             "purpose: Retrieve the user's knowledge structure, mastery, interests and materials "

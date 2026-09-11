@@ -111,6 +111,23 @@ def test_install_preserves_other_hooks_backs_up_and_is_idempotent(setup):
     assert not again["changed"] and again["backup"] is None and path.read_bytes() == current
 
 
+def test_installed_hook_uses_stable_command_and_replaces_legacy_entry(setup, monkeypatch):
+    service, c, _ = setup
+    stable = "/fixture/bin/ai-persona"
+    monkeypatch.setenv("AI_PERSONA_COMMAND", stable)
+    preview = codex_setup.installation(service, c.id)
+    expected = preview["snippet"]["hooks"]["UserPromptSubmit"][0]["hooks"][0]
+    assert expected["command"].startswith(stable + " codex-hook run ")
+    legacy = {
+        **expected,
+        "command": (
+            f"env PYTHONPATH=/old/source /old/venv/bin/python -m ai_persona "
+            f"{expected['command'].split(' ', 1)[1]}"
+        ),
+    }
+    assert codex_setup.owns_handler(legacy, expected)
+
+
 def test_conflicts_invalid_files_and_symlinks_are_not_overwritten(setup):
     service, c, home = setup
     path = home / "hooks.json"

@@ -125,6 +125,30 @@ try {
 
   await visit('/');
   await page.screenshot({path: join(screenshots, 'studio-overview.png'), fullPage: true});
+  await visit('/knowledge');
+  await expect(page.locator('#nodes .node').first()).toBeVisible();
+  await page.locator('.knowledge-map-panel').screenshot({
+    path: join(screenshots, 'knowledge-graph.png'), animations: 'disabled',
+  });
+  await visit('/preferences');
+  await page.locator('.preference-workspace').screenshot({
+    path: join(screenshots, 'preferences.png'), animations: 'disabled',
+  });
+
+  await context.addCookies([{name: 'ai_persona_locale', value: 'zh-CN', url: base}]);
+  await visit('/');
+  await page.screenshot({path: join(screenshots, 'studio-overview.zh-CN.png'),
+    fullPage: true, animations: 'disabled'});
+  await visit('/knowledge');
+  await expect(page.locator('#nodes .node').first()).toBeVisible();
+  await page.locator('.knowledge-map-panel').screenshot({
+    path: join(screenshots, 'knowledge-graph.zh-CN.png'), animations: 'disabled',
+  });
+  await visit('/preferences');
+  await page.locator('.preference-workspace').screenshot({
+    path: join(screenshots, 'preferences.zh-CN.png'), animations: 'disabled',
+  });
+  await context.addCookies([{name: 'ai_persona_locale', value: 'en', url: base}]);
 
   await visit('/knowledge');
   await expect(page.locator('#map')).toBeVisible();
@@ -203,9 +227,10 @@ try {
   await expect(page.locator('input[value=demo]')).toBeChecked();
   await page.screenshot({path: join(screenshots, 'studio-setup.png'), fullPage: true});
   await page.locator('input[value=create]').check();
-  await expect(page.locator('#workspace-path')).toBeVisible();
+  await expect(page.locator('#workspace-fields')).toBeVisible();
   await expect(page.locator('#workspace-name')).toBeVisible();
   await page.locator('#workspace-location summary').click();
+  await expect(page.locator('#workspace-path')).toBeVisible();
   await expect(page.locator('#persona-id')).toBeVisible();
   await page.locator('#workspace-path').fill('relative-path');
   await page.locator('#setup-submit').click();

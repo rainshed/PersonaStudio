@@ -2,7 +2,13 @@
 
 ## Unreleased
 
+- Consolidate permanent user documentation into two paired English/Chinese guides and remove duplicate application READMEs, dated validation logs, superseded design documents, and redundant getting-started, architecture, and remote runbook guides.
+
+## 0.1.0
+
 ### PersonaStudio repository
+
+- Add a release installer whose single GitHub command handles both first installation and updates. Install verified releases side by side, expose stable `ai-persona` and `ai-persona-mcp` commands, preserve the previous version, and restore it when a restarted Studio fails. Publish deterministic archives, manifests and checksums from version tags after clean installation tests.
 
 - Add downloadable Codex runbooks for Hook installation and MCP configuration in Application access. Accept explicit data/state paths in the MCP entry point so Studio-generated configurations start successfully.
 
@@ -32,4 +38,4 @@
 - Document local setup, diagnostics, optional model dependencies, external integrations, and workspace lifecycle operations.
 - Let `setup` and `start` reuse a healthy service for the same workspace or automatically choose an available port when the preferred default is occupied. Explicit `--port` requests still report conflicts; foreground `serve` and remote gateway ports remain fixed.
 
-This section describes work prepared in this checkout. It does not announce a published GitHub release, package-registry upload, or successful hosted CI run.
+This section describes the contents prepared for version 0.1.0. A version is public only after its GitHub Release workflow succeeds.

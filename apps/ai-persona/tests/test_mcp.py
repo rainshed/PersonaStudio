@@ -148,6 +148,18 @@ def test_mcp_stdio_process_completes_a_real_handshake(tmp_path: Path) -> None:
     asyncio.run(scenario())
 
 
+def test_installed_mcp_configuration_uses_stable_command(tmp_path, monkeypatch):
+    from ai_persona import mcp_setup
+
+    command = tmp_path / "bin/ai-persona-mcp"
+    monkeypatch.setenv("AI_PERSONA_MCP_COMMAND", str(command))
+    data, state = tmp_path / "data", tmp_path / "state"
+    selected, arguments, environment = mcp_setup.server_process(data, state)
+    assert selected == str(command)
+    assert arguments == ["--data", str(data), "--state", str(state)]
+    assert environment == {}
+
+
 def test_mcp_stdio_starts_with_a_missing_source_and_reports_file_coverage(tmp_path):
     data, _ = mcp_workspace(tmp_path)
     store = PersonaStore(data).load()

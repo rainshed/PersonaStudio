@@ -8,7 +8,7 @@ One `UserPromptSubmit` Hook supports automatic preferences and conversation lear
 
 Read the supplied Studio URL's `GET /healthz`. Require `ok: true`, `demo: false`, and the supplied `workspace_id`. Reuse this workspace. Identify the real Codex host, project and effective `CODEX_HOME`.
 
-These steps install locally on macOS/Linux. For another host, SSH or a container, use the installed version's [remote integration guide](https://github.com/rainshed/PersonaStudio/blob/main/docs/INTEGRATIONS.md#remote-codex-over-ssh--ssh-远端-codex) instead of copying local paths.
+These steps install locally on macOS/Linux. For another host, SSH or a container, use the installed version's [remote integration guide](https://github.com/rainshed/PersonaStudio/blob/main/docs/INTEGRATIONS.md#remote-codex-over-ssh) instead of copying local paths.
 
 Read `GET /api/learning/v1/config` and `GET /api/preferences/application/config`. Preserve existing feature choices. Reuse a connection matching the workspace, Codex home and selected project scope. For a new connection, default to **the current project, this prompt only**, with no history scan. Ask for scope only when there is no project or the target is ambiguous.
 

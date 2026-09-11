@@ -8,7 +8,7 @@ MCP provides six read-only knowledge/source tools. It needs no Persona model acc
 
 - Use the supplied Studio URL. Read `GET /healthz`; require `ok: true`, `demo: false`, and the supplied `workspace_id`. Reuse this workspace.
 - Identify the actual Codex host and effective `CODEX_HOME`. User configuration is normally `$CODEX_HOME/config.toml`; project configuration is `.codex/config.toml` in a trusted project. Preserve the user's chosen scope.
-- These local steps require Codex and Studio on the same macOS/Linux host. A remote browser does not imply remote Codex. For SSH, containers or another host, use the installed version's [remote integration guide](https://github.com/rainshed/PersonaStudio/blob/main/docs/INTEGRATIONS.md#remote-codex-over-ssh--ssh-远端-codex); do not copy local paths to another host.
+- These local steps require Codex and Studio on the same macOS/Linux host. A remote browser does not imply remote Codex. For SSH, containers or another host, use the installed version's [remote integration guide](https://github.com/rainshed/PersonaStudio/blob/main/docs/INTEGRATIONS.md#remote-codex-over-ssh); do not copy local paths to another host.
 
 ## 2. Merge the generated configuration
 

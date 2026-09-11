@@ -1,5 +1,7 @@
 """File-first AI persona storage demo."""
 
+from importlib.metadata import version
+
 from .compiler import BuildResult, PersonaCompiler
 from .store import PersonaStore, StoreValidationError
 
@@ -10,4 +12,4 @@ __all__ = [
     "StoreValidationError",
 ]
 
-__version__ = "0.1.0"
+__version__ = version("ai-persona")

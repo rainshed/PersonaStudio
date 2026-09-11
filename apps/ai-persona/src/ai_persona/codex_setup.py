@@ -143,25 +143,36 @@ def owns_handler(handler, expected):
     if handler.get("type") != "command" or not isinstance(handler.get("command"), str):
         return False
     try:
-        tokens, target = shlex.split(handler["command"]), shlex.split(expected["command"])
-        start = tokens.index("-m")
-        if start not in {1, 3} or len(tokens) != start + 12:
-            return False
-        if start == 3 and (tokens[0] != "env" or not tokens[1].startswith("PYTHONPATH=")):
-            return False
-        executable = Path(tokens[start - 1])
-        if not executable.is_absolute() or not executable.name.lower().startswith("python"):
-            return False
-        if tokens[start : start + 4] != ["-m", "ai_persona", "codex-hook", "run"]:
+        def fields(command):
+            tokens = shlex.split(command)
+            if len(tokens) >= 2 and tokens[0] == "env" and tokens[1].startswith("PYTHONPATH="):
+                tokens = tokens[2:]
+            if not tokens or not Path(tokens[0]).is_absolute():
+                return None
+            if len(tokens) >= 5 and tokens[1:5] == ["-m", "ai_persona", "codex-hook", "run"]:
+                if not Path(tokens[0]).name.lower().startswith("python"):
+                    return None
+                arguments = tokens[5:]
+            elif len(tokens) >= 3 and tokens[1:3] == ["codex-hook", "run"]:
+                if Path(tokens[0]).name != "ai-persona":
+                    return None
+                arguments = tokens[3:]
+            else:
+                return None
+            if len(arguments) != 8:
+                return None
+            result = {}
+            for flag in ["--data", "--state", "--queue-dir", "--connection"]:
+                if arguments.count(flag) != 1:
+                    return None
+                result[flag] = arguments[arguments.index(flag) + 1]
+            return result
+
+        found, target = fields(handler["command"]), fields(expected["command"])
+        if found is None or target is None:
             return False
         # Match the workspace and source, not just the display name or module name.
-        for flag in ["--data", "--state", "--queue-dir", "--connection"]:
-            if (
-                tokens.count(flag) != 1
-                or tokens[tokens.index(flag) + 1] != target[target.index(flag) + 1]
-            ):
-                return False
-        return True
+        return found == target
     except (ValueError, IndexError):
         return False
 

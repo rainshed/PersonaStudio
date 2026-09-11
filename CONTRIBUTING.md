@@ -30,10 +30,23 @@ The root launcher uses a regular installation so it also works in folders where 
 
 The root `npm run test:browser` command exercises browser flows after installing the root development dependencies and the configured Playwright browser. `python3 scripts/verify-release.py` verifies source/wheel packaging and a clean installed Demo. These checks require their documented local tooling; a passing local run does not claim that hosted CI or a public release exists.
 
+## Publishing a release
+
+Use `apps/ai-persona/pyproject.toml` as the application version source. Update it and `CHANGELOG.md`, then refresh `apps/ai-persona/uv.lock`. Before tagging, build and exercise the same assets that GitHub will publish:
+
+```sh
+uv lock --project apps/ai-persona
+python3 scripts/verify-release.py
+python3 scripts/build-release.py --dist-dir dist/release --expected-tag v0.1.0
+python3 scripts/test-installer.py --dist-dir dist/release
+```
+
+Commit those source changes, create the matching `vMAJOR.MINOR.PATCH` tag, and push the tag. The release workflow repeats all checks, creates a draft GitHub Release, uploads the versioned archive, rendered installer, manifest and checksums, then publishes it. Do not create or move a public version tag until its source commit is final.
+
 ## Changes we can review
 
 - Explain the problem, the behavior after the change, and the relevant validation.
-- Preserve the [page and feature contract](docs/FEATURE_PARITY.md), existing `ai-persona` commands, and the distinction between human edits and AI proposals.
+- Preserve existing `ai-persona` commands and the distinction between human edits and AI proposals.
 - Add focused regression coverage for behavior or data-format changes. A documentation correction usually does not need a new test.
 - Keep English and Chinese user-facing text consistent. Update the appropriate usage guide when commands or setup change.
 - Commit dependency declarations and their lockfile together. The Python lockfile belongs to `apps/ai-persona`; the Node runtime has its own lockfile.
@@ -41,6 +54,9 @@ The root `npm run test:browser` command exercises browser flows after installing
 
 For data migration changes, demonstrate behavior on an isolated copy, explain backup and rollback, and avoid overwriting an existing destination. Never use a contributor's personal workspace as a test fixture.
 
-## 中文说明
+## Documentation
 
-欢迎使用中文提交问题和 PR。请说明具体问题、修改后的行为和验证结果；涉及页面、命令或数据格式时，同步更新兼容矩阵及使用文档。开发与测试使用虚构 Demo 或临时工作区，不提交私人材料、对话、凭据和部署记录。涉及安全问题时，请先查看 [SECURITY.md](SECURITY.md)。
+- Keep permanent documentation in the repository root and `docs/`; application design history belongs in Git, issues, and pull requests.
+- Use one language per file. English files use `NAME.md`; their Chinese peers use `NAME.zh-CN.md`.
+- Keep paired documents structurally aligned and update both when a command, workflow, or public contract changes.
+- Do not add dated delivery logs or completed implementation plans as permanent documentation. Put reproducible behavior in tests and release changes in `CHANGELOG.md`.

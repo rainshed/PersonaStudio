@@ -114,15 +114,19 @@ def test_demo_never_reuses_real_studio_on_same_port(tmp_path, monkeypatch):
 
         from ai_persona import mcp_server
 
-        review = {}
+        mcp_workspace = {}
 
         def server(data, state, **kwargs):
-            review.update(kwargs)
+            mcp_workspace.update(data=data, state=state, kwargs=kwargs)
             return SimpleNamespace(run=lambda transport: None)
 
         monkeypatch.setattr(mcp_server, "create_mcp_server", server)
         assert mcp_server.main(["--demo"]) == 0
-        assert review["review_base_url"] == f"http://127.0.0.1:{demo_port}"
+        assert mcp_workspace == {
+            "data": sample.data_root,
+            "state": sample.state_root,
+            "kwargs": {},
+        }
         stop_ui(sample)
         assert not ui_status(workspace)["running"]
     finally:

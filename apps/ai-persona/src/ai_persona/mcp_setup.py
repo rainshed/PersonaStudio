@@ -116,6 +116,18 @@ def server_arguments(data_root, state_root):
     return ["-m", "ai_persona.mcp_server", "--data", str(data_root), "--state", str(state_root)]
 
 
+def server_process(data_root, state_root):
+    """Use a stable installed command when available, with a source-checkout fallback."""
+    installed = os.environ.get("AI_PERSONA_MCP_COMMAND")
+    if installed and Path(installed).is_absolute():
+        return installed, ["--data", str(data_root), "--state", str(state_root)], {}
+    return (
+        sys.executable,
+        server_arguments(data_root, state_root),
+        {"PYTHONPATH": str(Path(__file__).resolve().parents[1])},
+    )
+
+
 async def diagnose_server(data_root, state_root):
     """Start Studio's own server and inspect its handshake/catalog, never call a tool."""
     from mcp import Client, StdioServerParameters, stdio_client
@@ -126,11 +138,12 @@ async def diagnose_server(data_root, state_root):
         "checked_at": time.time(),
         "workspace_id": workspace_identity(data_root, state_root),
     }
+    command, arguments, process_env = server_process(data_root, state_root)
     parameters = StdioServerParameters(
-        command=sys.executable,
-        args=server_arguments(data_root, state_root),
+        command=command,
+        args=arguments,
         env={
-            "PYTHONPATH": str(Path(__file__).resolve().parents[1]),
+            **process_env,
             "CODEX_HOME": os.environ.get("CODEX_HOME", str(Path.home() / ".codex")),
             "AI_PERSONA_SEMANTIC_SEARCH": "0",
         },
@@ -177,20 +190,23 @@ def mount_mcp_setup(app, data_root, state_root):
             observations = {r["kind"]: json.loads(r["payload"]) for r in rows}
             if signature == "unreadable":
                 observations.pop("client_read", None)
+            command, arguments, process_env = server_process(data_root, state_root)
             snippet = (
                 "[mcp_servers.ai_persona]\ncommand = "
-                + json.dumps(sys.executable)
+                + json.dumps(command)
                 + "\nargs = "
-                + json.dumps(server_arguments(data_root, state_root), ensure_ascii=False)
+                + json.dumps(arguments, ensure_ascii=False)
                 + "\nenabled_tools = "
                 + json.dumps(PUBLIC_QUERY_TOOLS)
                 # Codex does not forward CODEX_HOME to stdio servers by default.
                 # Use the client's effective home to bind read observations correctly.
-                + '\nenv_vars = ["CODEX_HOME"]'
-                + "\n\n[mcp_servers.ai_persona.env]\nPYTHONPATH = "
-                + json.dumps(str(Path(__file__).resolve().parents[1]), ensure_ascii=False)
-                + "\n"
+                + '\nenv_vars = ["CODEX_HOME"]\n'
             )
+            if process_env:
+                snippet += "\n[mcp_servers.ai_persona.env]\n" + "\n".join(
+                    key + " = " + json.dumps(value, ensure_ascii=False)
+                    for key, value in process_env.items()
+                ) + "\n"
             return JSONResponse(
                 {
                     "configured": configured,
