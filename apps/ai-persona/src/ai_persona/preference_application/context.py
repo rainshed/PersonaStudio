@@ -90,7 +90,7 @@ def build_context(store, matched_ids, turn_id, max_bytes):
 
 
 def prepare_saved_context(data_root, state_root, result_id, turn_id, max_bytes=24000):
-    """MCP uses the same builder, accepting only a completed, current activation."""
+    """Assemble saved preferences only from a completed, current activation."""
     from ..evaluations.contracts import ACTIVATION
     from ..evaluations.store import EvaluationStore
     from ..store import PersonaStore

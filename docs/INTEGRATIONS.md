@@ -24,33 +24,32 @@ For an MCP client, configure `uv` as the executable and pass the same arguments.
 }
 ```
 
-Clients differ in how this server entry is nested in their configuration. Keep their existing servers. Start Studio separately if you want to open review links.
+Clients differ in how this server entry is nested in their configuration. Keep their existing servers. Studio manages preferences, maintenance and human review separately.
+
+The public local and remote MCP servers expose exactly six read-only tools:
 
 | Tools | Purpose |
 | --- | --- |
-| `verify_persona_connection` | Complete an explicit Studio connection probe without reading personal content or calling a model. |
 | `get_knowledge_map`, `search_knowledge`, `get_persona_records` | Discover and read scoped effective knowledge. |
-| `search_preferences`, `get_preference_records` | Inspect reviewed preferences, contexts, and examples for maintenance without activating them. |
-| `list_source_files`, `search_source_content`, `read_source` | Inspect permitted source files, text, images, and table content. |
-| `resolve_persona_activation`, `prepare_preference_context` | Match preference contexts and assemble the resulting preference package. Activation can call the configured model. |
-| `ingest_conversation_event`, `get_conversation_learning_status` | Submit events to an explicitly enabled learning source and read its progress. |
-| `propose_change_set`, `get_proposal_status`, `list_persona_changes` | Create pending proposals, check their state, and read published history. |
+| `list_source_files`, `search_source_content`, `read_source` | Read declared material sources and injected preference reference samples. |
 
-MCP does not expose approval or publication tools. Pending candidates do not become effective records until human review. Scope applies to knowledge, related evidence, and source access. Query results include coverage and revision information; incomplete or degraded retrieval is reported explicitly.
+Preferences are selected and injected by the separate Hook workflow. Preference maintenance, conversation ingestion, proposals, review status and incremental synchronization remain internal services; none are public MCP tools. Internal maintenance reuses the query definitions and adds its own preference queries. AI proposals still require human review in Studio.
+
+Scope applies to knowledge, evidence and source access. Query results include revisions, coverage and continuation information. The server provides no write, preference activation or diagnostic tools.
 
 Semantic retrieval runs a local embedding model. Its first use can download model files and take longer than a normal request. Set a sufficient client timeout. `AI_PERSONA_SEMANTIC_SEARCH=0` explicitly disables the semantic channel; text and graph retrieval remain available with the corresponding coverage report.
 
-本地 MCP 使用 stdio，客户端应配置绝对项目路径和工作区路径。MCP 只能查询正式记录或提交待审核提案，不提供通过与发布工具；知识、证据和来源都受范围约束。本地语义检索首次使用需要下载模型，降级状态会明确返回。
+本地 MCP 使用 stdio，客户端应配置绝对项目路径和工作区路径。公共 MCP 仅提供上述 6 个只读工具，不提供偏好维护、对话学习或提案接口；知识、证据和来源都受范围约束。本地语义检索首次使用需要下载模型，降级状态会明确返回。
 
-For agent-assisted setup, give Codex the [local MCP runbook (中文)](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md), also downloadable from **Settings → Application access**. It covers configuration backups and merging, client reload, and a real verification tool call against the selected workspace.
+For agent-assisted setup, give Codex the [local MCP runbook (中文)](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md), also downloadable from **Settings → Application access**. It covers configuration backups and merging, client reload, and separate service self-checks and a real read from the target client.
 
 也可以在「设置 → 应用接入」下载[本机 MCP 配置流程](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md)交给 Codex，完成配置备份与合并、客户端加载和真实工具调用验证。仅写入配置或显示服务进程已启动，不代表实际客户端已经接通。
 
 ## Codex learning and preference application / Codex 学习与偏好应用
 
-Saving preferences requires neither a Hook nor MCP. Automatic use in daily Codex messages and conversation learning share the Codex Hook, but each feature has its own switch. Basic MCP queries require client configuration, independently of the Hook. **Settings → Application access** provides a workspace-specific MCP entry and a 15-minute verification message to send from the actual client; the verification is tied to the host, workspace and configuration. It does not test model-backed activation. Material extraction at `/extract` uses its own Codex runtime and does not require a daily-conversation Hook.
+Saving preferences requires neither a Hook nor MCP. Automatic use in daily Codex messages and conversation learning share the Codex Hook, but each feature has its own switch. Basic MCP queries require client configuration, independently of the Hook. **Settings → Application access** provides a workspace-specific MCP entry, a service self-check, and an empty-scope read test message. The self-check starts Studio’s server and checks the handshake and six-tool catalog without reading personal data. A separate successful MCP read records only the tool, timestamp, server host and workspace; it does not attest a named client’s identity. Configuration changes invalidate displayed observations. Neither check tests model-backed activation. Material extraction at `/extract` uses its own Codex runtime and does not require a daily-conversation Hook.
 
-保存偏好不要求 Hook 或 MCP。日常自动应用偏好与对话学习共用 Codex Hook，但分别开启；普通 MCP 查询只要求客户端配置，不依赖 Hook。「设置 → 应用接入」提供当前工作区的 MCP 配置和 15 分钟内有效的验证消息。请在实际客户端发送；验证绑定主机、工作区和配置，不代表需要模型的场景匹配已可用。「从材料提取知识」使用独立的 Codex 运行组件，无需安装日常对话 Hook。
+保存偏好不要求 Hook 或 MCP。日常自动应用偏好与对话学习共用 Codex Hook，但分别开启；普通 MCP 查询只要求客户端配置，不依赖 Hook。「设置 → 应用接入」提供当前工作区的 MCP 配置、服务自检和空范围查询测试消息。自检仅检查 Studio 服务的握手及 6 个工具；目标客户端实际查询后，页面显示工具、时间和工作区的调用记录，不证明指定客户端身份。配置变化使旧记录失效，两项检查均不代表偏好匹配已可用。「从材料提取知识」使用独立的 Codex 运行组件，无需安装日常对话 Hook。
 
 Use **Settings → Application access** to select the Codex source, projects/sessions, and whether previous conversation context is available. Install and verify the integration through that page, then review the new Hook in the host application's trust workflow. Preserve unrelated Hooks and MCP settings.
 

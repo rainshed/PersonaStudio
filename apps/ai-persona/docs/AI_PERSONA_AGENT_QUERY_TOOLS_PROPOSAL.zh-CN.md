@@ -1,5 +1,8 @@
 # AI Persona：Agent 查询工具公共契约
 
+> 2026-09-11 接口边界：公共 MCP 仅注册六个知识与来源查询。本文中的 `search_preferences`、`get_preference_records` 和偏好激活流程均为内部维护/宿主流程参考，不向外部 agent 注册。
+
+
 本文说明公开查询能力及设计边界，不包含任何个人工作区统计、私有记录链接或真实用户画像。参数与默认值以[工具注册代码](../src/ai_persona/query_mcp.py)和[结果契约](../src/ai_persona/query_contracts.py)为准；当前集成方式见[集成指南](../../../docs/INTEGRATIONS.md)。
 
 ## 设计原则

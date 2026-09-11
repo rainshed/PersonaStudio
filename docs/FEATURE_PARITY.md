@@ -42,10 +42,10 @@ AI Assistant → Read a paper → multiple sources: `/extract` — Codex-backed 
 | Storage and retrieval / 存储检索 | `init`, `validate`, `build`, `search`, `prepare` | File-first records, deterministic projections, revisions, SQLite search, and context preparation / 文件记录、确定性投影、版本历史、检索与上下文 |
 | Workspace lifecycle / 工作区维护 | `backup`, `restore`, `migrate` | Separate copies and explicit destinations; existing destinations are not overwritten / 独立副本、显式目标、不覆盖已有目录 |
 | Model runtime / 模型运行时 | `models-install`, `models-stop` | Optional pinned adapter; runtime cache outside the installed Python package / 可选固定依赖，运行时缓存外置 |
-| MCP local / 本地 MCP | `ai-persona-mcp --workspace …` | stdio transport, scoped reads, source access, pending proposals, and publication history / stdio、范围查询、来源读取、待审核提案与发布历史 |
+| MCP local / 本地 MCP | `ai-persona-mcp --workspace …` | Exactly six read-only tools for knowledge and declared sources / 仅 6 个知识与声明来源只读工具 |
 | Semantic retrieval / 语义检索 | Knowledge/source MCP tools | Local embeddings, text and graph retrieval, source scope, versioned results, and explicit degraded coverage / 本地嵌入、文字与图检索、范围和版本、明确降级状态 |
-| Preference maintenance MCP / 偏好维护 MCP | `search_preferences`, `get_preference_records` | Read reviewed preferences, contexts and examples without activating or changing them / 查询正式偏好、场景与样例，不触发应用或修改 |
-| Human review boundary / 审核边界 | Studio and MCP | Manual saves take effect; AI/MCP changes stay pending until reviewed; MCP has no accept/publish tool / 人工保存生效，AI 提案须审核，MCP 不提供通过或发布能力 |
+| Internal preference queries / 内部偏好查询 | `search_preferences`, `get_preference_records` | Internal maintenance only; not registered on public MCP / 仅供内部维护使用，不注册到公共 MCP |
+| Human review boundary / 审核边界 | Studio and MCP | Manual saves take effect; AI changes stay pending until reviewed; public MCP is read-only / 人工保存生效，AI 提案须审核，MCP 不提供通过或发布能力 |
 | Codex integration / Codex 接入 | Settings; `codex-hook`, `learning`, `preferences-apply` | Scoped capture, independent opt-ins, source trust, deduplication, background learning, and preference context / 范围采集、独立启用、来源信任、去重、后台学习与偏好上下文 |
 | Remote Codex / 远端 Codex | `remote setup`, `start`, `stop`, `status`, `supervise` | Token-authenticated HTTP MCP, unified Hook, and reconnecting SSH reverse tunnel / 令牌 HTTP MCP、统一 Hook 与自动重连 SSH 反向隧道 |
 | Remote browser / 远端网页 | `AI_PERSONA_PUBLIC_ORIGIN` and an explicitly configured local proxy | Exact origin validation and loopback backend; remains single-user / 精确来源校验、本地监听，仍为单用户 |

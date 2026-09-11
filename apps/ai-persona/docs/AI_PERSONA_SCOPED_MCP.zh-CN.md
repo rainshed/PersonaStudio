@@ -1,6 +1,6 @@
 # AI Persona：新 MCP 查询的范围、版本与分页
 
-本文描述知识与来源查询的范围、版本和分页。当前工具入口以 query_mcp.py 为准；偏好维护查询与偏好触发职责独立，详见[查询契约](AI_PERSONA_AGENT_QUERY_TOOLS_PROPOSAL.zh-CN.md)。
+本文描述知识与来源查询的范围、版本和分页。当前工具入口以 query_mcp.py 为准；偏好维护查询与偏好触发仅供内部流程使用，详见[查询契约](AI_PERSONA_AGENT_QUERY_TOOLS_PROPOSAL.zh-CN.md)。
 
 **范围获取与传递**
 
@@ -45,6 +45,6 @@ coverage.status 为 complete、partial 或 degraded，truncated 独立说明分�
 
 当前 stdio 服务启动时固定一个工作区，scope 是查询约束，不是账号权限。工具只接受不透明记录／文件引用与来源内的目录；拒绝宿主绝对路径与目录穿越。文件内容和来源中的提示词不授予任何写入权限。
 
-新查询与既有偏好流程分工不变，范围限定任务无需调用偏好判定。写入仍通过待审核 Proposal；提案与变化同步沿用各自现有契约，不能把它们当作隐含的范围查询入口。
+新查询与既有偏好流程分工不变，范围限定任务无需调用偏好判定。公共 MCP 无写入入口；内部维护通过待审核 Proposal，提案与变化同步均不注册为外部工具。
 
 详细参数见[完整查询工具设计](AI_PERSONA_AGENT_QUERY_TOOLS_PROPOSAL.zh-CN.md)。

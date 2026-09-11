@@ -132,8 +132,12 @@ def test_mcp_over_http_queries_sources_without_exposing_learning_or_admin_routes
         rpc("initialize", {"protocolVersion": "2025-11-25", "capabilities": {},
                            "clientInfo": {"name": "remote-persona-test", "version": "1"}})
         names = {tool["name"] for tool in rpc("tools/list", {})["tools"]}
-        assert {"search_knowledge", "read_source", "prepare_preference_context"} <= names
-        assert not {"ingest_conversation_event", "get_conversation_learning_status", "publish"} & names
+        from ai_persona.query_mcp import PUBLIC_QUERY_TOOLS
+        assert names == set(PUBLIC_QUERY_TOOLS)
+        for removed in ("verify_persona_connection", "resolve_persona_activation", "prepare_preference_context",
+                        "ingest_conversation_event", "get_conversation_learning_status", "search_preferences",
+                        "get_preference_records", "propose_change_set", "get_proposal_status", "list_persona_changes"):
+            assert rpc("tools/call", {"name": removed, "arguments": {}})["isError"]
         result = rpc("tools/call", {"name": "list_source_files", "arguments": {"source_id": "src_demo_note"}})
         assert not result.get("isError")
         assert http.post("/api/learning/v1/events", headers=HEADERS).status_code == 404

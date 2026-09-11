@@ -1,4 +1,3 @@
-import json
 
 import pytest
 from fastapi.testclient import TestClient
@@ -7,7 +6,6 @@ from ai_persona.agent import AgentServiceError
 from ai_persona.demo import workspace_identity
 from ai_persona.editor_drafts import EditorDrafts
 from ai_persona.initialization import initialize_persona
-from ai_persona.mcp_setup import verify_connection
 from ai_persona.web import create_app
 
 
@@ -243,18 +241,18 @@ def test_unfinished_editor_keeps_uploaded_source_past_expiry(studio):
     assert importer.repository.cleanup_expired() == 1
 
 
-def test_copied_mcp_verification_does_not_verify_another_workspace(studio, tmp_path):
+def test_copied_read_observation_does_not_validate_another_workspace(studio, tmp_path):
     import shutil
 
-    from ai_persona.mcp_setup import configuration
+    from ai_persona.mcp_setup import configuration, record_client_read
 
     _, client, data, state = studio
-    prompt = client.post("/api/studio/mcp-setup/probe", json={}).json()["message"]
-    verify_connection(data, state, prompt.split("参数为 ")[1].split("。")[0])
+    record_client_read(data, state, configuration(data, state)[1], "get_knowledge_map")
     other_data, other_state = tmp_path / "other-data", tmp_path / "other-state"
     other_state.mkdir()
     shutil.copy2(state / "mcp-setup.sqlite3", other_state / "mcp-setup.sqlite3")
     assert configuration(data, state)[1] != configuration(other_data, other_state)[1]
+    assert client.get("/api/studio/mcp-setup").json()["client_read"]["workspace_id"] == workspace_identity(data, state)
 
 
 def test_full_content_reset_clears_editor_text_and_rejects_late_save(studio):
@@ -279,23 +277,44 @@ def test_full_content_reset_clears_editor_text_and_rejects_late_save(studio):
         repository.save({**draft, "revision": 1})
 
 
-def test_mcp_probe_independent_from_hook_and_configuration_changes(studio, monkeypatch, tmp_path):
+def test_mcp_read_status_is_independent_from_self_check_hook_and_config_changes(studio, tmp_path):
+    import asyncio
+
+    from mcp import Client
+
+    from ai_persona.mcp_server import create_mcp_server
+
     _, client, data, state = studio
-    assert client.get("/api/studio/mcp-setup").json()["verified"] is False
-    message = client.post("/api/studio/mcp-setup/probe", json={}).json()["message"]
-    code = message.split("参数为 ")[1].split("。")[0]
-    assert verify_connection(data, state, code)["ok"] is True
-    assert client.get("/api/studio/mcp-setup").json()["verified"] is True
-    config = tmp_path / "codex/config.toml"
-    config.parent.mkdir(exist_ok=True)
-    config.write_text(
-        '[mcp_servers.ai_persona]\ncommand="python"\nargs=' + json.dumps([str(data)]) + "\n"
-    )
-    assert client.get("/api/studio/mcp-setup").json()["verified"] is False
+    assert client.get("/api/studio/mcp-setup").json()["client_read"] is None
+    checked = client.post("/api/studio/mcp-setup/diagnose", json={}).json()
+    assert checked["ok"], checked
+    assert client.get("/api/studio/mcp-setup").json()["client_read"] is None
+    query = client.post("/api/studio/mcp-setup/probe", json={}).json()
+    assert "verify_persona_connection" not in query["message"]
+
+    async def scenario():
+        async with Client(create_mcp_server(data, state), cache=None) as external:
+            # Failed calls and enumeration do not count as a successful read.
+            await external.list_tools()
+            assert (await external.call_tool("search_knowledge", {})).is_error
+            assert client.get("/api/studio/mcp-setup").json()["client_read"] is None
+            read = await external.call_tool(query["tool"], query["arguments"])
+            assert not read.is_error and read.structured_content["data"]["nodes"] == []
+            observed = client.get("/api/studio/mcp-setup").json()["client_read"]
+            assert set(observed) == {"received", "host", "tool", "workspace_id"}
+            assert observed["tool"] == "get_knowledge_map"
+            config = tmp_path / "codex/config.toml"
+            config.parent.mkdir(exist_ok=True)
+            config.write_text('[mcp_servers.other]\ncommand="python"\n')
+            assert client.get("/api/studio/mcp-setup").json()["client_read"] is None
+            # An already-running old server cannot validate the new configuration.
+            await external.call_tool(query["tool"], query["arguments"])
+            assert client.get("/api/studio/mcp-setup").json()["client_read"] is None
+    asyncio.run(scenario())
     assert client.get("/api/studio/integrations").json()["connections"] == []
 
 
-def test_generated_mcp_configuration_starts_and_verifies_over_stdio(studio):
+def test_generated_mcp_configuration_starts_and_reads_over_stdio(studio):
     import asyncio
     import os
     import tomllib
@@ -303,39 +322,60 @@ def test_generated_mcp_configuration_starts_and_verifies_over_stdio(studio):
 
     from mcp import Client, StdioServerParameters
 
+    from ai_persona.query_mcp import PUBLIC_QUERY_TOOLS
+
     _, studio_client, _, _ = studio
     snippet = studio_client.get("/api/studio/mcp-setup").json()["config"]
     home = Path(os.environ["CODEX_HOME"])
     home.mkdir(parents=True, exist_ok=True)
     (home / "config.toml").write_text(snippet)
     settings = tomllib.loads(snippet)["mcp_servers"]["ai_persona"]
-    health = studio_client.get("/healthz").json()
-    message = studio_client.post("/api/studio/mcp-setup/probe", json={}).json()["message"]
-    code = message.split("参数为 ")[1].split("。")[0]
+    assert set(settings.pop("enabled_tools")) == set(PUBLIC_QUERY_TOOLS)
+    query = studio_client.post("/api/studio/mcp-setup/probe", json={}).json()
 
     async def scenario():
-        env = {
-            key: value
-            for key, value in os.environ.items()
-            if key.startswith("AI_PERSONA_") or key == "CODEX_HOME"
-        }
-        env["PYTHONPATH"] = str(Path(__file__).resolve().parents[1] / "src")
-        parameters = StdioServerParameters(**settings, env=env)
-        async with Client(parameters, read_timeout_seconds=10) as client:
-            listed = await client.list_tools()
-            assert "verify_persona_connection" in {tool.name for tool in listed.tools}
-            result = await client.call_tool("verify_persona_connection", {"code": code})
+        env = {key: value for key, value in os.environ.items()
+               if key.startswith("AI_PERSONA_") or key == "CODEX_HOME"}
+        assert settings["env"]["PYTHONPATH"] == str(Path(__file__).resolve().parents[1] / "src")
+        env.update(settings.pop("env"))
+        async with Client(StdioServerParameters(**settings, env=env), read_timeout_seconds=10) as external:
+            listed = await external.list_tools()
+            assert tuple(t.name for t in listed.tools) == PUBLIC_QUERY_TOOLS
+            result = await external.call_tool(query["tool"], query["arguments"])
             assert not result.is_error
-            value = result.structured_content or json.loads(
-                next(item.text for item in result.content if item.type == "text")
-            )
-            value = value.get("result", value)
-            assert value["ok"] and value["workspace_id"] == health["workspace_id"]
-
+            assert result.structured_content["data"]["nodes"] == []
     asyncio.run(scenario())
     status = studio_client.get("/api/studio/mcp-setup").json()
-    assert status["configured"] and status["verified"]
+    assert status["configured"] and status["client_read"]
+    assert status["client_read"]["workspace_id"] == query["workspace_id"]
     assert studio_client.get("/api/studio/integrations").json()["connections"] == []
+
+
+def test_mcp_diagnostic_failure_does_not_report_a_client_read(studio, monkeypatch):
+    from ai_persona import mcp_setup
+    _, client, _, _ = studio
+    monkeypatch.setattr(mcp_setup, "server_arguments", lambda *a: ["-c", "raise SystemExit(1)"])
+    result = client.post("/api/studio/mcp-setup/diagnose", json={}).json()
+    assert not result["ok"] and result["error"] == "service_unavailable"
+    assert client.get("/api/studio/mcp-setup").json()["client_read"] is None
+
+
+def test_mcp_observation_failure_does_not_break_read(studio, monkeypatch):
+    import asyncio
+
+    from mcp import Client
+
+    from ai_persona import mcp_setup
+    from ai_persona.mcp_server import create_mcp_server
+    _, _, data, state = studio
+    def failed(*args):
+        raise OSError("diagnostics storage unavailable")
+    monkeypatch.setattr(mcp_setup, "record_client_read", failed)
+    async def scenario():
+        async with Client(create_mcp_server(data, state)) as external:
+            result = await external.call_tool("get_knowledge_map", {"scope": {"tag_ids": []}})
+            assert not result.is_error
+    asyncio.run(scenario())
 
 
 def test_workspace_switch_blocks_writes_and_running_tasks(studio):

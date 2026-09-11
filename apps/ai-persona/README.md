@@ -33,7 +33,7 @@ AI model features are optional. **Settings → Models** guides you through envir
 - Codex Hooks, scoped conversation learning, preference application, local stdio MCP, and authenticated remote HTTP MCP over SSH.
 - English/Chinese UI, responsive pages, existing routes, and `ai-persona` / `ai-persona-mcp` command names.
 
-Manual saves take effect immediately and retain history. AI and MCP proposals remain pending until human review. Demo data is a separate copy of the packaged fictional template.
+Manual saves take effect immediately and retain history. AI proposals remain pending until human review. Public MCP provides six read-only knowledge and source tools. Demo data is a separate copy of the packaged fictional template.
 
 The full [feature compatibility matrix](../../docs/FEATURE_PARITY.md) records the public routes and behavior. Prompt Workbench remains an **external integration**; its application is not bundled here.
 

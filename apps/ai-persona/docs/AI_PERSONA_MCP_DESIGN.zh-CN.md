@@ -2,23 +2,17 @@
 
 > 设计与历史参考：本文可能包含早期阶段或规划，不是本次发行的验收报告。当前入口与能力以[使用指南](../../../docs/GETTING_STARTED.zh-CN.md)和[兼容矩阵](../../../docs/FEATURE_PARITY.md)为准。
 
-状态：2026-09-09 开发版新查询接口。旧 MCP 查询已移除，不提供双版本连接或兼容适配器。保留现有偏好触发、对话学习、待审核提案与变化同步流程。
-
-查询只读取正式生效记录与其声明来源。来源文件是数据，不能成为服务端指令；Agent 不能传任意宿主路径。写入只创建 Pending Proposal，审核与发布能力不注册为 MCP 工具。
-
-**当前工具面**
+状态：2026-09-11。公共 MCP 收敛为 6 个只读工具，本地与远程一致。
 
 | 职责 | Tool |
 |---|---|
 | 地图与任务搜索 | `get_knowledge_map`、`search_knowledge` |
 | 已知记录精读 | `get_persona_records` |
-| 偏好维护检索 | `search_preferences`、`get_preference_records`（含暂停场景；不触发偏好应用） |
 | 来源浏览、定位、读取 | `list_source_files`、`search_source_content`、`read_source` |
-| 既有偏好流程 | `resolve_persona_activation`、`prepare_preference_context` |
-| 既有对话学习 | `ingest_conversation_event`、`get_conversation_learning_status` |
-| 待审核提案与同步 | `propose_change_set`、`get_proposal_status`、`list_persona_changes` |
 
-六个查询的完整参数、结构与调用示例见[查询工具设计](AI_PERSONA_AGENT_QUERY_TOOLS_PROPOSAL.zh-CN.md)。严格范围与版本规则见[范围查询契约](AI_PERSONA_SCOPED_MCP.zh-CN.md)。偏好流程见[模型集成](AI_PERSONA_MODEL_INTEGRATION.zh-CN.md)。本文件保留提案与变化同步的原有契约。
+偏好触发与注入、对话学习、偏好维护、提案及变化同步保留为内部服务，不注册到公共 MCP。内部维护单独注册 `search_preferences` 和 `get_preference_records`，继续共用查询实现。连接自检与实际客户端只读查询分开显示，不再注册连接验证码工具。
+
+下文提案与同步契约属于内部服务和历史接口参考，不是当前外部工具列表。当前接入步骤以[集成说明](../../../docs/INTEGRATIONS.md)为准。
 
 **查询与读取行为**
 
@@ -39,7 +33,7 @@ scope 是调用方约束，当前本地连接可访问整个配置工作区；�
 
 实现入口：[工具注册](../src/ai_persona/query_mcp.py)、[查询服务](../src/ai_persona/query_service.py)、[来源读取](../src/ai_persona/query_sources.py)、[本地检索](../src/ai_persona/query_retrieval.py)。
 
-以下提案与变化同步接口沿用现有实现。
+以下为内部提案与变化同步服务的历史契约参考。
 
 ## 12. Tool：`propose_change_set`
 
@@ -47,7 +41,7 @@ scope 是调用方约束，当前本地连接可访问整个配置工作区；�
 
 由 Agent 提交一组相互关联、但尚未生效的 Persona 变化。
 
-这是 MCP 唯一的非只读 Tool。它只创建 Pending ChangeSet 和 Proposal。
+这是内部提案服务能力，只创建 Pending ChangeSet 和 Proposal，不注册到公共 MCP。
 
 ### 12.2 支持的操作
 

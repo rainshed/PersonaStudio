@@ -276,8 +276,7 @@ class Gateway:
         return JSONResponse({"ok": ok}, status_code=200 if ok else 404)
 
     def app(self):
-        server = create_mcp_server(self.workspace.data_root, self.workspace.state_root,
-                                   review_base_url=self.review_url, remote=True)
+        server = create_mcp_server(self.workspace.data_root, self.workspace.state_root)
         app = server.streamable_http_app(stateless_http=True, json_response=True, max_request_body_size=MAX_BODY)
         app.routes.extend([Route("/healthz", self.health),
                            Route("/v1/codex/turn", self.turn, methods=["POST"]),

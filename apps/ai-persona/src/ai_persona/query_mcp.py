@@ -1,8 +1,9 @@
-"""Registration of the six public query tools."""
+"""Shared query definitions with separate public and internal registrations."""
 
 from __future__ import annotations
 
 import base64
+import logging
 from typing import Annotated, Literal
 
 from mcp.types import CallToolResult, ImageContent, TextContent, ToolAnnotations
@@ -12,6 +13,11 @@ from .agent import AgentServiceError, ErrorDetail, TagScope
 from .models import MaterialKnowledgeRole, RelationSalience
 from .query_contracts import FileRef, QueryResult, SourceSelector, encoded
 from .query_service import KnowledgeQueryService
+
+PUBLIC_QUERY_TOOLS = (
+    "get_knowledge_map", "search_knowledge", "get_persona_records",
+    "list_source_files", "search_source_content", "read_source",
+)
 
 ReadResult = Annotated[CallToolResult, QueryResult]
 Scope = TagScope | None
@@ -48,15 +54,25 @@ def _call(tool, operation) -> CallToolResult:
     return CallToolResult(content=content, structured_content=payload, is_error=not value.ok)
 
 
-def register_query_tools(server, data_root, state_root, *, service=None):
+def register_query_tools(server, data_root, state_root, *, service=None, on_read=None):
     service = service or KnowledgeQueryService(data_root, state_root)
+
+    def call(tool, operation):
+        result = _call(tool, operation)
+        if not result.is_error and on_read is not None:
+            # Connection diagnostics must never change a read's result or availability.
+            try:
+                on_read(tool)
+            except Exception:
+                logging.getLogger(__name__).warning("Could not record MCP read status")
+        return result
 
     @server.tool(
         name="get_knowledge_map", annotations=READ_ONLY, structured_output=True,
         description="Read the reviewed knowledge map, including domain IDs, personal states and "
         "typed relationships. Omit focus_ids for an overview; supply known IDs to expand their "
         "neighborhood. Coverage and cursors identify unread content. For a specific question "
-        "you may call search_knowledge directly. Preferences follow the existing activation flow.",
+        "you may call search_knowledge directly.",
     )
     def get_knowledge_map(
         focus_ids: RecordIds | None = None, max_hops: Annotated[int, Field(ge=1, le=2)] = 1,
@@ -65,7 +81,7 @@ def register_query_tools(server, data_root, state_root, *, service=None):
         scope: Scope = None, expected_persona_revision: Revision = None,
         max_chars: Budget = 32000, cursor: str | None = None,
     ) -> ReadResult:
-        return _call("get_knowledge_map", lambda: service.get_knowledge_map(
+        return call("get_knowledge_map", lambda: service.get_knowledge_map(
             focus_ids=focus_ids, max_hops=max_hops, relation_types=relation_types,
             direction=direction, knowledge_role=knowledge_role, salience=salience, scope=scope,
             expected_persona_revision=expected_persona_revision, max_chars=max_chars, cursor=cursor,
@@ -94,7 +110,7 @@ def register_query_tools(server, data_root, state_root, *, service=None):
         limit: Annotated[int, Field(ge=1, le=50)] = 10,
         max_chars: Budget = 24000, cursor: str | None = None,
     ) -> ReadResult:
-        return _call("search_knowledge", lambda: service.search_knowledge(
+        return call("search_knowledge", lambda: service.search_knowledge(
             query=query, focus_ids=focus_ids, focus_mode=focus_mode, max_hops=max_hops,
             relation_types=relation_types, direction=direction, entity_types=entity_types,
             knowledge_levels=knowledge_levels, interest_levels=interest_levels,
@@ -115,7 +131,7 @@ def register_query_tools(server, data_root, state_root, *, service=None):
         scope: Scope = None, expected_persona_revision: Revision = None,
         max_chars: Budget = 24000, cursor: str | None = None,
     ) -> ReadResult:
-        return _call("get_persona_records", lambda: service.get_persona_records(
+        return call("get_persona_records", lambda: service.get_persona_records(
             record_ids=record_ids, fields=fields, include_evidence=include_evidence, scope=scope,
             expected_persona_revision=expected_persona_revision, max_chars=max_chars, cursor=cursor,
         ))
@@ -132,7 +148,7 @@ def register_query_tools(server, data_root, state_root, *, service=None):
         scope: Scope = None, expected_persona_revision: Revision = None,
         max_chars: Budget = 16000, cursor: str | None = None,
     ) -> ReadResult:
-        return _call("list_source_files", lambda: service.list_source_files(
+        return call("list_source_files", lambda: service.list_source_files(
             source_id=source_id, directory=directory, recursive=recursive,
             file_types=file_types, limit=limit, scope=scope,
             expected_persona_revision=expected_persona_revision, max_chars=max_chars, cursor=cursor,
@@ -154,7 +170,7 @@ def register_query_tools(server, data_root, state_root, *, service=None):
         scope: Scope = None, expected_persona_revision: Revision = None,
         max_chars: Budget = 24000, cursor: str | None = None,
     ) -> ReadResult:
-        return _call("search_source_content", lambda: service.search_source_content(
+        return call("search_source_content", lambda: service.search_source_content(
             query=query, source_ids=source_ids, files=files, limit=limit, context_chars=context_chars,
             scope=scope, expected_persona_revision=expected_persona_revision,
             max_chars=max_chars, cursor=cursor,
@@ -176,11 +192,16 @@ def register_query_tools(server, data_root, state_root, *, service=None):
         max_images: Annotated[int, Field(ge=1, le=4)] = 1,
         scope: Scope = None, expected_persona_revision: Revision = None, max_chars: Budget = 16000,
     ) -> ReadResult:
-        return _call("read_source", lambda: service.read_source(
+        return call("read_source", lambda: service.read_source(
             source_id=source_id, file_id=file_id, evidence_id=evidence_id, passage_ref=passage_ref,
             view=view, selector=selector, max_images=max_images, scope=scope,
             expected_persona_revision=expected_persona_revision, max_chars=max_chars,
         ))
+
+
+def register_preference_tools(server, data_root, state_root, *, service=None):
+    """Register preference queries only for internal maintenance agents."""
+    service = service or KnowledgeQueryService(data_root, state_root)
 
     @server.tool(name="search_preferences", annotations=READ_ONLY, structured_output=True,
                  description="Find reviewed preferences, contexts and examples for maintenance, "

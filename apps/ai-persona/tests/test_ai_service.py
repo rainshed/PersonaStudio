@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import asyncio
 import copy
 import json
 import shutil
@@ -9,7 +8,6 @@ import time
 
 import pytest
 from fastapi.testclient import TestClient
-from mcp import Client
 from persona_fixture import demo_workspace
 
 from ai_persona.agent import AgentServiceError, PersonaQueryService
@@ -17,7 +15,6 @@ from ai_persona.ai_service import PersonaAIService
 from ai_persona.compiler import PersonaCompiler
 from ai_persona.conversation_learning.service import ConversationLearningService
 from ai_persona.inbox import InboxService
-from ai_persona.mcp_server import create_mcp_server
 from ai_persona.models import PreferenceContext
 from ai_persona.proposals import ProposalDependencyError, ProposalRepository, ProposalService
 from ai_persona.store import PersonaStore
@@ -549,13 +546,8 @@ def test_studio_pages_and_local_only_api(workspace):
         assert client.post("/api/models/generate", headers=headers, json={}).status_code == 400
 
 
-def test_mcp_activation_works_without_model_when_no_context_exists(workspace):
-    async def scenario():
-        async with Client(create_mcp_server(*workspace)) as client:
-            result = await client.call_tool("resolve_persona_activation", {"user_prompt": "hello"})
-            assert result.structured_content["result"]["decision"] == "no_match"
-
-    asyncio.run(scenario())
+def test_activation_works_without_model_when_no_context_exists(workspace):
+    assert PersonaAIService(*workspace).resolve_persona_activation("hello")["decision"] == "no_match"
 
 
 def test_material_personal_opt_in_preserves_source_evidence_on_preference_proposal(workspace):

@@ -1,4 +1,4 @@
-"""Use exactly the public MCP definitions without a loopback MCP connection."""
+"""Share read definitions and add internal preference queries without a loopback MCP."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import get_type_hints
 from pydantic import ConfigDict, create_model
 
 from ..agent import AgentServiceError
-from ..query_mcp import register_query_tools
+from ..query_mcp import register_preference_tools, register_query_tools
 from ..query_service import KnowledgeQueryService
 
 
@@ -19,6 +19,7 @@ class ToolRegistry:
             data_root, state_root, extra_sources=set(source_ids), snapshot_store=snapshot_store
         )
         register_query_tools(self, data_root, state_root, service=service)
+        register_preference_tools(self, data_root, state_root, service=service)
 
     def tool(self, *, name, description, **_):
         def register(fn):

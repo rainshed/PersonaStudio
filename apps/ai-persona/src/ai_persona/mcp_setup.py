@@ -1,9 +1,9 @@
-"""Explicit MCP verification, separate from the conversation Hook probe."""
+"""MCP service self-checks and observed client reads, independent of the Hook."""
 
+import asyncio
 import hashlib
 import json
 import os
-import secrets
 import socket
 import sqlite3
 import sys
@@ -15,9 +15,9 @@ from pathlib import Path
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-from .agent import AgentServiceError
 from .ai_web import check_request, failure, input_json
 from .demo import workspace_identity
+from .query_mcp import PUBLIC_QUERY_TOOLS
 
 
 def configuration(data_root, state_root):
@@ -28,6 +28,7 @@ def configuration(data_root, state_root):
             json.dumps(
                 {
                     "mcp": config,
+                    "contract": "read-only-mcp/v1",
                     "host": socket.gethostname(),
                     "workspace": workspace_identity(data_root, state_root),
                 },
@@ -74,8 +75,10 @@ def database(state_root):
     state_root.mkdir(parents=True, exist_ok=True)
     db = sqlite3.connect(state_root / "mcp-setup.sqlite3")
     db.row_factory = sqlite3.Row
+    # Old nonce verification rows are deliberately not treated as read observations.
     db.execute(
-        "CREATE TABLE IF NOT EXISTS probes (code TEXT PRIMARY KEY, expires REAL, received REAL, host TEXT, signature TEXT)"
+        "CREATE TABLE IF NOT EXISTS observations "
+        "(signature TEXT, kind TEXT, payload TEXT, PRIMARY KEY(signature, kind))"
     )
     try:
         with db:
@@ -84,22 +87,81 @@ def database(state_root):
         db.close()
 
 
-def verify_connection(data_root, state_root, code):
-    digest = hashlib.sha256(code.encode()).hexdigest()
-    signature = configuration(data_root, state_root)[1]
+def _save(state_root, signature, kind, value):
     with database(state_root) as db:
-        probe = db.execute("SELECT * FROM probes WHERE code=?", (digest,)).fetchone()
-        if not probe or probe["expires"] < time.time():
-            raise AgentServiceError("invalid_request", "验证消息已过期，请在 Studio 中重新生成。")
         db.execute(
-            "UPDATE probes SET received=?,host=?,signature=? WHERE code=?",
-            (time.time(), socket.gethostname(), signature, digest),
+            "INSERT OR REPLACE INTO observations VALUES (?,?,?)",
+            (signature, kind, json.dumps(value, ensure_ascii=False)),
         )
-    return {
-        "ok": True,
+
+
+def record_client_read(data_root, state_root, signature, tool):
+    """Record only successful public reads, without arguments, content or identity claims."""
+    if tool not in PUBLIC_QUERY_TOOLS or signature == "unreadable":
+        return
+    _save(
+        state_root,
+        signature,
+        "client_read",
+        {
+            "received": time.time(),
+            "host": socket.gethostname(),
+            "tool": tool,
+            "workspace_id": workspace_identity(data_root, state_root),
+        },
+    )
+
+
+def server_arguments(data_root, state_root):
+    return ["-m", "ai_persona.mcp_server", "--data", str(data_root), "--state", str(state_root)]
+
+
+async def diagnose_server(data_root, state_root):
+    """Start Studio's own server and inspect its handshake/catalog, never call a tool."""
+    from mcp import Client, StdioServerParameters, stdio_client
+
+    signature = configuration(data_root, state_root)[1]
+    value = {
+        "ok": False,
+        "checked_at": time.time(),
         "workspace_id": workspace_identity(data_root, state_root),
-        "message": "MCP 调用已收到；未触发模型调用或对话学习。",
     }
+    parameters = StdioServerParameters(
+        command=sys.executable,
+        args=server_arguments(data_root, state_root),
+        env={
+            "PYTHONPATH": str(Path(__file__).resolve().parents[1]),
+            "CODEX_HOME": os.environ.get("CODEX_HOME", str(Path.home() / ".codex")),
+            "AI_PERSONA_SEMANTIC_SEARCH": "0",
+        },
+    )
+    try:
+        async with asyncio.timeout(15):
+            # Client initialization performs the handshake. No query or model call.
+            with open(os.devnull, "w") as errors:
+                async with Client(
+                    stdio_client(parameters, errlog=errors), mode="legacy", read_timeout_seconds=10
+                ) as client:
+                    listed = await client.list_tools()
+                    names = [tool.name for tool in listed.tools]
+                    value.update(
+                        tools=names,
+                        ok=(
+                            set(names) == set(PUBLIC_QUERY_TOOLS)
+                            and len(names) == len(PUBLIC_QUERY_TOOLS)
+                            and all(
+                                t.annotations and t.annotations.read_only_hint for t in listed.tools
+                            )
+                        ),
+                    )
+                    if not value["ok"]:
+                        value["error"] = "unexpected_tool_catalog"
+    except Exception:
+        value["error"] = "service_unavailable"
+    if configuration(data_root, state_root)[1] != signature:
+        value.update(ok=False, error="configuration_changed")
+    _save(state_root, signature, "service_check", value)
+    return value
 
 
 def mount_mcp_setup(app, data_root, state_root):
@@ -107,36 +169,44 @@ def mount_mcp_setup(app, data_root, state_root):
     async def status(request: Request):
         try:
             check_request(request)
-            configured, fingerprint = configuration(data_root, state_root)
+            configured, signature = configuration(data_root, state_root)
             with database(state_root) as db:
                 rows = db.execute(
-                    "SELECT received,host,signature FROM probes WHERE received IS NOT NULL ORDER BY received DESC LIMIT 10"
+                    "SELECT kind,payload FROM observations WHERE signature=?", (signature,)
                 ).fetchall()
-            latest = next((dict(r) for r in rows if r["signature"] == fingerprint), None)
-            args = [
-                "-m",
-                "ai_persona.mcp_server",
-                "--data",
-                str(data_root),
-                "--state",
-                str(state_root),
-            ]
+            observations = {r["kind"]: json.loads(r["payload"]) for r in rows}
+            if signature == "unreadable":
+                observations.pop("client_read", None)
             snippet = (
                 "[mcp_servers.ai_persona]\ncommand = "
                 + json.dumps(sys.executable)
                 + "\nargs = "
-                + json.dumps(args, ensure_ascii=False)
+                + json.dumps(server_arguments(data_root, state_root), ensure_ascii=False)
+                + "\nenabled_tools = "
+                + json.dumps(PUBLIC_QUERY_TOOLS)
+                + "\n\n[mcp_servers.ai_persona.env]\nPYTHONPATH = "
+                + json.dumps(str(Path(__file__).resolve().parents[1]), ensure_ascii=False)
                 + "\n"
             )
             return JSONResponse(
                 {
                     "configured": configured,
-                    "verified": bool(latest) and fingerprint != "unreadable",
-                    "verification": latest,
+                    "workspace_id": workspace_identity(data_root, state_root),
+                    "service_check": observations.get("service_check"),
+                    "client_read": observations.get("client_read"),
                     "config": snippet,
+                    "expected_tools": PUBLIC_QUERY_TOOLS,
                 },
                 headers={"Cache-Control": "no-store"},
             )
+        except Exception as exc:
+            return failure(exc)
+
+    @app.post("/api/studio/mcp-setup/diagnose")
+    async def diagnose(request: Request):
+        try:
+            await input_json(request)
+            return await diagnose_server(data_root, state_root)
         except Exception as exc:
             return failure(exc)
 
@@ -144,19 +214,15 @@ def mount_mcp_setup(app, data_root, state_root):
     async def probe(request: Request):
         try:
             await input_json(request)
-            code = secrets.token_urlsafe(18)
-            with database(state_root) as db:
-                db.execute(
-                    "INSERT INTO probes VALUES (?,?,NULL,NULL,?)",
-                    (
-                        hashlib.sha256(code.encode()).hexdigest(),
-                        time.time() + 900,
-                        configuration(data_root, state_root)[1],
-                    ),
-                )
             return {
-                "message": f"请调用 AI Persona 的 verify_persona_connection 工具，code 参数为 {code}。这是一次接入检查，不需要查询个人正文或调用模型。",
-                "expires_in": 900,
+                "message": "请从当前客户端调用 AI Persona 的 get_knowledge_map 工具，参数为 "
+                '{"scope":{"tag_ids":[]},"max_chars":1000}。'
+                "这是空范围的只读查询，不读取个人正文或调用模型。"
+                "成功后在 Studio 检查最近查询的时间与工具名；"
+                "该记录表示服务收到查询，不证明某个指定客户端的身份。",
+                "tool": "get_knowledge_map",
+                "arguments": {"scope": {"tag_ids": []}, "max_chars": 1000},
+                "workspace_id": workspace_identity(data_root, state_root),
             }
         except Exception as exc:
             return failure(exc)

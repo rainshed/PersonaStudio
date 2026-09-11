@@ -66,7 +66,7 @@ AI 维护会在进入和运行前检查所需模型；前往设置前保留输�
 
 希望由 Codex 帮你安装 Hook，可以在「设置 → 应用接入」下载[本机 Hook 安装流程](../apps/ai-persona/src/ai_persona/static/guides/CODEX_HOOK_SETUP.zh-CN.md)，把文件交给日常使用的 Codex。它会检查环境、保留并备份已有配置、安装接入，再引导你完成信任和真实消息验证。
 
-MCP 也提供[交给 Codex 的配置流程](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md)，可在同一页面下载。Codex 会识别工作区、合并客户端配置，再通过接入验证工具检查实际调用。MCP 配置与 Hook 安装分别进行。
+MCP 也提供[交给 Codex 的配置流程](../apps/ai-persona/src/ai_persona/static/guides/CODEX_MCP_SETUP.zh-CN.md)，可在同一页面下载。Codex 会识别工作区、合并客户端配置，再分别执行服务自检和目标客户端的只读查询测试。MCP 配置与 Hook 安装分别进行。
 
 ## 5. 启动、诊断与停止
 
