@@ -67,6 +67,19 @@ void test('workspace discovery reads the configured external Persona and resolve
   );
 });
 
+void test('installed Persona discovery prefers the stable command over a version-specific environment', async (t) => {
+  const dir = await mkdtemp(join(tmpdir(), 'radar-installed-discovery-'));
+  t.after(() => rm(dir, { recursive: true, force: true }));
+  const command = join(dir, 'ai-persona-mcp');
+  await writeFile(command, '#!/bin/sh\nexit 0\n', { mode: 0o755 });
+  assert.equal(discoverExecutable('', { AI_PERSONA_MCP_COMMAND: command }), command);
+  const root = join(dir, 'installation');
+  await mkdir(join(root, 'current/scripts'), { recursive: true });
+  const fallback = join(root, 'current/scripts/ai-persona-mcp');
+  await writeFile(fallback, '#!/bin/sh\nexit 0\n', { mode: 0o755 });
+  assert.equal(discoverExecutable('', { AI_PERSONA_INSTALL_ROOT: root }), fallback);
+});
+
 void test('a verified backup preserves reports, subscriptions and cached files, restores separately, and never replaces an existing directory', async (t) => {
   const f = await fixture(t);
   await f.finish(f.create().run.id);

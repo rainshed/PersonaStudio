@@ -1,10 +1,38 @@
-# Paper Radar：本机使用与验收
+# Paper Radar：安装与使用
 
 [English](PAPER_RADAR.md) · [PersonaStudio](../README.zh-CN.md)
 
-Paper Radar 已作为 PersonaStudio 的第二个应用迁入本仓库。目前是本机测试版本，尚未制作或发布包含 Paper Radar 的安装包。现有 `install.sh` 和已发布版本仍用于 AI Persona。
+Paper Radar 是 PersonaStudio 的可选应用。选择安装 AI Persona + Paper Radar，或在已有的 AI Persona 上补装。可选安装要求 0.2.0 或更新版本的 GitHub Release。
 
 ## 安装与启动
+
+首次安装两个应用：
+
+```sh
+curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh -s -- --with-paper-radar
+ai-persona setup
+paper-radar start
+```
+
+已经安装 AI Persona 0.2.0 或更新版本时：
+
+```sh
+personastudio install paper-radar
+paper-radar start
+```
+
+安装器自动准备独立 Node.js 环境，下载预构建网页，并校验安装包。不需要手动运行 npm 或构建网页。`personastudio update` 保留当前安装组合；`personastudio remove paper-radar` 保留研究数据。
+
+```sh
+paper-radar status
+paper-radar stop
+paper-radar doctor
+paper-radar logs
+ai-persona start
+```
+
+## 从源码开发
+
 
 本阶段正式验证 macOS，需要 Node.js 22.19 或更新版本及 uv。首次从 PersonaStudio 仓库根目录运行：
 
@@ -105,4 +133,4 @@ npm run check:radar
 4. 检查任务取消、预算暂停和恢复；确认切换默认宿主不改变在途任务。
 5. 创建备份，打开恢复副本，核对历史和提示词；确认自动检查保持暂停。
 
-用户验收后再决定统一安装包、版本号和 GitHub 分发；本轮没有上传、创建 Release 或部署在线服务。
+发布流程构建 Persona 基础包和 Radar 可选包，并验证两种安装、补装、更新、移除和失败恢复。运行本机检查不会上传 GitHub 或创建 Release；发布仍通过版本标签单独触发。

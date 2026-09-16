@@ -47,6 +47,11 @@ def mount_studio_routes(app, data_root, state_root, templates, common_context):
             check_request(request)
             store = PersonaStore(data_root).load(verify_source_files=False)
             context = common_context(request, store, section=section)
+            if section == "extensions":
+                context["radar_install_command"] = (
+                    "personastudio install paper-radar" if os.environ.get("AI_PERSONA_INSTALL_ROOT") else
+                    "curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh -s -- --with-paper-radar"
+                )
             if section == "settings":
                 from .connection_setup import setup_instructions
 
@@ -73,6 +78,10 @@ def mount_studio_routes(app, data_root, state_root, templates, common_context):
             return JSONResponse({"url": url})
         except Exception as exc:
             return failure(exc)
+
+    @app.get("/settings/extensions")
+    async def extensions(request: Request):
+        return page(request, "extensions.html", "extensions")
 
     @app.get("/settings")
     async def settings(request: Request):

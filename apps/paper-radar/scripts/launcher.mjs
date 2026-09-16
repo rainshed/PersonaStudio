@@ -6,6 +6,7 @@ import {
   openSync,
   closeSync,
   readFileSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from 'node:fs';
@@ -187,6 +188,13 @@ export async function stop(options = {}) {
     if (current.process_alive) throw new Error(current.error);
     return current;
   }
+  if (options.forUpdate) {
+    const response = await fetch(new URL('/api/data', current.url), {
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!response.ok || (await response.json()).busy)
+      throw new Error('Paper Radar is busy. Finish or cancel research tasks before updating or removing it.');
+  }
   process.kill(current.pid, 'SIGTERM');
   for (let attempt = 0; attempt < 100; attempt++) {
     if (!alive(current.pid))
@@ -204,6 +212,7 @@ export async function main(args = process.argv.slice(2)) {
   const archive = action === 'restore' ? args.shift() : null;
   let port,
     open = true,
+    forUpdate = false,
     selectedData = false;
   const take = () => {
     const value = args.shift();
@@ -227,6 +236,7 @@ export async function main(args = process.argv.slice(2)) {
           'Choose a port from 1024 to 65535, or 0 for an available port.',
         );
     } else if (flag === '--no-open') open = false;
+    else if (flag === '--for-update' && action === 'stop') forUpdate = true;
     else throw new Error(`Unknown option: ${flag}`);
   }
   const paths = runtimePaths(env);
@@ -240,7 +250,7 @@ export async function main(args = process.argv.slice(2)) {
     return JSON.parse(archiveCommand('restore', resolve(archive), paths.data));
   }
   if (action === 'start') return start({ env, port, open });
-  if (action === 'stop') return stop({ env });
+  if (action === 'stop') return stop({ env, forUpdate });
   if (action === 'status') return status({ env });
   if (action === 'logs') {
     console.log(
@@ -268,7 +278,7 @@ export async function main(args = process.argv.slice(2)) {
 
 if (
   process.argv[1] &&
-  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+  realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)
 ) {
   main()
     .then((result) => {

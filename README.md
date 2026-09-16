@@ -76,31 +76,34 @@ PersonaStudio's first application is **AI Persona**, a local-first, file-first w
 
 Manual edits take effect when saved. AI-generated changes do not modify official data until a person reviews them. Public MCP exposes knowledge and source-reading tools only; it cannot publish changes.
 
-## Paper Radar: research workspace
+## Paper Radar
 
-The second application, **Paper Radar**, is now available in this repository for local review. It has not been distributed yet.
+**Paper Radar** provides personalized arXiv recommendations based on the information you maintain in AI Persona.
 
-- Subscribe to arXiv subjects and Persona knowledge scopes; generate daily recommendations and single-paper analyses.
-- Use followed authors, evidence, source reading, feedback, evaluations, prompts, automatic checks and task management.
-- Start directly with **Connect AI Persona → Create a subscription**, then connect Codex or DSH for generated reports.
-- Back up research data, open recovered copies, export diagnostics and switch between the two applications.
+- Subscribe to papers by arXiv subject category and your AI Persona knowledge scope to receive daily recommendations.
+- Analyze a specific paper in detail using your AI Persona knowledge scope, highlighting connections to the knowledge and articles that interest you.
+- Customize prompts at each stage to get results that best meet your needs.
+- Mark recommended papers as satisfactory or unsatisfactory to automatically build test sets that help guide prompt revisions.
 
-From the repository root:
-
-```sh
-npm run setup:radar
-npm start
-```
-
-See [Paper Radar local use and review](docs/PAPER_RADAR.md). The published installer below still installs AI Persona only; combined distribution will be considered after review.
+See the [Paper Radar guide](docs/PAPER_RADAR.md).
 
 ## Installation
 
-PersonaStudio 0.1.0 currently supports macOS. Use the same command for the first installation and later updates:
+PersonaStudio supports macOS. Starting with 0.2.0, choose either option below (requires a GitHub Release containing the optional component):
+
+**AI Persona only** — manage knowledge, materials and preferences.
 
 ```sh
 curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh
 ```
+
+**AI Persona + Paper Radar** — also subscribe to papers and generate recommendations and analyses.
+
+```sh
+curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh -s -- --with-paper-radar
+```
+
+The installer prepares the runtime and prebuilt web interface. No clone or manual build is needed. Persona-only installations do not download Radar or its Node.js runtime.
 
 If prompted, open a new terminal, then initialize a workspace:
 
@@ -109,6 +112,27 @@ ai-persona setup
 ```
 
 Personal workspaces are stored separately from the application. Installing or updating the application never moves or replaces your workspace data, and the previous application version is retained for recovery.
+
+### Add, update and remove applications
+
+You can add Paper Radar after installing AI Persona:
+
+```sh
+personastudio install paper-radar
+paper-radar start
+```
+
+AI Persona also provides installation instructions in **Settings → Extensions**. On first opening Radar, confirm the discovered Persona workspace, test and save the connection, then create a subscription.
+
+```sh
+personastudio status              # Show installed applications
+personastudio update              # Update installed applications
+personastudio remove paper-radar  # Remove Radar and keep research data
+```
+
+Rerunning the original installation command also remembers your current selection. Adding and removing components use the current release; updating selects the latest release. Users of older Persona versions can run the installation command above first to obtain the management commands.
+
+Removing Radar retains research records, reports and settings for later reinstallation. The previous application version is also kept for recovery. Finish or cancel active research tasks before updating or removing Radar.
 
 ## Getting started
 
@@ -132,20 +156,12 @@ Browsing and manual editing do not require a model account. Only model-powered f
 | --- | --- |
 | Operating system | macOS. Linux and Windows are not currently supported. |
 | Python | 3.12 or later, prepared through uv by the installer. |
-| Node.js | 22.19 or later with npm, required only for optional AI model features. |
+| Node.js | Radar receives a private Node.js 24 runtime automatically. For Persona-only installations, optional AI model features need Node.js 22.19 or later with npm. |
 | Model account | Optional. Browsing and manual editing work without one. |
 
 ## Future directions
 
-PersonaStudio will continue to expand its collection of personal AI tools around AI Persona. Possibilities include:
-
-1. **Improve personalized paper recommendations**
-   Continue improving Paper Radar recommendations and explanations using knowledge structure, reading feedback and research interests.
-
-2. **Expert AI mentors**
-   With permission, capture the preferences and principles that experienced researchers apply to topic selection, reading, experimental design, and research judgment, so AI can use that experience to offer more relevant guidance to learners and researchers.
-
-3. **More possibilities for personalization**
+PersonaStudio aims to expand its collection of personal AI tools around AI Persona and support more systems and AI agents.
 
 ## Documentation
 

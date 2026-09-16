@@ -1,0 +1,40 @@
+#!/bin/sh
+# Component management deliberately needs no Node.js for Persona-only users.
+set -eu
+ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+action=${1:-help}
+case "$action" in
+    ai-persona|paper-radar)
+        shift
+        [ -x "$ROOT/scripts/$action" ] || { printf '%s\n' 'Add Paper Radar first: personastudio install paper-radar' >&2; exit 1; }
+        exec "$ROOT/scripts/$action" "$@"
+        ;;
+    status)
+        if [ -f "$ROOT/installation.json" ]; then cat "$ROOT/installation.json";
+        else printf '%s\n' 'Source checkout. Use the development setup instructions.'; fi
+        ;;
+    install|remove|update)
+        if [ "$action" = update ]; then
+            [ "$#" -eq 1 ] || { printf '%s\n' 'Usage: personastudio update' >&2; exit 1; }
+            url='https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh'
+            set --
+        else
+            [ "$#" -eq 2 ] && [ "$2" = paper-radar ] || { printf '%s\n' 'Usage: personastudio install|remove paper-radar' >&2; exit 1; }
+            [ -f "$ROOT/installation.json" ] || { printf '%s\n' 'Use the GitHub release installer before managing components.' >&2; exit 1; }
+            tag=$("$ROOT/apps/ai-persona/.venv/bin/python" -c 'import json,sys; print(json.load(open(sys.argv[1]))["tag"])' "$ROOT/installation.json")
+            url="https://github.com/rainshed/PersonaStudio/releases/download/$tag/install.sh"
+            if [ "$action" = install ]; then set -- --with-paper-radar; else set -- --without-paper-radar; fi
+        fi
+        if [ -n "${PERSONASTUDIO_INSTALLER:-}" ]; then exec sh "$PERSONASTUDIO_INSTALLER" "$@"; fi
+        temporary=$(mktemp "${TMPDIR:-/tmp}/personastudio-installer.XXXXXX")
+        trap 'rm -f "$temporary"' EXIT HUP INT TERM
+        curl -fsSL --retry 3 "$url" -o "$temporary"
+        sh "$temporary" "$@"
+        ;;
+    *)
+        printf '%s\n' 'Usage: personastudio status | update | install paper-radar | remove paper-radar' \
+            'Open an application: ai-persona start | paper-radar start' \
+            'Removing Paper Radar keeps research data and the previous application version.'
+        [ "$action" = help ] || [ "$action" = --help ]
+        ;;
+esac

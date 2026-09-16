@@ -13,7 +13,7 @@
 
 再强的模型，如果缺乏上下文，也无法了解你的知识基础、读过哪些材料、习惯怎样思考，更不知道你希望笔记、解释和研究结果以什么方式呈现。这些信息如果没有被系统地记录下来，就很难在多次对话和不同工具之间持续发挥作用。
 
-知我希望做的，就是把这些信息沉淀为一份由用户自己掌控、可积累、可检查、可复用的个人档案。
+「知我」希望做的，就是把这些信息沉淀为一份由用户自己掌控、可积累、可检查、可复用的个人档案。
 
 ![知我概览](docs/images/studio-overview.zh-CN.png)
 
@@ -76,31 +76,34 @@ AI Persona 是一份由用户维护并掌控的个人 AI 档案，主要包括�
 
 人工编辑保存后立即生效；AI 生成的修改在人工审核前不会改变正式数据。公共 MCP 只提供知识与来源读取工具，不能发布修改。
 
-## Paper Radar：论文研究工作台
+## Paper Radar：
 
-第二个应用 **Paper Radar** 已迁入 PersonaStudio，目前供本机测试，尚未分发。
+**Paper Radar** 是基于AI Persona中用户自己维护的信息进行arXiv个性化推荐的平台。
 
-- 按 arXiv 学科与 AI Persona 知识范围订阅论文，生成每日推荐和单篇分析。
-- 保留关注作者、证据与来源、反馈、评测、提示词、自动检查和任务管理。
-- 首次打开按“接入 AI Persona → 创建订阅”开始；生成报告时选择 Codex 或 DSH。
-- 提供备份、恢复副本、诊断导出和两应用之间的切换入口。
+- 按 arXiv 领域分类与 AI Persona 知识范围订阅论文，生成每日推荐。
+- 对指定的文章可以基于用户AI Persona 知识范围做详细分析，指出这篇文章和用户感兴趣的知识与文章之间的关联。
+- 用户可以自定义各个环节的提示词，从而得到自己最满意的结果。
+- 用户可以对推荐的文章选择满意或不满意，自动生成测试集，作为修改提示词的参考。
 
-从本仓库根目录运行：
-
-```sh
-npm run setup:radar
-npm start
-```
-
-详见 [Paper Radar 本机使用与验收](docs/PAPER_RADAR.zh-CN.md)。以下已发布的安装命令仍只用于 AI Persona，Paper Radar 的统一分发将在测试后决定。
+详见 [Paper Radar 使用指南](docs/PAPER_RADAR.zh-CN.md)。
 
 ## 安装
 
-知我 0.1.0 目前正式支持 macOS。首次安装与以后更新使用同一条命令：
+「知我」支持 macOS。0.2.0 起可以选择以下两种安装方式（需要包含可选组件的 GitHub Release）：
+
+**只安装 AI Persona**：管理知识、材料和偏好。
 
 ```sh
 curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh
 ```
+
+**安装 AI Persona + Paper Radar**：同时使用论文订阅、推荐和分析。
+
+```sh
+curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh -s -- --with-paper-radar
+```
+
+安装器准备所需环境和已经构建好的网页，不需要克隆仓库或手动构建。只安装 AI Persona 时不会下载 Paper Radar 或其 Node.js 环境。
 
 如果终端提示，请打开一个新终端，然后初始化工作区：
 
@@ -109,6 +112,27 @@ ai-persona setup
 ```
 
 个人工作区独立保存在应用之外。安装或更新不会移动或覆盖你的工作区数据，同时会保留上一个应用版本用于故障恢复。
+
+### 补装、更新与移除
+
+先安装 AI Persona，之后仍可以添加 Paper Radar：
+
+```sh
+personastudio install paper-radar
+paper-radar start
+```
+
+也可以在 AI Persona 的“设置 → 扩展应用”中找到安装入口。首次进入 Radar 时确认发现的 Persona 工作区，测试连接并保存，再创建订阅。
+
+```sh
+personastudio status              # 查看已安装的应用
+personastudio update              # 更新已安装的应用
+personastudio remove paper-radar  # 移除 Radar，保留研究数据
+```
+
+再次运行原安装命令也会记住当前安装组合。补装和移除使用当前发布版本，更新才切换到最新版本。旧版 AI Persona 用户先运行上面的安装命令升级，即可使用这些管理命令。
+
+移除 Radar 后，其研究记录、报告和设置会保留；重新安装后可以继续使用。安装器也会保留之前的应用版本，便于故障恢复。更新或移除前，请完成或取消进行中的研究任务。
 
 ## 开始使用
 
@@ -132,20 +156,12 @@ ai-persona start
 | --- | --- |
 | 操作系统 | macOS；Linux 与 Windows 暂不在正式支持范围内。 |
 | Python | 3.12 或更新版本，由安装器通过 uv 准备。 |
-| Node.js | 使用可选 AI 模型功能时需要 22.19 或更新版本，并包含 npm。 |
+| Node.js | Paper Radar 由安装器自动准备独立的 Node.js 24 运行环境。只安装 AI Persona 时，模型功能按需配置 Node.js 22.19 或更新版本。 |
 | 模型账号 | 可选；浏览和人工编辑无需模型账号。 |
 
 ## 未来方向
 
-知我希望围绕 AI Persona 继续扩展个人 AI 工具，例如：
-
-1. **持续改进论文个性化推荐**
-   在 Paper Radar 的现有能力上，结合知识结构、阅读反馈和研究兴趣改进推荐与解释。
-
-2. **专家型 AI 导师**
-   在获得授权的前提下，提取资深科研人员在选题、阅读、实验设计和研究判断中的偏好与原则，让 AI 能够以这些经验为参考，为学习者和研究者提供更有针对性的指导。
-
-3. **更多与个性化相关的可能性**
+「知我」希望围绕 AI Persona 继续扩展个人 AI 工具，并对更多的系统和agent提供支持。
 
 ## 文档
 

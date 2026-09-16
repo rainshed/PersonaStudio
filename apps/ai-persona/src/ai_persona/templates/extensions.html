@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}{{ '扩展应用 · AI Persona' if locale == 'zh-CN' else 'Extensions · AI Persona' }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/settings.css?v=20260911.connection1">{% endblock %}
+{% block content %}
+<div class="settings-shell settings-stack">
+<header class="page-head settings-head"><div><p class="eyebrow">PersonaStudio</p><h1>{{ '扩展应用' if locale == 'zh-CN' else 'Extensions' }}</h1><p class="lead">{{ '从个人知识库开始，按需添加论文研究工具。' if locale == 'zh-CN' else 'Start with your personal knowledge base. Add research tools when you need them.' }}</p></div></header>
+{% include 'partials/settings_nav.html' %}
+<section class="panel studio-settings-panel"><h2>AI Persona · {{ '已安装' if locale == 'zh-CN' else 'Installed' }}</h2><p>{{ '管理知识、材料和偏好。可以独立使用。' if locale == 'zh-CN' else 'Manage knowledge, materials and preferences as a standalone application.' }}</p></section>
+<section class="panel studio-settings-panel"><h2>Paper Radar · {{ ('已安装' if paper_radar_available else '可选') if locale == 'zh-CN' else ('Installed' if paper_radar_available else 'Optional') }}</h2>
+<p>{{ '结合你的 Persona 订阅论文，生成每日推荐和单篇分析。复用已有知识库，研究记录独立保存。' if locale == 'zh-CN' else 'Use your Persona to subscribe to papers, generate daily recommendations and analyze individual papers. Reuse your knowledge base and keep research records separately.' }}</p>
+{% if paper_radar_available %}
+{% if not is_demo %}<form method="post" action="/studio/paper-radar" data-open-paper-radar><button class="button primary-button" type="submit">{{ '打开 Paper Radar' if locale == 'zh-CN' else 'Open Paper Radar' }} ↗</button><p role="alert"></p></form>{% endif %}
+<details><summary>{{ '移除应用' if locale == 'zh-CN' else 'Remove application' }}</summary><p>{{ '在终端运行下方命令。研究数据和之前的应用版本会保留，之后可以重新安装。' if locale == 'zh-CN' else 'Run this command in Terminal. Research data and the previous application version are kept, so you can reinstall later.' }}</p><pre><code>personastudio remove paper-radar</code></pre></details>
+{% else %}
+<p>{{ '复制命令，在终端运行即可添加。安装器会准备运行环境；完成后刷新本页，打开 Paper Radar 确认已有知识库。' if locale == 'zh-CN' else 'Copy this command and run it in Terminal to add Paper Radar. The installer prepares its runtime. Refresh this page when finished, then open Paper Radar to confirm your existing knowledge base.' }}</p>
+<pre style="white-space:pre-wrap;overflow-wrap:anywhere"><code data-install-command>{{ radar_install_command }}</code></pre>
+<button class="button primary-button" type="button" data-copy-install>{{ '复制安装命令' if locale == 'zh-CN' else 'Copy installation command' }}</button><p data-copy-result role="status"></p>
+{% endif %}
+</section>
+<section class="panel studio-settings-panel"><h2>{{ '更新应用' if locale == 'zh-CN' else 'Update applications' }}</h2><p>{{ '更新会记住你的安装选择，保留知识库和研究数据。请先完成或取消正在进行的研究任务。' if locale == 'zh-CN' else 'Updates remember your installed applications and preserve knowledge and research data. Finish or cancel active research tasks first.' }}</p><pre><code>personastudio update</code></pre></section>
+</div>
+{% endblock %}

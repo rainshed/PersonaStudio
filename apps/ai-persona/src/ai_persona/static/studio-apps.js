@@ -20,3 +20,14 @@ document.querySelectorAll('[data-open-paper-radar]').forEach((form) => {
     } finally { button.disabled = false; button.textContent = label; }
   });
 });
+
+document.querySelector('[data-copy-install]')?.addEventListener('click', async () => {
+  const output = document.querySelector('[data-copy-result]');
+  const zh = document.documentElement.lang.startsWith('zh');
+  try {
+    await navigator.clipboard.writeText(document.querySelector('[data-install-command]').textContent);
+    output.textContent = zh ? '已复制。打开终端粘贴并运行。' : 'Copied. Paste and run in Terminal.';
+  } catch {
+    output.textContent = zh ? '请选中上方命令并复制到终端。' : 'Select the command above and copy it into Terminal.';
+  }
+});

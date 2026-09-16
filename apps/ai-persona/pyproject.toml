@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ai-persona"
-version = "0.1.0"
+version = "0.2.0"
 description = "Local-first knowledge and preferences with human-reviewed AI updates; part of PersonaStudio"
 readme = {text = "AI Persona is PersonaStudio's local-first knowledge and preference application.", content-type = "text/markdown"}
 license = "MIT"

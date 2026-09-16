@@ -17,4 +17,4 @@ Keep UI messages available in Simplified Chinese and English. Preserve old repor
 
 Use the existing lockfiles. `packages/host-contract` contains portable protocol definitions only; network, authentication and task execution belong in their respective processes. Do not add application imports to the DSH plugin.
 
-The Paper Radar migration is currently awaiting user review. Do not publish a combined release or update the public installer as part of routine development checks. See [local review instructions](docs/PAPER_RADAR.md).
+Build the Radar web app before running `scripts/build-release.py`. The builder emits separate Persona and Radar archives under one release version. Run `scripts/test-installer.py --dist-dir dist/release` to exercise both combinations, component changes, retained data and rollback in temporary homes. Release installers prepare a private checksum-verified Node.js runtime; update its version and both architecture hashes together from the official Node.js release checksums. Local checks never publish. GitHub publication is a separate version-tag operation. See the [Paper Radar guide](docs/PAPER_RADAR.md).

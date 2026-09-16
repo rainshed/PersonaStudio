@@ -2,7 +2,7 @@ name: Paper Radar checks
 
 on:
   pull_request:
-    paths: ['apps/paper-radar/**', 'apps/ai-persona/**', 'scripts/**', 'package*.json', '.github/workflows/paper-radar.yml']
+    paths: ['apps/paper-radar/**', 'apps/ai-persona/**', 'scripts/**', 'install.sh', 'package*.json', '.github/workflows/paper-radar.yml', '.github/workflows/release.yml']
   workflow_dispatch:
 
 permissions:
@@ -20,6 +20,7 @@ jobs:
           python-version: '3.12'
       - uses: actions/setup-node@v6
         with:
-          node-version: '24'
+          node-version: '24.21.0'
       - run: node scripts/setup-paper-radar.mjs --check
-      # Validation only. Publishing the combined application is deliberately deferred.
+      - run: uv run --no-project --python 3.12 python scripts/build-release.py
+      - run: uv run --no-project --python 3.12 python scripts/test-installer.py --dist-dir dist/release

@@ -72,7 +72,7 @@
           <span class="nav-count" data-inbox-pending title="{{ '待审核候选数' if locale == 'zh-CN' else 'Candidates awaiting review' }}" {% if not pending_count %}hidden{% endif %}>{{ pending_count }}</span>
         </a>
         {% if not is_demo %}<a href="/evaluations" class="{% if section == 'evaluations' %}active{% endif %}"><span class="studio-nav-long">{{ '评测与改进' if locale == 'zh-CN' else 'Evaluation & improvement' }}</span><span class="studio-nav-short">{{ '评测改进' if locale == 'zh-CN' else 'Evaluate' }}</span></a>{% endif %}
-        <a href="/settings" class="{% if section in ['settings', 'models'] %}active{% endif %}">{{ '设置' if locale == 'zh-CN' else 'Settings' }}</a>
+        <a href="/settings" class="{% if section in ['settings', 'models', 'extensions'] %}active{% endif %}">{{ '设置' if locale == 'zh-CN' else 'Settings' }}</a>
       </nav>
       {% if section != 'dashboard' %}<a href="/ai" class="studio-maintenance {% if section == 'ai' %}active{% endif %}">✦ {{ t('ai.assistant') }}</a>{% endif %}
 

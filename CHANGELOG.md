@@ -1,13 +1,15 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
+
+- Offer AI Persona alone or AI Persona with Paper Radar through one installer. Keep the selected components on update, support adding/removing Radar later, and retain user data and the previous application version.
+- Publish a separate Radar component with prebuilt web assets. Prepare a private, checksum-verified Node.js runtime only for Radar, and verify the installed server before activation.
+- Add an Extensions page and stable Persona discovery across updates. Release checks now cover both installation combinations and component changes.
 
 - Add Paper Radar as a local PersonaStudio application, retaining its research pages, both analysis hosts and existing data layout.
 - Add direct Persona connection → subscription onboarding, application switching, workspace discovery and managed local startup.
 - Add verified research backups, separate recovery copies and redacted diagnostics.
-- Add mandatory Persona integration and isolated runtime checks. Combined packaging and publication remain deferred pending user review.
-
-## Unreleased
+- Add mandatory Persona integration and isolated runtime checks.
 
 - Consolidate permanent user documentation into two paired English/Chinese guides and remove duplicate application READMEs, dated validation logs, superseded design documents, and redundant getting-started, architecture, and remote runbook guides.
 

@@ -50,3 +50,50 @@ def test_application_switch_requires_protected_local_post(studio, monkeypatch):
     assert response.status_code == 200
     assert response.json()["url"] == "http://127.0.0.1:12345/"
     assert len(calls) == 1
+
+
+def test_extensions_offer_installation_without_a_dead_application_link(studio, monkeypatch, tmp_path):
+    _, client, _, _, _ = studio
+    monkeypatch.delenv("AI_PERSONA_INSTALL_ROOT", raising=False)
+    monkeypatch.setenv("PERSONASTUDIO_ROOT", str(tmp_path))
+    response = client.get("/settings/extensions")
+    assert response.status_code == 200
+    assert "--with-paper-radar" in response.text
+    assert "data-copy-install" in response.text
+    assert "data-open-paper-radar" not in response.text
+    launcher = tmp_path / "apps/paper-radar/scripts/launcher.mjs"
+    launcher.parent.mkdir(parents=True)
+    launcher.write_text("// installed")
+    response = client.get("/settings/extensions")
+    assert "data-open-paper-radar" in response.text
+    assert "data-copy-install" not in response.text
+    assert "personastudio remove paper-radar" in response.text
+    monkeypatch.setenv("AI_PERSONA_INSTALL_ROOT", str(tmp_path / "managed"))
+    response = client.get("/settings/extensions")
+    assert "personastudio install paper-radar" in response.text
+    assert "curl -fsSL" not in response.text
+
+
+def test_installed_companion_follows_current_version_and_uses_managed_node(monkeypatch, tmp_path):
+    installation = tmp_path / "installed"
+    current = installation / "current"
+    current.mkdir(parents=True)
+    launcher = current / "apps/paper-radar/scripts/launcher.mjs"
+    launcher.parent.mkdir(parents=True)
+    launcher.touch()
+    node = current / "runtime/node/bin/node"
+    node.parent.mkdir(parents=True)
+    node.touch()
+    monkeypatch.setenv("AI_PERSONA_INSTALL_ROOT", str(installation))
+    monkeypatch.setenv("PERSONASTUDIO_ROOT", "/obsolete/version")
+    monkeypatch.setattr(studio_apps.shutil, "which", lambda _: None)
+    calls = []
+    def run(args, **kwargs):
+        calls.append(args)
+        return SimpleNamespace(stdout=json.dumps({"url": "http://127.0.0.1:12345/"}))
+    monkeypatch.setattr(studio_apps.subprocess, "run", run)
+    assert studio_apps.radar_launcher() == launcher
+    studio_apps.open_paper_radar(tmp_path / "workspace")
+    assert calls[0][0] == str(node)
+    launcher.unlink()
+    assert studio_apps.radar_launcher() is None

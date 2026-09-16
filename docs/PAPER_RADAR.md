@@ -1,10 +1,38 @@
-# Paper Radar: local use and review
+# Paper Radar: installation and use
 
 [简体中文](PAPER_RADAR.zh-CN.md) · [PersonaStudio](../README.md)
 
-Paper Radar is the second application in this repository. This is a local review version; a combined release has not been built or published. The existing installer and published releases still install AI Persona.
+Paper Radar is an optional PersonaStudio application. Install it together with AI Persona or add it later. Optional installation requires a GitHub Release of version 0.2.0 or later.
 
-## Setup
+## Install and start
+
+Install both applications:
+
+```sh
+curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh -s -- --with-paper-radar
+ai-persona setup
+paper-radar start
+```
+
+If AI Persona 0.2.0 or later is already installed:
+
+```sh
+personastudio install paper-radar
+paper-radar start
+```
+
+The installer prepares a private Node.js runtime, downloads prebuilt web assets and verifies archives. No manual npm or build step is needed. `personastudio update` remembers the installed combination; `personastudio remove paper-radar` keeps research data.
+
+```sh
+paper-radar status
+paper-radar stop
+paper-radar doctor
+paper-radar logs
+ai-persona start
+```
+
+## Develop from source
+
 
 The current supported validation target is macOS, with Node.js 22.19 or newer and uv. From the repository root:
 
@@ -70,4 +98,4 @@ This runs type/lint checks, application and plugin tests, actual read-only AI Pe
 
 The optional static demonstration remains available to developers through the explicit `VITE_PAPER_RADAR_MODE=demo` build setting. Ordinary startup never falls back to it on connection failure.
 
-Before distributing, manually review the first-use flow, both analysis hosts, all research pages, task cancellation/recovery, and backup restoration. Packaging, version selection and GitHub publication are deferred until that review.
+Before distributing, manually review the first-use flow, both analysis hosts, all research pages, task cancellation/recovery, and backup restoration. The release workflow builds separate Persona and Radar archives and tests both combinations, component changes and recovery. Local checks do not publish; publication is triggered separately through a version tag.

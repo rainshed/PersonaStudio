@@ -15,6 +15,10 @@ function executable(path) {
 
 export function discoverExecutable(workspace = '', env = process.env) {
   const candidates = [
+    ...(env.AI_PERSONA_MCP_COMMAND ? [env.AI_PERSONA_MCP_COMMAND] : []),
+    ...(env.AI_PERSONA_INSTALL_ROOT
+      ? [join(env.AI_PERSONA_INSTALL_ROOT, 'current/scripts/ai-persona-mcp')]
+      : []),
     join(personaProject, '.venv/bin/ai-persona-mcp'),
     join(homedir(), '.local/bin/ai-persona-mcp'),
     ...(env.PATH || '')

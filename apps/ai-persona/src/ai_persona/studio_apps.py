@@ -11,14 +11,17 @@ from urllib.parse import urlsplit
 
 def radar_launcher() -> Path | None:
     configured = os.environ.get("PERSONASTUDIO_ROOT")
-    root = Path(configured) if configured else Path(__file__).resolve().parents[4]
+    installed = os.environ.get("AI_PERSONA_INSTALL_ROOT")
+    root = (Path(installed) / "current" if installed else
+            Path(configured) if configured else Path(__file__).resolve().parents[4])
     launcher = root / "apps/paper-radar/scripts/launcher.mjs"
     return launcher if launcher.is_file() else None
 
 
 def open_paper_radar(workspace: Path) -> str:
     launcher = radar_launcher()
-    node = shutil.which("node")
+    managed_node = launcher.parent.parent.parent.parent / "runtime/node/bin/node" if launcher else None
+    node = str(managed_node) if managed_node and managed_node.is_file() else shutil.which("node")
     if launcher is None or node is None:
         raise ValueError("Paper Radar is not installed in this PersonaStudio workspace")
     result = subprocess.run(

@@ -1,4 +1,8 @@
 #!/bin/sh
 set -eu
 PERSONA_REPO=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+if [ -x "$PERSONA_REPO/runtime/node/bin/node" ]; then
+    PATH="$PERSONA_REPO/runtime/node/bin:$PATH"
+    export PATH
+fi
 exec node "$PERSONA_REPO/apps/paper-radar/scripts/launcher.mjs" "$@"
