@@ -11,6 +11,7 @@ from ..contracts import ContextSnapshot, Message, TextPart, digest
 from ..input_text import learning_text
 
 MAX_CAPTURE_BYTES = 128 * 1024
+MAX_HEADER_BYTES = 1024 * 1024
 
 
 def capture_context(
@@ -32,7 +33,11 @@ def capture_context(
             if not file_stat.S_ISREG(stat.st_mode):
                 return None, "context_path_rejected"
             # Confirm the session identity in the bounded header, not its filename.
-            header = stream.readline(32 * 1024)
+            # Session metadata includes base instructions and tool definitions,
+            # which can exceed 32 KiB. Keep its bound separate from the chat tail.
+            header = stream.readline(MAX_HEADER_BYTES + 1)
+            if len(header) > MAX_HEADER_BYTES:
+                return None, "context_format_unsupported"
             meta = json.loads(header)
             if (
                 meta.get("type") != "session_meta"

@@ -18,6 +18,7 @@ import urllib.request
 from pathlib import Path
 
 MAX_BODY = 256 * 1024
+MAX_HEADER_BYTES = 1024 * 1024
 
 
 def encoded(value):
@@ -81,7 +82,11 @@ def capture_context(config, payload):
             info = os.fstat(stream.fileno())
             if not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid():
                 return None, "context_path_rejected"
-            header = stream.readline(32 * 1024)
+            # Session metadata includes base instructions and tool definitions,
+            # which can exceed 32 KiB. Keep its bound separate from the chat tail.
+            header = stream.readline(MAX_HEADER_BYTES + 1)
+            if len(header) > MAX_HEADER_BYTES:
+                return None, "context_format_unsupported"
             meta = json.loads(header)
             if meta.get("type") != "session_meta" or meta.get("payload", {}).get("id") != payload["session_id"]:
                 return None, "context_session_mismatch"
