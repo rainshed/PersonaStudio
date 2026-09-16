@@ -1,0 +1,46 @@
+{
+  "name": "paper-radar-dsh-plugin",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./client": "./src/client.js",
+    "./package.json": "./package.json",
+    "./host-models": "./src/host-models.mjs",
+    "./host-agents": "./src/host-agents.mjs"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "COMPATIBILITY.md"
+  ],
+  "scripts": {
+    "test": "node --test --test-timeout=60000 tests/*.test.mjs",
+    "install:local": "node scripts/install.mjs",
+    "verify:agent": "node --experimental-strip-types scripts/verify-agent.mjs"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-llm": "0.1.5-rc.1"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-tool",
+        "@deepseek-ai/dsh-client-ui-renderer"
+      ]
+    }
+  },
+  "dependencies": {
+    "@paper-radar/host-contract": "file:../../packages/host-contract"
+  },
+  "devDependencies": {
+    "@deepseek-ai/dsh-llm": "0.1.5-rc.1"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  }
+}

@@ -1,0 +1,229 @@
+.task-notification-bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #dfe3ea;
+  border-radius: 10px;
+  background: #fff;
+  color: #59677b;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.task-notification-bell > span {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  padding: 1px 4px;
+  min-width: 17px;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  background: #4967d8;
+  color: #fff;
+  font-size: 10px;
+  line-height: 14px;
+}
+.task-notification-panel {
+  width: min(480px, calc(100vw - 32px));
+  max-width: 480px;
+  max-height: min(760px, calc(100dvh - 40px));
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  color: #263449;
+  background: #fff;
+}
+.task-notification-panel [data-slot='dialog-header'] {
+  padding-right: 24px;
+}
+.task-notification-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+  color: #5c697d;
+}
+.task-notification-panel button {
+  cursor: pointer;
+}
+.task-notification-panel button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.task-notification-toolbar button,
+.task-notification-desktop button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #4967d8;
+  font-size: 13px;
+}
+.task-notification-list {
+  overflow-y: auto;
+  min-height: 100px;
+  margin: 0 -8px;
+}
+.task-notification-item {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 9px;
+  text-align: left;
+  border-bottom: 1px solid #e5e8ee;
+  border-radius: 8px;
+}
+.task-notification-item:hover {
+  background: #f6f8fc;
+}
+.task-notification-item.unread {
+  background: #f1f4fc;
+}
+.task-notification-icon {
+  display: inline-flex;
+  padding-top: 2px;
+  color: #9b6431;
+}
+.task-notification-icon.succeeded,
+.task-notification-icon.completed {
+  color: #337258;
+}
+.task-notification-icon.cancelled {
+  color: #8a8c87;
+}
+.task-notification-copy {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+.task-notification-copy > span:first-child {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.task-notification-copy strong {
+  color: #263449;
+  font-size: 13px;
+  font-weight: 600;
+}
+.task-notification-copy time {
+  color: #68758a;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.task-notification-title {
+  color: #46536a;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+.task-notification-view {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  color: #4967d8;
+  font-size: 12px;
+}
+.task-notification-dot {
+  width: 6px;
+  height: 6px;
+  background: #4967d8;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.task-notification-empty {
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #56647a;
+  text-align: center;
+}
+.task-notification-empty span {
+  font-size: 13px;
+  color: #68758a;
+}
+.task-notification-more {
+  display: block;
+  margin: 16px auto;
+  color: #4967d8;
+  font-size: 13px;
+}
+.task-notification-desktop {
+  border-top: 1px solid #e5e8ee;
+  padding-top: 12px;
+}
+.task-notification-desktop p {
+  color: #68758a;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 6px;
+}
+.task-notification-error {
+  font-size: 13px;
+  color: #a07137;
+}
+.task-notification-error button {
+  text-decoration: underline;
+}
+.task-notification-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: min(380px, calc(100vw - 32px));
+  padding: 18px;
+  border: 1px solid #e1e5ec;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 35px rgba(26, 39, 62, 0.12);
+  color: #4967d8;
+}
+.task-notification-toast > svg {
+  flex-shrink: 0;
+}
+.task-notification-toast > span {
+  flex: 1;
+  min-width: 0;
+}
+.task-notification-toast strong {
+  font-size: 14px;
+  color: #263449;
+}
+.task-notification-toast .task-toast-title {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #56647a;
+  margin: 5px 0;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.task-notification-toast button {
+  cursor: pointer;
+  font-size: 13px;
+}
+.task-toast-close {
+  color: #68758a;
+}
+@media (max-width: 600px) {
+  .task-notification-toast {
+    right: 16px;
+    bottom: 16px;
+  }
+  .task-notification-panel {
+    padding: 18px;
+  }
+}

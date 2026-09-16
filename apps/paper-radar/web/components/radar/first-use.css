@@ -1,0 +1,117 @@
+.radar-first-use {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+}
+.first-use-header {
+  max-width: 1040px;
+  margin: auto;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.first-use-brand {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+.first-use-brand small {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.first-use-content {
+  max-width: 780px;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem 3rem;
+}
+.first-use-content > h1 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+.first-use-intro {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin: 0.7rem 0 1.75rem;
+  color: var(--muted-foreground);
+}
+.first-use-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.75rem;
+  font-size: 0.95rem;
+}
+.first-use-steps li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  color: var(--muted-foreground);
+}
+.first-use-steps li[aria-current] {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.first-use-steps li > span {
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+}
+.first-use-steps li[aria-current] > span {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+.first-use-content .research-section {
+  margin: 0 0 1rem;
+}
+.first-use-connected {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
+}
+.first-use-connected > button {
+  margin-left: auto;
+}
+.first-subscription > h2 {
+  font-size: 1.25rem;
+  margin: 0 0 0.65rem;
+}
+.first-subscription > p {
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+.persona-advanced {
+  padding-top: 0.5rem;
+}
+.persona-advanced > summary {
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+@media (max-width: 600px) {
+  .first-use-header {
+    padding: 1rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .first-use-content {
+    margin-top: 1.5rem;
+    padding: 0 1rem 2rem;
+  }
+}

@@ -19,3 +19,6 @@
   line-height: 1.6;
 }
 .demo-banner strong { letter-spacing: 0.08em; }
+
+.studio-app-switch { margin-bottom: 1rem; }
+.studio-app-switch button { width: 100%; text-align: left; padding: .6rem .75rem; border: 1px solid #d9dee8; border-radius: .5rem; background: white; color: #29354b; font-size: .875rem; cursor: pointer; }

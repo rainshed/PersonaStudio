@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Add Paper Radar as a local PersonaStudio application, retaining its research pages, both analysis hosts and existing data layout.
+- Add direct Persona connection → subscription onboarding, application switching, workspace discovery and managed local startup.
+- Add verified research backups, separate recovery copies and redacted diagnostics.
+- Add mandatory Persona integration and isolated runtime checks. Combined packaging and publication remain deferred pending user review.
+
+## Unreleased
+
 - Consolidate permanent user documentation into two paired English/Chinese guides and remove duplicate application READMEs, dated validation logs, superseded design documents, and redundant getting-started, architecture, and remote runbook guides.
 
 ## 0.1.0

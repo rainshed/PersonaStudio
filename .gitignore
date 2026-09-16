@@ -37,3 +37,18 @@ build/
 browser-results/
 playwright-report/
 test-results/
+
+# Paper Radar local builds, runtime state and private backups.
+**/.runtime/
+**/.vinext/
+**/.wrangler/
+**/.next/
+**/out/
+*.tsbuildinfo
+radar.sqlite*
+analysis.lock
+server.lock
+vault.enc*
+vault.key
+/apps/paper-radar/work/
+/apps/paper-radar/releases/

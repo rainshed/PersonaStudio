@@ -1,0 +1,31 @@
+// Fixed native dialog helper. User values arrive only as arguments.
+ObjC.import('AppKit');
+
+function run(argv) {
+  const executable = argv[0] === 'executable';
+  const english = argv[2] === 'en';
+  const application = $.NSApplication.sharedApplication;
+  application.setActivationPolicy($.NSApplicationActivationPolicyRegular);
+  application.finishLaunching;
+  const panel = $.NSOpenPanel.openPanel;
+  panel.title = 'Paper Radar — AI Persona';
+  panel.message = english
+    ? (executable ? 'Choose the ai-persona-mcp executable' : 'Choose the AI Persona library folder')
+    : (executable ? '选择 ai-persona-mcp 程序' : '选择 AI Persona 知识库文件夹');
+  panel.prompt = english ? 'Choose' : '选择';
+  panel.canChooseFiles = executable;
+  panel.canChooseDirectories = !executable;
+  panel.allowsMultipleSelection = false;
+  panel.canCreateDirectories = false;
+  panel.showsHiddenFiles = executable;
+  panel.directoryURL = $.NSURL.fileURLWithPath(argv[1]);
+  // A background Node service has no app window to activate. Bring this panel
+  // onto the active desktop explicitly before entering its modal event loop.
+  panel.collectionBehavior = $.NSWindowCollectionBehaviorMoveToActiveSpace | $.NSWindowCollectionBehaviorFullScreenAuxiliary;
+  panel.level = $.NSModalPanelWindowLevel;
+  application.activateIgnoringOtherApps(true);
+  panel.makeKeyAndOrderFront(null);
+  panel.orderFrontRegardless;
+  const accepted = panel.runModal === $.NSModalResponseOK;
+  return JSON.stringify({ path: accepted ? ObjC.unwrap(panel.URL.path) : null });
+}

@@ -6,4 +6,5 @@ if ! command -v uv >/dev/null 2>&1; then
     printf '%s\n' 'AI Persona needs uv. Install it from https://docs.astral.sh/uv/getting-started/installation/ and run this command again.' >&2
     exit 1
 fi
+export PERSONASTUDIO_ROOT="$PERSONA_REPO"
 exec uv run --locked --no-editable --project "$PERSONA_REPO/apps/ai-persona" ai-persona-mcp "$@"

@@ -1,0 +1,152 @@
+.host-settings {
+  display: grid;
+  gap: 18px;
+}
+
+.host-settings-header,
+.host-actions,
+.host-picker {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 16px;
+}
+
+.host-settings-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px;
+}
+
+.host-settings-header h1 {
+  margin: 2px 0 6px;
+  font-size: 1.65rem;
+}
+
+.host-settings-header p,
+.host-actions span {
+  color: var(--muted-foreground);
+}
+
+.host-refresh,
+.host-actions button,
+.host-login-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--background);
+  color: inherit;
+  text-decoration: none;
+}
+
+.host-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.host-picker button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  text-align: left;
+}
+
+.host-picker button.selected {
+  border-color: color-mix(in srgb, var(--primary) 42%, var(--border));
+  background: color-mix(in srgb, var(--primary) 7%, var(--background));
+}
+
+.host-picker span,
+.host-actions > div {
+  display: grid;
+  gap: 3px;
+}
+
+.host-picker small {
+  color: var(--muted-foreground);
+}
+
+.host-picker em {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--primary);
+  font-size: 0.76rem;
+  font-style: normal;
+}
+
+.host-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.host-actions > div {
+  margin-right: auto;
+}
+
+.host-actions span {
+  font-size: 0.84rem;
+}
+
+.host-actions .host-activate {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.host-isolation,
+.host-error {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+}
+
+.host-isolation {
+  border: 1px solid color-mix(in srgb, #16805b 35%, var(--border));
+  background: color-mix(in srgb, #16805b 7%, var(--background));
+  color: #126447;
+}
+
+.host-error {
+  border: 1px solid color-mix(in srgb, #b42318 35%, var(--border));
+  background: color-mix(in srgb, #b42318 7%, var(--background));
+  color: #9b1c14;
+}
+
+.host-login-link {
+  justify-self: start;
+}
+
+@media (max-width: 720px) {
+  .host-settings-header,
+  .host-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .host-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .host-actions > div {
+    margin-right: 0;
+  }
+}

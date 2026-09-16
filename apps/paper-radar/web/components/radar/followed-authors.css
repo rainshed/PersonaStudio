@@ -1,0 +1,188 @@
+.followed-authors {
+  max-width: 76rem;
+  margin: 0 auto;
+  font-size: 1rem;
+}
+.followed-authors .page-heading p {
+  max-width: 44rem;
+}
+.followed-author-scope,
+.followed-author-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+.followed-author-scope label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.followed-author-scope > p {
+  color: #52627a;
+  overflow-wrap: anywhere;
+  flex: 1;
+  min-width: 12rem;
+}
+.followed-author-scope [data-slot='native-select-wrapper'] {
+  max-width: 100%;
+}
+.followed-authors [data-slot='native-select'] {
+  min-height: 2.5rem;
+  background: #fff;
+}
+.followed-author-settings {
+  padding: 1.4rem;
+  background: #fff;
+  border: 1px solid #e1e5ec;
+  border-radius: 0.75rem;
+}
+.followed-author-add {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.65rem 0;
+  max-width: 40rem;
+}
+.followed-author-add input {
+  min-width: 0;
+  height: 2.5rem;
+  font-size: 1rem;
+}
+.followed-authors [data-slot='button'] {
+  min-height: 2.5rem;
+  height: auto;
+  font-size: 0.875rem;
+}
+.followed-author-hint,
+.followed-author-paper-meta,
+.followed-author-sources {
+  color: #52627a;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.followed-author-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.followed-author-names > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0 0.3rem 0 0.75rem;
+  border-radius: 0.5rem;
+  background: #edf1fc;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.followed-author-names > p {
+  color: #52627a;
+}
+.followed-author-toolbar h2 {
+  margin-right: auto;
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+.followed-author-toolbar h2 span {
+  margin-left: 0.4rem;
+  color: #52627a;
+  font-size: 1rem;
+}
+.followed-author-sources {
+  margin: 1rem 0;
+}
+.followed-authors summary {
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+.followed-author-sources ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.65rem 0;
+  padding-left: 1.25rem;
+}
+.followed-author-papers {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+.followed-author-papers article {
+  padding: 1.4rem;
+  border: 1px solid #e1e5ec;
+  background: #fff;
+  border-radius: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.followed-author-paper-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+}
+.followed-author-papers h3 {
+  font-size: 1.125rem;
+  font-weight: 650;
+  line-height: 1.5;
+  margin: 0.55rem 0;
+}
+.followed-author-papers h3 a {
+  color: #243c76;
+}
+.followed-author-papers h3 a:hover {
+  text-decoration: underline;
+}
+.followed-author-papers h3 svg {
+  display: inline;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+}
+.followed-author-papers article > p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0.4rem 0;
+}
+.followed-author-match {
+  color: #3553ae;
+}
+.followed-author-papers details {
+  margin-top: 0.75rem;
+}
+.followed-author-abstract {
+  line-height: 1.75;
+  margin-top: 0.65rem;
+  white-space: pre-wrap;
+}
+.followed-author-pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+@media (max-width: 640px) {
+  .followed-authors .page-heading {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .followed-author-add {
+    flex-wrap: wrap;
+  }
+  .followed-author-add input {
+    flex-basis: 100%;
+  }
+  .followed-author-scope > p {
+    flex-basis: 100%;
+  }
+  .followed-author-toolbar {
+    align-items: stretch;
+  }
+  .followed-author-toolbar h2 {
+    flex-basis: 100%;
+  }
+  .followed-author-settings,
+  .followed-author-papers article {
+    padding: 1rem;
+  }
+}

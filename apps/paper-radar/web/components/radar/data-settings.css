@@ -1,0 +1,53 @@
+.radar-data-settings > p {
+  line-height: 1.75;
+  margin: 0.75rem 0;
+}
+.radar-data-settings h3 {
+  font-size: 1.1rem;
+  margin: 1.75rem 0 0.6rem;
+}
+.data-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+.data-directory {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  display: block;
+}
+.data-backups {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+.data-backups li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.data-backups li > span {
+  flex: 1;
+  min-width: 12rem;
+}
+.data-backups small {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--muted-foreground);
+}
+.studio-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.studio-switcher > button {
+  width: 100%;
+}
+.studio-switcher p {
+  overflow-wrap: anywhere;
+}

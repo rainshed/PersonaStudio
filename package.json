@@ -2,7 +2,7 @@
   "name": "personastudio-development",
   "private": true,
   "version": "0.1.0",
-  "description": "Browser verification for the independently packaged PersonaStudio applications",
+  "description": "Local development and verification for PersonaStudio applications",
   "scripts": {
     "test:connections": "node apps/ai-persona/tests/browser/connection-setup.mjs && node apps/ai-persona/tests/browser/mcp-setup.mjs",
     "test:home": "node apps/ai-persona/tests/browser/home-setup.mjs",
@@ -11,7 +11,12 @@
     "test:browser": "node apps/ai-persona/tests/browser/smoke.mjs",
     "test:errors": "node apps/ai-persona/tests/browser/error_feedback.mjs",
     "test:first-use": "node apps/ai-persona/tests/browser/model_setup.mjs",
-    "test:extraction": "node apps/ai-persona/tests/browser/extraction.mjs && node apps/ai-persona/tests/browser/graph-reject.mjs"
+    "test:extraction": "node apps/ai-persona/tests/browser/extraction.mjs && node apps/ai-persona/tests/browser/graph-reject.mjs",
+    "start": "node scripts/personastudio.mjs paper-radar start",
+    "radar": "node scripts/personastudio.mjs paper-radar",
+    "persona": "node scripts/personastudio.mjs ai-persona",
+    "setup:radar": "node scripts/setup-paper-radar.mjs",
+    "check:radar": "node scripts/setup-paper-radar.mjs --check-only"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0"

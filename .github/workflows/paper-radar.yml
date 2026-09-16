@@ -1,0 +1,25 @@
+name: Paper Radar checks
+
+on:
+  pull_request:
+    paths: ['apps/paper-radar/**', 'apps/ai-persona/**', 'scripts/**', 'package*.json', '.github/workflows/paper-radar.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+        with:
+          version: '0.11.7'
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - run: node scripts/setup-paper-radar.mjs --check
+      # Validation only. Publishing the combined application is deliberately deferred.

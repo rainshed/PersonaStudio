@@ -76,6 +76,24 @@ PersonaStudio's first application is **AI Persona**, a local-first, file-first w
 
 Manual edits take effect when saved. AI-generated changes do not modify official data until a person reviews them. Public MCP exposes knowledge and source-reading tools only; it cannot publish changes.
 
+## Paper Radar: research workspace
+
+The second application, **Paper Radar**, is now available in this repository for local review. It has not been distributed yet.
+
+- Subscribe to arXiv subjects and Persona knowledge scopes; generate daily recommendations and single-paper analyses.
+- Use followed authors, evidence, source reading, feedback, evaluations, prompts, automatic checks and task management.
+- Start directly with **Connect AI Persona → Create a subscription**, then connect Codex or DSH for generated reports.
+- Back up research data, open recovered copies, export diagnostics and switch between the two applications.
+
+From the repository root:
+
+```sh
+npm run setup:radar
+npm start
+```
+
+See [Paper Radar local use and review](docs/PAPER_RADAR.md). The published installer below still installs AI Persona only; combined distribution will be considered after review.
+
 ## Installation
 
 PersonaStudio 0.1.0 currently supports macOS. Use the same command for the first installation and later updates:
@@ -121,8 +139,8 @@ Browsing and manual editing do not require a model account. Only model-powered f
 
 PersonaStudio will continue to expand its collection of personal AI tools around AI Persona. Possibilities include:
 
-1. **Personalized arXiv recommendations**
-   Use a person's knowledge structure, reading history, and research interests to surface papers that are more likely to match their interests and current research needs, rather than relying on keyword matching alone. Tailored summaries can then help them understand more in less time.
+1. **Improve personalized paper recommendations**
+   Continue improving Paper Radar recommendations and explanations using knowledge structure, reading feedback and research interests.
 
 2. **Expert AI mentors**
    With permission, capture the preferences and principles that experienced researchers apply to topic selection, reading, experimental design, and research judgment, so AI can use that experience to offer more relevant guidance to learners and researchers.

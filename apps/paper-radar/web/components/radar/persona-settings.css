@@ -1,0 +1,235 @@
+.persona-settings {
+  max-width: 850px;
+}
+.persona-settings-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+.persona-settings-heading h2 {
+  margin: 0;
+}
+.persona-settings-heading p {
+  margin: 0.5rem 0 0;
+  color: #56647a;
+}
+.persona-connection-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  border-radius: 2rem;
+  background: #eef1f6;
+  color: #56647a;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.75rem;
+}
+.persona-connection-state.connected {
+  background: #e7f3ee;
+  color: #27644d;
+}
+.persona-current {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1rem;
+  margin: 1.4rem 0;
+  border: 1px solid #e1e5ec;
+  border-radius: 0.75rem;
+  background: #f8faff;
+}
+.persona-current svg {
+  margin-top: 0.2rem;
+  color: #4967d8;
+  flex-shrink: 0;
+}
+.persona-current div {
+  min-width: 0;
+}
+.persona-current small,
+.persona-current strong,
+.persona-current span {
+  display: block;
+}
+.persona-current small {
+  color: #56647a;
+  font-size: 0.75rem;
+}
+.persona-current strong {
+  margin: 0.15rem 0 0.4rem;
+}
+.persona-current span {
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  color: #56647a;
+  line-height: 1.6;
+}
+.persona-fields {
+  border: 0;
+  padding: 0;
+  margin: 1.5rem 0;
+  min-width: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+.persona-fields label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.persona-fields input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #cdd5e1;
+  border-radius: 0.5rem;
+  padding: 0.65rem 0.8rem;
+  color: #17243a;
+  background: #fff;
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+.persona-fields input:focus {
+  outline: 2px solid #4967d8;
+  outline-offset: 2px;
+}
+.persona-field-hint {
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: #64728a;
+  margin: -0.65rem 0 0;
+}
+.persona-path-field {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.persona-path-control {
+  display: flex;
+  gap: 0.6rem;
+}
+.persona-path-control input {
+  flex: 1;
+}
+.persona-path-control button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.persona-path-field .persona-field-hint {
+  margin: 0;
+}
+.persona-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+.persona-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+.persona-reset {
+  font-size: 0.8rem;
+  border: 0;
+  padding: 0.6rem;
+  background: transparent;
+  color: #64728a;
+}
+.persona-settings button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.persona-footer {
+  margin-top: 0.85rem;
+}
+.persona-message {
+  border: 1px solid #d9e1f1;
+  border-radius: 0.65rem;
+  padding: 0.95rem 1rem;
+  margin: 1.2rem 0;
+  background: #f4f7fd;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.persona-message strong {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.persona-message p {
+  margin: 0.45rem 0 0;
+}
+.persona-message ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+.persona-message a {
+  color: #3453b5;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+.persona-message.success {
+  background: #f0f8f4;
+  border-color: #cde5d8;
+  color: #28533f;
+}
+.persona-message.pending {
+  background: #fffaf0;
+  border-color: #ebdfbe;
+  color: #665022;
+}
+.persona-message.pending button {
+  margin-top: 0.75rem;
+}
+.persona-message.error {
+  background: #fff3f1;
+  border-color: #f0d1cc;
+  color: #993e35;
+}
+.persona-tag-preview {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+.persona-tag-preview span {
+  padding: 0.15rem 0.55rem;
+  border: 1px solid #cde5d8;
+  border-radius: 2rem;
+  background: #fff;
+  font-size: 0.75rem;
+}
+.persona-spinner {
+  animation: persona-spin 1s linear infinite;
+}
+@keyframes persona-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .persona-spinner {
+    animation: none;
+  }
+}
+@media (max-width: 600px) {
+  .persona-path-control {
+    flex-direction: column;
+  }
+  .persona-settings-heading {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .persona-actions .button-primary,
+  .persona-actions .button-secondary {
+    flex: 1;
+  }
+}

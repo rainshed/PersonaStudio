@@ -84,6 +84,7 @@ from .review import (
     review_values,
 )
 from .store import LoadedRecord, PersonaStore, StoreValidationError
+from .studio_apps import radar_launcher
 from .studio_locale import STUDIO_EN, studio_text
 from .web_access import StudioAccess, StudioAccessMiddleware
 
@@ -1315,6 +1316,7 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
             "is_demo": demo,
             "workspace_id": workspace_identity(resolved_data_root, resolved_state_root),
             "workspace_label": display_name(resolved_data_root),
+            "paper_radar_available": radar_launcher() is not None,
             "locale": locale,
             "supported_locales": SUPPORTED_LOCALES,
             "t": t,

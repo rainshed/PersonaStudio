@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="persona-workspace" content="{{ workspace_id }}">
+  <script src="/static/studio-apps.js" defer></script>
   <script src="/static/first-use.js?v=20260911.connection1" defer></script>
   <script src="/static/editor-drafts.js" defer></script>
   <title>{% block title %}AI Persona Studio{% endblock %}</title>
@@ -76,6 +77,7 @@
       {% if section != 'dashboard' %}<a href="/ai" class="studio-maintenance {% if section == 'ai' %}active{% endif %}">✦ {{ t('ai.assistant') }}</a>{% endif %}
 
       <div class="sidebar-footer">
+        {% if paper_radar_available and not is_demo %}<form method="post" action="/studio/paper-radar" class="studio-app-switch" data-open-paper-radar><button type="submit">{{ '打开 Paper Radar' if locale == 'zh-CN' else 'Open Paper Radar' }} ↗</button><p role="alert"></p></form>{% endif %}
         <form class="language-switcher" method="post" action="/language">
           <input type="hidden" name="return_to" value="{{ request.url.path }}{% if request.url.query %}?{{ request.url.query }}{% endif %}">
           <span>{{ t('common.language') }}</span>

@@ -1,0 +1,21 @@
+{
+  "name": "@paper-radar/host-contract",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./transport": "./transport.mjs",
+    "./routing": "./routing.mjs",
+    "./agent-contract": "./agent-contract.mjs",
+    "./persona-tools": "./persona-tools.mjs",
+    "./tool-content": "./tool-content.mjs",
+    "./execution": "./execution.mjs",
+    "./context": "./context.mjs"
+  },
+  "files": [
+    "*.mjs",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  }
+}

@@ -1,0 +1,23 @@
+.task-runtime {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  color: #666b64;
+  font-size: 12px;
+  font-weight: 400;
+}
+.task-runtime > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.task-runtime time {
+  font-variant-numeric: tabular-nums;
+}
+.discussion-progress {
+  flex-wrap: wrap;
+}
+.discussion-progress .task-runtime {
+  flex-basis: 100%;
+}

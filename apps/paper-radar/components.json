@@ -1,0 +1,24 @@
+{
+  "node": ">=22.19.0",
+  "components": {
+    "web": {
+      "path": "web",
+      "version": "0.2.0"
+    },
+    "hostContract": {
+      "path": "packages/host-contract",
+      "version": "1.0.0"
+    },
+    "dshPlugin": {
+      "path": "plugins/dsh",
+      "version": "0.6.0"
+    }
+  },
+  "protocols": {
+    "dsh": "paper-radar-harness/v1",
+    "codex": "paper-radar-codex/v1",
+    "agent": "paper-radar.autonomous.v1"
+  },
+  "dshPeer": "0.1.5-rc.1",
+  "schemaVersion": 1
+}

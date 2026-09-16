@@ -1,0 +1,66 @@
+.persona-home-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 22px;
+  padding: 13px 16px;
+  border: 1px solid #e1e7ef;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #58667b;
+  font-size: 13px;
+}
+.persona-home-status.connected {
+  color: #276446;
+  background: #f4faf6;
+  border-color: #dcebe1;
+}
+.persona-home-status.disconnected,
+.persona-home-status.unavailable {
+  color: #805622;
+  background: #fffbf3;
+  border-color: #efe1c7;
+}
+.persona-home-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.persona-home-message > svg {
+  flex-shrink: 0;
+}
+.persona-home-message strong {
+  font-weight: 600;
+}
+.persona-home-copy {
+  display: block;
+  margin: 4px 0 0;
+  line-height: 1.6;
+}
+.persona-home-actions {
+  display: flex;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.persona-home-actions button {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.persona-home-actions button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+@media (max-width: 560px) {
+  .persona-home-status {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .persona-home-actions {
+    margin-left: 28px;
+  }
+}
