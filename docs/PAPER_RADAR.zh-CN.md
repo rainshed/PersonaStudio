@@ -2,7 +2,7 @@
 
 [English](PAPER_RADAR.md) · [PersonaStudio](../README.zh-CN.md)
 
-Paper Radar 是 PersonaStudio 的可选应用。选择安装 AI Persona + Paper Radar，或在已有的 AI Persona 上补装。可选安装要求 0.2.0 或更新版本的 GitHub Release。
+Paper Radar 是 PersonaStudio 的可选应用。选择安装 AI Persona + Paper Radar，或在已有的 AI Persona 上补装。可选安装要求 0.1.1 或更新版本的 GitHub Release。
 
 ## 安装与启动
 
@@ -14,7 +14,7 @@ ai-persona setup
 paper-radar start
 ```
 
-已经安装 AI Persona 0.2.0 或更新版本时：
+已经安装 AI Persona 0.1.1 或更新版本时：
 
 ```sh
 personastudio install paper-radar

@@ -1,14 +1,14 @@
 # Changelog
 
-## Unreleased
+## 0.1.1
+
+- Improve inbox review and feedback navigation performance.
 
 - Preserve the running Studio port during installation updates and failed-restart rollback, including when the default port is occupied.
 - Run Paper Radar validation and installer checks on main-branch pushes as well as pull requests. Keep release packaging after the Radar production build, and cover the Extensions browser flow in regular CI.
 - Verify upgrades from the checksum-pinned, published v0.1.0 release in an isolated home, including existing knowledge/preferences, saved Hook and MCP commands, Radar component changes and rollback to the running old service.
 - Fix local and remote Codex conversation capture when session metadata exceeds 32 KiB. Read metadata up to a separate 1 MiB limit while preserving session identity checks, bounded conversation capture and exclusion of assistant reasoning. Add regression tests for large, oversized and incomplete metadata.
 - Update contribution guidance with direct pull requests for small changes and contact information for larger contributions.
-
-## 0.2.0
 
 - Offer AI Persona alone or AI Persona with Paper Radar through one installer. Keep the selected components on update, support adding/removing Radar later, and retain user data and the previous application version.
 - Publish a separate Radar component with prebuilt web assets. Prepare a private, checksum-verified Node.js runtime only for Radar, and verify the installed server before activation.

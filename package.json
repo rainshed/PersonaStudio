@@ -1,7 +1,7 @@
 {
   "name": "personastudio-development",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.1.1",
   "description": "Local development and verification for PersonaStudio applications",
   "scripts": {
     "test:extensions": "node apps/ai-persona/tests/browser/extensions.mjs",

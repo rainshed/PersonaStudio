@@ -89,7 +89,7 @@ See the [Paper Radar guide](docs/PAPER_RADAR.md).
 
 ## Installation
 
-PersonaStudio supports macOS. Starting with 0.2.0, choose either option below (requires a GitHub Release containing the optional component):
+PersonaStudio supports macOS. Starting with 0.1.1, choose either option below (requires a GitHub Release containing the optional component):
 
 **AI Persona only** — manage knowledge, materials and preferences.
 

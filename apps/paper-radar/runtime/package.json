@@ -1,6 +1,6 @@
 {
   "name": "paper-radar-runtime",
-  "version": "0.2.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "engines": { "node": ">=22.19.0" },

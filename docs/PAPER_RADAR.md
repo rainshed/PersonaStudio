@@ -2,7 +2,7 @@
 
 [简体中文](PAPER_RADAR.zh-CN.md) · [PersonaStudio](../README.md)
 
-Paper Radar is an optional PersonaStudio application. Install it together with AI Persona or add it later. Optional installation requires a GitHub Release of version 0.2.0 or later.
+Paper Radar is an optional PersonaStudio application. Install it together with AI Persona or add it later. Optional installation requires a GitHub Release of version 0.1.1 or later.
 
 ## Install and start
 
@@ -14,7 +14,7 @@ ai-persona setup
 paper-radar start
 ```
 
-If AI Persona 0.2.0 or later is already installed:
+If AI Persona 0.1.1 or later is already installed:
 
 ```sh
 personastudio install paper-radar
