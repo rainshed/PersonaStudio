@@ -175,9 +175,17 @@ class InboxService:
             add("result:" + result["id"], "activation" if result["capability_id"] == ACTIVATION else "learning",
                 result["input_text"], result["created_at"], "已保存结果", result["state"],
                 result=result, result_id=result["id"], supported=True)
+        by_turn = {}
         for item in items:
-            item["related"] = [{"id": other["id"], "type": other["type"]} for other in items
-                               if item["_turn"] and item["_turn"][1] and other["_turn"] == item["_turn"] and other["id"] != item["id"]]
+            turn = item["_turn"]
+            if turn and turn[1]:
+                by_turn.setdefault(turn, []).append(item)
+        for item in items:
+            item["related"] = [
+                {"id": other["id"], "type": other["type"]}
+                for other in by_turn.get(item["_turn"], ())
+                if other["id"] != item["id"]
+            ]
         return items, warnings
 
     @staticmethod

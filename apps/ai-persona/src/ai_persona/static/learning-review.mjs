@@ -1,4 +1,4 @@
-import {ReviewWorkspace} from './review-workspace.mjs?v=20260911.review2';
+import {ReviewWorkspace} from './review-workspace.mjs?v=20260917.review-performance1';
 import {ui} from './studio-i18n.mjs?v=20260908.studio3.1';
 /* Schema-driven review. No independent field whitelist and no implicit feedback. */
 export function fieldInput(field, value) {

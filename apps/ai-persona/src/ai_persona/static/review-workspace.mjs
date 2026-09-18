@@ -5,7 +5,7 @@ export class ReviewWorkspace {
     Object.assign(this,{owner,eventId,container}); this.checked=new Set();this.current=null;this.graph=null;this.version=0;
     const n=owner.node,b=owner.button;
     this.root=n('section','','review-workspace');this.toolbar=n('div','','review-toolbar');
-    this.mode=b('显示图谱',()=>{this.mapHost.hidden=!this.mapHost.hidden;this.mode.textContent=this.mapHost.hidden?'显示图谱':'收起图谱';});
+    this.mode=b('显示图谱',()=>{this.mapHost.hidden=!this.mapHost.hidden;this.mode.textContent=this.mapHost.hidden?'显示图谱':'收起图谱';if(!this.mapHost.hidden)this.draw().catch(e=>this.error(e.message));});
     this.selectAll=b('选择全部待审核',()=>{this.checked=new Set(this.result.proposals.filter(p=>open(p)&&!p.stale).map(p=>p.id));this.paintList();});
     this.clear=b('清空选择',()=>{this.checked.clear();this.paintList();});
     this.accept=b('通过所选',()=>this.batch());this.accept.className='button primary-button';
@@ -13,7 +13,7 @@ export class ReviewWorkspace {
     this.toolbar.append(this.mode,this.selectAll,this.clear,this.accept,this.context);
     this.message=n('p','','review-message');this.message.setAttribute('role','status');this.message.tabIndex=-1;
     this.mapHost=n('div','','review-map');this.mapHost.hidden=true;
-    this.columns=n('div','','review-columns');this.list=n('div','','review-item-list');this.list.setAttribute('aria-label','审核内容');this.detail=n('div','','review-inspector');
+    this.columns=n('div','','review-columns');this.list=n('div','','review-item-list');this.list.setAttribute('aria-label','审核内容');this.rows=new Map();this.detail=n('div','','review-inspector');
     this.columns.append(this.list,this.detail);this.root.append(this.toolbar,this.message,this.mapHost,this.columns);container.replaceChildren(this.root);
   }
   render(roots){
@@ -22,22 +22,24 @@ export class ReviewWorkspace {
     if(!this.result.proposals.some(p=>p.id===this.current))this.current=this.result.proposals.find(open)?.id||this.result.proposals[0]?.id;
     this.paintList();this.showDetail();this.draw().catch(e=>this.error(e.message));
   }
-  select(id){this.current=id;this.showDetail();this.paintList();this.detail.scrollIntoView({block:'nearest',behavior:'smooth'});}
+  select(id){const previous=this.current;this.current=id;this.showDetail();this.rows.get(previous)?.classList.remove('selected');this.rows.get(id)?.classList.add('selected');this.detail.scrollIntoView({block:'nearest',behavior:'smooth'});}
   showDetail(){const card=this.owner.cards.get(this.current);if(card&&this.detail.firstChild!==card.root)this.detail.replaceChildren(card.root);}
   paintList(){
-    const n=this.owner.node;this.list.replaceChildren();
+    const n=this.owner.node;this.list.replaceChildren();this.rows.clear();
     for(const p of this.result.proposals){const row=n('div','','review-item');row.classList.toggle('selected',p.id===this.current);const check=n('input');check.type='checkbox';check.checked=this.checked.has(p.id);check.disabled=!open(p)||p.stale||this.processing;check.setAttribute('aria-label','选择 '+p.title);
       check.onchange=()=>{check.checked?this.checked.add(p.id):this.checked.delete(p.id);this.paintList();};
       const button=this.owner.button(p.title,()=>this.select(p.id));button.className='review-item-title';button.append(n('small',({knowledge_node:'知识点',material:'材料',relation:'关系'}[p.entity_type]||'内容')+' · '+({pending_review:'待审核',deferred:'稍后审核',accepted:'已通过',edited_and_accepted:'已通过',rejected:'已拒绝',stale:'已过期'}[p.status]||p.status)));
-      row.append(check,button);this.list.append(row);
+      row.append(check,button);this.list.append(row);this.rows.set(p.id,row);
     }
     const total=this.result.proposals.filter(open).length;
     this.accept.textContent=`通过所选（${this.checked.size}）`;this.accept.disabled=!this.checked.size||this.processing;this.selectAll.disabled=this.processing||!total;this.clear.disabled=this.processing||!this.checked.size;
     if(!this.processing)this.message.textContent=this.operationNote || `待审核 ${total} 项 · 已选 ${this.checked.size} 项。勾选内容后可一起通过；个人状态随通过保存。图中 × 可拒绝知识点及依赖它的待审核候选。`;
   }
   async draw(){
+    if(this.mapHost.hidden)return;
     const source=this.result.graph;if(!source?.nodes.length)return;
-    const nodes=source.nodes.map(node=>{const p=this.result.proposals.find(p=>p.id===node.proposal_id);const rejectable=p?.entity_type==='knowledge_node'&&open(p);return {...node,rejectable,canReject:rejectable&&!this.processing&&!this.owner.batchPending&&!this.owner.cards.get(p?.id)?.pending,rejectCount:p?.pending_dependents.length||0};});
+    const proposals=new Map(this.result.proposals.map(p=>[p.id,p]));
+    const nodes=source.nodes.map(node=>{const p=proposals.get(node.proposal_id);const rejectable=p?.entity_type==='knowledge_node'&&open(p);return {...node,rejectable,canReject:rejectable&&!this.processing&&!this.owner.batchPending&&!this.owner.cards.get(p?.id)?.pending,rejectCount:p?.pending_dependents.length||0};});
     const data={nodes:[...nodes,...(this.expand.checked?source.context_nodes||[]:[])],edges:[...source.edges,...(this.expand.checked?source.context_edges||[]:[])]};
     const key=JSON.stringify([this.eventId,data.nodes.map(n=>[n.id,n.title]),data.edges.map(e=>[e.id,e.source,e.target,e.type])]);
     if(this.graphKey===key){this.graph?.updateStatuses(data.nodes);return;}this.graphKey=key;const version=++this.version;

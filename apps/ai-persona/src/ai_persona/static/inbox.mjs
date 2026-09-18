@@ -1,5 +1,5 @@
 import {ui} from './studio-i18n.mjs?v=20260908.studio3.1';
-import {LearningReviewPanel} from './learning-review.mjs?v=20260911.review2';
+import {LearningReviewPanel} from './learning-review.mjs?v=20260917.review-performance1';
 import {runtimeSummary} from './studio-runtime.mjs?v=20260910.tools-only';
 
 export const typeNames = {learning:ui('对话学习'), activation:ui('偏好场景判断'), material:ui('材料整理'), maintenance:ui('自然语言维护'), proposal:ui('其他候选')};

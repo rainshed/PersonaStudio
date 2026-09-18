@@ -122,6 +122,42 @@ def click(store, result, rating="satisfied", reason="", subject=None):
     )
 
 
+def test_inbox_summary_cache_refreshes_after_other_store_writes(work, monkeypatch):
+    first = EvaluationStore(*work)
+    second = EvaluationStore(*work)
+    result = first.create_result(ACTIVATION, task_ref="application:cache-test", input_data={"user_prompt": "测试缓存"})
+    assert first.inbox_summaries()[result["id"]]["state"] == "running"
+
+    from ai_persona.evaluations import store as store_module
+
+    original = store_module.read_json
+    trace_reads = []
+
+    def counted(path, default=None):
+        if path.name == result["id"] + ".json":
+            trace_reads.append(path)
+        return original(path, default)
+
+    monkeypatch.setattr(store_module, "read_json", counted)
+    assert first.inbox_summaries()[result["id"]]["state"] == "running"
+    assert not trace_reads
+
+    second.complete_result(result["id"], state="completed", decisions=[{
+        "subject": {"kind": "activation_context", "context_key": "test"},
+        "name": "test", "triggered": True, "processing_state": "completed",
+    }])
+    trace_reads.clear()
+    updated = first.inbox_summaries()[result["id"]]
+    assert updated["state"] == "completed" and updated["decisions"][0]["triggered"]
+    assert trace_reads
+
+    click(second, second.result(result["id"]))
+    promoted = first.inbox_summaries()[result["id"]]
+    assert promoted["feedback"]["revision"] == 1
+    second.delete(promoted["case_id"])
+    assert result["id"] not in first.inbox_summaries()
+
+
 @pytest.mark.parametrize(
     "actual,rating,expected",
     [

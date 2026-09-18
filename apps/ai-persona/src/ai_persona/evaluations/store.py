@@ -15,6 +15,7 @@ import tempfile
 import threading
 import time
 import uuid
+from collections import OrderedDict
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -35,6 +36,9 @@ from .contracts import (
 
 _locks_guard = threading.Lock()
 _locks = {}
+_summary_cache_lock = threading.Lock()
+_summary_cache = OrderedDict()
+_SUMMARY_CACHE_LIMIT = 1024
 MAX_DOCUMENT_BYTES = 32_000_000
 
 
@@ -131,6 +135,44 @@ class EvaluationStore:
         if value is None or digest(value) != key:
             raise EvaluationError("样例附件缺失或校验失败。", "missing_snapshot", 409)
         return value
+
+    def _summary_result(self, path, blob_key=None):
+        """Cache only read-only inbox fields; a replaced file changes its stat signature."""
+        stat = path.stat()
+        signature = (stat.st_ino, stat.st_size, stat.st_mtime_ns)
+        cache_key = str(path)
+        with _summary_cache_lock:
+            cached = _summary_cache.get(cache_key)
+            if cached and cached[0] == signature:
+                _summary_cache.move_to_end(cache_key)
+                return cached[1]
+        value = self._read_blob(blob_key) if blob_key else read_json(path)
+        payload = value.get("input") or {}
+        event_text = "\n".join(
+            part.get("text", "")
+            for part in payload.get("event", {}).get("message", {}).get("content", [])
+        )
+        summary = {
+            "id": value.get("id"),
+            "task_ref": value.get("task_ref"),
+            "created_at": value.get("created_at"),
+            "state": value.get("state"),
+            "decisions": value.get("decisions"),
+            "capability_id": value.get("capability_id"),
+            "parent_case_id": value.get("parent_case_id"),
+            "learning_input_text": event_text,
+            "input_text": learning_text(
+                payload.get("current_user_prompt") or payload.get("user_prompt")
+                or event_text
+            ),
+            "context_keys": [c["key"] for c in payload.get("catalog", [])],
+        }
+        with _summary_cache_lock:
+            _summary_cache[cache_key] = (signature, summary)
+            _summary_cache.move_to_end(cache_key)
+            if len(_summary_cache) > _SUMMARY_CACHE_LIMIT:
+                _summary_cache.popitem(last=False)
+        return summary
 
     @staticmethod
     def case_id(result_id):
@@ -289,7 +331,7 @@ class EvaluationStore:
         with self.locked():
             paths = list((self.local / "traces").glob("*.json"))
             for path in paths:
-                value = read_json(path)
+                value = self._summary_result(path)
                 if (value.get("capability_id") == LEARNING
                         and value.get("task_ref") in wanted
                         and not self._path(f"deleted/{identifier(value['id'])}.json").exists()):
@@ -298,22 +340,17 @@ class EvaluationStore:
                 projection = read_json(path)["revisions"][-1]
                 if projection["capability_id"] != LEARNING:
                     continue
-                value = self._read_blob(projection["result_ref"])
+                value = self._summary_result(self._path(f"blobs/{projection['result_ref']}.json"), projection["result_ref"])
                 if value.get("task_ref") in wanted:
                     values[value["id"]] = value
             summaries = {}
             for value in values.values():
                 feedback = self._feedback(self.case_id(value["id"]))
-                payload = value.get("input") or {}
-                text = "\n".join(
-                    p.get("text", "")
-                    for p in payload.get("event", {}).get("message", {}).get("content", [])
-                )
                 summaries[value["id"]] = {
                     **{k: value[k] for k in ("id", "task_ref", "created_at", "state", "decisions")},
                     "feedback": {k: feedback[k] for k in ("revision", "subjects")},
                     "case_id": self.case_id(value["id"]) if feedback["revision"] else None,
-                    "input_text": text,
+                    "input_text": value["learning_input_text"],
                 }
             return summaries
 
@@ -339,27 +376,24 @@ class EvaluationStore:
         with self.locked():
             values = {}
             for path in (self.local / "traces").glob("*.json"):
-                value = read_json(path)
+                value = self._summary_result(path)
                 if not self._path(f"deleted/{identifier(value['id'])}.json").exists():
                     values[value["id"]] = value
             for path in (self.root / "cases").glob("*.json"):
-                value = self._read_blob(read_json(path)["revisions"][-1]["result_ref"])
+                blob_key = read_json(path)["revisions"][-1]["result_ref"]
+                value = self._summary_result(self._path(f"blobs/{blob_key}.json"), blob_key)
                 values[value["id"]] = value
             summaries = {}
             for value in values.values():
                 if str(value.get("task_ref") or "").startswith("evaluation:") or value.get("parent_case_id"):
                     continue
                 feedback = self._feedback(self.case_id(value["id"]))
-                payload = value.get("input") or {}
-                text = payload.get("current_user_prompt") or payload.get("user_prompt") or "\n".join(
-                    p.get("text", "") for p in payload.get("event", {}).get("message", {}).get("content", [])
-                )
                 summaries[value["id"]] = {
                     **{k: value.get(k) for k in ("id", "task_ref", "created_at", "state", "decisions", "capability_id")},
                     "feedback": {k: feedback[k] for k in ("revision", "subjects")},
                     "case_id": self.case_id(value["id"]) if feedback["revision"] else None,
-                    "input_text": learning_text(text),
-                    "context_keys": [c["key"] for c in payload.get("catalog", [])],
+                    "input_text": value["input_text"],
+                    "context_keys": value["context_keys"],
                 }
             return summaries
 
