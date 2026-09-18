@@ -52,6 +52,8 @@ jobs:
             --source-date-epoch "$epoch"
       - name: Test one-line installation
         run: uv run --no-project --python 3.12 python scripts/test-installer.py --dist-dir dist/release
+      - name: Verify upgrade from the published v0.1.0 release
+        run: uv run --no-project --python 3.12 python scripts/test-release-upgrade.py --dist-dir dist/release
       - name: Run browser flows
         run: |
           npm run test:errors

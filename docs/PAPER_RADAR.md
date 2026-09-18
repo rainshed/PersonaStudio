@@ -96,6 +96,16 @@ npm run check:radar
 
 This runs type/lint checks, application and plugin tests, actual read-only AI Persona integration, a production build and an isolated application lifecycle/backup/restore check. Persona integration is mandatory through this entry point. No real model calls are made.
 
+For release installation and upgrade checks, run these after the production build:
+
+```sh
+uv run --no-project --python 3.12 python scripts/build-release.py
+uv run --no-project --python 3.12 python scripts/test-installer.py --dist-dir dist/release
+uv run --no-project --python 3.12 python scripts/test-release-upgrade.py --dist-dir dist/release
+```
+
+The upgrade check downloads the published v0.1.0 installer and archive, verifies pinned SHA-256 hashes, and uses a temporary home with fictional records. It checks a running-service upgrade, unchanged knowledge/preferences and connection configuration, saved Hook execution and MCP reads, Radar add/remove and data retention, and recovery to the real old service after a forced candidate restart failure. It does not run a real Codex session or call a model. These checks run on relevant pushes to `main`, pull requests and before release publication. AI Persona CI separately checks Python packages and browser flows.
+
 The optional static demonstration remains available to developers through the explicit `VITE_PAPER_RADAR_MODE=demo` build setting. Ordinary startup never falls back to it on connection failure.
 
 Before distributing, manually review the first-use flow, both analysis hosts, all research pages, task cancellation/recovery, and backup restoration. The release workflow builds separate Persona and Radar archives and tests both combinations, component changes and recovery. Local checks do not publish; publication is triggered separately through a version tag.

@@ -257,6 +257,15 @@ except (AttributeError, TypeError, ValueError):
 ' "$field"
 }
 
+restart_studio() {
+    launcher=$1
+    if [ -n "$STUDIO_PORT" ]; then
+        "$launcher" start --port "$STUDIO_PORT" --no-open
+    else
+        "$launcher" start --no-open
+    fi
+}
+
 switch_current() {
     target=$1
     link="$INSTALL_ROOT/.current.$$"
@@ -366,6 +375,7 @@ if [ "$OLD_TARGET" = "$VERSION_DIR" ]; then
 fi
 
 WAS_RUNNING=0
+STUDIO_PORT=''
 LEARNING_WAS_RUNNING=0
 REMOTE_WAS_RUNNING=0
 RADAR_WAS_RUNNING=0
@@ -390,6 +400,15 @@ if [ -x "$CONTROL_LAUNCHER" ]; then
     status=$("$CONTROL_LAUNCHER" status 2>/dev/null || true)
     if printf '%s' "$status" | json_running top 2>/dev/null; then
         WAS_RUNNING=1
+        # Keep an automatically selected or explicitly configured port on both
+        # upgrade and rollback; another service may occupy the default port.
+        STUDIO_PORT=$(printf '%s' "$status" | uv run --quiet --no-project --python 3.12 python -c '
+import json, sys
+from urllib.parse import urlsplit
+value = json.load(sys.stdin).get("url")
+port = urlsplit(value).port if isinstance(value, str) else None
+print(port if port is not None else "")
+')
     fi
     learning_status=$("$CONTROL_LAUNCHER" learning status 2>/dev/null || true)
     if printf '%s' "$learning_status" | json_running worker 2>/dev/null; then
@@ -431,7 +450,7 @@ if [ "$RESTART" -eq 1 ]; then
     if [ "$RADAR_WAS_RUNNING" -eq 1 ] && [ "$RADAR" -eq 1 ] && ! "$BIN_DIR/paper-radar" start --no-open >/dev/null; then
         restart_failed=1
     fi
-    if [ "$WAS_RUNNING" -eq 1 ] && ! "$BIN_DIR/ai-persona" start --no-open >/dev/null; then
+    if [ "$WAS_RUNNING" -eq 1 ] && ! restart_studio "$BIN_DIR/ai-persona" >/dev/null; then
         restart_failed=1
     fi
     if [ "$LEARNING_WAS_RUNNING" -eq 1 ] && ! "$BIN_DIR/ai-persona" learning start-worker >/dev/null; then
@@ -453,7 +472,7 @@ if [ "$RESTART" -eq 1 ]; then
             switch_current "$OLD_TARGET"
             if [ "$RADAR_WAS_RUNNING" -eq 1 ]; then "$OLD_TARGET/scripts/paper-radar" start --no-open >/dev/null 2>&1 || true; fi
             if [ "$WAS_RUNNING" -eq 1 ]; then
-                "$OLD_LAUNCHER" start --no-open >/dev/null 2>&1 || true
+                restart_studio "$OLD_LAUNCHER" >/dev/null 2>&1 || true
             fi
             if [ "$LEARNING_WAS_RUNNING" -eq 1 ]; then
                 "$OLD_LAUNCHER" learning start-worker >/dev/null 2>&1 || true

@@ -1,8 +1,11 @@
 name: Paper Radar checks
 
 on:
+  push:
+    branches: [main]
+    paths: ['apps/paper-radar/**', 'apps/ai-persona/**', 'scripts/**', 'install.sh', 'package*.json', 'CHANGELOG.md', '.github/workflows/**']
   pull_request:
-    paths: ['apps/paper-radar/**', 'apps/ai-persona/**', 'scripts/**', 'install.sh', 'package*.json', '.github/workflows/paper-radar.yml', '.github/workflows/release.yml']
+    paths: ['apps/paper-radar/**', 'apps/ai-persona/**', 'scripts/**', 'install.sh', 'package*.json', 'CHANGELOG.md', '.github/workflows/**']
   workflow_dispatch:
 
 permissions:
@@ -11,7 +14,7 @@ permissions:
 jobs:
   checks:
     runs-on: macos-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
       - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
@@ -24,3 +27,5 @@ jobs:
       - run: node scripts/setup-paper-radar.mjs --check
       - run: uv run --no-project --python 3.12 python scripts/build-release.py
       - run: uv run --no-project --python 3.12 python scripts/test-installer.py --dist-dir dist/release
+      - name: Verify upgrade from the published v0.1.0 release
+        run: uv run --no-project --python 3.12 python scripts/test-release-upgrade.py --dist-dir dist/release

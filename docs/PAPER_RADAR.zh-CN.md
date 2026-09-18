@@ -121,6 +121,16 @@ npm run check:radar
 
 检查包含应用类型检查、代码规范、业务与界面渲染测试、DSH 插件测试、真实 AI Persona 只读接口联调、生产构建，以及隔离环境中的启动、备份、恢复和重启。Persona 联调在此入口中必须执行，不能因依赖缺失而静默跳过；检查不调用真实模型。
 
+生产构建完成后，运行发布安装与升级检查：
+
+```sh
+uv run --no-project --python 3.12 python scripts/build-release.py
+uv run --no-project --python 3.12 python scripts/test-installer.py --dist-dir dist/release
+uv run --no-project --python 3.12 python scripts/test-release-upgrade.py --dist-dir dist/release
+```
+
+升级检查下载已发布的 v0.1.0 安装器和归档，校验固定 SHA-256，并使用临时用户目录和虚构记录。它验证运行中的旧版升级、知识与偏好及连接配置不变、原有 Hook 命令执行与 MCP 读取、Radar 补装/移除及数据保留，以及候选版本启动失败后恢复真实旧版服务。它不启动真实 Codex 会话，也不调用模型。相关 `main` 推送、Pull Request 和正式发布前都会执行这些检查；AI Persona 流程单独负责 Python 包和浏览器流程验证。
+
 仅改网页时，从 `apps/paper-radar/web` 使用现有开发命令。完整本机功能以构建后的 `npm start` 为准。
 
 可选的静态示例保留供开发使用，通过 `VITE_PAPER_RADAR_MODE=demo` 明确选择；它不属于普通用户的首次使用流程，也不会因为本机服务故障而自动启用。
