@@ -225,7 +225,8 @@ def import_source(data_root, state_root, *, filename=None, content=None, arxiv=N
             (
                 s
                 for s in store.sources.values()
-                if s.content_hash == digest and any(f.path == TEXT_FILE for f in s.files)
+                if s.source_type != "idea_attachment"
+                and s.content_hash == digest and any(f.path == TEXT_FILE for f in s.files)
             ),
             None,
         )

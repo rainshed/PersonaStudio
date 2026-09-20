@@ -20,7 +20,7 @@ export async function openContentReset(taskId=null){
   let working=false,plan;
   dialog.addEventListener('cancel',e=>{if(working)e.preventDefault();});dialog.addEventListener('close',()=>dialog.remove());
   const error=e=>{status.textContent=e.message;status.setAttribute('role','alert');status.focus();status.scrollIntoView({block:'nearest'});};
-  const labels={knowledge_node:t('知识点','Knowledge'),relation:t('关系','Relations'),material:t('材料记录','Materials'),course:t('课程','Courses'),tag:t('标签','Tags'),evidence:t('依据记录','Evidence records'),preference:t('个人偏好','Preferences'),preference_context:t('偏好场景','Preference contexts'),preference_example:t('偏好示例','Preference examples')};
+  const labels={idea:t('想法','Ideas'),knowledge_node:t('知识点','Knowledge'),relation:t('关系','Relations'),material:t('材料记录','Materials'),course:t('课程','Courses'),tag:t('标签','Tags'),evidence:t('依据记录','Evidence records'),preference:t('个人偏好','Preferences'),preference_context:t('偏好场景','Preference contexts'),preference_example:t('偏好示例','Preference examples')};
   try{
     plan=await request('/preview'+(taskId?'?task_id='+encodeURIComponent(taskId):''));
     const list=node('ul');for(const [key,label] of Object.entries(labels)){const count=plan.counts[key];if(count)list.append(node('li',`${label}：${count}`));}

@@ -14,7 +14,7 @@
     const page = () => location.pathname + (options.query ? '?'+new URLSearchParams([...new URLSearchParams(location.search)].filter(([k])=>options.query.includes(k))) : '');
     const controls = () => [...root.querySelectorAll('input,textarea,select')].filter(e=>e.type!=='hidden'&&e.type!=='password'&&e.type!=='submit'&&e.type!=='button'&&!e.readOnly&&!e.closest('[data-draft-ignore]')&&!(options.exclude&&e.closest(options.exclude))&&!/password|api.?key|secret|credential|token|authorization|(?:^|[-_])auth(?:$|[-_])/i.test(e.name||e.id));
     const fields = () => {const out={};controls().filter(e=>e.type!=='file').forEach((e,i)=>{const key=e.name||e.id||'control_'+i; (out[key]||=[]).push(['checkbox','radio'].includes(e.type)?e.checked:e.value);});return out;};
-    const baseline=root.querySelector('[name=record_revision]')?.value||'';
+    const baseline=()=>root.querySelector('[name=record_revision]')?.value||'';
     let original=JSON.stringify(fields()), saved=options.persistInitial?'':original, savedPage=page(), id=crypto.randomUUID(), revision=0, queue=Promise.resolve(), timer, submitting=false, uncertainSave=false;
     const bar=node('div');bar.className='editor-draft-bar';bar.setAttribute('role','status');root.prepend(bar);
     const recovery=node('div');recovery.className='editor-draft-recovery';root.prepend(recovery);
@@ -30,7 +30,7 @@
         const value=fields(), serialized=JSON.stringify(value);
         if(serialized===saved&&savedPage===page()){tell(revision?L('草稿已保存 · 尚未正式保存','Draft saved · not yet published'):'');return;}
         tell(L('正在保存草稿…','Saving draft…'));
-        const currentPage=page();const result=await api({id,page:currentPage,revision,baseline,fields:value});revision=result.revision;saved=serialized;savedPage=currentPage;
+        const currentPage=page();const result=await api({id,page:currentPage,revision,baseline:baseline(),fields:value});revision=result.revision;saved=serialized;savedPage=currentPage;
         tell(L('草稿已保存 · 尚未正式保存','Draft saved · not yet published')+(pendingFiles()?L(' · 文件尚未上传，返回后需重新选择',' · Files not uploaded; select them again when returning'):''));
       });
       return queue;
@@ -43,7 +43,7 @@
         if(draft.id===id)continue;
         const row=node('div');row.className='editor-draft-choice';
         row.append(node('strong',L('发现未完成的编辑 · ','Unfinished edit · ')+new Date(draft.updated).toLocaleString()));
-        const conflict=draft.baseline!==baseline;
+        const conflict=draft.baseline!==baseline();
         if(conflict)row.append(node('p',L('正式记录已经更新。请对照草稿后在当前版本继续编辑，不会自动覆盖。','The record changed. Compare this draft with the current version; it will not overwrite your edits.')));
         const details=node('details');details.append(node('summary',L('查看草稿内容','View draft content')),node('pre',JSON.stringify(draft.fields,null,2)));row.append(details);
         const restore=node('button',L('恢复草稿','Restore draft'));restore.type='button';restore.disabled=conflict;

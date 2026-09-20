@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f9f5">
+  <title>研究想法 · PersonaStudio</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232e5944'/%3E%3Cpath d='M20 45V19h13c16 0 16 22 0 22h-5' fill='none' stroke='%23fff' stroke-width='5'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="./" aria-label="PersonaStudio 首页"><span class="brand-mark">p<span>·</span></span><span>Persona<span class="brand-light">Studio</span><small>给思想一个生长的地方</small></span></a>
+      <button class="workspace-picker" data-action="about"><span class="workspace-avatar">Y</span><span>我的 Persona<small>个人研究工作区</small></span><i data-icon="chevrons"></i></button>
+      <p class="nav-label">工作空间</p>
+      <nav class="navigation" aria-label="工作空间导航">
+        <button data-action="placeholder" data-label="概览"><i data-icon="home"></i>概览</button>
+        <button data-action="placeholder" data-label="知识网络"><i data-icon="network"></i>知识网络</button>
+        <button data-action="placeholder" data-label="材料库"><i data-icon="library"></i>材料库</button>
+        <button class="active" id="ideas-nav" data-action="show-active"><i data-icon="bulb"></i>研究想法<span class="nav-count" id="nav-count">8</span></button>
+        <button data-action="placeholder" data-label="协作偏好"><i data-icon="sliders"></i>协作偏好</button>
+      </nav>
+      <div class="sidebar-divider"></div>
+      <nav class="navigation" aria-label="想法管理">
+        <button id="archive-nav" data-action="show-archive"><i data-icon="archive"></i>归档箱<span class="nav-count subtle" id="archive-count">1</span></button>
+      </nav>
+      <div class="sidebar-note"><span class="little-spark">✳</span><p>好想法，<br>可以从不完整开始。</p><span>MAKE ROOM FOR A MAYBE.</span></div>
+      <div class="sidebar-bottom"><div class="local-indicator"><span></span> 只属于你的思考空间<i data-icon="lock"></i></div><button data-action="about"><i data-icon="info"></i>关于这个演示<i data-icon="arrow-up-right"></i></button></div>
+    </aside>
+    <main>
+      <header class="topbar"><div class="breadcrumb"><span>我的 Persona</span><i data-icon="chevron-right"></i><strong id="breadcrumb-title">研究想法</strong></div><div class="topbar-right"><button class="demo-tag" data-action="about"><span></span>交互演示</button><span class="avatar">Y</span></div></header>
+      <div class="page-content">
+        <section class="page-heading"><div><div class="eyebrow">THE RESEARCH NOTEBOOK <span> / 01</span></div><h1 id="page-title">研究想法<span class="heading-dot">.</span></h1><p>捕捉一个念头，留住每一步思考。</p></div><button class="button primary" data-action="new"><i data-icon="plus"></i>记录新想法<kbd>N</kbd></button></section>
+        <form class="quick-capture" id="quick-form"><div class="capture-icon"><i data-icon="pen"></i></div><div class="capture-input"><label for="quick-title">此刻，你在好奇什么？</label><input id="quick-title" autocomplete="off" placeholder="一句话就够了，剩下的可以慢慢想…" maxlength="500"></div><button type="submit" class="capture-submit" aria-label="保存一句话想法"><span>记下来</span><i data-icon="arrow-right"></i></button><div class="capture-decoration" aria-hidden="true"><span></span><span></span><span></span></div></form>
+        <div class="section-toolbar"><div class="view-tabs" role="tablist" aria-label="执行状态"><button role="tab" aria-selected="true" data-tab="all">全部想法 <span id="all-count">8</span></button><button role="tab" aria-selected="false" data-tab="in_progress">执行中 <span id="progress-count">3</span></button><button role="tab" aria-selected="false" data-tab="not_started">未执行 <span id="new-count">2</span></button></div><span class="sort-label"><i data-icon="sort"></i>最近更新</span></div>
+        <section class="notebook" aria-label="研究笔记工作台">
+          <div class="idea-library"><div class="search-row"><div class="search-box"><i data-icon="search"></i><input id="search" aria-label="搜索想法" placeholder="搜索想法、正文与资源…"><kbd>/</kbd></div><button class="icon-button filter-button" data-action="filters" title="组合筛选" aria-label="组合筛选" aria-expanded="false"><i data-icon="sliders"></i><span id="filter-dot" hidden></span></button></div><div id="filters" hidden></div><div class="list-caption"><span id="result-count">8 条想法</span><span>你的想法，持续生长</span></div><div id="idea-list" class="idea-list"></div><div class="library-footer"><i data-icon="leaf"></i><span>不必想清楚，再开始记录。</span></div></div>
+          <article id="idea-detail" class="idea-detail"></article>
+        </section>
+        <footer class="page-footer"><span>PERSONASTUDIO <span class="footer-separator">/</span> A LITTLE SPACE FOR BIG IDEAS</span><span><span class="green-dot"></span> 演示数据 · 保存在此浏览器</span></footer>
+      </div>
+    </main>
+  </div>
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -44,7 +44,7 @@ class EditorDrafts:
         if (
             not re.fullmatch(r"[a-zA-Z0-9_-]{8,80}", identifier)
             or not re.fullmatch(
-                r"/(?:knowledge|courses|materials|preferences|ai|extract)(?:[/?].*)?", page
+                r"/(?:knowledge|courses|materials|preferences|ideas|ai|extract)(?:[/?].*)?", page
             )
             or len(page) > 1000
             or type(revision) is not int

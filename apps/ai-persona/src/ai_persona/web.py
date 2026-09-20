@@ -3759,5 +3759,8 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
 
     mount_content_reset_routes(app, resolved_data_root, resolved_state_root)
     from .first_use import mount_first_use
+    from .ideas_web import mount_idea_routes
+
+    mount_idea_routes(app, resolved_data_root, resolved_state_root, templates, common_context)
     mount_first_use(app, resolved_data_root, resolved_state_root, templates, common_context)
     return app

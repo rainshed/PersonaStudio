@@ -129,7 +129,7 @@ class PersonaCompiler:
         active_loaded = [
             loaded
             for loaded in self.store.records.values()
-            if loaded.record.status == "active"
+            if loaded.record.status == "active" and loaded.record.entity_type != "idea"
         ]
         generated_at = max(
             (loaded.record.updated_at for loaded in active_loaded),
@@ -296,7 +296,7 @@ class PersonaCompiler:
         counts = Counter(
             loaded.record.entity_type
             for loaded in self.store.records.values()
-            if loaded.record.status == "active"
+            if loaded.record.status == "active" and loaded.record.entity_type != "idea"
         )
         lines = [
             "# AI Persona Demo",
@@ -304,7 +304,7 @@ class PersonaCompiler:
             f"- Persona: `{self.store.config.persona_id}`",
             f"- Persona revision: `{self.store.config.revision}`",
             f"- Canonical records: `{sum(counts.values())}`",
-            f"- Sources: `{len(self.store.sources)}`",
+            f"- Sources: `{sum(s.source_type != 'idea_attachment' for s in self.store.sources.values())}`",
             "",
             "## Inventory",
             "",

@@ -366,7 +366,8 @@ class PersonaAIService:
             raise AgentServiceError("invalid_request", "记录标识或个人偏好选项格式无效。")
         store = PersonaStore(self.data_root).load()
         for identifier in [record_id, material_id]:
-            if identifier and identifier not in store.records:
+            if identifier and (identifier not in store.records
+                               or store.records[identifier].record.entity_type == "idea"):
                 raise AgentServiceError("not_found", "记录不存在。")
         if material_id:
             self.query.get_material_source(material_id=material_id)
@@ -573,6 +574,8 @@ class PersonaAIService:
     @staticmethod
     def _full_record(store: PersonaStore, identifier: str) -> dict:
         loaded = store.records[identifier]
+        if loaded.record.entity_type == "idea":
+            raise AgentServiceError("not_found_or_not_visible", "Record is not available.")
         return {
             **loaded.record.model_dump(mode="json", by_alias=True),
             "body": loaded.body,
@@ -587,7 +590,7 @@ class PersonaAIService:
         catalog = []
         for loaded in store.records.values():
             r = loaded.record
-            if r.entity_type in {"evidence", "relation"}:
+            if r.entity_type in {"evidence", "relation", "idea"}:
                 continue
             if value["material_id"] and (
                 r.status != "active"

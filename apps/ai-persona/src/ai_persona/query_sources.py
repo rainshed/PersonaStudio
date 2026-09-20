@@ -60,7 +60,10 @@ class SourceReader:
     def __init__(self, store: PersonaStore, state_root: Path, allowed_sources: set[str]):
         self.store = store
         self.cache = state_root / "query-documents"
-        self.allowed_sources = allowed_sources
+        self.allowed_sources = {
+            sid for sid in allowed_sources
+            if sid in store.sources and store.sources[sid].source_type != "idea_attachment"
+        }
 
     def manifest(self, source_id: str):
         if source_id not in self.allowed_sources or source_id not in self.store.sources:

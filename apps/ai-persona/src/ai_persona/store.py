@@ -15,6 +15,7 @@ from .models import (
     BaseRecord,
     Course,
     Evidence,
+    Idea,
     KnowledgeNode,
     Material,
     Preference,
@@ -110,7 +111,10 @@ class PersonaStore:
                 raise StoreValidationError(
                     f"source directory {path.parent.name!r} must match id {manifest.id!r}"
                 )
-            self._verify_source_files(path.parent, manifest, verify_contents=verify_files)
+            self._verify_source_files(
+                path.parent, manifest,
+                verify_contents=verify_files and manifest.source_type != "idea_attachment",
+            )
             result[manifest.id] = manifest
         return result
 
@@ -226,6 +230,21 @@ class PersonaStore:
 
         for loaded in self.records.values():
             record = loaded.record
+            # Private research notes cannot become public graph nodes or evidence.
+            if not isinstance(record, Idea):
+                for attr in ("source_ref", "source_id", "target_id"):
+                    ref = getattr(record, attr, None)
+                    source = self.sources.get(ref)
+                    target = self.records.get(ref)
+                    if ((source and source.source_type == "idea_attachment")
+                            or (target and isinstance(target.record, Idea))):
+                        errors.append(f"{record.id}: private Idea reference is not permitted")
+            if isinstance(record, Idea):
+                for resource in record.resources:
+                    if resource.kind == "file":
+                        source = self.sources.get(resource.source_ref)
+                        if not source or resource.file_path not in {f.path for f in source.files}:
+                            errors.append(f"{record.id}: unknown resource file {resource.id}")
             for tag_id in getattr(record, "tags", []):
                 if tag_id not in tags:
                     errors.append(f"{record.id}: unknown tag ref {tag_id}")
@@ -303,6 +322,8 @@ class PersonaStore:
                 for supported_id in record.supports:
                     if supported_id not in self.records:
                         errors.append(f"{record.id}: supports unknown record {supported_id}")
+                    elif isinstance(self.records[supported_id].record, Idea):
+                        errors.append(f"{record.id}: evidence cannot expose a private Idea")
             if isinstance(record, Preference):
                 for context_id in record.context_refs:
                     context = contexts.get(context_id)

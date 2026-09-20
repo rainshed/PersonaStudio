@@ -33,6 +33,7 @@ REQUIRED_DIRECTORIES = (
     "records/knowledge-nodes",
     "records/courses",
     "records/materials",
+    "records/ideas",
     "records/relations",
     "records/evidence",
     "records/tags",

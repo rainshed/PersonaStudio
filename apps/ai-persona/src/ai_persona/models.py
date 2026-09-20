@@ -548,6 +548,76 @@ class PreferenceExample(BaseRecord):
         return self
 
 
+class IdeaClosure(StrictModel):
+    outcome: Literal["success", "partial", "abandoned"]
+    summary: str = Field(min_length=1, max_length=20000)
+
+    @field_validator("summary")
+    @classmethod
+    def nonblank_summary(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("An ended idea requires a summary")
+        return value.strip()
+
+
+class IdeaResource(StrictModel):
+    id: str = Field(pattern=r"^res_[a-zA-Z0-9_-]+$")
+    kind: Literal["link", "file"]
+    title: str = Field(default="", max_length=1000)
+    note: str = Field(default="", max_length=20000)
+    url: str | None = None
+    source_ref: str | None = None
+    file_path: str | None = None
+
+    @model_validator(mode="after")
+    def valid_reference(self) -> IdeaResource:
+        from urllib.parse import urlsplit
+
+        if self.kind == "link":
+            parsed = urlsplit(self.url or "")
+            if (parsed.scheme not in {"http", "https"} or not parsed.hostname
+                    or any(c.isspace() or ord(c) < 32 for c in self.url or "")
+                    or self.source_ref is not None or self.file_path is not None):
+                raise ValueError("Links must use an HTTP(S) URL")
+        elif (self.url is not None or not self.source_ref or not self.file_path
+              or self.file_path.startswith("/") or "\\" in self.file_path
+              or any(p in {"", ".", ".."} for p in self.file_path.split("/"))):
+            raise ValueError("Files must reference a manifest-declared relative path")
+        return self
+
+
+class Idea(BaseRecord):
+    schema_id: Literal["ai-persona.idea/v1"] = Field(alias="schema")
+    entity_type: Literal["idea"] = "idea"
+    title: str = Field(min_length=1, max_length=1000)
+    novelty: Literal["unknown", "novel", "incremental", "non_novel"] = "unknown"
+    novelty_reason: str = Field(default="", max_length=20000)
+    difficulty: Literal["unknown", "low", "medium", "high"] = "unknown"
+    difficulty_reason: str = Field(default="", max_length=20000)
+    execution_status: Literal["not_started", "in_progress", "ended"] = "not_started"
+    closure: IdeaClosure | None = None
+    resources: list[IdeaResource] = Field(default_factory=list, max_length=200)
+
+    expected_schema = "ai-persona.idea/v1"
+    expected_entity_type = "idea"
+    expected_id_prefix = "idea_"
+
+    @field_validator("title")
+    @classmethod
+    def nonblank_title(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("Title cannot be blank")
+        return value.strip()
+
+    @model_validator(mode="after")
+    def consistent_ending(self) -> Idea:
+        if (self.execution_status == "ended") != (self.closure is not None):
+            raise ValueError("Only an ended idea must have a result and summary")
+        if len({r.id for r in self.resources}) != len(self.resources):
+            raise ValueError("Resource IDs must be unique")
+        return self
+
+
 class SourceFile(StrictModel):
     path: str
     role: Literal["original", "extracted_text", "attachment"]
@@ -592,6 +662,7 @@ class SourceManifest(StrictModel):
         "resume",
         "manual_declaration",
         "task_attachment",
+        "idea_attachment",
         "other",
     ]
     imported_at: datetime
@@ -793,6 +864,7 @@ Record = (
     | PreferenceContext
     | Preference
     | PreferenceExample
+    | Idea
 )
 
 
@@ -806,6 +878,7 @@ RECORD_MODELS: dict[str, type[BaseRecord]] = {
     "preference_context": PreferenceContext,
     "preference": Preference,
     "preference_example": PreferenceExample,
+    "idea": Idea,
 }
 
 
@@ -819,6 +892,7 @@ SCHEMA_MODELS: dict[str, type[BaseModel]] = {
     "preference-context.v1.schema.json": PreferenceContext,
     "preference.v1.schema.json": Preference,
     "preference-example.v3.schema.json": PreferenceExample,
+    "idea.v1.schema.json": Idea,
     "source-manifest.v2.schema.json": SourceManifest,
     "change-proposal.v1.schema.json": ChangeProposal,
 }

@@ -1302,7 +1302,7 @@ class PersonaQueryService:
         self._require_scoped_record(record_id, allowed_ids)
         revision = self._revision(store)
         loaded = store.records.get(record_id)
-        if loaded is None or loaded.record.status != "active":
+        if loaded is None or loaded.record.status != "active" or loaded.record.entity_type == "idea":
             raise AgentServiceError("not_found", f"No active persona record: {record_id}")
         record = loaded.record
         self._check_record_revision(record, expected_record_revision)

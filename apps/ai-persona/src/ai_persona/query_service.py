@@ -219,8 +219,10 @@ class KnowledgeQueryService(PersonaQueryService):
         # silently reuse a cursor or cache that came from different data.
         return digest({"tool": tool, "arguments": arguments,
                        "records": [(rid, loaded.record.model_dump(mode="json"), loaded.body)
-                                   for rid, loaded in sorted(store.records.items())],
-                       "sources": [s.model_dump(mode="json") for _, s in sorted(store.sources.items())],
+                                   for rid, loaded in sorted(store.records.items())
+                                   if loaded.record.entity_type != "idea"],
+                       "sources": [s.model_dump(mode="json") for _, s in sorted(store.sources.items())
+                                   if s.source_type != "idea_attachment"],
                        "retriever": self.retriever.signature})
 
     @staticmethod
