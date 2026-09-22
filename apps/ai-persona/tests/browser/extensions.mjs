@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, realpath, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,7 +8,7 @@ import { chromium, expect } from '@playwright/test';
 
 const directory = dirname(fileURLToPath(import.meta.url));
 const app = resolve(directory, '../..');
-const scratch = await mkdtemp(join(tmpdir(), 'persona-extensions-'));
+const scratch = await realpath(await mkdtemp(join(tmpdir(), 'persona-extensions-')));
 const output = resolve(app, '../../browser-results');
 const root = join(scratch, 'installation');
 const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('AI_PERSONA_')));
@@ -38,7 +38,7 @@ try {
     if (installed) {
       const launcher = join(root, 'apps/paper-radar/scripts/launcher.mjs');
       await mkdir(dirname(launcher), { recursive: true });
-      await writeFile(launcher, '// availability fixture');
+      await writeFile(launcher, `console.error(JSON.stringify({error:{code:'data_in_use',message:'private launcher log'}})); process.exitCode = 1;`);
     }
     for (const locale of ['zh-CN', 'en']) {
       await context.addCookies([{ name: 'ai_persona_locale', value: locale, url }]);
@@ -49,6 +49,18 @@ try {
         if (installed) {
           await expect(page.locator('[data-copy-install]')).toHaveCount(0);
           await expect(page.locator('main [data-open-paper-radar]')).toBeVisible();
+          const settings = page.locator('[data-paper-radar-settings]');
+          await page.getByText(locale === 'en' ? 'Link a Paper Radar directory' : '关联 Paper Radar 目录', { exact: true }).evaluate(element => { element.parentElement.open = true; });
+          await settings.locator('input[name="home"]').fill(root);
+          await settings.locator('button').click();
+          await expect(settings.locator('[role="status"]')).toContainText(locale === 'en' ? 'Saved' : '已保存');
+          await page.reload();
+          await expect(settings.locator('input[name="home"]')).toHaveValue(root);
+          const launch = page.locator('main [data-open-paper-radar]');
+          await launch.locator('button').click();
+          await expect(launch.locator('[role="alert"]')).toContainText(locale === 'en' ? 'Another service' : '数据目录正被另一服务占用');
+          await expect(launch.locator('button')).toBeEnabled();
+          await expect(launch.locator('[role="alert"]')).not.toContainText('private launcher log');
         } else {
           await expect(page.locator('[data-open-paper-radar]')).toHaveCount(0);
           await page.locator('[data-copy-install]').click();
@@ -60,8 +72,14 @@ try {
       }
     }
   }
+  const target = 'http://127.0.0.1:54321/';
+  await page.route(target, route => route.fulfill({ contentType: 'text/html', body: '<h1>Paper Radar</h1>' }));
+  await writeFile(join(root, 'apps/paper-radar/scripts/launcher.mjs'), `console.log(JSON.stringify({url:${JSON.stringify(target)}}));`);
+  await page.locator('main [data-open-paper-radar] button').click();
+  await expect(page).toHaveURL(target);
+  await expect(page.locator('h1')).toHaveText('Paper Radar');
   assert.deepEqual(errors, []);
-  console.log('Extensions: both installation states, bilingual desktop/mobile and command copy passed.');
+  console.log('Extensions: installation states, bilingual desktop/mobile, saved directory, actionable launch errors and successful navigation passed.');
 } finally {
   if (browser) await browser.close();
   if (server.exitCode === null) {

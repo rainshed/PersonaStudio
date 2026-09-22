@@ -16,6 +16,9 @@ import { randomUUID } from 'node:crypto';
 import { appRoot, runtimePaths } from '../web/server/runtime/paths.mjs';
 
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
+function launcherError(code, message) {
+  return Object.assign(new Error(message), { code });
+}
 function read(path) {
   try {
     return JSON.parse(readFileSync(path, 'utf8'));
@@ -89,7 +92,8 @@ export async function start(options = {}) {
   const env = { ...process.env, ...options.env };
   const paths = runtimePaths(env);
   if (!existsSync(join(paths.publicDirectory, 'index.html')))
-    throw new Error(
+    throw launcherError(
+      'not_built',
       'Paper Radar needs a local build. Run npm run setup:radar from PersonaStudio.',
     );
   mkdirSync(paths.runtime, { recursive: true, mode: 0o700 });
@@ -101,7 +105,8 @@ export async function start(options = {}) {
     if (error.code !== 'EEXIST') throw error;
     const previous = read(lockPath);
     if (!previous?.pid || alive(previous.pid))
-      throw new Error(
+      throw launcherError(
+        'starting',
         'Paper Radar is already starting. Try status in a moment.',
       );
     rmSync(lockPath);
@@ -122,12 +127,13 @@ export async function start(options = {}) {
       if (options.open !== false) openBrowser(current.url);
       return current;
     }
-    if (current.process_alive) throw new Error(current.error);
+    if (current.process_alive) throw launcherError('unresponsive', current.error);
     const dataLock = join(paths.data, 'analysis.lock');
     if (existsSync(dataLock)) {
       const pid = Number(readFileSync(dataLock, 'utf8').trim());
       if (Number.isInteger(pid) && pid > 0 && alive(pid))
-        throw new Error(
+        throw launcherError(
+          'data_in_use',
           'Another Paper Radar service is using this data directory. Stop it first, or choose a separate --home for testing.',
         );
     }
@@ -172,8 +178,10 @@ export async function start(options = {}) {
       if (child.exitCode !== null || (child.pid && !alive(child.pid))) break;
       await sleep(150);
     }
-    if (child.pid && alive(child.pid)) child.kill('SIGTERM');
-    throw new Error(
+    const timedOut = child.pid && alive(child.pid);
+    if (timedOut) child.kill('SIGTERM');
+    throw launcherError(
+      timedOut ? 'timeout' : 'launch_failed',
       `Paper Radar could not start. Read the local log: ${join(paths.runtime, 'server.log')}`,
     );
   } finally {
@@ -236,7 +244,9 @@ export async function main(args = process.argv.slice(2)) {
           'Choose a port from 1024 to 65535, or 0 for an available port.',
         );
     } else if (flag === '--no-open') open = false;
-    else if (flag === '--for-update' && action === 'stop') forUpdate = true;
+    else if (flag === '--json') {
+      // Structured errors for local app switching.
+    } else if (flag === '--for-update' && action === 'stop') forUpdate = true;
     else throw new Error(`Unknown option: ${flag}`);
   }
   const paths = runtimePaths(env);
@@ -272,7 +282,7 @@ export async function main(args = process.argv.slice(2)) {
       ...(await status({ env })),
     };
   throw new Error(
-    'Usage: paper-radar [start|stop|status|doctor|logs] [--home DIR] [--data-dir DIR] [--port PORT] [--no-open]',
+    'Usage: paper-radar [start|stop|status|doctor|logs] [--home DIR] [--data-dir DIR] [--port PORT] [--no-open] [--json]',
   );
 }
 
@@ -285,7 +295,9 @@ if (
       if (result) console.log(JSON.stringify(result, null, 2));
     })
     .catch((error) => {
-      console.error(error.message);
+      console.error(process.argv.includes('--json')
+        ? JSON.stringify({ error: { code: error.code || 'launch_failed', message: error.message } })
+        : error.message);
       process.exitCode = 1;
     });
 }

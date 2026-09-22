@@ -77,6 +77,10 @@ npm run radar -- stop --home "$HOME/.local/share/personastudio/paper-radar-revie
 
 `--home` isolates data, host configuration and runtime state. `--data-dir` selects only the research data directory.
 
+When Paper Radar uses a separate `--home`, save that same directory in AI Persona under **Settings → Extensions → Link a Paper Radar directory**. The link is stored in local application configuration for the current Persona workspace and survives restarts. Saving does not move data or stop services. **Open Paper Radar** reuses the verified service for that directory, or starts it again if it has stopped, and opens its actual port.
+
+Select the home directory containing `data`, `models` and other application folders. A saved link uses the default data and model paths within that home, overriding inherited Radar paths and fixed ports. For a custom `--data-dir` configuration, leave the link empty and retain the existing environment-variable launch configuration. Clearing the link restores the default launch configuration. If a legacy service holds the default directory, the page reports that conflict explicitly.
+
 Settings → Data and preferences offers backups, downloads, restore into a new directory, opening recovered copies and diagnostic export. Backups contain consistent snapshots of the research and prompt databases, cached papers, the Persona connection and onboarding state. They exclude host credentials, the Persona workspace itself and browser preferences. Restore validates file hashes and database integrity, preserves current data and pauses automatic checks. Opening a recovered copy from the UI uses isolated host settings.
 
 Downloaded backups can also be restored locally:

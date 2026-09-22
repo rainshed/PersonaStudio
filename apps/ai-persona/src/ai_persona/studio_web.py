@@ -1,4 +1,4 @@
-"""Read-only Studio pages. Existing capability APIs remain the only write paths."""
+"""Studio pages and local companion-application settings."""
 import json
 import os
 from http.client import HTTPConnection, HTTPException, HTTPSConnection
@@ -8,12 +8,14 @@ from fastapi import Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from starlette.concurrency import run_in_threadpool
 
-from .ai_web import check_request, failure
+from .ai_web import check_request, failure, input_json
 from .conversation_learning.service import ConversationLearningService
 from .conversation_learning.worker import worker_status
+from .i18n import request_locale
 from .inbox import InboxService
 from .models import PreferenceContext
 from .store import PersonaStore
+from .studio_apps import PaperRadarError, paper_radar_home, save_paper_radar_home
 from .web_access import LOCAL_HOSTS, origin_parts
 
 
@@ -42,12 +44,24 @@ def workbench_available():
 
 
 def mount_studio_routes(app, data_root, state_root, templates, common_context):
+    def radar_failure(request, exc):
+        return JSONResponse(
+            {"ok": False, "error": {"code": f"paper_radar_{exc.code}",
+                                     "message": exc.message(request_locale(request))}},
+            status_code=400, headers={"Cache-Control": "no-store"},
+        )
+
     def page(request, template, section):
         try:
             check_request(request)
             store = PersonaStore(data_root).load(verify_source_files=False)
             context = common_context(request, store, section=section)
             if section == "extensions":
+                try:
+                    context["paper_radar_home"] = paper_radar_home(data_root.parent)
+                except PaperRadarError as exc:
+                    context["paper_radar_home"] = ""
+                    context["paper_radar_binding_error"] = exc.message(context["locale"])
                 context["radar_install_command"] = (
                     "personastudio install paper-radar" if os.environ.get("AI_PERSONA_INSTALL_ROOT") else
                     "curl -fsSL https://github.com/rainshed/PersonaStudio/releases/latest/download/install.sh | sh -s -- --with-paper-radar"
@@ -76,6 +90,25 @@ def mount_studio_routes(app, data_root, state_root, templates, common_context):
                 return JSONResponse({"ok": False, "error": "Open a personal workspace first."}, status_code=400)
             url = await run_in_threadpool(open_paper_radar, data_root.parent)
             return JSONResponse({"url": url})
+        except PaperRadarError as exc:
+            return radar_failure(request, exc)
+        except Exception as exc:
+            return failure(exc)
+
+    @app.post("/studio/paper-radar/settings")
+    async def paper_radar_settings(request: Request):
+        try:
+            value = await input_json(request, max_bytes=8192)
+            if request.url.hostname not in LOCAL_HOSTS:
+                return JSONResponse({"ok": False, "error": "Configure Paper Radar from this computer."}, status_code=403)
+            from .demo import is_demo_data
+
+            if is_demo_data(data_root):
+                return JSONResponse({"ok": False, "error": "Open a personal workspace first."}, status_code=400)
+            home = await run_in_threadpool(save_paper_radar_home, data_root.parent, value.get("home"))
+            return JSONResponse({"ok": True, "home": home}, headers={"Cache-Control": "no-store"})
+        except PaperRadarError as exc:
+            return radar_failure(request, exc)
         except Exception as exc:
             return failure(exc)
 
