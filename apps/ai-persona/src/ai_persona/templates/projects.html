@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ '项目' if locale == 'zh-CN' else 'Projects' }} · AI Persona{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="/static/projects/styles.css?v=20260927-studio1">
+<link rel="stylesheet" href="/static/projects/references.css?v=20260927-studio1">
+<script src="/projects/runtime-config.js" defer></script>
+<script src="/static/projects/references.js?v=20260927-studio1" defer></script>
+<script src="/static/projects/library-client.js?v=20260927-studio1" defer></script>
+<script src="/static/projects/app.js?v=20260927-studio2" defer></script>
+{% endblock %}
+{% block content %}
+<div class="projects-workspace">
+  <div id="library-connection" class="library-connection" role="status" hidden></div>
+  <div id="page" tabindex="-1" aria-busy="true"><p class="lead">{{ '正在读取项目…' if locale == 'zh-CN' else 'Loading projects…' }}</p></div>
+  <dialog id="detail" class="drawer" aria-labelledby="detail-title"></dialog>
+  <dialog id="modal" class="modal" aria-labelledby="modal-title"></dialog>
+  <dialog id="reference-dialog" class="modal reference-dialog" aria-labelledby="reference-title"></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript>{{ '请启用 JavaScript 以查看与编辑项目。' if locale == 'zh-CN' else 'Enable JavaScript to view and edit projects.' }}</noscript>
+</div>
+{% endblock %}

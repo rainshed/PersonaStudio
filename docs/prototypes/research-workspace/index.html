@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14243c">
+  <title>研究工作区 · PersonaStudio</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234967d8'/%3E%3Cpath d='M9 23V9h7a5 5 0 010 10h-3' stroke='white' fill='none' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css?v=20260927-projects">
+  <link rel="stylesheet" href="references.css?v=20260927-projects">
+  <script src="runtime-config.js?v=20260927-projects" defer></script>
+  <script src="references.js?v=20260927-projects" defer></script>
+  <script src="library-client.js?v=20260927-projects" defer></script>
+  <script src="demo-data.js?v=20260927-projects" defer></script>
+  <script src="app.js?v=20260927-projects" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#page">跳到内容</a>
+  <aside class="sidebar" id="sidebar" aria-label="主导航"></aside>
+  <div class="app-main">
+    <header class="topbar" id="topbar"></header>
+    <div id="library-connection" class="library-connection" role="status" hidden></div>
+    <main id="page" tabindex="-1"></main>
+    <footer class="page-footer"><span>PERSONASTUDIO <span class="footer-slash">/</span> PROJECTS</span><span id="library-footer"><i class="tiny-dot green"></i>虚构演示 · 修改保存在此浏览器</span></footer>
+  </div>
+  <dialog id="detail" class="drawer" aria-labelledby="detail-title"></dialog>
+  <dialog id="modal" class="modal" aria-labelledby="modal-title"></dialog>
+  <dialog id="reference-dialog" class="modal reference-dialog" aria-labelledby="reference-title"></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript>请启用 JavaScript 以体验研究工作区演示。</noscript>
+</body>
+</html>

@@ -994,7 +994,13 @@ def _graph_layout(store: PersonaStore) -> dict[str, Any]:
     }
 
 
-def create_app(data_root: Path, state_root: Path) -> FastAPI:
+def create_app(
+    data_root: Path,
+    state_root: Path,
+    *,
+    research_workspace_url: str | None = "/projects/",
+    access_policy: StudioAccess | None = None,
+) -> FastAPI:
     from .demo import (
         DemoIsolationMiddleware,
         check_demo_paths,
@@ -1014,6 +1020,7 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
     package_root = Path(__file__).resolve().parent
     templates = Jinja2Templates(directory=package_root / "templates")
     templates.env.globals.update(
+        research_workspace_url=research_workspace_url,
         level_labels=LEVEL_LABELS,
         interest_labels=INTEREST_LABELS,
         preference_labels=PREFERENCE_LABELS,
@@ -1034,7 +1041,9 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
     )
 
     app = FastAPI(title="AI Persona Studio", docs_url=None, redoc_url=None)
-    app.state.studio_access = StudioAccess() if demo else StudioAccess.from_environment()
+    app.state.studio_access = access_policy or (
+        StudioAccess() if demo else StudioAccess.from_environment()
+    )
     if demo:
         app.add_middleware(DemoIsolationMiddleware)
     app.add_middleware(StudioAccessMiddleware, policy=app.state.studio_access)
@@ -3762,5 +3771,8 @@ def create_app(data_root: Path, state_root: Path) -> FastAPI:
     from .ideas_web import mount_idea_routes
 
     mount_idea_routes(app, resolved_data_root, resolved_state_root, templates, common_context)
+    from .projects_web import mount_project_routes
+
+    mount_project_routes(app, resolved_data_root, resolved_state_root, templates, common_context)
     mount_first_use(app, resolved_data_root, resolved_state_root, templates, common_context)
     return app

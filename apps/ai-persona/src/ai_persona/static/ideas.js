@@ -22,7 +22,7 @@
     return value;
   }
   function values() {
-    return Object.fromEntries(['title','body','novelty','novelty_reason','difficulty','difficulty_reason','execution_status','status'].map(k=>[k,field(k).value]).concat([['resources',JSON.parse(field('resources_json').value)],['closure',currentClosure()]]));
+    return {...window.IdeaLinks.values(), ...Object.fromEntries(['title','body','novelty','novelty_reason','difficulty','difficulty_reason','execution_status','status'].map(k=>[k,field(k).value]).concat([['resources',JSON.parse(field('resources_json').value)],['closure',currentClosure()]]))};
   }
   function paintEnding() {
     const closure=currentClosure();
@@ -54,7 +54,7 @@
   form.querySelectorAll('[name=ending_outcome]').forEach(n=>n.addEventListener('change',endingPrompt));
   document.querySelectorAll('[data-close]').forEach(n=>n.onclick=()=>$(n.dataset.close).close());
   async function save(ending) {
-    if(busy||uploading)return false;
+    if(busy||uploading||$('idea-reference-dialog')?.open)return false;
     if(!field('title').value.trim()) {message(L('请填写标题。','Please enter a title.'),true);field('title').focus();return false;}
     busy=true; $('idea-save').disabled=true; $('idea-confirm-ending').disabled=true;
     const pendingEnding=ending?null:{outcome:field('ending_outcome').value,summary:field('ending_summary').value};
@@ -68,6 +68,7 @@
       await draft.save();
       const result=await api('/api/ideas/'+item.id,{expected_revision:item.revision,values:submitted});
       item=result.item; execution=item.execution_status;
+      window.IdeaLinks.saved(item);resources=item.resources;field('resources_json').value=JSON.stringify(resources);renderResources();
       ['title','body','novelty','novelty_reason','difficulty','difficulty_reason','execution_status','status'].forEach(k=>field(k).value=item[k]);
       field('record_revision').value=item.revision; field('closure_json').value=JSON.stringify(item.closure);
       history.replaceState(null,'','/ideas/'+item.id);
@@ -96,6 +97,16 @@
       $('idea-history').disabled=!item.revision; $('idea-context').disabled=!item.revision;
     }
   }
+  $('idea-create-project')?.addEventListener('click',async()=>{
+    if(busy||uploading)return;
+    const trigger=$('idea-create-project');trigger.disabled=true;
+    try{
+      if(!await save())return;
+      const destination=item.project?'/projects/#project/'+encodeURIComponent(item.project.id)+'/ideas':'/projects/#projects/from/'+encodeURIComponent(item.id);
+      location.assign(destination);
+    }finally{trigger.disabled=false;}
+  });
+  if($('idea-create-project'))$('idea-create-project').disabled=false;
   form.addEventListener('submit',e=>{e.preventDefault();save();});
   $('idea-confirm-ending').onclick=()=>{
     const outcome=field('ending_outcome').value, summary=field('ending_summary').value.trim();
@@ -110,8 +121,9 @@
     if(render)renderResources();
   }
   function renderResources() {
-    const root=$('idea-resources');root.replaceChildren();$('idea-resource-count').textContent=resources.length;
+    const root=$('idea-resources');root.replaceChildren();$('idea-resource-count').textContent=resources.filter(r=>!window.IdeaLinks.managed(r)).length;
     resources.forEach((r,index)=>{
+      if(window.IdeaLinks.managed(r))return;
       const row=el('div',null,'idea-resource');row.dataset.draftIgnore='true';
       const head=el('div',null,'idea-resource-head'), a=el('a',(r.kind==='file'?'↓ ':'↗ ')+(r.title||r.url||r.file_path));
       a.href=resourceHref(r);a.target='_blank';a.rel='noopener noreferrer';
@@ -159,7 +171,8 @@
     finally{uploading=false;$('idea-save').disabled=false;$('idea-file').disabled=false;}
   };
   // Text-first Markdown rendering: raw HTML never becomes markup. Images remain links.
-  function inline(text, parent) {
+  function inline(text,parent){window.IdeaLinks.renderInline(text,parent,inlinePlain);}
+  function inlinePlain(text, parent) {
     const pattern=/(`[^`]+`|!?\[[^\]]*\]\([^\s)]+\)|\*\*[^*]+\*\*|\*[^*]+\*)/g;
     let at=0;
     for(const m of text.matchAll(pattern)) {
@@ -173,18 +186,20 @@
     parent.append(document.createTextNode(text.slice(at)));
   }
   function markdown(text, root) {
-    root.replaceChildren();let code=null,list=null,paragraph=null;
+    root.replaceChildren();let code=null,list=null,fence=null,paragraph=[];
+    const flush=()=>{if(paragraph.length){const p=el('p');inline(paragraph.join('\n'),p);root.append(p);paragraph=[];}};
     for(const line of text.split('\n')) {
-      if(/^\s*```/.test(line)){paragraph=list=null;if(code){code=null;}else{const pre=el('pre');code=el('code');pre.append(code);root.append(pre);}continue;}
-      if(code){code.append(document.createTextNode(line+'\n'));continue;}
-      if(!line.trim()){list=paragraph=null;continue;}
+      const marker=line.match(/^\s{0,3}(`{3,}|~{3,})(.*)$/);
+      if(code){if(marker&&marker[1][0]===fence[0]&&marker[1].length>=fence.length&&!marker[2].trim()){code=null;fence=null;}else code.append(document.createTextNode(line+'\n'));continue;}
+      if(marker){flush();list=null;fence=marker[1];const pre=el('pre');code=el('code');pre.append(code);root.append(pre);continue;}
+      if(!line.trim()){flush();list=null;continue;}
       const heading=line.match(/^(#{1,6})\s+(.*)/),li=line.match(/^\s*([-*+] |\d+\. )(.*)/),quote=line.match(/^>\s?(.*)/);
-      if(heading){const n=el('h'+heading[1].length);inline(heading[2],n);root.append(n);list=paragraph=null;}
-      else if(li){const type=/\d/.test(li[1])?'ol':'ul';if(!list||list.tagName.toLowerCase()!==type){list=el(type);root.append(list);}const n=el('li');inline(li[2],n);list.append(n);paragraph=null;}
-      else if(quote){const n=el('blockquote');inline(quote[1],n);root.append(n);list=paragraph=null;}
-      else {if(!paragraph){paragraph=el('p');root.append(paragraph);}else paragraph.append(el('br'));inline(line,paragraph);list=null;}
+      if(heading){flush();const n=el('h'+heading[1].length);inline(heading[2],n);root.append(n);list=null;}
+      else if(li){flush();const type=/\d/.test(li[1])?'ol':'ul';if(!list||list.tagName.toLowerCase()!==type){list=el(type);root.append(list);}const n=el('li');inline(li[2],n);list.append(n);}
+      else if(quote){flush();const n=el('blockquote');inline(quote[1],n);root.append(n);list=null;}
+      else{paragraph.push(line);list=null;}
     }
-    if(!text.trim())root.append(el('p',L('还没有正文。','No note yet.')));
+    flush();if(!text.trim())root.append(el('p',L('还没有正文。','No note yet.')));
   }
   function preview(on) {$('idea-body').hidden=on;$('idea-rendered').hidden=!on;$('idea-write').setAttribute('aria-pressed',!on);$('idea-preview').setAttribute('aria-pressed',on);if(on)markdown(field('body').value,$('idea-rendered'));}
   $('idea-preview').onclick=()=>preview(true);$('idea-write').onclick=()=>preview(false);

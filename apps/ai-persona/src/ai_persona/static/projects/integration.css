@@ -1,0 +1,9 @@
+/* Only the optional research navigation is styled; native modules keep their CSS. */
+.research-nav-addition { display:grid; gap:3px; padding:8px 0; border-bottom:1px solid #ffffff12; }
+.research-nav-addition>span { color:#c5d0db; font-size:12px; padding:6px 14px; }
+.research-nav-addition>a { min-height:40px; padding-left:20px; }
+@media(max-width:760px) {
+  .research-nav-addition { grid-column:1/-1; grid-row:2; display:flex; align-items:center; gap:10px; border:0; border-top:1px solid #ffffff12; padding:5px 3px 2px; }
+  .research-nav-addition>span { padding:3px; font-size:10px; }
+  .research-nav-addition>a { font-size:11px; min-height:34px; padding:5px 8px; }
+}

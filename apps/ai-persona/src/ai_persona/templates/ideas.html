@@ -1,27 +1,54 @@
 {% extends "base.html" %}
 {% macro L(zh, en) %}{{ zh if locale == 'zh-CN' else en }}{% endmacro %}
 {% block title %}{{ L('想法', 'Ideas') }} · AI Persona{% endblock %}
-{% block styles %}<link rel="stylesheet" href="/static/ideas.css">{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/ideas.css?v=20260927-projects2"><script src="/static/idea-reference-rules.js?v=20260927-projects2" defer></script><script src="/static/idea-links.js?v=20260927-projects2" defer></script>{% endblock %}
 {% block content %}
-<section class="page-head simple-head">
-  <div><p class="eyebrow">RESEARCH IDEAS</p><h1>{{ L('想法', 'Ideas') }}</h1><p class="lead">{{ L('记录灵感、判断与探索过程，让每一轮尝试都有迹可循。', 'Keep your ideas, assessments and progress together, one exploration at a time.') }}</p></div>
-  <a class="button primary-button" href="/ideas/new">＋ {{ L('新建想法', 'New idea') }}</a>
+<section class="page-head simple-head idea-collection-head">
+  <div><p class="eyebrow duplicate-in-english">IDEAS</p><h1>{{ L('想法', 'Ideas') }}</h1><p class="lead">{{ L('记录值得探索的问题，让灵感逐渐成为项目。', 'Capture questions worth exploring. Give your next project a place to begin.') }}</p></div>
+  <a class="button primary-button" href="/ideas/new"><span aria-hidden="true">＋</span>{{ L('新建想法', 'New idea') }}</a>
 </section>
+<script type="application/json" id="idea-projects-data">{{ project_items|tojson }}</script>
+<script type="application/json" id="ideas-list-data">{{ idea_items|tojson }}</script>
 <section class="panel knowledge-panel idea-library">
+  <div class="idea-library-header">
+    <nav class="idea-scopes" aria-label="{{ L('想法范围', 'Idea views') }}">
+      <a href="/ideas" {% if not project_filter and not filters.execution_status %}aria-current="page"{% endif %}>{{ L('全部想法', 'All ideas') }}<span>{{ idea_stats.all }}</span></a>
+      <a href="/ideas?execution_status=in_progress" {% if filters.execution_status == ['in_progress'] %}aria-current="page"{% endif %}>{{ L('执行中', 'In progress') }}<span>{{ idea_stats.working }}</span></a>
+      <a href="/ideas?project=independent" {% if project_filter == 'independent' %}aria-current="page"{% endif %}>{{ L('独立想法', 'Independent') }}<span>{{ idea_stats.independent }}</span></a>
+    </nav>
+    <button type="button" id="idea-import-open" class="text-link" hidden>{{ L('导入浏览器想法', 'Import browser ideas') }}</button>
+  </div>
   <form class="idea-filters" method="get" action="/ideas">
-    <div class="idea-search-row"><label class="search-box"><span aria-hidden="true">⌕</span><input type="search" name="q" value="{{ query }}" placeholder="{{ L('搜索正文、判断说明、结束说明和资源…', 'Search notes, reasons, results and resources…') }}" aria-label="{{ L('搜索想法', 'Search ideas') }}"></label>
-      <select name="archive" aria-label="{{ L('归档状态', 'Archive status') }}">{% for v,zh,en in [('active','当前想法','Current ideas'),('archived','已归档','Archived'),('all','全部想法','All ideas')] %}<option value="{{ v }}" {% if archive == v %}selected{% endif %}>{{ L(zh,en) }}</option>{% endfor %}</select><button class="button" type="submit">{{ L('筛选', 'Filter') }}</button></div>
-    <div class="idea-filter-groups">{% for key,zh,en in [('execution_status','执行状态','Execution status'),('novelty','新颖性','Novelty'),('difficulty','实现难度','Difficulty'),('outcome','结束结果','Outcome')] %}
-      <details {% if filters[key] %}open{% endif %}><summary>{{ L(zh,en) }}{% if filters[key] %} · {{ filters[key]|length }}{% endif %}</summary><div>{% for v,label in labels[key].items() %}<label><input type="checkbox" name="{{ key }}" value="{{ v }}" {% if v in filters[key] %}checked{% endif %}> {{ label }}</label>{% endfor %}</div></details>
-    {% endfor %}<a class="text-link" href="/ideas">{{ L('清除筛选', 'Clear filters') }}</a></div>
+    <div class="idea-search-row">
+      <label class="search-box"><svg class="idea-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><input type="search" name="q" value="{{ query }}" placeholder="{{ L('搜索想法、正文或判断依据…', 'Search ideas, notes or reasoning…') }}" aria-label="{{ L('搜索想法', 'Search ideas') }}"></label>
+      <select name="project" id="idea-project-filter" aria-label="{{ L('按项目筛选', 'Filter by project') }}"><option value="">{{ L('所有项目', 'All projects') }}</option><option value="independent" {% if project_filter == 'independent' %}selected{% endif %}>{{ L('独立想法', 'Independent') }}</option>{% for p in projects %}<option value="{{ p.id }}" {% if project_filter == p.id %}selected{% endif %}>{{ p.title }}</option>{% endfor %}</select>
+      <button class="button ghost" type="submit">{{ L('筛选', 'Filter') }}</button>
+    </div>
+    <details class="idea-advanced-filters" {% if filters.execution_status or filters.novelty or filters.difficulty or filters.outcome or archive != 'active' %}open{% endif %}>
+      <summary>{{ L('更多筛选', 'More filters') }}<span>{{ L('状态、判断与关联内容', 'Status, assessments & references') }}</span></summary>
+      <div class="idea-filter-groups">
+        {% for key,zh,en in [('execution_status','执行状态','Execution status'),('novelty','新颖性','Novelty'),('difficulty','实现难度','Difficulty'),('outcome','结束结果','Outcome')] %}
+        <fieldset><legend>{{ L(zh,en) }}</legend>{% for v,label in labels[key].items() %}<label><input type="checkbox" name="{{ key }}" value="{{ v }}" {% if v in filters[key] %}checked{% endif %}>{{ label }}</label>{% endfor %}</fieldset>
+        {% endfor %}
+      </div>
+      <div class="idea-library-tools">
+        <label>{{ L('归档', 'Archive') }}<select name="archive" aria-label="{{ L('归档状态', 'Archive status') }}">{% for v,zh,en in [('active','当前想法','Current ideas'),('archived','已归档','Archived'),('all','全部想法','All ideas')] %}<option value="{{ v }}" {% if archive == v %}selected{% endif %}>{{ L(zh,en) }}</option>{% endfor %}</select></label>
+        <label>{{ L('关联内容', 'Related item') }}<select id="idea-related-filter" aria-label="{{ L('按知识或材料筛选', 'Filter by reference') }}"><option value="">{{ L('全部知识与材料', 'All knowledge & materials') }}</option></select></label>
+        <span id="idea-related-filter-count" role="status"></span><a class="text-link" href="/ideas">{{ L('清除筛选', 'Clear filters') }}</a>
+      </div>
+    </details>
   </form>
-  <div class="result-summary"><strong>{{ records|length }}</strong> {{ L('个想法', 'ideas') }}</div>
-  {% if records %}<div class="material-list">{% for loaded in records %}{% set r=loaded.record %}
-    <a class="material-row idea-row" href="/ideas/{{ r.id }}">
-      <span class="entity-glyph material" aria-hidden="true">I</span>
-      <span class="material-main"><span class="material-title"><strong>{{ r.title }}</strong></span><span class="material-summary">{{ excerpt(r.closure.summary if r.closure else loaded.body) or L('还没有正文，打开后继续记录。', 'Open this idea to start writing.') }}</span><span class="material-tags"><i>{{ L('新颖性', 'Novelty') }} · {{ labels.novelty[r.novelty] }}</i><i>{{ L('难度', 'Difficulty') }} · {{ labels.difficulty[r.difficulty] }}</i>{% if r.resources %}<i>{{ r.resources|length }} {{ L('个资源', 'resources') }}</i>{% endif %}{% if r.status == 'archived' %}<i>{{ L('已归档', 'Archived') }}</i>{% endif %}</span></span>
-      <span class="idea-row-meta"><span class="idea-status {{ r.execution_status }}">{{ labels.execution_status[r.execution_status] }}{% if r.closure %} · {{ labels.outcome[r.closure.outcome] }}{% endif %}</span><small>{{ r.updated_at.strftime('%Y-%m-%d %H:%M') }}</small></span><span class="row-arrow">→</span>
-    </a>{% endfor %}</div>
-  {% else %}<div class="empty-state"><span>✧</span><strong>{{ L('从一个想法开始', 'Start with an idea') }}</strong><p>{{ L('目前没有符合条件的想法。只需要一个标题，就可以开始记录。', 'No ideas match these filters. A title is all you need to begin.') }}</p><a class="button" href="/ideas/new">{{ L('新建想法', 'New idea') }}</a></div>{% endif %}
+  <div class="idea-result-line"><span><strong>{{ records|length }}</strong> {{ L('个想法', 'ideas') }}</span><span>{{ L('最近更新', 'Recently updated') }}</span></div>
+  {% if records %}<div class="idea-list">{% for loaded in records %}{% set r=loaded.record %}{% set i=idea_items[loop.index0] %}
+    <article class="idea-row" data-idea="{{ r.id }}">
+      <div class="idea-row-heading"><span class="idea-status {{ r.execution_status }}"><i aria-hidden="true"></i>{{ labels.execution_status[r.execution_status] }}{% if r.closure %} · {{ labels.outcome[r.closure.outcome] }}{% endif %}</span>{% if r.status == 'archived' %}<span class="idea-archived">{{ L('已归档', 'Archived') }}</span>{% endif %}<time datetime="{{ r.updated_at.isoformat() }}">{{ r.updated_at.strftime('%Y-%m-%d') }}</time></div>
+      <a class="idea-card-open" href="/ideas/{{ r.id }}"><h2>{{ r.title }}</h2><p class="material-summary">{{ excerpt(r.closure.summary if r.closure else loaded.body) or L('还没有正文，打开后继续记录。', 'Open this idea to start writing.') }}</p></a>
+      <div class="idea-list-connections" data-idea-links="{{ r.id }}"></div>
+      <div class="idea-row-footer"><div class="idea-assessment-meta"><span>{{ L('新颖性', 'Novelty') }}<strong>{{ labels.novelty[r.novelty] }}</strong></span><span>{{ L('难度', 'Difficulty') }}<strong>{{ labels.difficulty[r.difficulty] }}</strong></span></div>
+        <div class="idea-card-actions"><a href="/ideas/{{ r.id }}" class="text-link">{{ L('查看想法', 'Open idea') }} →</a>{% if research_workspace_url %}{% if i.project %}<a class="button ghost small" href="{{ research_workspace_url }}#project/{{ i.project.id }}/ideas">{{ L('进入项目', 'Open project') }} ↗</a>{% else %}<a class="button ghost small idea-upgrade-link" href="{{ research_workspace_url }}#projects/from/{{ r.id }}">{{ L('升级为项目', 'Turn into project') }} ↗</a>{% endif %}{% endif %}</div>
+      </div>
+    </article>{% endfor %}</div>
+  {% else %}<div class="empty-state"><svg class="idea-empty-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6m-5 3h4M8 14a6 6 0 1 1 8 0c-1 1-1 2-1 2H9s0-1-1-2Z"/></svg><strong>{{ L('给下一个想法留个位置', 'Make room for your next idea') }}</strong><p>{{ L('目前没有符合条件的想法。一个标题，就可以开始。', 'No ideas match these filters. A title is all you need to begin.') }}</p><a class="button ghost" href="/ideas/new">{{ L('新建想法', 'New idea') }}</a></div>{% endif %}
 </section>
+<dialog id="idea-import-dialog" class="idea-dialog idea-wide-dialog"><div class="idea-dialog-head"><div><p class="eyebrow">CONTINUE YOUR IDEAS</p><h2>导入浏览器中的想法</h2></div><button type="button" class="button small" id="idea-import-close" aria-label="关闭导入窗口">×</button></div><p>选择你希望继续保留的记录。浏览器记录中包含虚构示例，请按需选择；原记录、草稿与历史仍保留在此浏览器中。原探索状态和判断会附在导入正文中，正式版本历史从导入时开始。</p><div id="idea-import-list"></div><p id="idea-import-message" role="status"></p><div class="idea-dialog-actions"><button type="button" id="idea-import-confirm" class="button primary-button">导入选中的想法</button></div></dialog>
 {% endblock %}

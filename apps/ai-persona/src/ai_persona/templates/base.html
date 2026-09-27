@@ -13,7 +13,7 @@
   <script src="/static/studio-i18n.js?v=20260908.studio3.1"></script>
   <link rel="icon" href="{{ url_for('static', path='/favicon.svg').path }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ url_for('static', path='/app.css').path }}?v=20260905.7">
-  <link rel="stylesheet" href="/static/studio.css?v=20260908.studio3.1">
+  <link rel="stylesheet" href="/static/studio.css?v=20260927.projects1">
   <script src="/static/studio-navigation.js?v=20260908.studio3.1" defer></script>
   <link rel="stylesheet" href="/static/error-feedback.css">
   <script src="/static/error-feedback.js" defer></script>
@@ -45,7 +45,7 @@
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
           {{ '概览' if locale == 'zh-CN' else 'Overview' }}
         </a>
-        <details class="persona-nav" open data-assets-active="{{ 'true' if section in ['knowledge', 'courses', 'materials', 'preferences', 'ideas'] else 'false' }}">
+        <details class="persona-nav" open data-assets-active="{{ 'true' if section in ['knowledge', 'courses', 'materials', 'preferences', 'ideas', 'projects'] else 'false' }}">
           <summary>{% if is_demo %}{{ '示例知识库' if locale == 'zh-CN' else 'Sample knowledge base' }}{% else %}{{ '我的 Persona' if locale == 'zh-CN' else 'My Persona' }}{% endif %}</summary>
           <div class="persona-nav-items">
         <a href="/knowledge" class="{% if section == 'knowledge' %}active{% endif %}">
@@ -60,14 +60,20 @@
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 2h8l5 5v15H6V2Zm8 2.5V8h3.5L14 4.5ZM9 12h7v-2H9v2Zm0 4h7v-2H9v2Zm0 4h5v-2H9v2Z"/></svg>
           {{ t('common.materials') }}
         </a>
-        <a href="/ideas" class="{% if section == 'ideas' %}active{% endif %}">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 21h6v-2H9v2ZM12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Zm2 11.5V15h-4v-1.5l-.8-.6A5 5 0 1 1 14.8 13l-.8.5Z"/></svg>
-          {{ '想法' if locale == 'zh-CN' else 'Ideas' }}
-        </a>
         <a href="/preferences" class="{% if section == 'preferences' %}active{% endif %}">
           <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M19.4 13a7.8 7.8 0 0 0 .1-1 7.8 7.8 0 0 0-.1-1l2.1-1.6-2-3.4-2.5 1a8 8 0 0 0-1.7-1L15 3.3h-4L10.6 6a8 8 0 0 0-1.7 1L6.5 6l-2 3.4L6.6 11a7.8 7.8 0 0 0-.1 1 7.8 7.8 0 0 0 .1 1l-2.1 1.6 2 3.4 2.4-1a8 8 0 0 0 1.7 1l.4 2.7h4l.4-2.7a8 8 0 0 0 1.7-1l2.4 1 2-3.4-2.1-1.6ZM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"/></svg>
           {{ t('common.preferences') }}
         </a>
+        <a href="/ideas" class="{% if section == 'ideas' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 21h6v-2H9v2ZM12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Zm2 11.5V15h-4v-1.5l-.8-.6A5 5 0 1 1 14.8 13l-.8.5Z"/></svg>
+          {{ '想法' if locale == 'zh-CN' else 'Ideas' }}
+        </a>
+        {% if research_workspace_url %}
+        <a href="{{ research_workspace_url }}#projects" class="{% if section == 'projects' %}active{% endif %}">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 5h6l2 2h10v14H3V5Zm2 4v10h14V9H5Z"/></svg>
+          {{ '项目' if locale == 'zh-CN' else 'Projects' }}
+        </a>
+        {% endif %}
           </div>
         </details>
         <a href="/inbox" class="{% if section in ['review', 'inbox'] %}active{% endif %}">

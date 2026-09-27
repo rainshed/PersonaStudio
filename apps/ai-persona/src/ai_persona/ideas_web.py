@@ -9,8 +9,11 @@ from starlette.concurrency import run_in_threadpool
 from .agent import AgentServiceError
 from .ai_web import check_request, input_json
 from .change_sets import proposal_lock
+from .idea_links import linked_payload, links
 from .ideas import EN_LABELS, LABELS, IdeaService, payload
+from .library_references import detail_body, library_items, workspace_key
 from .models import Idea
+from .projects import ProjectService
 
 
 def failure(exc):
@@ -31,6 +34,11 @@ def mount_idea_routes(app, data_root, state_root, templates, common_context):
     def context(request):
         store = service.store()
         value = common_context(request, store, section="ideas")
+        try:
+            value["project_items"] = ProjectService(data_root, state_root).load()["projects"]
+        except AgentServiceError:
+            # Project storage errors must not make existing ideas unavailable.
+            value["project_items"] = []
         value["excerpt"] = lambda text: re.sub(r"(?m)^\s*(?:#{1,6}|>|[-*+])\s+", "", text)[:180]
         value["labels"] = LABELS if value["locale"] == "zh-CN" else EN_LABELS
         return store, value
@@ -42,9 +50,20 @@ def mount_idea_routes(app, data_root, state_root, templates, common_context):
         query = request.query_params.get("q", "").strip().casefold()
         archive = request.query_params.get("archive", "active")
         filters = {key: request.query_params.getlist(key) for key in LABELS}
+        project_filter = request.query_params.get("project", "")
+        all_items = [linked_payload(payload(r)) for r in store.loaded_of_type(Idea)]
+        projects = {p["id"]: p for p in ctx["project_items"]}
+        for i in all_items:
+            if i["project"]:
+                projects.setdefault(i["project"]["id"], i["project"])
         records = []
         for loaded in store.loaded_of_type(Idea):
             r = loaded.record
+            project = links(payload(loaded))["project"]
+            if ((project_filter == "independent" and project) or
+                    (project_filter not in {"", "independent"} and
+                     (not project or project["id"] != project_filter))):
+                continue
             if archive != "all" and r.status != archive:
                 continue
             values = {"execution_status": r.execution_status, "novelty": r.novelty,
@@ -63,7 +82,11 @@ def mount_idea_routes(app, data_root, state_root, templates, common_context):
             records.append(loaded)
         records.sort(key=lambda x: (x.record.updated_at, x.record.id), reverse=True)
         ctx.update(records=records, filters=filters, query=request.query_params.get("q", ""),
-                   archive=archive)
+                   archive=archive, idea_items=[linked_payload(payload(r)) for r in records],
+                   projects=list(projects.values()), project_filter=project_filter,
+                   idea_stats={"all": sum(i["status"] == "active" for i in all_items),
+                               "working": sum(i["status"] == "active" and i["execution_status"] == "in_progress" for i in all_items),
+                               "independent": sum(i["status"] == "active" and not i["project"] for i in all_items)})
         return templates.TemplateResponse(request, "ideas.html", ctx,
                                           headers={"Cache-Control": "no-store"})
 
@@ -79,9 +102,35 @@ def mount_idea_routes(app, data_root, state_root, templates, common_context):
                 "difficulty": "unknown", "difficulty_reason": "",
                 "execution_status": "not_started", "closure": None, "resources": [],
             }
-            ctx.update(item=item, upload_mb=service.upload_limit() // 1024 // 1024)
+            ctx.update(item=linked_payload(item), upload_mb=service.upload_limit() // 1024 // 1024)
             return templates.TemplateResponse(request, "idea.html", ctx,
                                               headers={"Cache-Control": "no-store"})
+        except Exception as exc:
+            return failure(exc)
+
+    @app.get("/api/ideas")
+    def idea_list(request: Request):
+        check_request(request)
+        return JSONResponse({"items": [linked_payload(payload(r)) for r in service.store().loaded_of_type(Idea)]},
+                            headers={"Cache-Control": "no-store"})
+
+    @app.get("/api/ideas/library")
+    def reference_catalog(request: Request):
+        check_request(request)
+        store = service.store()
+        return JSONResponse({"items": library_items(store, str(request.base_url).rstrip("/")),
+                             "workspace_key": workspace_key(store)}, headers={"Cache-Control": "no-store"})
+
+    @app.get("/api/ideas/library/{reference}")
+    def reference_detail(request: Request, reference: str):
+        try:
+            check_request(request)
+            store = service.store()
+            item = next((r for r in library_items(store, str(request.base_url).rstrip("/")) if r["id"] == reference), None)
+            if item is None:
+                raise AgentServiceError("not_found", "该引用已不在当前知识库中，正文和引用标记仍保留。")
+            return JSONResponse({**item, "body": detail_body(store.records[item["record_id"]])},
+                                headers={"Cache-Control": "no-store"})
         except Exception as exc:
             return failure(exc)
 
@@ -153,7 +202,8 @@ def mount_idea_routes(app, data_root, state_root, templates, common_context):
             if set(value) != {"expected_revision", "values"}:
                 raise AgentServiceError("invalid_request", "无效的保存请求。")
             result = await run_in_threadpool(service.save, identifier,
-                                            value["expected_revision"], value["values"])
+                                            value["expected_revision"], value["values"], str(request.base_url).rstrip("/"))
+            result["item"] = linked_payload(result["item"])
             return JSONResponse(result, headers={"Cache-Control": "no-store"})
         except Exception as exc:
             return failure(exc)

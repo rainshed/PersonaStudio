@@ -13,6 +13,7 @@ import shutil
 import tempfile
 import tomllib
 import uuid
+from contextlib import nullcontext
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -23,6 +24,7 @@ from .agent import AgentServiceError
 from .change_sets import proposal_lock
 from .compiler import _atomic_write
 from .frontmatter import dump_markdown_record, load_markdown_record
+from .idea_links import apply_links
 from .models import Idea, IdeaResource, SourceManifest
 from .store import LoadedRecord, PersonaStore, StoreValidationError
 
@@ -39,7 +41,7 @@ EN_LABELS = {
     "outcome": {"success": "Completed", "partial": "Partially completed", "abandoned": "Abandoned"},
 }
 FIELDS = {"title", "body", "novelty", "novelty_reason", "difficulty", "difficulty_reason",
-          "execution_status", "closure", "resources", "status"}
+          "execution_status", "closure", "resources", "status", "related_refs", "project"}
 
 
 def payload(loaded: LoadedRecord) -> dict:
@@ -82,13 +84,13 @@ class IdeaService:
             raise AgentServiceError("not_found", "找不到这个想法。")
         return loaded
 
-    def save(self, identifier, expected_revision, values):
+    def save(self, identifier, expected_revision, values, origin="http://127.0.0.1:8765", *, _locked=False):
         self.identifier(identifier)
         if type(expected_revision) is not int or expected_revision < 0:
             raise AgentServiceError("invalid_request", "保存需要当前版本号。")
         if not isinstance(values, dict) or set(values) - FIELDS:
             raise AgentServiceError("invalid_request", "存在不支持的想法字段。")
-        with proposal_lock(self.state):
+        with nullcontext() if _locked else proposal_lock(self.state):
             store = self.store()
             old = store.records.get(identifier)
             if old and not isinstance(old.record, Idea):
@@ -104,7 +106,9 @@ class IdeaService:
             if not isinstance(body, str) or len(body.encode()) > 800_000:
                 raise AgentServiceError("invalid_request", "正文过大或格式无效。")
             body = body.replace("\r\n", "\n").replace("\r", "\n").strip()
-            data.update({k: v for k, v in values.items() if k != "body"})
+            data.update({k: v for k, v in values.items() if k not in {"body", "related_refs", "project"}})
+            if "related_refs" in values or "project" in values:
+                apply_links(data, values, store, origin, old.record.resources if old else ())
             # Reopening always clears the CURRENT result; historical snapshots are untouched.
             if old and old.record.execution_status == "ended" and data["execution_status"] != "ended":
                 data["closure"] = None
