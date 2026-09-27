@@ -55,19 +55,17 @@
   },
   "overrides": [
     {
-      "files": ["components/ui/**"],
+      "files": [
+        "components/ui/**"
+      ],
       "rules": {
         "jsx-a11y/prefer-tag-over-role": "off"
       }
     },
     {
-      "files": ["components/ui/label.tsx"],
-      "rules": {
-        "jsx-a11y/label-has-associated-control": "off"
-      }
-    },
-    {
-      "files": ["components/ui/input-group.tsx"],
+      "files": [
+        "components/ui/input-group.tsx"
+      ],
       "rules": {
         "jsx-a11y/click-events-have-key-events": "off",
         "jsx-a11y/no-noninteractive-element-interactions": "off"

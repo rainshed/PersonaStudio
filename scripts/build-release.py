@@ -82,7 +82,7 @@ def tracked_files(*, radar: bool = False) -> list[Path]:
         parts = relative.parts
         include = (
             relative.as_posix() in ROOT_FILES
-            or parts[:1] == ("docs",)
+            or (parts[:1] == ("docs",) and parts[1:2] != ("prototypes",))
             or relative.as_posix() in {"scripts/ai-persona", "scripts/ai-persona-mcp", "scripts/personastudio"}
             or (
                 parts[:2] == ("apps", "ai-persona")

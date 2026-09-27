@@ -6,9 +6,7 @@ Kept outside records/ so existing strict Persona/MCP readers remain compatible.
 from __future__ import annotations
 
 import copy
-import hashlib
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Annotated, Literal
@@ -19,9 +17,8 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from .agent import AgentServiceError
 from .change_sets import proposal_lock
 from .compiler import _atomic_write
-from .ideas import IdeaService, sync_directory
+from .ideas import sync_directory
 from .library_references import library_items, workspace_key
-from .models import Idea
 from .store import PersonaStore
 
 Identifier = Annotated[str, Field(pattern=r"^[A-Za-z0-9_-]{1,100}$")]
@@ -235,126 +232,6 @@ class ProjectService:
                     "progress": bool(change.get("progress", False)), "note": note, "verdict": None,
                 })
             self._validate_links(value, old)
-            value["version"] += 1
-            self._publish(value)
-            return value
-
-    def import_browser(self, expected_revision, snapshot, project_ids, origin="http://127.0.0.1:8765"):
-        """Explicit selection only. Preserve browser history and never overwrite IDs.
-
-        Associated legacy ideas use the same stable IDs as the Ideas importer.
-        The original browser snapshot is archived before publishing any records.
-        """
-        if (not isinstance(snapshot, dict) or not isinstance(project_ids, list) or not project_ids or
-                any(not isinstance(pid, str) or not re.fullmatch(r"[A-Za-z0-9_-]{1,100}", pid) for pid in project_ids)):
-            invalid("请选择需要导入的浏览器项目。")
-        with proposal_lock(self.state):
-            old = self.load()
-            self._check_revision(old, expected_revision)
-            value = copy.deepcopy(old)
-            selected = set(project_ids)
-            if not selected <= {p.get("id") for p in snapshot.get("projects", [])}:
-                invalid("所选项目不在浏览器备份中。")
-            imported = set(value["imports"])
-            selected -= imported
-            if not selected:
-                return value
-            for kind, model in MODELS.items():
-                existing = {r["id"] for r in value[kind]}
-                rows = snapshot.get(kind, [])
-                if not isinstance(rows, list):
-                    invalid("浏览器备份格式无效。")
-                for row in rows:
-                    if (row.get("id") if kind == "projects" else row.get("project")) not in selected:
-                        continue
-                    if row["id"] in existing:
-                        raise AgentServiceError("conflict", "导入记录与正式项目 ID 冲突，原记录未被覆盖。")
-                    try:
-                        parsed = model.model_validate(row).model_dump(mode="json")
-                    except ValidationError as exc:
-                        raise AgentServiceError("invalid_request", "浏览器项目格式无效，原备份仍保留。") from exc
-                    if not parsed["created_at"] or not parsed["updated_at"]:
-                        invalid("浏览器记录缺少创建或更新时间。")
-                    # Demo reference IDs are not valid knowledge-library links.
-                    parsed["related_refs"] = [r for r in parsed["related_refs"] if re.fullmatch(r"ps_[a-f0-9]{16}_[a-f0-9]{32}", r)]
-                    value[kind].append(parsed)
-                    key = f"{kind}:{parsed['id']}"
-                    history = snapshot.get("history", {}).get(key, [])
-                    preserved = []
-                    for revision in history:
-                        raw = {k: v for k, v in revision.items() if k != "action_label"}
-                        model.model_validate(raw)
-                        if raw["id"] != parsed["id"] or raw["revision"] > parsed["revision"]:
-                            invalid("浏览器历史与当前记录不一致。")
-                        preserved.append(revision)
-                    value["history"][key] = preserved or [{**parsed, "action_label": "导入浏览器项目"}]
-            self._validate_links(value, value)
-            # Archive the exact original, including legacy ideas, drafts-independent history and events.
-            # No paths or arbitrary files from the browser are executed or accessed.
-            archive_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%f")
-            _atomic_write(self.data / "projects/imports" / f"{archive_id}.json",
-                          json.dumps(snapshot, ensure_ascii=False, indent=2).encode())
-            service = IdeaService(self.data, self.state)
-            store = service.store()
-            key = workspace_key(store)
-            refs = {i["id"] for i in library_items(store, origin) if not i["archived"]}
-            mapping = value.setdefault("idea_imports", {})
-            legacy = snapshot.get("legacy_ideas", snapshot.get("ideas", []))
-            referenced = {t["idea"] for t in value["tasks"] if t["project"] in selected and t["idea"]}
-            referenced.update(i for u in value["updates"] if u["project"] in selected for i in u["ideas"])
-            referenced.update(p["origin"]["id"] for p in value["projects"] if p["id"] in selected and p["origin"])
-            pending = []
-            for idea in legacy:
-                if idea.get("project") not in selected and idea.get("id") not in referenced:
-                    continue
-                legacy_id = idea.get("id", "")
-                if legacy_id.startswith("idea_"):
-                    continue
-                identifier = "idea_import_" + hashlib.sha256((key + "\n" + legacy_id).encode()).hexdigest()[:32]
-                mapping[legacy_id] = identifier
-                ended = idea.get("state") in {"closed", "abandoned"}
-                project = next((p for p in value["projects"] if p["id"] == idea.get("project")), None)
-                values = {
-                    "title": idea.get("title", ""),
-                    "body": (idea.get("body", "") + "\n\n---\n\n## 浏览器记录中的判断\n\n"
-                             + "原探索状态：" + idea.get("state", "pending") + "\n\n"
-                             + idea.get("verdict_note", "") + "\n\n" + idea.get("closure_note", "")),
-                    "novelty": idea.get("novelty", "unknown"), "novelty_reason": idea.get("novelty_reason", ""),
-                    "difficulty": idea.get("difficulty", "unknown"), "difficulty_reason": idea.get("difficulty_reason", ""),
-                    "status": "archived" if idea.get("archived") else "active",
-                    "execution_status": "ended" if ended else "in_progress" if idea.get("state") == "exploring" else "not_started",
-                    "closure": {"outcome": "abandoned" if idea.get("state") == "abandoned" else "partial",
-                                "summary": idea.get("closure_note") or "从浏览器记录导入，结果待补充。"} if ended else None,
-                    "related_refs": [r for r in idea.get("related_refs", []) if r in refs],
-                    "project": {"id": project["id"], "title": project["title"]} if project else None,
-                }
-                # Validate all new ideas before writing any of them.
-                if identifier not in store.records:
-                    Idea.model_validate({"schema": "ai-persona.idea/v1", "entity_type": "idea",
-                                         "id": identifier, "revision": 1, "created_at": datetime.now(timezone.utc),
-                                         "updated_at": datetime.now(timezone.utc),
-                                         **{k: v for k, v in values.items() if k not in {"body", "related_refs", "project"}}})
-                    pending.append((identifier, values))
-            for identifier, values in pending:
-                service.save(identifier, 0, values, origin, _locked=True)
-            for task in value["tasks"]:
-                if task["project"] in selected:
-                    task["idea"] = mapping.get(task["idea"], task["idea"])
-            for update in value["updates"]:
-                if update["project"] in selected:
-                    update["ideas"] = [mapping.get(i, i) for i in update["ideas"]]
-            for project in value["projects"]:
-                if project["id"] in selected and project["origin"]:
-                    project["origin"]["id"] = mapping.get(project["origin"]["id"], project["origin"]["id"])
-            # Original historic references remain unchanged in the archived snapshot.
-            for event in snapshot.get("events", []):
-                if (isinstance(event, dict) and event.get("project") in selected and
-                        event.get("type") in MODELS and
-                        f"{event['type']}:{event.get('target')}" in value["history"]):
-                    value["events"].append({k: event.get(k) for k in (
-                        "id", "project", "type", "target", "revision", "label", "time", "progress", "note")})
-            for pid in selected:
-                value["imports"][pid] = archive_id
             value["version"] += 1
             self._publish(value)
             return value

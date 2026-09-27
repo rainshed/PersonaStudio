@@ -13,7 +13,6 @@ import shutil
 import tempfile
 import tomllib
 import uuid
-from contextlib import nullcontext
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -84,13 +83,13 @@ class IdeaService:
             raise AgentServiceError("not_found", "找不到这个想法。")
         return loaded
 
-    def save(self, identifier, expected_revision, values, origin="http://127.0.0.1:8765", *, _locked=False):
+    def save(self, identifier, expected_revision, values, origin="http://127.0.0.1:8765"):
         self.identifier(identifier)
         if type(expected_revision) is not int or expected_revision < 0:
             raise AgentServiceError("invalid_request", "保存需要当前版本号。")
         if not isinstance(values, dict) or set(values) - FIELDS:
             raise AgentServiceError("invalid_request", "存在不支持的想法字段。")
-        with nullcontext() if _locked else proposal_lock(self.state):
+        with proposal_lock(self.state):
             store = self.store()
             old = store.records.get(identifier)
             if old and not isinstance(old.record, Idea):

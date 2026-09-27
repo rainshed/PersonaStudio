@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% macro L(zh, en) %}{{ zh if locale == 'zh-CN' else en }}{% endmacro %}
 {% block title %}{{ L('想法', 'Ideas') }} · AI Persona{% endblock %}
-{% block styles %}<link rel="stylesheet" href="/static/ideas.css?v=20260927-projects2"><script src="/static/idea-reference-rules.js?v=20260927-projects2" defer></script><script src="/static/idea-links.js?v=20260927-projects2" defer></script>{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/ideas.css?v=20260927-cleanup1"><script src="/static/idea-reference-rules.js?v=20260927-cleanup1" defer></script><script src="/static/idea-links.js?v=20260927-cleanup1" defer></script>{% endblock %}
 {% block content %}
 <section class="page-head simple-head idea-collection-head">
   <div><p class="eyebrow duplicate-in-english">IDEAS</p><h1>{{ L('想法', 'Ideas') }}</h1><p class="lead">{{ L('记录值得探索的问题，让灵感逐渐成为项目。', 'Capture questions worth exploring. Give your next project a place to begin.') }}</p></div>

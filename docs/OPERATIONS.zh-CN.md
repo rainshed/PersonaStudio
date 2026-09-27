@@ -121,3 +121,18 @@ ai-persona logs
 | 备份或恢复被拒绝 | 停止写入者，选择新目标，并处理报告的安全检查。 |
 
 日志可能包含私人路径和请求信息。只能分享必要的脱敏片段，不要上传完整工作区、模型目录或对话备份。
+
+## 独立托管的私有 Studio 服务
+
+桌面入口继续使用 `ai-persona serve`。如果现有 Tailscale 私有反向代理需要在另一个 loopback 端口托管同一应用，可使用正式 ASGI 工厂，无需历史原型脚本：
+
+```sh
+AI_PERSONA_WORKSPACE=/absolute/path/to/my-persona \
+AI_PERSONA_PUBLIC_ORIGIN=https://your-machine.example.ts.net:10000 \
+python -m uvicorn ai_persona.asgi:create_app --factory \
+  --host 127.0.0.1 --port 4179 --no-proxy-headers
+```
+
+使用已安装 AI Persona 的 Python 环境；源码运行时另设 `PYTHONPATH=apps/ai-persona/src`。工作区优先取环境变量，省略时取已配置默认工作区，不自动创建 Demo。该方式由调用方管理进程，不占用桌面启动器的单实例记录；停止或备份前需同时停止这个服务。
+
+保留现有私有代理映射。服务仍检查 Host、Origin 和请求来源，仅信任显式配置的外部地址；不信任转发头，不开放 CORS。项目与其他正式模块使用同一工作区与数据权限。

@@ -22,10 +22,6 @@
 .projects-workspace .green {color:var(--green)}
 .projects-workspace .muted {color:var(--muted)}
 .projects-workspace .blue {color:var(--accent)}
-.projects-workspace .sidebar-note {border:1px solid #ffffff11;border-radius:9px;padding:14px 12px;margin-bottom:23px;background:#ffffff02}
-.projects-workspace .sidebar-note svg {color:#90a4e7;width:16px}
-.projects-workspace .sidebar-note p {font-size:12px;line-height:1.85;margin:7px 0 4px;color:#9eabc1}
-.projects-workspace .sidebar-note small {font-size:12px;letter-spacing:1.1px;color:#5f7595}
 .projects-workspace .page-inner {max-width:1390px;margin:auto;padding:31px 36px 38px}
 .projects-workspace .eyebrow {font-size:12px;letter-spacing:1.6px;color:#8290a6;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:10px}
 .projects-workspace .eyebrow span {color:#b2bac7;font-weight:400}
@@ -227,13 +223,6 @@
 .projects-workspace .collection-callout {display:flex;align-items:center;gap:12px;border:1px dashed #dce3f0;border-radius:10px;margin-top:24px;padding:16px 20px;font-size:12px;color:#8e9cb2}
 .projects-workspace .collection-callout svg {width:18px;color:#97abd5}
 .projects-workspace .collection-callout button {margin-left:auto}
-.projects-workspace .independent-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.projects-workspace .independent-card {padding:23px}
-.projects-workspace .independent-card .tags {display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:15px}
-.projects-workspace .independent-card h2 {font-size:15px;line-height:1.9;font-weight:550}
-.projects-workspace .independent-card h2 button {padding:0;text-align:left;font-weight:inherit}
-.projects-workspace .independent-card>p {font-size:12px;line-height:1.9;color:#8f9db2;margin-top:10px;min-height:41px}
-.projects-workspace .independent-card .card-footer {display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:#a3afc0}
 .projects-workspace .drawer, .projects-workspace .modal {border:1px solid #dfe5ef;box-shadow:0 18px 80px #14243c25;color:var(--text);padding:0;background:white}
 .projects-workspace .drawer::backdrop, .projects-workspace .modal::backdrop {background:#14243c45;backdrop-filter:blur(2px)}
 .projects-workspace .drawer {position:fixed;inset:0 0 0 auto;margin:0;width:min(594px,95vw);max-width:none;max-height:100dvh;height:100dvh;border-radius:16px 0 0 16px;border-right:0;overflow:hidden}
@@ -319,21 +308,9 @@
 .projects-workspace .history-entry summary {cursor:pointer;font-size:12px;line-height:1.8;color:#7c8fab}
 .projects-workspace .history-entry summary strong {font-size:12px;color:#506fac;margin-right:9px}
 .projects-workspace .history-entry .history-body {margin-top:14px;background:#f8faff;border:1px solid #e6edf6;border-radius:8px;padding:14px;font-size:12px;color:#8191a9;line-height:1.9;white-space:pre-wrap}
-.projects-workspace .about-grid {display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.projects-workspace .about-card {padding:15px;border:1px solid var(--line);border-radius:8px;font-size:12px;line-height:1.8;color:#899ab4}
-.projects-workspace .about-card svg {color:#95a8d3;width:18px;margin-bottom:8px}
-.projects-workspace .about-card strong {display:block;font-weight:500;font-size:12px;color:#677d9f;margin-bottom:5px}
 .projects-workspace .path-preview {padding:15px;border:1px solid #e4eaf3;background:#f7f9fd;border-radius:8px;word-break:break-all;font-size:12px;color:#6f82a3;line-height:1.9}
 .projects-workspace .toast {position:fixed;bottom:28px;left:calc(50% + 113px);transform:translate(-50%,15px);border:1px solid #3b4f70;box-shadow:0 8px 25px #14243c22;z-index:100;padding:12px 18px;background:#243953;color:#dce6f6;border-radius:9px;font-size:12px;line-height:1.7;max-width:min(500px,90vw);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
 .projects-workspace .toast.visible {opacity:1;transform:translate(-50%,0)}
-.projects-workspace .figure-preview {border:1px solid #e3eaf5;background:#fafcff;border-radius:9px;padding:18px;margin:15px 0}
-.projects-workspace .figure-preview>svg {width:100%;height:auto;display:block}
-.projects-workspace .figure-caption {font-size:12px;color:#a5b0c1;text-align:center;line-height:1.8;margin-top:8px}
-.projects-workspace .quick-capture {display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #dce5f7;border-radius:10px;padding:16px 18px;margin-bottom:23px}
-.projects-workspace .quick-capture>svg {color:#8ca2d9;width:19px;height:19px}
-.projects-workspace .quick-capture input {border:0;background:transparent;min-width:0;flex:1;font-size:12px;color:#526b92}
-.projects-workspace .quick-capture input::placeholder {color:#a3b0c5}
-.projects-workspace .quick-capture input:focus {box-shadow:none}
 .projects-workspace .new-record {animation:project-record-in .3s ease}
 .projects-workspace .modal-body .tag {margin-right:5px}
 .projects-workspace .archive-banner {margin:0 0 20px;padding:12px 17px;border:1px solid #e5eaf3;border-radius:8px;background:#edf2f8;color:#8496b0;font-size:12px;display:flex;align-items:center;gap:10px}
@@ -369,7 +346,6 @@
 .projects-workspace .project-heading {gap:12px}
 }
 @media(max-width:1000px) {
-.projects-workspace .sidebar-note {display:none}
 .projects-workspace .project-heading {flex-wrap:wrap}
 .projects-workspace .heading-actions {padding:0}
 .projects-workspace .overview-grid {grid-template-columns:minmax(0,1fr) 244px}
@@ -390,7 +366,6 @@
 .projects-workspace .side-column>.panel:last-child {grid-column:1/-1}
 .projects-workspace .project-meta {flex-wrap:wrap;line-height:1.8}
 .projects-workspace .toolbar-right {flex-wrap:wrap}
-.projects-workspace .independent-grid {grid-template-columns:1fr}
 .projects-workspace .context-grid {grid-template-columns:150px 1fr}
 }
 @media(max-width:650px) {
@@ -460,10 +435,6 @@
 .projects-workspace .collection-callout {flex-wrap:wrap;padding:15px;gap:9px;font-size:12px}
 .projects-workspace .collection-callout button {margin-left:0}
 .projects-workspace .project-card {min-height:240px}
-.projects-workspace .independent-card {padding:19px}
-.projects-workspace .quick-capture {gap:9px;padding:13px}
-.projects-workspace .quick-capture input {font-size:12px}
-.projects-workspace .quick-capture .button {font-size:12px;padding:6px 8px}
 .projects-workspace .drawer {width:100vw;max-width:100vw;border-radius:0;border:0}
 .projects-workspace .drawer-head {padding:19px 20px 16px}
 .projects-workspace .drawer-head h2 {font-size:21px}
@@ -485,11 +456,8 @@
 .projects-workspace .context-output {height:310px}
 .projects-workspace .context-footer-note {font-size:12px}
 .projects-workspace .two-cols {gap:10px}
-.projects-workspace .about-grid {grid-template-columns:1fr}
-.projects-workspace .about-card {padding:13px}
 .projects-workspace .field>input, .projects-workspace .field>textarea, .projects-workspace .field>select {font-size:16px}
 .projects-workspace .task-add input {font-size:16px}
-.projects-workspace .quick-capture input {font-size:16px}
 .projects-workspace .search-box input {font-size:16px}
 .projects-workspace .field>span {font-size:12px}
 .projects-workspace .drawer .two-cols {grid-template-columns:1fr 1fr}

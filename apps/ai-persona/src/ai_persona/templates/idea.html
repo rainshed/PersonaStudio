@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% macro L(zh, en) %}{{ zh if locale == 'zh-CN' else en }}{% endmacro %}
 {% block title %}{{ item.title or L('新建想法', 'New idea') }} · AI Persona{% endblock %}
-{% block styles %}<link rel="stylesheet" href="/static/ideas.css?v=20260927-projects2"><script src="/static/idea-reference-rules.js?v=20260927-projects2" defer></script><script src="/static/idea-links.js?v=20260927-projects2" defer></script><script src="/static/ideas.js?v=20260927-projects2" defer></script>{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/ideas.css?v=20260927-cleanup1"><script src="/static/idea-reference-rules.js?v=20260927-cleanup1" defer></script><script src="/static/idea-links.js?v=20260927-cleanup1" defer></script><script src="/static/ideas.js?v=20260927-cleanup1" defer></script>{% endblock %}
 {% block content %}
 <nav class="breadcrumbs"><a href="/ideas">{{ L('想法', 'Ideas') }}</a><span>/</span><span>{{ L('编辑想法', 'Edit idea') if item.revision else L('新建想法', 'New idea') }}</span></nav>
 <section class="page-head simple-head idea-head">

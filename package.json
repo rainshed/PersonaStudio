@@ -18,7 +18,8 @@
     "persona": "node scripts/personastudio.mjs ai-persona",
     "setup:radar": "node scripts/setup-paper-radar.mjs",
     "check:radar": "node scripts/setup-paper-radar.mjs --check-only",
-    "test:ideas": "node apps/ai-persona/tests/browser/ideas.mjs"
+    "test:ideas": "node apps/ai-persona/tests/browser/ideas.mjs",
+    "test:project-references": "node --test apps/ai-persona/tests/browser/project-*.test.cjs"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0"

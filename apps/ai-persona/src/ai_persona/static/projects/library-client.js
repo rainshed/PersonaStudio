@@ -1,12 +1,10 @@
 (function () {
   'use strict';
   const R = window.ResearchReferences;
-  // Missing runtime configuration must not silently display a fictional library.
-  const live = window.ResearchLibraryConfig?.mode !== 'demo';
-  const apiBase = window.ResearchLibraryConfig?.apiBase || '/api/library';
-  const state = { mode: live ? 'live' : 'demo', status: live ? 'loading' : 'ready', workspace: null, counts: null, error: '', loadedAt: 0 };
+  const apiBase = '/api/projects/library';
+  const state = {mode:'live', status:'loading', workspace:null, counts:null, error:'', loadedAt:0};
   let pending;
-  if (live) R.setLiveLibrary([]);
+  R.setLiveLibrary([]);
   const notify = () => window.dispatchEvent(new Event('research-library-change'));
   async function request(path) {
     const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 12000);
@@ -20,7 +18,6 @@
     } finally { clearTimeout(timer); }
   }
   function refresh() {
-    if (!live) return Promise.resolve();
     if (pending) return pending;
     state.status = 'loading'; state.error = ''; notify();
     pending = (async () => {

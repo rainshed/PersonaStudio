@@ -121,3 +121,18 @@ ai-persona logs
 | Backup or restore is refused | Stop writers, choose a new destination, and resolve the reported safety check. |
 
 Logs may contain personal paths and request details. Share only the necessary redacted excerpt, never a complete workspace, model store, or conversation archive.
+
+## Separately supervised private Studio service
+
+Keep `ai-persona serve` for the desktop launcher. An existing private Tailscale reverse proxy can use the production ASGI factory on a separate loopback port:
+
+```sh
+AI_PERSONA_WORKSPACE=/absolute/path/to/my-persona \
+AI_PERSONA_PUBLIC_ORIGIN=https://your-machine.example.ts.net:10000 \
+python -m uvicorn ai_persona.asgi:create_app --factory \
+  --host 127.0.0.1 --port 4179 --no-proxy-headers
+```
+
+Use the Python environment containing AI Persona; source checkouts also need `PYTHONPATH=apps/ai-persona/src`. The workspace environment variable takes precedence over the configured default; the factory never creates a Demo fallback. The caller supervises this process separately from the desktop launcher's singleton. Stop both services before backup or maintenance.
+
+Keep the existing private proxy mapping. Host, Origin and request-source checks remain active, forwarded headers are not trusted, and CORS is not opened. All modules use the same selected workspace.

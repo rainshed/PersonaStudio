@@ -1,5 +1,4 @@
-"""Project persistence, browser migration and concurrent clients."""
-import copy
+"""Project persistence, legacy data compatibility and concurrent clients."""
 import json
 import shutil
 from concurrent.futures import ThreadPoolExecutor
@@ -10,7 +9,6 @@ from fastapi.testclient import TestClient
 
 from ai_persona.agent import AgentServiceError
 from ai_persona.compiler import PersonaCompiler
-from ai_persona.ideas import IdeaService
 from ai_persona.projects import ProjectService
 from ai_persona.store import PersonaStore
 from ai_persona.web import create_app
@@ -91,7 +89,11 @@ def test_project_ui_ships_with_native_studio_without_demo_seeding(service):
         assert 'id="topbar"' not in page.text
         assert '/static/projects/styles.css?' in page.text
         assert '/static/studio-navigation.js?' in page.text
-        assert '"integrated": true' in client.get("/projects/runtime-config.js").text
+        assert '/static/idea-reference-rules.js?' in page.text
+        assert 'runtime-config.js' not in page.text
+        assert client.get("/projects/runtime-config.js").status_code == 404
+        assert client.get("/projects/integration.css").status_code == 404
+        assert client.post("/api/projects/import", json={}, headers={"X-AI-Persona": "1"}).status_code == 404
         assert client.get("/projects/app.js").status_code == 200
         assert client.get("/projects/../projects.py").status_code == 404
         assert client.get("/research/", follow_redirects=False).headers["location"] == "/projects/"
@@ -137,33 +139,30 @@ def test_failed_atomic_publish_retains_previous_commit(service, monkeypatch):
     assert not (service.data / "revisions/projects/00000002.json").exists()
 
 
-def browser_snapshot():
-    metadata = {"revision": 1, "created_at": "2026-09-26T12:00:00Z", "updated_at": "2026-09-26T12:00:00Z"}
-    project = {**metadata, "id": "p_old", "title": "浏览器里的研究", "origin": {"id": "i_old", "revision": 1}}
-    task = {**metadata, "id": "t_old", "title": "原待办", "project": "p_old", "idea": "i_old"}
-    return {"projects": [project, {**metadata, "id": "p_example", "title": "未选择的示例"}],
-            "tasks": [task], "updates": [], "events": [],
-            "legacy_ideas": [{"id": "i_old", "project": "p_old", "title": "原想法", "body": "原正文",
-                              "state": "closed", "closure_note": "原结束说明"}],
-            "history": {"projects:p_old": [{**project, "action_label": "创建"}],
-                        "tasks:t_old": [{**task, "action_label": "创建"}]}}
-
-
-def test_selected_import_is_idempotent_preserves_history_and_resolves_ideas(service):
-    snapshot = browser_snapshot()
-    original = copy.deepcopy(snapshot)
-    value = service.import_browser(0, snapshot, ["p_old"])
-    assert [p["id"] for p in value["projects"]] == ["p_old"]
-    target = value["tasks"][0]["idea"]
-    assert target.startswith("idea_import_")
-    idea = IdeaService(service.data, service.state).get(target)
-    assert idea.record.closure.summary == "原结束说明"
-    assert "原正文" in idea.body
-    assert value["projects"][0]["origin"]["id"] == target
-    assert value["history"]["tasks:t_old"][0]["action_label"] == "创建"
-    assert json.loads(next((service.data / "projects/imports").glob("*.json")).read_text()) == original
-    assert service.import_browser(1, snapshot, ["p_old"]) == value
-    assert snapshot == original
+def test_existing_imported_data_and_unavailable_references_survive_edits(service):
+    # This is already-persisted legacy data, not a new browser import path.
+    old = service.save(0, [change("projects", {"id": "p_old", "title": "已有项目"}),
+                           change("tasks", {"id": "t_old", "title": "已有待办", "project": "p_old"})])
+    old["projects"][0]["related_refs"] = ["kb_retired"]
+    old["projects"][0]["origin"] = {"id": "idea_import_old", "revision": 1}
+    old["tasks"][0].update(idea="idea_import_old", resources=["r_original"])
+    old["imports"] = {"original_fingerprint": {"projects": ["p_old"], "time": "2026-09-26"}}
+    old["idea_imports"] = {"i_old": "idea_import_old"}
+    old["history"]["ideas:i_old"] = [{"id": "i_old", "revision": 1, "body": "原想法正文"}]
+    service.path.write_text(json.dumps(old))
+    imported_backup = service.data / "projects/imports/legacy.json"
+    imported_backup.parent.mkdir(parents=True)
+    imported_backup.write_text('{"original": "preserved"}')
+    result = service.save(1, [change("projects", {**old["projects"][0], "title": "更新名称"})])
+    assert result["projects"][0]["related_refs"] == ["kb_retired"]
+    assert result["projects"][0]["origin"] == old["projects"][0]["origin"]
+    assert result["tasks"] == old["tasks"]
+    assert result["imports"] == old["imports"]
+    assert result["idea_imports"] == old["idea_imports"]
+    assert result["history"]["ideas:i_old"] == old["history"]["ideas:i_old"]
+    assert result["history"]["projects:p_old"][:-1] == old["history"]["projects:p_old"]
+    assert imported_backup.read_text() == '{"original": "preserved"}'
+    assert ProjectService(service.data, service.state).load() == result
 
 
 def test_api_requires_origin_workspace_and_revision(service):

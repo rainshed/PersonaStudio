@@ -1,5 +1,6 @@
 /* Stable Markdown citation rules, shared with the research workspace. */
 (function(root){
+  function createLibrary(){
   let library = [];
   const get = id => library.find(r => r.id === id);
   const escapedAt = (text, index) => { let n = 0; while (index > 0 && text[--index] === '\\') n++; return n % 2 === 1; };
@@ -55,5 +56,9 @@
     return `[${title.replace(/[\\\[\]]/g, '\\$&')}](${`kb:${id}`})`;
   }
   const api = {inlineTokens, citations, related, stripCitations, makeCitation, get, setLibrary(items){library=items;}};
+  return api;
+  }
+  const api = createLibrary();
+  api.createLibrary = createLibrary;
   if(typeof module !== "undefined" && module.exports)module.exports=api;else root.IdeaReferenceRules=api;
 })(typeof window !== "undefined" ? window : globalThis);
