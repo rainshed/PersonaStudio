@@ -1,6 +1,6 @@
 # 接入说明
 
-[English](INTEGRATIONS.md) · [仓库首页](../README.zh-CN.md)
+[English](INTEGRATIONS.md) · [仓库首页](../README.md)
 
 所有接入都是可选的，并且必须指向明确的工作区。安装 AI Persona 不等于授权采集对话、调用模型或自动应用偏好。
 

@@ -1,6 +1,6 @@
 # Operations and data
 
-[简体中文](OPERATIONS.zh-CN.md) · [Repository home](../README.md)
+[简体中文](OPERATIONS.zh-CN.md) · [Repository home](../README.en.md)
 
 ## Model connections
 

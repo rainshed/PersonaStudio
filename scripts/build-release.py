@@ -24,7 +24,7 @@ ROOT_FILES = {
     "CONTRIBUTING.md",
     "LICENSE",
     "README.md",
-    "README.zh-CN.md",
+    "README.en.md",
     "SECURITY.md",
 }
 APP_FILES = {

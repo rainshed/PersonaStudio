@@ -1,6 +1,6 @@
 # 运行与数据管理
 
-[English](OPERATIONS.md) · [仓库首页](../README.zh-CN.md)
+[English](OPERATIONS.md) · [仓库首页](../README.md)
 
 ## 模型连接
 

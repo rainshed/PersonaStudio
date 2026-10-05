@@ -1,6 +1,6 @@
 # Integrations
 
-[简体中文](INTEGRATIONS.zh-CN.md) · [Repository home](../README.md)
+[简体中文](INTEGRATIONS.zh-CN.md) · [Repository home](../README.en.md)
 
 Every integration is optional and must point to an explicit workspace. Installing AI Persona does not authorize conversation collection, model processing, or preference application.
 
