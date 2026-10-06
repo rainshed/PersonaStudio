@@ -1,0 +1,43 @@
+{% from "partials/studio_icons.html" import icon %}
+{% set zh = locale == 'zh-CN' %}
+{% set pages = [
+  ('/', '概览' if zh else 'Overview'),
+  ('/knowledge', t('common.knowledge')),
+  ('/materials', t('common.materials')),
+  ('/preferences', t('common.preferences')),
+  ('/courses', t('common.courses')),
+  ('/ideas', '想法' if zh else 'Ideas'),
+  ('/inbox', '审核' if zh else 'Review'),
+  ('/settings', '设置' if zh else 'Settings'),
+  ('/settings/appearance', '外观' if zh else 'Appearance'),
+] %}
+{% if research_workspace_url %}{% set pages = pages + [(research_workspace_url ~ '#projects', '项目' if zh else 'Projects')] %}{% endif %}
+{% if not is_demo %}{% set pages = pages + [('/evaluations', '评测与改进' if zh else 'Evaluation & improvement')] %}{% endif %}
+{% set actions = [
+  {'label': ui('交给 AI 整理资料'), 'hint': t('ai.assistant'), 'drawer': true},
+  {'label': ui('新建知识点'), 'hint': t('common.knowledge'), 'url': '/knowledge/new'},
+  {'label': ui('新增偏好'), 'hint': t('common.preferences'), 'url': '/preferences/new'},
+  {'label': ui('添加材料'), 'hint': t('common.materials'), 'url': '/materials/new'},
+  {'label': ui('记录一个想法'), 'hint': '想法' if zh else 'Ideas', 'url': '/ideas/new'},
+] %}
+<div class="ps-palette" id="ps-palette" hidden>
+  <button class="ps-palette-backdrop" type="button" data-ps-palette-close aria-label="{{ ui('关闭') }}" tabindex="-1"></button>
+  <div class="ps-palette-panel" role="dialog" aria-modal="true" aria-label="{{ ui('搜索或跳转') }}">
+    <label class="ps-palette-input">{{ icon('search') }}<span class="sr-only">{{ ui('搜索或跳转') }}</span><input type="text" autocomplete="off" spellcheck="false" placeholder="{{ ui('搜索知识、材料、偏好场景和想法，或输入操作…') }}" role="combobox" aria-expanded="true" aria-controls="ps-palette-list" aria-autocomplete="list"><kbd>esc</kbd></label>
+    <div class="ps-palette-list" id="ps-palette-list" role="listbox"></div>
+    <div class="ps-palette-foot"><span>↑↓ {{ ui('选择') }}</span><span>↵ {{ ui('打开') }}</span><span>esc {{ ui('关闭') }}</span></div>
+  </div>
+</div>
+<aside class="ps-drawer" id="ps-drawer" hidden aria-label="{{ t('ai.assistant') }}">
+  <header class="ps-drawer-head">
+    {{ icon('sparkle') }}<strong>{{ t('ai.assistant') }}</strong>
+    <a class="ps-drawer-full" href="/ai">{{ ui('完整页面') }} ↗</a>
+    <button class="ps-icon-button" type="button" data-ps-drawer-close aria-label="{{ ui('关闭') }}">{{ icon('x') }}</button>
+  </header>
+  <iframe class="ps-drawer-frame" title="{{ t('ai.assistant') }}" data-src="/ai?embed=1"></iframe>
+</aside>
+<script type="application/json" id="ps-palette-data">{{ {
+  'pages': pages,
+  'actions': actions,
+  'labels': {'pages': ui('跳转'), 'actions': ui('操作'), 'knowledge': t('common.knowledge'), 'material': t('common.materials'), 'context': ui('偏好场景'), 'idea': '想法' if zh else 'Ideas', 'empty': ui('没有找到匹配的内容'), 'page': ui('页面')},
+}|tojson }}</script>

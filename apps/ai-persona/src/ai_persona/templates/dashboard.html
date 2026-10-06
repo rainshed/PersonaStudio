@@ -47,6 +47,7 @@
   </section>
 {%- endmacro %}
 {% block content %}
+{% if studio_ui %}{% include "partials/studio_home.html" %}{% else %}
 {% set zh = locale == 'zh-CN' %}
 <div class="persona-home" id="persona-home">
   <header class="home-heading">
@@ -140,4 +141,5 @@
 </div>
 <script src="/static/studio-overview.js?v=20260911.demo1" defer></script>
 {% if not is_demo %}<script src="/static/home-setup.js?v=20260911.guide2" defer></script>{% endif %}
+{% endif %}
 {% endblock %}

@@ -34,5 +34,11 @@ import {mountKnowledgeGraph} from './knowledge-graph-view.mjs?v=20260911.review2
   window.addEventListener('hashchange', () => setView(initialView(), false));
   setView(initialView(), false);
 
-  await mountKnowledgeGraph(panel, JSON.parse(document.querySelector('[data-graph-data]').textContent), JSON.parse(document.querySelector('[data-graph-labels]').textContent));
+  const data = JSON.parse(document.querySelector('[data-graph-data]').textContent);
+  const labels = JSON.parse(document.querySelector('[data-graph-labels]').textContent);
+  // The Studio UI shows a detail card on selection instead of leaving the graph.
+  const card = document.querySelector('[data-studio-node-card]')
+    ? (await import('/static/studio-ui/knowledge-card.mjs?v=20261006.1')).createNodeCard(panel, data, labels) : null;
+  const graph = await mountKnowledgeGraph(panel, data, labels, card ? {onSelect: item => card.select(item)} : {});
+  card?.attach(graph);
 })().catch(console.error);

@@ -1,13 +1,14 @@
 <!doctype html>
-<html lang="{{ locale }}">
+<html lang="{{ locale }}"{% if studio_ui %} data-ui="studio" data-theme="{{ ui_theme }}"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="{{ 'light dark' if studio_ui else 'light' }}">
   <meta name="persona-workspace" content="{{ workspace_id }}">
+  {% if embedded %}<base target="_top">{% endif %}
   <script src="/static/studio-apps.js?v=20260922.radar1" defer></script>
   <script src="/static/first-use.js?v=20260911.connection1" defer></script>
-  <script src="/static/editor-drafts.js" defer></script>
+  <script src="/static/editor-drafts.js?v=20260930.switch1" defer></script>
   <title>{% block title %}AI Persona Studio{% endblock %}</title>
   <script>window.STUDIO_MESSAGES={{ studio_messages|tojson }};</script>
   <script src="/static/studio-i18n.js?v=20260908.studio3.1"></script>
@@ -25,9 +26,11 @@
   <script src="{{ url_for('static', path='/material-import.js').path }}?v=20260904.1" defer></script>
   {% block styles %}{% endblock %}
   <link rel="stylesheet" href="/static/first-use.css">
+  {% if studio_ui %}{% include "partials/studio_head.html" %}{% endif %}
 </head>
-<body{% if evaluation_embedded %} class="evaluation-embedded"{% elif section == 'dashboard' %} class="studio-home-page"{% endif %}>
+<body{% if evaluation_embedded or embedded %} class="evaluation-embedded"{% elif section == 'dashboard' %} class="studio-home-page"{% endif %}>
   <div class="app-shell">
+    {% if embedded %}{% elif studio_ui %}{% include "partials/studio_sidebar.html" %}{% else %}
     <aside class="sidebar">
       <a class="brand" href="/" aria-label="{{ t('common.app_home') }}">
         <span class="brand-mark" aria-hidden="true">
@@ -82,7 +85,7 @@
           <span class="nav-count" data-inbox-pending title="{{ '待审核候选数' if locale == 'zh-CN' else 'Candidates awaiting review' }}" {% if not pending_count %}hidden{% endif %}>{{ pending_count }}</span>
         </a>
         {% if not is_demo %}<a href="/evaluations" class="{% if section == 'evaluations' %}active{% endif %}"><span class="studio-nav-long">{{ '评测与改进' if locale == 'zh-CN' else 'Evaluation & improvement' }}</span><span class="studio-nav-short">{{ '评测改进' if locale == 'zh-CN' else 'Evaluate' }}</span></a>{% endif %}
-        <a href="/settings" class="{% if section in ['settings', 'models', 'extensions'] %}active{% endif %}">{{ '设置' if locale == 'zh-CN' else 'Settings' }}</a>
+        <a href="/settings" class="{% if section in ['settings', 'models', 'extensions', 'appearance'] %}active{% endif %}">{{ '设置' if locale == 'zh-CN' else 'Settings' }}</a>
       </nav>
       {% if section != 'dashboard' %}<a href="/ai" class="studio-maintenance {% if section == 'ai' %}active{% endif %}">✦ {{ t('ai.assistant') }}</a>{% endif %}
 
@@ -98,13 +101,16 @@
         <div class="revision">Revision {{ persona.revision }}</div>
       </div>
     </aside>
+    {% endif %}
 
     <main class="main-content">
-      {% if is_demo %}
+      {% if studio_ui and not embedded %}{% include "partials/studio_topbar.html" %}{% endif %}
+      {% if is_demo and not embedded %}
       <div class="demo-banner" role="note"><strong>DEMO</strong>
         {{ '示例知识库 · 可以自由浏览和修改 · 所有操作只保存在此 Demo 中' if locale == 'zh-CN' else 'Sample knowledge base · Free to browse and edit · All changes stay in this Demo' }}
       </div>
       {% endif %}
+      {% if not studio_ui %}
       <header class="mobile-header">
         <a class="brand compact" href="/"><span class="brand-mark"><span></span><span></span><span></span><span></span></span><strong>Persona</strong></a>
         <div class="mobile-header-tools">
@@ -117,6 +123,7 @@
           <span class="revision">r{{ persona.revision }}</span>
         </div>
       </header>
+      {% endif %}
       {% if message %}
         <div class="toast {{ message_kind }}" role="status">
           <span class="toast-icon">{% if message_kind == 'error' %}!{% else %}✓{% endif %}</span>
@@ -126,6 +133,7 @@
       {% if not is_demo and section in ['preferences', 'knowledge'] %}<details class="first-use-card"><summary>{{ '内容保存在当前 Persona · 查看 Codex 接入状态' if locale == 'zh-CN' else 'Saved in this Persona · Codex connection status' }}</summary><p>{{ '自动应用偏好和对话学习共用 Codex Hook，分别开启。MCP 查询需要单独配置客户端。' if locale == 'zh-CN' else 'Automatic preferences and conversation learning share a Codex Hook, with separate switches. MCP queries need client setup.' }}</p><div data-integration-status></div><a href="/settings?tab=sources">{{ '设置应用接入' if locale == 'zh-CN' else 'Set up application access' }} →</a></details>{% endif %}
       {% block content %}{% endblock %}
     </main>
+    {% if studio_ui and not embedded %}{% include "partials/studio_overlays.html" %}{% endif %}
   </div>
 </body>
 </html>

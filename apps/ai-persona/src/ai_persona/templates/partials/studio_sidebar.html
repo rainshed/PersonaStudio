@@ -1,0 +1,56 @@
+{% from "partials/studio_icons.html" import icon %}
+{% set zh = locale == 'zh-CN' %}
+{% set here = request.url.path ~ ('?' ~ request.url.query if request.url.query else '') %}
+{% set counts = nav_counts or {} %}
+{% macro nav_item(href, glyph, label, active, count=none) -%}
+<a class="ps-nav-item{% if active %} is-active{% endif %}" href="{{ href }}"{% if active %} aria-current="page"{% endif %}>{{ icon(glyph) }}<span class="ps-nav-text">{{ label }}</span>{% if count is not none %}<span class="ps-nav-count">{{ count }}</span>{% endif %}</a>
+{%- endmacro %}
+<aside class="ps-sidebar" id="ps-sidebar" aria-label="{{ t('common.main_navigation') }}">
+  <a class="ps-brand" href="/" aria-label="{{ t('common.app_home') }}">
+    <span class="ps-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="ps-brand-name">Persona <em>Studio</em></span>
+  </a>
+  <a class="ps-workspace" href="/workspaces" title="{{ ui('管理与切换工作区') }}">
+    <span class="ps-workspace-avatar" aria-hidden="true">{{ (workspace_label or 'P')[:1]|upper }}</span>
+    <span class="ps-workspace-meta">
+      <span class="ps-workspace-name">{{ workspace_label }}</span>
+      <span class="ps-workspace-sub">{% if is_demo %}{{ ui('示例工作区') }}{% else %}{{ persona.persona_id }}{% endif %} · r{{ persona.revision }}</span>
+    </span>
+    {{ icon('chevrons') }}
+  </a>
+  <button class="ps-search" type="button" data-ps-palette-open>{{ icon('search') }}<span>{{ ui('搜索或跳转…') }}</span><kbd>⌘K</kbd></button>
+
+  <nav class="ps-nav" aria-label="{{ t('common.main_navigation') }}">
+    {{ nav_item('/', 'home', '概览' if zh else 'Overview', section == 'dashboard') }}
+    <div class="ps-nav-label">{% if is_demo %}{{ ui('示例知识库') }}{% else %}Persona{% endif %}</div>
+    {{ nav_item('/knowledge', 'knowledge', t('common.knowledge'), section == 'knowledge', counts.get('knowledge_node', 0)) }}
+    {{ nav_item('/courses', 'course', t('common.courses'), section == 'courses', counts.get('course', 0)) }}
+    {{ nav_item('/materials', 'material', t('common.materials'), section == 'materials', counts.get('material', 0)) }}
+    {{ nav_item('/preferences', 'preference', t('common.preferences'), section == 'preferences', counts.get('preference', 0)) }}
+    <div class="ps-nav-label">{{ ui('研究') }}</div>
+    {{ nav_item('/ideas', 'idea', '想法' if zh else 'Ideas', section == 'ideas', counts.get('idea', 0)) }}
+    {% if research_workspace_url %}{{ nav_item(research_workspace_url ~ '#projects', 'project', '项目' if zh else 'Projects', section == 'projects') }}{% endif %}
+    {% if paper_radar_available and not is_demo %}
+    <form method="post" action="/studio/paper-radar" class="ps-nav-form" data-open-paper-radar>
+      <button type="submit" class="ps-nav-item ps-radar-button">Paper Radar ↗</button>
+      <p role="alert"></p>
+    </form>
+    {% endif %}
+    <div class="ps-nav-label">{{ ui('流程') }}</div>
+    <a class="ps-nav-item{% if section in ['review', 'inbox'] %} is-active{% endif %}" href="/inbox"{% if section in ['review', 'inbox'] %} aria-current="page"{% endif %}>{{ icon('review') }}<span class="ps-nav-text">{% if is_demo %}{{ '审核' if zh else 'Review' }}{% else %}{{ '反馈与审核' if zh else 'Feedback & review' }}{% endif %}</span><span class="ps-nav-badge" data-inbox-pending title="{{ '待审核候选数' if zh else 'Candidates awaiting review' }}" {% if not pending_count %}hidden{% endif %}>{{ pending_count }}</span></a>
+    {% if not is_demo %}{{ nav_item('/evaluations', 'evaluate', '评测与改进' if zh else 'Evaluation & improvement', section == 'evaluations') }}{% endif %}
+  </nav>
+
+  <div class="ps-sidebar-foot">
+    <a class="ps-ai-button{% if section == 'ai' %} is-active{% endif %}" href="/ai" data-ps-drawer-open>{{ icon('sparkle') }}<span>{{ t('ai.assistant') }}</span></a>
+    {{ nav_item('/settings', 'settings', '设置' if zh else 'Settings', section in ['settings', 'models', 'extensions', 'appearance']) }}
+    <div class="ps-foot-row">
+      <span class="ps-pulse"><i aria-hidden="true"></i>{{ t('common.data_connected') }}</span>
+      <form method="post" action="/language" data-guard-leave>
+        <input type="hidden" name="return_to" value="{{ here }}">
+        <button class="ps-mini-button" type="submit" name="locale" value="{{ 'en' if zh else 'zh-CN' }}" aria-label="{{ t('common.switch_language') }}">{{ t('meta.other_locale_name') }}</button>
+      </form>
+    </div>
+  </div>
+</aside>
+<button class="ps-scrim" type="button" data-ps-nav-close aria-label="{{ ui('关闭导航') }}" tabindex="-1"></button>

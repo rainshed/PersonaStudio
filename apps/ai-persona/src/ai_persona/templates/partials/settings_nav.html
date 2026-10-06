@@ -1,8 +1,9 @@
 <nav class="studio-tabs settings-tabs" aria-label="{{ ui('设置分类') }}">
   <a href="/settings/models" data-settings-location="models" {% if section == 'models' %}aria-current="page"{% endif %}>{{ ui('模型设置') }}</a>
-  <a href="/settings?tab=sources" data-settings-tab="sources" data-settings-location="sources">{{ ui('应用接入') }}</a>
-  <a href="/settings?tab=capabilities" data-settings-tab="capabilities" data-settings-location="capabilities">{{ ui('自动功能') }}</a>
-  <a href="/settings?tab=retention" data-settings-tab="retention" data-settings-location="retention">{{ ui('数据管理') }}</a>
+  <a href="/settings?tab=sources" data-settings-tab="sources" data-settings-location="sources" {% if section == 'settings' and request.query_params.get('tab') == 'sources' %}aria-current="page"{% endif %}>{{ ui('应用接入') }}</a>
+  <a href="/settings?tab=capabilities" data-settings-tab="capabilities" data-settings-location="capabilities" {% if section == 'settings' and request.query_params.get('tab') == 'capabilities' %}aria-current="page"{% endif %}>{{ ui('自动功能') }}</a>
+  <a href="/settings?tab=retention" data-settings-tab="retention" data-settings-location="retention" {% if section == 'settings' and request.query_params.get('tab') == 'retention' %}aria-current="page"{% endif %}>{{ ui('数据管理') }}</a>
   <a href="/settings/extensions" {% if section == 'extensions' %}aria-current="page"{% endif %}>{{ '扩展应用' if locale == 'zh-CN' else 'Extensions' }}</a>
+  <a href="/settings/appearance" {% if section == 'appearance' %}aria-current="page"{% endif %}>{{ '外观' if locale == 'zh-CN' else 'Appearance' }}</a>
 </nav>
 <script src="/static/settings-navigation.js?v=20260909.settings3" defer></script>

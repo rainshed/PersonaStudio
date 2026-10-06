@@ -108,8 +108,9 @@
     event.preventDefault();event.stopImmediatePropagation();if(await allowLeave()){leaving=true;location.assign(link.href);}
   },true);
   document.addEventListener('submit',async event=>{
-    if(!event.target.matches('.language-switcher,.mobile-language-switcher')||leaving)return;
-    event.preventDefault();if(await allowLeave()){try{const data=new FormData(event.target);data.set('locale',event.submitter?.value||event.target.querySelector('[name=locale]').value);const response=await fetch(event.target.action,{method:'POST',body:data});if(!response.ok)throw Error(L('语言切换失败，输入已保留，请重试。','Could not change language. Your input is preserved; retry.'));leaving=true;location.assign(response.url);}catch(e){leaving=false;managers.forEach(m=>m.status(e.message));}}
+    if(!event.target.matches('.language-switcher,.mobile-language-switcher,[data-guard-leave]')||leaving)return;
+    // Interface switches (language, appearance) reload the page; forward the pressed button like a native submit.
+    event.preventDefault();if(await allowLeave()){try{const data=new FormData(event.target),submitter=event.submitter;if(submitter?.name)data.set(submitter.name,submitter.value);else if(!data.has('locale')&&!data.has('ui')&&!data.has('theme'))data.set('locale',event.target.querySelector('[name=locale]').value);const response=await fetch(event.target.action,{method:'POST',body:data});if(!response.ok)throw Error(data.has('locale')?L('语言切换失败，输入已保留，请重试。','Could not change language. Your input is preserved; retry.'):L('界面切换失败，输入已保留，请重试。','Could not switch the interface. Your input is preserved; retry.'));leaving=true;location.assign(response.url);}catch(e){leaving=false;managers.forEach(m=>m.status(e.message));}}
   },true);
   window.addEventListener('beforeunload',event=>{if(!leaving&&managers.some(m=>m.unpersisted())){event.preventDefault();event.returnValue='';}});
   window.PersonaDrafts={mount,allowLeave,isLeaving:()=>leaving,hasUnpersisted:root=>managers.find(m=>m.root===root)?.unpersisted()??true,async flush(){for(const m of managers)await m.save();},leave(){leaving=true;}};

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ ui('外观 · AI Persona') }}{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/settings.css?v=20260911.connection1"><link rel="stylesheet" href="/static/studio-ui/appearance.css?v=20260930.1">{% endblock %}
+{% block content %}
+{% set here = request.url.path %}
+<div class="studio-settings settings-shell appearance-page">
+  <header class="page-head settings-head"><div><p class="eyebrow">{{ ui('设置') }}</p><h1>{{ ui('外观') }}</h1><p class="lead">{{ ui('两套界面使用同一份数据和同样的功能，随时可以切换，切换后停留在当前页面。') }}</p></div></header>
+  {% if is_demo and not studio_ui %}<p class="appearance-back"><a href="/settings">← {{ ui('返回设置') }}</a></p>{% else %}{% include 'partials/settings_nav.html' %}{% endif %}
+
+  <section class="panel studio-settings-panel appearance-section" aria-labelledby="appearance-ui-title">
+    <h2 id="appearance-ui-title">{{ ui('界面风格') }}</h2>
+    <form class="appearance-looks" method="post" action="/appearance" data-guard-leave>
+      <input type="hidden" name="return_to" value="{{ here }}">
+      <button class="appearance-look{% if not studio_ui %} is-selected{% endif %}" type="submit" name="ui" value="classic" aria-pressed="{{ 'false' if studio_ui else 'true' }}">
+        <span class="appearance-thumb appearance-thumb-classic" aria-hidden="true"><span class="thumb-side"><i class="on"></i><i></i><i></i><i></i></span><span class="thumb-main"><i class="h"></i><i class="c"></i><i class="c"></i><i class="b"></i></span></span>
+        <strong>{{ ui('经典界面') }}</strong>
+        <span>{{ ui('现在的界面，保持不变。') }}</span>
+      </button>
+      <button class="appearance-look{% if studio_ui %} is-selected{% endif %}" type="submit" name="ui" value="studio" aria-pressed="{{ 'true' if studio_ui else 'false' }}">
+        <span class="appearance-thumb appearance-thumb-studio" aria-hidden="true"><span class="thumb-side"><i class="on"></i><i></i><i></i><i></i></span><span class="thumb-main"><i class="h"></i><i class="l"></i><i class="c"></i><i class="c"></i><i class="b"></i></span></span>
+        <strong>{{ ui('新版界面') }}</strong>
+        <span>{{ ui('统一导航、衬线排版、命令面板与 AI 侧栏，支持深色模式。') }}</span>
+      </button>
+    </form>
+    <p class="settings-note">{{ ui('选择保存在本机浏览器中，对这台电脑上的 AI Persona 页面都生效。') }}</p>
+  </section>
+
+  <section class="panel studio-settings-panel appearance-section" aria-labelledby="appearance-theme-title">
+    <h2 id="appearance-theme-title">{{ ui('配色') }}</h2>
+    <p class="settings-note">{% if studio_ui %}{{ ui('新版界面支持浅色、深色，或跟随系统设置。') }}{% else %}{{ ui('配色只作用于新版界面；经典界面保持现在的浅色。') }}{% endif %}</p>
+    <form class="appearance-themes" method="post" action="/appearance" data-guard-leave>
+      <input type="hidden" name="return_to" value="{{ here }}">
+      {% for value, label in [('light', ui('浅色')), ('dark', ui('深色')), ('system', ui('跟随系统'))] %}
+      <button type="submit" name="theme" value="{{ value }}" class="{% if ui_theme == value %}is-selected{% endif %}" aria-pressed="{{ 'true' if ui_theme == value else 'false' }}">{{ label }}</button>
+      {% endfor %}
+    </form>
+  </section>
+</div>
+{% endblock %}

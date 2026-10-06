@@ -1,0 +1,29 @@
+{% from "partials/studio_icons.html" import icon %}
+{% set zh = locale == 'zh-CN' %}
+{% set crumbs = {
+  'dashboard': ('Persona Studio', '概览' if zh else 'Overview'),
+  'knowledge': ('Persona', t('common.knowledge')),
+  'courses': ('Persona', t('common.courses')),
+  'materials': ('Persona', t('common.materials')),
+  'preferences': ('Persona', t('common.preferences')),
+  'ai': ('Persona', t('ai.assistant')),
+  'ideas': (ui('研究'), '想法' if zh else 'Ideas'),
+  'projects': (ui('研究'), '项目' if zh else 'Projects'),
+  'inbox': (ui('流程'), '审核' if zh else 'Review'),
+  'review': (ui('流程'), '审核' if zh else 'Review'),
+  'evaluations': (ui('流程'), '评测与改进' if zh else 'Evaluation'),
+  'settings': (ui('系统'), '设置' if zh else 'Settings'),
+  'models': (ui('系统'), '设置' if zh else 'Settings'),
+  'extensions': (ui('系统'), '设置' if zh else 'Settings'),
+  'appearance': (ui('系统'), '外观' if zh else 'Appearance'),
+} %}
+{% set crumb = crumbs.get(section, ('Persona Studio', workspace_label)) %}
+<header class="ps-topbar">
+  <button class="ps-icon-button ps-menu-button" type="button" data-ps-nav-toggle aria-controls="ps-sidebar" aria-expanded="false" aria-label="{{ ui('打开导航') }}">{{ icon('menu') }}</button>
+  <nav class="ps-crumbs" aria-label="{{ ui('当前位置') }}"><span>{{ crumb[0] }}</span>{{ icon('chevron-right') }}<b>{{ crumb[1] }}</b></nav>
+  <div class="ps-topbar-actions">
+    {% if is_demo %}<span class="ps-pill">{{ ui('示例数据') }}</span>{% endif %}
+    <button class="ps-icon-button" type="button" data-ps-palette-open aria-label="{{ ui('搜索或跳转') }}" title="{{ ui('搜索或跳转') }} (⌘K)">{{ icon('search') }}</button>
+    <a class="ps-icon-button" href="/ai" data-ps-drawer-open aria-label="{{ t('ai.assistant') }}" title="{{ t('ai.assistant') }}">{{ icon('sparkle') }}</a>
+  </div>
+</header>

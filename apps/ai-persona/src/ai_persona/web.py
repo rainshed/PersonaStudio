@@ -57,7 +57,7 @@ from .models import (
     Relation,
     Tag,
 )
-from .overview import pending_breakdown, recent_changes
+from .overview import pending_breakdown, recent_changes, studio_home
 from .preference_sources import (
     folder_members,
     folder_tree,
@@ -86,6 +86,12 @@ from .review import (
 from .store import LoadedRecord, PersonaStore, StoreValidationError
 from .studio_apps import radar_launcher
 from .studio_locale import STUDIO_EN, studio_text
+from .studio_ui import (
+    appearance_context,
+    knowledge_details,
+    mount_studio_ui_routes,
+    safe_return_path,
+)
 from .web_access import StudioAccess, StudioAccessMiddleware
 
 LEVEL_LABELS = {
@@ -1369,6 +1375,7 @@ def create_app(
             "pending_count": len(ProposalRepository(resolved_data_root).list_pending()),
             "message": request.query_params.get("message", ""),
             "message_kind": request.query_params.get("kind", "success"),
+            **appearance_context(request, store),
         }
 
     def ui_error(request: Request, exc: Exception) -> str:
@@ -1683,6 +1690,13 @@ def create_app(
                 ),
             }
         )
+        if context["studio_ui"]:
+            try:
+                grouped = {link.proposal_id for manifest in ChangeSetRepository(resolved_data_root).list()
+                           for link in manifest.proposal_links}
+            except ChangeSetError:
+                grouped = {proposal.id for proposal in pending}
+            context.update(studio_home(pending, store, locale, grouped_ids=grouped))
         return templates.TemplateResponse(request=request, name="dashboard.html", context=context)
 
     async def render_collection(
@@ -1743,6 +1757,8 @@ def create_app(
                 "graph": knowledge_graph_data(store),
             }
         )
+        if context["studio_ui"]:
+            context["studio_graph_details"] = knowledge_details(store)
         return templates.TemplateResponse(request=request, name="knowledge.html", context=context)
 
     @app.get("/courses", response_class=HTMLResponse)
@@ -3606,11 +3622,20 @@ def create_app(
 
     @app.post("/review/{proposal_id}/accept")
     async def accept_proposal(proposal_id: str, request: Request) -> RedirectResponse:
+        form = await request.form()
         try:
             result = ProposalService(resolved_data_root, resolved_state_root).accept(proposal_id)
         except (StaleProposalError, ProposalError) as exc:
             return _redirect(
                 f"/review/{proposal_id}", ui_error(request, exc), kind="error"
+            )
+        if form.get("return_to"):
+            # Quick approval from the Studio overview stays on the page it came from.
+            return _redirect(
+                safe_return_path(form.get("return_to")),
+                translator(request_locale(request))(
+                    "messages.accepted", revision=result.persona_revision
+                ),
             )
         return accepted_redirect(request, result)
 
@@ -3764,6 +3789,7 @@ def create_app(
     from .studio_web import mount_studio_routes
 
     mount_studio_routes(app, resolved_data_root, resolved_state_root, templates, common_context)
+    mount_studio_ui_routes(app, resolved_data_root, templates, common_context, load_store)
     from .content_reset_web import mount_content_reset_routes
 
     mount_content_reset_routes(app, resolved_data_root, resolved_state_root)

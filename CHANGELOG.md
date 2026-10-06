@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Add an optional Studio interface beside the Classic one, chosen in Settings › Appearance and remembered per browser. Both render the same pages, routes and data; Classic stays the default and unchanged apart from the new Appearance tab.
+- Studio brings unified navigation, serif typography, light/dark/system themes, a ⌘K command palette, an AI assistant side panel, a review-first overview with direct approval for standalone candidates, a knowledge-graph detail card with mastery filters, scene lists for preferences and a left-hand settings navigation. Demo settings now explain which categories are unavailable instead of collapsing into one card.
+- Generate the Studio color layer from the Classic stylesheets so every page follows the Studio palette and dark mode; a test fails when it is out of date.
+
 ## 0.1.1
 
 - Improve inbox review and feedback navigation performance.

@@ -1,0 +1,155 @@
+{% from "partials/studio_icons.html" import icon %}
+{% set zh = locale == 'zh-CN' %}
+{% set level_names = {'proficient': '精通' if zh else 'Proficient', 'familiar': '熟悉' if zh else 'Familiar', 'aware': '了解' if zh else 'Aware', 'unspecified': '未设置' if zh else 'Unset'} %}
+{% set level_classes = {'proficient': 'ps-lv-proficient', 'familiar': 'ps-lv-familiar', 'aware': 'ps-lv-aware', 'unspecified': 'ps-lv-unset'} %}
+<div class="ps-home" id="persona-home">
+  <header class="ps-home-head">
+    <div>
+      <p class="ps-eyebrow">{{ today_label }}</p>
+      <h1>{{ '概览' if zh else 'Overview' }}</h1>
+      <p>{% if pending_count %}{{ pending_count }} {{ '条候选等你确认。批准后才会写入 Persona。' if zh else 'candidates await your review. Nothing enters your Persona until you approve it.' }}{% elif is_demo %}{{ '这是一份已经搭建好的个人知识库，所有内容均为虚构示例，可以自由浏览和修改。' if zh else 'A completed personal knowledge base with fictional sample content. Browse and edit freely.' }}{% else %}{{ '你确认的知识与偏好，都在这里。' if zh else 'The knowledge and preferences you have confirmed, in one place.' }}{% endif %}</p>
+    </div>
+    <div class="ps-actions">
+      <button class="ps-button" type="button" data-ps-palette-open>{{ icon('search') }}{{ ui('搜索或跳转') }}</button>
+      <a class="ps-button is-primary" href="/ai" data-ps-drawer-open>{{ icon('sparkle') }}{{ ui('交给 AI 整理') }}</a>
+    </div>
+  </header>
+
+  <div class="ps-home-grid">
+    <div class="ps-home-col">
+      <section class="ps-card" aria-labelledby="ps-pending-title">
+        <div class="ps-card-head">
+          <h2 id="ps-pending-title">{{ ui('待你确认') }}</h2>
+          {% if pending_count %}<span class="ps-chip is-ochre">{{ pending_count }} {{ '条候选' if zh else 'pending' }}</span>{% endif %}
+          <a class="ps-link" href="/inbox">{{ ui('进入审核') }} →</a>
+        </div>
+        {% if pending_items %}
+        <div>
+          {% for item in pending_items %}
+          <div class="ps-row ps-pending-row">
+            <a class="ps-row-main" href="{{ item.url }}">
+              <span class="ps-row-meta"><span class="ps-chip is-accent">{{ item.action }}</span><time datetime="{{ item.created }}">{{ item.created }}</time></span>
+              <span class="ps-row-title">{{ item.title }}</span>
+            </a>
+            <div class="ps-row-actions">
+              <a class="ps-button is-small" href="{{ item.url }}">{{ ui('查看') }}</a>
+              {% if item.quick_accept %}<form method="post" action="{{ item.accept_url }}"><input type="hidden" name="return_to" value="/"><button class="ps-button is-small is-soft" type="submit">{{ icon('check') }}{{ ui('批准') }}</button></form>{% endif %}
+            </div>
+          </div>
+          {% endfor %}
+          {% if pending_count > pending_items|length %}<p class="ps-home-note">{{ pending_breakdown }}</p>{% endif %}
+        </div>
+        {% else %}
+        <div class="ps-empty">{{ icon('check') }}<strong>{{ ui('都处理完了') }}</strong>{{ ui('AI 产生的新候选会出现在这里，批准后才会写入 Persona。') }}</div>
+        {% endif %}
+      </section>
+
+      <section class="ps-card" aria-labelledby="ps-changes-title">
+        <div class="ps-card-head">
+          <h2 id="ps-changes-title">{{ '最近的变化' if zh else 'Recent changes' }}</h2>
+          {% if not is_demo %}<a class="ps-link" href="/inbox?view=all">{{ '运行记录' if zh else 'Activity records' }} →</a>{% endif %}
+        </div>
+        {% if recent_changes %}
+        <div>
+          {% for change in recent_changes[:6] %}
+          <a class="ps-row" href="{{ change.url }}">
+            <span class="ps-row-main">
+              <span class="ps-row-meta">{{ change.action }} · <time datetime="{{ change.published_at }}">{{ change.published_at[:10] }}</time></span>
+              <span class="ps-row-title">{{ change.title }}</span>
+              {% if change.summary %}<span class="ps-row-summary">{{ change.summary }}</span>{% endif %}
+            </span>
+            <span class="ps-row-arrow" aria-hidden="true">{{ icon('chevron-right') }}</span>
+          </a>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="ps-home-note">{{ '还没有保存记录。确认或主动保存内容后，变化会出现在这里。' if zh else 'No saved changes yet. Content you confirm or save will appear here.' }}</p>
+        {% endif %}
+      </section>
+
+      <section class="home-issue" id="home-runtime-issue" hidden aria-label="{{ '运行提醒' if zh else 'Runtime attention' }}">
+        <p id="home-runtime-message"></p><a class="home-link" href="/settings?tab=capabilities">{{ '查看运行状态' if zh else 'View runtime settings' }} →</a>
+      </section>
+    </div>
+
+    <div class="ps-home-col">
+      <section class="ps-card" aria-labelledby="ps-persona-title">
+        <div class="ps-card-head"><h2 id="ps-persona-title">{% if is_demo %}{{ ui('示例知识库') }}{% else %}{{ '我的 Persona' if zh else 'My Persona' }}{% endif %}</h2><span class="ps-card-meta">r{{ persona.revision }}</span></div>
+        <div class="ps-card-body">
+          <div class="ps-stats">
+            <a class="ps-stat" href="/knowledge"><strong>{{ active_counts.get('knowledge_node', 0) }}</strong><span>{{ '知识点' if zh else 'Knowledge' }}</span></a>
+            <a class="ps-stat" href="/materials"><strong>{{ active_counts.get('material', 0) }}</strong><span>{{ '材料' if zh else 'Materials' }}</span></a>
+            <a class="ps-stat" href="/preferences"><strong>{{ active_counts.get('preference', 0) }}</strong><span>{{ '偏好' if zh else 'Preferences' }}</span></a>
+            <a class="ps-stat" href="/courses"><strong>{{ active_counts.get('course', 0) }}</strong><span>{{ '课程' if zh else 'Courses' }}</span></a>
+          </div>
+          {% if active_counts.get('knowledge_node', 0) %}
+          <div class="ps-dist-label"><span>{{ '掌握程度' if zh else 'Mastery' }}</span><a class="ps-link" href="/knowledge">{{ '查看知识图谱' if zh else 'Open knowledge graph' }} →</a></div>
+          <div class="ps-dist" role="img" aria-label="{% for item in level_distribution %}{{ level_names[item.level] }} {{ item.count }}{% if not loop.last %}, {% endif %}{% endfor %}">
+            {% for item in level_distribution %}{% if item.count %}<i class="{{ level_classes[item.level] }}" style="width: {{ item.percent }}%"></i>{% endif %}{% endfor %}
+          </div>
+          <div class="ps-dist-legend">{% for item in level_distribution %}<span><i class="ps-dot {{ level_classes[item.level] }}"></i>{{ level_names[item.level] }} {{ item.count }}</span>{% endfor %}</div>
+          {% endif %}
+
+          {% if not is_demo %}
+          <div class="ps-status-list" id="home-setup">
+            <div id="home-setup-ready" class="ps-status-row" hidden><span data-state="ok">{{ icon('check') }} {{ '使用准备已完成' if zh else 'Setup is complete' }}</span><button class="ps-mini-button" id="home-setup-toggle" type="button" aria-controls="home-setup-details" aria-expanded="false">{{ '查看设置' if zh else 'View setup' }} ⌄</button></div>
+            <div id="home-setup-details" class="ps-setup-details">
+              <div class="ps-status-row"><span class="ps-eyebrow is-flush">{{ ui('使用准备') }}</span><span><span id="home-setup-progress" role="status">{{ '正在检查设置…' if zh else 'Checking setup…' }}</span> <button class="ps-mini-button" id="home-setup-refresh" type="button" hidden>{{ '刷新状态' if zh else 'Refresh status' }}</button></span></div>
+              {% for key, title, action, url in [
+                ('model', 'AI 模型' if zh else 'AI model', '设置模型' if zh else 'Set up model', '/settings/models'),
+                ('hook', 'Codex Hook', '设置 Hook' if zh else 'Set up Hook', '/settings?tab=sources#hook-setup'),
+                ('mcp', 'MCP 查询' if zh else 'MCP queries', '配置 MCP' if zh else 'Set up MCP', '/settings?tab=sources#mcp-setup')
+              ] %}
+              <div class="ps-status-row ps-setup-item" data-setup-item="{{ key }}"><span>{{ title }}</span><span class="ps-setup-state"><span class="home-setup-status" data-setup-status data-state="checking" role="status">{{ '正在检查…' if zh else 'Checking…' }}</span><a class="button ghost small" data-setup-action href="{{ url }}">{{ action }} →</a></span></div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </section>
+
+      {% if ideas_in_progress %}
+      <section class="ps-card" aria-labelledby="ps-ideas-title">
+        <div class="ps-card-head"><h2 id="ps-ideas-title">{{ ui('进行中的想法') }}</h2><a class="ps-link" href="/ideas">{{ '全部' if zh else 'All' }} →</a></div>
+        <div>
+          {% for idea in ideas_in_progress %}
+          <a class="ps-row" href="{{ idea.url }}">
+            <span class="ps-row-main"><span class="ps-row-meta"><span class="ps-chip is-accent">{{ '执行中' if zh else 'In progress' }}</span><time datetime="{{ idea.updated }}">{{ idea.updated }}</time></span><span class="ps-row-title">{{ idea.title }}</span></span>
+            <span class="ps-row-arrow" aria-hidden="true">{{ icon('chevron-right') }}</span>
+          </a>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+
+      <section class="ps-card" aria-labelledby="ps-add-title">
+        <div class="ps-card-head"><h2 id="ps-add-title">{{ '手动添加' if zh else 'Add manually' }}</h2></div>
+        <div class="ps-card-body">
+          <div class="ps-quick">
+            <a href="/knowledge/new">{{ icon('knowledge') }}{{ '添加知识' if zh else 'Add knowledge' }}</a>
+            <a href="/preferences/new">{{ icon('preference') }}{{ '添加偏好' if zh else 'Add a preference' }}</a>
+            <a href="/materials/new">{{ icon('material') }}{{ '添加材料' if zh else 'Add materials' }}</a>
+            <a href="/ideas/new">{{ icon('idea') }}{{ '记录想法' if zh else 'Record an idea' }}</a>
+          </div>
+          <p class="ps-home-note is-under">{{ '由你保存的内容会直接进入知识库；AI 产生的新增与修改必须经你审核。' if zh else 'Content you save enters the knowledge base directly; AI changes always need your review.' }}</p>
+        </div>
+      </section>
+
+      {% if is_demo %}
+      <section class="ps-card" aria-labelledby="ps-own-title">
+        <div class="ps-card-head"><h2 id="ps-own-title">{{ '建立自己的知识库' if zh else 'Build your own knowledge base' }}</h2></div>
+        <div class="ps-card-body"><p class="ps-home-note is-above">{{ '从自己的知识、材料和偏好开始，逐步整理一份属于你的 Persona。' if zh else 'Start with your own knowledge, materials and preferences, and build a Persona over time.' }}</p><a class="ps-button" href="/workspaces">{{ '创建或打开工作区' if zh else 'Create or open a workspace' }} →</a></div>
+      </section>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if not is_demo %}
+  <footer class="ps-home-foot">
+    <span class="home-runtime" id="home-runtime" data-state="unknown" role="status"><span class="home-runtime-dot" aria-hidden="true"></span><span id="home-runtime-label">{{ '正在读取运行状态…' if zh else 'Checking runtime status…' }}</span></span>
+    <a class="ps-link" href="/inbox?view=all">{{ '运行记录' if zh else 'Activity records' }} ›</a>
+  </footer>
+  {% endif %}
+</div>
+<script src="/static/studio-overview.js?v=20260911.demo1" defer></script>
+{% if not is_demo %}<script src="/static/home-setup.js?v=20260911.guide2" defer></script>{% endif %}

@@ -1,0 +1,36 @@
+/* Settings › Appearance. Shared by both interfaces, so it uses the Classic variables
+   (which the Studio UI remaps to its own tokens). */
+.appearance-page .appearance-section { margin-bottom: 20px; padding: 24px; }
+.appearance-page .appearance-section h2 { margin: 0 0 16px; }
+.appearance-back { margin: 0 0 20px; }
+.appearance-back a { color: var(--accent); font-size: 13px; font-weight: 600; }
+.appearance-looks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 760px; }
+.appearance-look { display: grid; gap: 4px; padding: 12px 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.appearance-look:hover { border-color: color-mix(in srgb, var(--ink) 28%, transparent); }
+.appearance-look.is-selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.appearance-look strong { margin: 10px 4px 0; font-size: 14px; }
+.appearance-look > span:last-child { margin: 0 4px; color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+.appearance-thumb { display: flex; height: 140px; overflow: hidden; border: 1px solid var(--line); border-radius: 9px; }
+.appearance-thumb .thumb-side { display: flex; flex-direction: column; gap: 6px; width: 28%; padding: 12px 8px; }
+.appearance-thumb .thumb-main { display: flex; flex: 1; flex-direction: column; gap: 8px; padding: 14px 12px; }
+.appearance-thumb i { display: block; border-radius: 3px; }
+.appearance-thumb .thumb-side i { height: 6px; }
+.appearance-thumb-classic .thumb-side { background: #172641; }
+.appearance-thumb-classic .thumb-side i { background: rgba(255, 255, 255, .28); }
+.appearance-thumb-classic .thumb-side i.on { background: #8ea2f5; }
+.appearance-thumb-classic .thumb-main { background: #f3f5f9; }
+.appearance-thumb-classic .h { width: 40%; height: 10px; background: #1c2536; }
+.appearance-thumb-classic .c { height: 30px; border: 1px solid #dfe4ec; background: #ffffff; }
+.appearance-thumb-classic .b { width: 30%; height: 12px; background: #4a5fd6; }
+.appearance-thumb-studio .thumb-side { border-right: 1px solid #e4dfd5; background: #efebe3; }
+.appearance-thumb-studio .thumb-side i { background: #d8d2c6; }
+.appearance-thumb-studio .thumb-side i.on { background: #ffffff; box-shadow: 0 0 0 1px #e4dfd5; }
+.appearance-thumb-studio .thumb-main { background: #f6f4ef; }
+.appearance-thumb-studio .h { width: 34%; height: 13px; border-radius: 2px; background: #1d1c1a; }
+.appearance-thumb-studio .l { width: 70%; height: 5px; background: #d3cdc1; }
+.appearance-thumb-studio .c { height: 26px; border: 1px solid #e4dfd5; background: #ffffff; }
+.appearance-thumb-studio .b { width: 26%; height: 12px; background: #3947a0; }
+.appearance-themes { display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: color-mix(in srgb, var(--ink) 7%, transparent); }
+.appearance-themes button { height: 32px; padding: 0 16px; border: 0; border-radius: 7px; background: transparent; color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; }
+.appearance-themes button.is-selected { background: var(--paper); font-weight: 600; box-shadow: 0 1px 2px rgba(0, 0, 0, .1); }
+@media (max-width: 680px) { .appearance-looks { grid-template-columns: 1fr; } }

@@ -6,11 +6,34 @@
 <link rel="stylesheet" href="/static/settings.css?v=20260911.connection1">
 {% endblock %}
 {% block content %}
-{% if is_demo %}
-<section class="panel"><h1>{{ 'Demo 设置' if locale == 'zh-CN' else 'Demo settings' }}</h1>
+{% if is_demo and studio_ui %}
+{% set zh = locale == 'zh-CN' %}
+{% set tab = request.query_params.get('tab') %}
+{% set demo_tabs = {
+  'sources': (ui('应用接入'), ui('Demo 不接入真实的 Codex 会话，也不安装 Hook 或配置 MCP，以免影响你的正式数据。在自己的工作区里，可以连接 Codex，并选择 Persona 可以接收的信息范围。')),
+  'capabilities': (ui('自动功能'), ui('自动应用偏好和对话学习都依赖 Codex Hook，Demo 中不会开启。可以用「试用偏好场景」体验场景判断。')),
+  'retention': (ui('数据管理'), ui('Demo 的内容保存在独立的示例副本中，不提供内容清理和保留策略设置；这些选项只在自己的工作区中开放。')),
+} %}
+{% set current = demo_tabs.get(tab, demo_tabs['sources']) %}
+<div class="settings-shell studio-settings demo-settings">
+<header class="page-head settings-head"><div><p class="eyebrow">{{ ui('设置') }}</p><h1>{{ current[0] }}</h1><p class="lead">{{ ui('这是示例工作区，部分设置只在自己的工作区中可用。') }}</p></div></header>
+{% include 'partials/settings_nav.html' %}
+<section class="panel studio-settings-panel demo-settings-panel">
+  <span class="demo-settings-badge">{{ ui('Demo 中不可用') }}</span>
+  <p>{{ current[1] }}</p>
+  <div class="demo-settings-actions">
+    <a class="button primary-button" href="/settings/models">{{ '配置 Demo 模型' if zh else 'Configure Demo models' }}</a>
+    <a class="button ghost" href="/preferences/try">{{ '试用偏好场景' if zh else 'Try preference matching' }}</a>
+    <a class="button ghost" href="/workspaces">{{ '创建或打开工作区' if zh else 'Create or open a workspace' }} →</a>
+  </div>
+</section>
+</div>
+{% elif is_demo %}
+<section class="panel demo-settings-panel"><h1>{{ 'Demo 设置' if locale == 'zh-CN' else 'Demo settings' }}</h1>
 <p>{{ '这里可以独立配置模型，体验材料整理、偏好场景判断和人工审核。Demo 不接入真实 Codex 会话，也不安装 Hook。' if locale == 'zh-CN' else 'Configure a separate model connection to try material analysis, preference matching and review. Demo does not connect to real Codex conversations or install Hooks.' }}</p>
 <a class="button primary-button" href="/settings/models">{{ '配置 Demo 模型' if locale == 'zh-CN' else 'Configure Demo models' }}</a>
 <a class="button ghost" href="/preferences/try">{{ '试用偏好场景' if locale == 'zh-CN' else 'Try preference matching' }}</a>
+<a class="button ghost" href="/settings/appearance">{{ '外观：经典 / 新版界面' if locale == 'zh-CN' else 'Appearance: Classic / new UI' }}</a>
 </section>
 {% else %}
 <div id="studio-settings" class="studio-settings settings-shell">

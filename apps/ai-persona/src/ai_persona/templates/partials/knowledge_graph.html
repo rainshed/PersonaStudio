@@ -5,6 +5,7 @@
     <div class="tools" data-map-controls hidden>
       <label class="layout-label">{{ t('knowledge_map.layout') }} <select id="layout">{% for value in ['auto', 'right', 'down', 'bilateral'] %}<option value="{{ value }}">{{ t('knowledge_map.' + value) }}</option>{% endfor %}</select></label>
       <button id="expand-all" type="button">{{ t('knowledge.expand_all') }}</button><button id="collapse-all" type="button">{{ t('knowledge_map.collapse') }}</button>
+      {% if studio_graph_card %}<div class="ps-level-filter" role="group" aria-label="{{ t('common.knowledge_level') }}">{% for value, label in level_labels.items() %}<button type="button" data-ps-level="{{ value }}" aria-pressed="false"><i class="node-dot {{ value }}"></i>{{ label }}<span>{{ graph.nodes|selectattr('level', 'equalto', value)|list|length }}</span></button>{% endfor %}</div>{% endif %}
       <div class="search-wrap"><label class="sr-only" for="search">{{ t('knowledge.graph_search') }}</label><input type="search" id="search" placeholder="{{ t('knowledge.graph_search') }}" autocomplete="off" aria-controls="search-results"><div id="search-results" hidden></div></div>
     </div>
     {% endif %}
@@ -28,6 +29,7 @@
       </span>
       {% endfor %}
     </div>
+    {% if studio_graph_card %}<aside class="ps-node-card" data-studio-node-card hidden aria-live="polite"></aside>{% endif %}
     <div id="loading" role="status">{{ t('knowledge_map.loading') }}</div>
     <div id="error" role="alert" hidden><span>{{ t('knowledge_map.error') }}</span><button type="button" id="retry-layout">{{ t('knowledge_map.retry') }}</button></div>
     <div class="map-caption"><span id="layout-name"></span><span id="selection-caption">{{ t('knowledge_map.help') }}</span></div>
