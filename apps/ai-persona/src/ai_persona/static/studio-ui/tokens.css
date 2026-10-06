@@ -1,0 +1,156 @@
+/* Studio UI design tokens. Paper ground, ink text, one indigo accent. */
+html[data-ui="studio"] {
+  --s-font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Helvetica Neue", sans-serif;
+  --s-font-display: "Iowan Old Style", "New York", Charter, "Songti SC", "Noto Serif SC", Georgia, serif;
+  --s-font-mono: "SF Mono", ui-monospace, Menlo, monospace;
+  --s-radius: 12px;
+  --s-radius-sm: 8px;
+  --s-sidebar-width: 248px;
+
+  --s-bg: #F6F4EF;
+  --s-sidebar: #EFEBE3;
+  --s-surface: #FFFFFF;
+  --s-surface-2: #FAF8F3;
+  --s-fill: #F1EEE7;
+  --s-hover: #E9E5DC;
+  --s-line: #E4DFD5;
+  --s-line-2: #D3CDC1;
+  --s-ink: #1D1C1A;
+  --s-ink-2: #4A4741;
+  --s-ink-3: #6B665E;
+  --s-ink-4: #8F897E;
+  --s-on-accent: #FFFFFF;
+
+  --s-accent: #3947A0;
+  --s-accent-hover: #2F3C8A;
+  --s-accent-ink: #2C387F;
+  --s-accent-soft: #E7E9F5;
+  --s-accent-line: #B9C0E6;
+  --s-green: #2D6A52;
+  --s-green-ink: #22503E;
+  --s-green-soft: #E1EEE7;
+  --s-green-line: #B5D3C4;
+  --s-ochre: #8A5210;
+  --s-ochre-ink: #6B400C;
+  --s-ochre-soft: #F5EAD9;
+  --s-ochre-line: #E3CBA4;
+  --s-red: #9C3526;
+  --s-red-ink: #7A281C;
+  --s-red-soft: #F5E3DE;
+  --s-red-line: #E4BDB3;
+  --s-teal: #3F7D8C;
+  --s-teal-ink: #2F5F6B;
+  --s-teal-soft: #E0EDEF;
+  --s-teal-line: #B3D1D7;
+  --s-violet: #6B4E9B;
+  --s-violet-ink: #533C7A;
+  --s-violet-soft: #EEE8F5;
+  --s-violet-line: #CFC2E3;
+
+  --s-shadow: #2A2214;
+  --s-shadow-sm: 0 1px 2px rgba(40, 34, 20, .05);
+  --s-shadow-md: 0 1px 2px rgba(40, 34, 20, .05), 0 10px 28px rgba(40, 34, 20, .07);
+  --s-shadow-lg: 0 28px 70px rgba(20, 18, 12, .22);
+  --s-scrim: rgba(28, 26, 22, .32);
+  color-scheme: light;
+}
+
+html[data-ui="studio"][data-theme="dark"] {
+  --s-bg: #161614;
+  --s-sidebar: #1B1B19;
+  --s-surface: #201F1D;
+  --s-surface-2: #242321;
+  --s-fill: #272623;
+  --s-hover: #2E2D2A;
+  --s-line: #33322E;
+  --s-line-2: #423F3A;
+  --s-ink: #ECE9E2;
+  --s-ink-2: #C0BBB1;
+  --s-ink-3: #9C978D;
+  --s-ink-4: #7A766E;
+  --s-on-accent: #141730;
+
+  --s-accent: #A3AEF2;
+  --s-accent-hover: #B6BFF6;
+  --s-accent-ink: #C6CDF8;
+  --s-accent-soft: #272C48;
+  --s-accent-line: #3D4570;
+  --s-green: #86C7A9;
+  --s-green-ink: #A8DAC2;
+  --s-green-soft: #1E3029;
+  --s-green-line: #2F4A3F;
+  --s-ochre: #E3A85C;
+  --s-ochre-ink: #F0C58C;
+  --s-ochre-soft: #3A2E1F;
+  --s-ochre-line: #574329;
+  --s-red: #EE9383;
+  --s-red-ink: #F5B3A7;
+  --s-red-soft: #3B2421;
+  --s-red-line: #5A3530;
+  --s-teal: #72B6C4;
+  --s-teal-ink: #9CCFD9;
+  --s-teal-soft: #1C2F33;
+  --s-teal-line: #2C4A50;
+  --s-violet: #BCA5E6;
+  --s-violet-ink: #D3C3F0;
+  --s-violet-soft: #2B2438;
+  --s-violet-line: #443A58;
+
+  --s-shadow: #000000;
+  --s-shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+  --s-shadow-md: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
+  --s-shadow-lg: 0 28px 70px rgba(0, 0, 0, .55);
+  --s-scrim: rgba(0, 0, 0, .5);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-ui="studio"][data-theme="system"] {
+    --s-bg: #161614;
+    --s-sidebar: #1B1B19;
+    --s-surface: #201F1D;
+    --s-surface-2: #242321;
+    --s-fill: #272623;
+    --s-hover: #2E2D2A;
+    --s-line: #33322E;
+    --s-line-2: #423F3A;
+    --s-ink: #ECE9E2;
+    --s-ink-2: #C0BBB1;
+    --s-ink-3: #9C978D;
+    --s-ink-4: #7A766E;
+    --s-on-accent: #141730;
+
+    --s-accent: #A3AEF2;
+    --s-accent-hover: #B6BFF6;
+    --s-accent-ink: #C6CDF8;
+    --s-accent-soft: #272C48;
+    --s-accent-line: #3D4570;
+    --s-green: #86C7A9;
+    --s-green-ink: #A8DAC2;
+    --s-green-soft: #1E3029;
+    --s-green-line: #2F4A3F;
+    --s-ochre: #E3A85C;
+    --s-ochre-ink: #F0C58C;
+    --s-ochre-soft: #3A2E1F;
+    --s-ochre-line: #574329;
+    --s-red: #EE9383;
+    --s-red-ink: #F5B3A7;
+    --s-red-soft: #3B2421;
+    --s-red-line: #5A3530;
+    --s-teal: #72B6C4;
+    --s-teal-ink: #9CCFD9;
+    --s-teal-soft: #1C2F33;
+    --s-teal-line: #2C4A50;
+    --s-violet: #BCA5E6;
+    --s-violet-ink: #D3C3F0;
+    --s-violet-soft: #2B2438;
+    --s-violet-line: #443A58;
+
+    --s-shadow: #000000;
+    --s-shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+    --s-shadow-md: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px rgba(0, 0, 0, .35);
+    --s-shadow-lg: 0 28px 70px rgba(0, 0, 0, .55);
+    --s-scrim: rgba(0, 0, 0, .5);
+    color-scheme: dark;
+  }
+}
